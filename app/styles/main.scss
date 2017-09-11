@@ -1,0 +1,20 @@
+﻿$enable-flex: true;
+
+
+
+// bower:scss
+@import "bower_components/bootstrap/scss/bootstrap.scss";
+// endbower
+
+body > .container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-content: center;
+}
+
+.container > .container {
+  flex: 1;
+}
+
+

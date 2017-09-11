@@ -1,0 +1,9 @@
+{
+  "name": "reboot-pg-manager",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "https://github.com/twbs/bootstrap.git#v4.0.0-beta",
+    "jquery": "~2.1.4",
+    "popper.js": "^1.12.5"
+  }
+}
