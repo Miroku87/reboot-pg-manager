@@ -15,6 +15,48 @@ body > .container {
 
 .container > .container {
   flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
+.footer {
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+#loginCard {
+  flex: .5;
+}
+
+@include media-breakpoint-up(xs) {
+  #loginCard {
+    flex: 1;
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  #loginCard {
+    flex: 1;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  #loginCard {
+    flex: .8;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  #loginCard {
+    flex: .6;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  #loginCard {
+    flex: .5;
+  }
+}
 
