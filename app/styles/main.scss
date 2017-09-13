@@ -19,15 +19,72 @@ body > .container {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  padding-top: 20px;
 }
+
+.registration-page .container > .container {
+  flex-direction: column;
+}
+
+.registration-page .card {
+  align-self: stretch;
+}
+
+.card {
+  margin-bottom: 20px;
+}
+/*
+.card:first-child {
+  margin-top: 20px;
+}*/
 
 .footer {
   border-top: 1px solid #ddd;
   padding-top: 10px;
 }
 
+.fx-row {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.fx-col-2 {
+  width: 49%;
+}
+
+.move-item-horizontal {
+  display: initial;
+}
+
+.move-item-vertical {
+  display: none;
+}
+.move-item-vertical > button {
+  margin: 20px 0;
+}
+
 #loginCard {
   flex: .5;
+}
+
+@media (max-width: 576px) {
+  .fx-row {
+    flex-direction: column;
+  }
+
+  .fx-col-2 {
+    width: 100%;
+  }
+
+  .move-item-horizontal {
+    display: none;
+  }
+
+  .move-item-vertical {
+    display: initial;
+  }
 }
 
 @include media-breakpoint-up(xs) {

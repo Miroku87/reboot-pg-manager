@@ -1,95 +1,185 @@
 ﻿<!doctype html>
 <html lang="">
-  <head>
-    <meta charset="utf-8">
-    <title>Reboot Live Gestione Personaggi</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+  <meta charset="utf-8">
+  <title>Reboot Live Gestione Personaggi</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="shortcut icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="/bower_components/components-font-awesome/css/font-awesome.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild -->
+</head>
+<body class="registration-page">
+  <!--[if lt IE 10]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
 
-    <!-- build:css(.) styles/vendor.css -->
-    <!-- bower:css -->
-    <link rel="stylesheet" href="/bower_components/components-font-awesome/css/font-awesome.css" />
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
-  </head>
-  <body>
-    <!--[if lt IE 10]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-
-    <div class="container">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <a class="navbar-brand" href="#">REBOOT Live: Gestione Personaggi</a>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="#">LogIn</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      <div class="container">
-        <div id="loginCard" class="card">
-          <div class="card-header">
-            Login
-          </div>
-          <div class="card-body">
-            <h4 class="card-title">Inserisci i tuoi dati</h4>
-            <div class="input-group">
-              <span class="input-group-addon" id="basic-addon1">@</span>
-              <input type="text" class="form-control" placeholder="Email" aria-label="Username" aria-describedby="basic-addon1" />
-            </div>
-            <br />
-            <div class="input-group">
-              <span class="input-group-addon" id="basic-addon2"><span class="fa fa-key" aria-hidden="true"></span></span>
-              <input type="password" class="form-control" placeholder="Password" aria-label="Username" aria-describedby="basic-addon2" />
-            </div>
-            <br />
-            <a href="#" class="btn btn-primary">Entra</a> <a href="#" class="btn btn-info">Registrati</a>
-          </div>
-        </div>
-        
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">REBOOT Live: Gestione Personaggi</a>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">LogIn</a>
+          </li>
+        </ul>
       </div>
-      <div class="footer">
-        <p><span class="fa fa-copyright" aria-hidden="true" ></span> Reboot Live 2017</p>
+    </nav>
+    <div class="container">
+      <div id="playerData" class="card">
+        <div class="card-header">
+          Dati Giocatore
+        </div>
+        <div class="card-body">
+          <h4 class="card-title">Inserisci i tuoi dati</h4>
+          <div class="fx-row">
+            <div class="fx-col-2">
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1"><span class="fa fa-user" aria-hidden="true"></span></span>
+                <input type="text" class="form-control" placeholder="Nome" aria-label="Name" aria-describedby="basic-addon1" />
+              </div>
+            </div>
+            <br />
+            <div class="fx-col-2">
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon2"><span class="fa fa-user" aria-hidden="true"></span></span>
+                <input type="text" class="form-control" placeholder="Cognome" aria-label="Surname" aria-describedby="basic-addon2" />
+              </div>
+            </div>
+          </div>
+          <br />
+          <div class="input-group">
+            <span class="input-group-addon" id="basic-addon3"><span class="fa fa-at" aria-hidden="true"></span></span>
+            <input type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon3" />
+          </div>
+          <br />
+          <div class="input-group">
+            <span class="input-group-addon" id="basic-addon4"><span class="fa fa-key" aria-hidden="true"></span></span>
+            <input type="password" class="form-control" placeholder="Password" aria-label="Username" aria-describedby="basic-addon4" />
+          </div>
+          <br />
+          <div class="input-group">
+            <span class="input-group-addon" id="basic-addon5"><span class="fa fa-key" aria-hidden="true"></span></span>
+            <input type="password" class="form-control" placeholder="Reinserisci Password" aria-label="PasswordAgain" aria-describedby="basic-addon5" />
+          </div>
+        </div>
+      </div>
+      <div id="characterData" class="card">
+        <div class="card-header">
+          Dati Primo Personaggio
+        </div>
+        <div class="card-body">
+          <h4 class="card-title">Inserisci i dati del tuo primo personaggio</h4>
+          <div class="input-group">
+            <span class="input-group-addon" id="basic-addon6"><span class="fa fa-user" aria-hidden="true"></span></span>
+            <input type="text" class="form-control" placeholder="Nome Personaggio" aria-label="CharacterName" aria-describedby="basic-addon6" />
+          </div>
+          <br />
+          <div class="form-group">
+            <label for="classeCivileSelect">Scegli una Classe Civile</label>
+            <select class="form-control" id="classeCivileSelect">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Scegli le abilità per la Classe Civile</label>
+            <div>Punti Esperienza disponibili: 30</div>
+            <div class="row">
+              <div class="col-sm">
+                <select multiple class="form-control" id="listaAbilitaCivili">
+                  <option>X</option>
+                  <option>Y</option>
+                  <option>Z</option>
+                  <option>K</option>
+                  <option>J</option>
+                </select>
+              </div>
+              <div class="col-xs">
+                <div class="move-item-horizontal">
+                  <button class="btn btn-primary">&gt;&gt;</button><br /><br />
+                  <button class="btn btn-primary">&lt;&lt;</button>
+                </div>
+                <div class="move-item-vertical">
+                  <button class="btn btn-primary"><span class="fa fa-chevron-down" aria-hidden="true"></span></button>&nbsp;&nbsp;
+                  <button class="btn btn-primary"><span class="fa fa-chevron-up" aria-hidden="true"></span></button>
+                </div>
+              </div>
+              <div class="col-sm">
+                <select multiple class="form-control" id="listaAbilitaCiviliAcquistate">
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Scegli due Classi Militari</label>
+            <div class="fx-row">
+              <div class="fx-col-2">
+                <select class="form-control" id="classeMilitareSelect_1">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+                <br />
+              </div>
+              <div class="fx-col-2">
+                <select class="form-control" id="classeMilitareSelect_2">
+                  <option>A</option>
+                  <option>B</option>
+                  <option>C</option>
+                  <option>D</option>
+                  <option>E</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <a href="#" class="btn btn-primary">Invia Dati</a>
+        </div>
       </div>
     </div>
+    <div class="footer">
+      <p><span class="fa fa-copyright" aria-hidden="true"></span> Reboot Live 2017</p>
+    </div>
+  </div>
 
-    <!-- build:js(.) scripts/vendor.js -->
-    <!-- bower:js -->
-    <script src="/bower_components/jquery/dist/jquery.js"></script>
-    <script src="/bower_components/popper.js/dist/umd/popper.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
-
-    
-    <!-- build:js(.) scripts/plugins.js -->
-    <script src="/bower_components/bootstrap/js/dist/alert.js"></script>
-    <script src="/bower_components/bootstrap/js/dist/button.js"></script>
-    <script src="/bower_components/bootstrap/js/dist/carousel.js"></script>
-    <script src="/bower_components/bootstrap/js/dist/collapse.js"></script>
-    <script src="/bower_components/bootstrap/js/dist/dropdown.js"></script>
-    <script src="/bower_components/bootstrap/js/dist/modal.js"></script>
-    <script src="/bower_components/bootstrap/js/dist/scrollspy.js"></script>
-    <script src="/bower_components/bootstrap/js/dist/tab.js"></script>
-    <script src="/bower_components/bootstrap/js/dist/tooltip.js"></script>
-    <script src="/bower_components/bootstrap/js/dist/popover.js"></script>
-    <script src="/bower_components/bootstrap/js/dist/util.js"></script>
-    <!-- endbuild -->
-    
-
-    <!-- build:js(.tmp) scripts/main.js -->
-    <script src="scripts/main.js"></script>
-    <!-- endbuild -->
-  </body>
+  <!-- build:js(.) scripts/vendor.js -->
+  <!-- bower:js -->
+  <script src="/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/bower_components/popper.js/dist/umd/popper.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:js(.) scripts/plugins.js -->
+  <script src="/bower_components/bootstrap/js/dist/alert.js"></script>
+  <script src="/bower_components/bootstrap/js/dist/button.js"></script>
+  <script src="/bower_components/bootstrap/js/dist/carousel.js"></script>
+  <script src="/bower_components/bootstrap/js/dist/collapse.js"></script>
+  <script src="/bower_components/bootstrap/js/dist/dropdown.js"></script>
+  <script src="/bower_components/bootstrap/js/dist/modal.js"></script>
+  <script src="/bower_components/bootstrap/js/dist/scrollspy.js"></script>
+  <script src="/bower_components/bootstrap/js/dist/tab.js"></script>
+  <script src="/bower_components/bootstrap/js/dist/tooltip.js"></script>
+  <script src="/bower_components/bootstrap/js/dist/popover.js"></script>
+  <script src="/bower_components/bootstrap/js/dist/util.js"></script>
+  <!-- endbuild -->
+  <!-- build:js(.tmp) scripts/main.js -->
+  <script src="scripts/main.js"></script>
+  <!-- endbuild -->
+</body>
 </html>
