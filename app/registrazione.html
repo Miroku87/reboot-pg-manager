@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <title>Reboot Live Gestione Personaggi</title>
   <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <link rel="shortcut icon" href="/favicon.ico">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -88,7 +88,7 @@
           </div>
           <br />
           <div class="form-group">
-            <label for="classeCivileSelect">Scegli una Classe Civile</label>
+            <h5>Scegli una Classe Civile</h5>
             <select class="form-control" id="classeCivileSelect">
               <option>1</option>
               <option>2</option>
@@ -98,26 +98,29 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Scegli le abilità per la Classe Civile</label>
-            <div>Punti Esperienza disponibili: 30</div>
+            <h5>Scegli le abilità per la Classe Civile</h5>
+            <div>Punti Esperienza disponibili: <span id="puntiEsperienza" class="badge badge-success">10</span></div>
             <div class="row">
               <div class="col-sm">
                 <select multiple class="form-control" id="listaAbilitaCivili">
-                  <option>X</option>
-                  <option>Y</option>
-                  <option>Z</option>
-                  <option>K</option>
-                  <option>J</option>
+                  <option value="1" data-toggle="popover" data-placement="top" data-content="Descrizione descrizione descrizione descrizione">X</option>
+                  <option value="2" data-toggle="popover" data-placement="top" data-content="Descrizione descrizione descrizione descrizione">Y</option>
+                  <option value="3" data-toggle="popover" data-placement="top" data-content="Descrizione descrizione descrizione descrizione">Z</option>
+                  <option value="4" data-toggle="popover" data-placement="top" data-content="Descrizione descrizione descrizione descrizione">K</option>
+                  <option value="5" data-toggle="popover" data-placement="top" data-content="Descrizione descrizione descrizione descrizione">J</option>
+                  <option value="6" data-toggle="popover" data-placement="top" data-content="Descrizione descrizione descrizione descrizione">P</option>
+                  <option value="7" data-toggle="popover" data-placement="top" data-content="Descrizione descrizione descrizione descrizione">Q</option>
+                  <option value="8" data-toggle="popover" data-placement="top" data-content="Descrizione descrizione descrizione descrizione">R</option>
                 </select>
               </div>
-              <div class="col-xs">
+              <div class="col-xs xs-centered-block">
                 <div class="move-item-horizontal">
-                  <button class="btn btn-primary">&gt;&gt;</button><br /><br />
-                  <button class="btn btn-primary">&lt;&lt;</button>
+                  <button class="btn btn-primary compra-abilita-civile-btn">&gt;&gt;</button><br /><br />
+                  <button class="btn btn-primary butta-abilita-civile-btn">&lt;&lt;</button>
                 </div>
                 <div class="move-item-vertical">
-                  <button class="btn btn-primary"><span class="fa fa-chevron-down" aria-hidden="true"></span></button>&nbsp;&nbsp;
-                  <button class="btn btn-primary"><span class="fa fa-chevron-up" aria-hidden="true"></span></button>
+                  <button class="btn btn-primary compra-abilita-civile-btn"><span class="fa fa-chevron-down" aria-hidden="true"></span></button>&nbsp;&nbsp;
+                  <button class="btn btn-primary butta-abilita-civile-btn"><span class="fa fa-chevron-up" aria-hidden="true"></span></button>
                 </div>
               </div>
               <div class="col-sm">
@@ -127,7 +130,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label>Scegli due Classi Militari</label>
+            <h5>Scegli due Classi Militari</h5>
             <div class="fx-row">
               <div class="fx-col-2">
                 <select class="form-control" id="classeMilitareSelect_1">
@@ -147,6 +150,37 @@
                   <option>D</option>
                   <option>E</option>
                 </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <h5>Scegli le abilità per le Classi Militari</h5>
+            <div>Punti Combattimento disponibili: <span id="puntiCombattimento" class="badge badge-success">10</span></div>
+            <div class="row">
+              <div class="col-sm">
+                <select multiple class="form-control" id="listaAbilitaMilitari">
+                  <option value="1" data-toggle="popover" data-placement="top" data-content="Descrizione descrizione descrizione descrizione">X</option>
+                  <option value="2" data-toggle="popover" data-placement="top" data-content="Descrizione descrizione descrizione descrizione">Y</option>
+                  <option value="3" data-toggle="popover" data-placement="top" data-content="Descrizione descrizione descrizione descrizione">Z</option>
+                  <option value="4" data-toggle="popover" data-placement="top" data-content="Descrizione descrizione descrizione descrizione">K</option>
+                  <option value="5" data-toggle="popover" data-placement="top" data-content="Descrizione descrizione descrizione descrizione">J</option>
+                  <option value="6" data-toggle="popover" data-placement="top" data-content="Descrizione descrizione descrizione descrizione">P</option>
+                  <option value="7" data-toggle="popover" data-placement="top" data-content="Descrizione descrizione descrizione descrizione">Q</option>
+                  <option value="8" data-toggle="popover" data-placement="top" data-content="Descrizione descrizione descrizione descrizione">R</option>
+                </select>
+              </div>
+              <div class="col-xs xs-centered-block">
+                <div class="move-item-horizontal">
+                  <button class="btn btn-primary compra-abilita-militare-btn">&gt;&gt;</button><br /><br />
+                  <button class="btn btn-primary butta-abilita-militare-btn">&lt;&lt;</button>
+                </div>
+                <div class="move-item-vertical">
+                  <button class="btn btn-primary"><span class="fa fa-chevron-down" aria-hidden="true"></span></button>&nbsp;&nbsp;
+                  <button class="btn btn-primary"><span class="fa fa-chevron-up" aria-hidden="true"></span></button>
+                </div>
+              </div>
+              <div class="col-sm">
+                <select multiple class="form-control" id="listaAbilitaMilitariAcquistate"></select>
               </div>
             </div>
           </div>
@@ -179,7 +213,9 @@
   <script src="/bower_components/bootstrap/js/dist/util.js"></script>
   <!-- endbuild -->
   <!-- build:js(.tmp) scripts/main.js -->
-  <script src="scripts/main.js"></script>
+  <script src="scripts/Utils.js"></script>
+  <script src="scripts/RegistrationManager.js"></script>
+  <script src="scripts/RegistrationMain.js"></script>
   <!-- endbuild -->
 </body>
 </html>
