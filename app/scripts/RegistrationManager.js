@@ -22,26 +22,42 @@
             }
             else
             {
-                var selected_before = [],
-                    selected_now = [],
-                    diff;
-
-                $( '#' + CIVILIAN_LIST_ID + ', #' + MILITARY_LIST_ID ).on( "change", function ( event )
-                {
-                    $( this ).find( '[data-toggle="popover"]' ).popover( "hide" );
-
-                    if ( this.selectedOptions.length > 0 )
+                $( '[data-toggle="popover"]' ).popover( {
+                    trigger: 'manual',
+                    placement: function ( popover_elem, li_elem )
                     {
-                        selected_now = [].slice.call( this.selectedOptions );
-                        selected_now = selected_now.map( function ( item ) { return $( item ).val(); } );
-                        diff = selected_now.filter( function ( item ) { return selected_before.indexOf( item ) === -1; } )[0];
-                        selected_before = selected_now;
-
-                        if ( diff )
-                            $( this ).find( "option[value='" + diff + "']" ).popover( "show" );
+                        if ( $( li_elem ).parent().attr( "id" ) === CIVILIAN_BUCKET_ID || $( li_elem ).parent().attr( "id" ) === MILITARY_BUCKET_ID )
+                            return 'bottom';
+                        else
+                            return 'top';
                     }
                 } );
+
+                $( '.list-select li' ).click( function ( event )
+                {
+                    $( this ).parent().find( '[data-toggle="popover"]' ).popover( "hide" );
+                    $( this ).popover( "show" );
+                } );
+
+                $( '.list-select li' ).on( 'inserted.bs.popover', function ()
+                {
+                    var close = $( "<div class='popover-close-btn'><span class='fa fa-times' aria-hidden='true'></span></div>" );
+                    close.click( function ()
+                    {
+                        $( '[data-toggle="popover"]' ).popover( "hide" );
+                    } );
+
+                    $( '.popover-body' ).append( close );
+                } );
             };
+        },
+
+        setupListSelect: function ()
+        {
+            $( '.list-select li' ).click( function ()
+            {
+                $( this ).toggleClass( "selected" );
+            });
         },
 
         updateRemainingPoints: function ( which, offset )
@@ -63,28 +79,34 @@
 
         buyAbilities: function ( list_id, bucket_id )
         {
-            var selected = $( '#' + list_id ).find( ':selected' ),
+            var selected = $( '#' + list_id ).find( 'li.selected' ),
                 points = list_id === CIVILIAN_LIST_ID ? EXP : COM;
-            selected.appendTo( $( '#' + bucket_id ) );
-            $( '#' + bucket_id )[0].selectedIndex = -1;
+
+            $( '[data-toggle="popover"]' ).popover( "hide" );
+            selected
+                .removeClass( "selected" )
+                .appendTo( $( '#' + bucket_id ) );
 
             this.updateRemainingPoints( points, selected.length * -1 );
 
-            Utils.sortChildrenByAttribute( $( '#' + list_id ), "option", "value" );
-            Utils.sortChildrenByAttribute( $( '#' + bucket_id ), "option", "value" );
+            Utils.sortChildrenByAttribute( $( '#' + list_id ), "li", "data" );
+            Utils.sortChildrenByAttribute( $( '#' + bucket_id ), "li", "data" );
         },
 
         dropAbilities: function ( list_id, bucket_id )
         {
-            var selected = $( '#' + bucket_id ).find( ':selected' ),
+            var selected = $( '#' + bucket_id ).find( 'li.selected' ),
                 points = list_id === CIVILIAN_LIST_ID ? EXP : COM;
-            selected.appendTo( $( '#' + list_id ) );
-            $( '#' + list_id )[0].selectedIndex = -1;
+
+            $( '[data-toggle="popover"]' ).popover( "hide" );
+            selected
+                .removeClass( "selected" )
+                .appendTo( $( '#' + list_id ) );
 
             this.updateRemainingPoints( points, selected.length * 1 );
 
-            Utils.sortChildrenByAttribute( $( '#' + list_id ), "option", "value" );
-            Utils.sortChildrenByAttribute( $( '#' + bucket_id ), "option", "value" );
+            Utils.sortChildrenByAttribute( $( '#' + list_id ), "li", "data" );
+            Utils.sortChildrenByAttribute( $( '#' + bucket_id ), "li", "data" );
         },
 
         setupAbilityMarket: function () 

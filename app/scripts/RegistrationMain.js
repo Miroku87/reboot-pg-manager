@@ -2,5 +2,6 @@
 $( function ()
 {
     RegistrationManager.setPopovers();
+    RegistrationManager.setupListSelect();
     RegistrationManager.setupAbilityMarket();
 } );

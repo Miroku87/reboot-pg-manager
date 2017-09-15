@@ -73,6 +73,48 @@ body > .container {
   flex: .5;
 }
 
+.popover .popover-close-btn {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  font-size: 20px;
+}
+
+ul.list-select {
+  height: 105px;
+  list-style: none;
+  overflow: auto;
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.25;
+  color: #495057;
+  background-color: #fff;
+  background-image: none;
+  background-clip: padding-box;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 0.25rem;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
+}
+
+ul.list-select li {
+  padding-bottom: 2px;
+}
+
+ul.list-select li:hover {
+  background-color: rgba(0,0,0,0.05);
+}
+
+ul.list-select li.selected,
+ul.list-select li.selected:hover {
+  background-color: theme-color("primary");
+  color: white;
+}
+
 @media (max-width: 576px) {
   .fx-row {
     flex-direction: column;
