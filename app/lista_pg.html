@@ -39,7 +39,23 @@
         </div>
       </nav>
       <div class="container">
-       
+
+        <table id="recap-grid" class="table table-condensed table-hover table-striped">
+          <thead>
+            <tr>
+              <th data-column-id="pgid" data-type="numeric" data-sortable="true">ID PG</th>
+              <th data-column-id="username" data-type="string" data-sortable="true">Nome Giocatore</th>
+              <th data-column-id="pgname" data-type="string" data-sortable="true">Nome Personaggio</th>
+              <th data-column-id="creationdate" data-type="date" data-sortable="true">Data Creazione</th>
+              <th data-column-id="px" data-sortable="true">PX</th>
+              <th data-column-id="pc" data-sortable="true">PC</th>
+              <th data-column-id="civilClass" data-sortable="true">Classe Civile</th>
+              <th data-column-id="civilClass" data-sortable="true">Classe Civile</th>
+              <th data-column-id="militaryClasses" data-formatter="militaryClasses" data-sortable="true">Classi Militari</th>
+              <th data-column-id="actions" data-formatter="commands" data-sortable="false">Azioni</th>
+            </tr>
+          </thead>
+        </table>
         
       </div>
       <div class="footer">
@@ -68,10 +84,10 @@
     <script src="/bower_components/bootstrap/js/dist/popover.js"></script>
     <script src="/bower_components/bootstrap/js/dist/util.js"></script>
     <!-- endbuild -->
-    
+
 
     <!-- build:js(.tmp) scripts/pg-manager-main.js -->
-    <script src="scripts/PgManagerMain.js"></script>
+    <script src="scripts/PgListManager.js"></script>
     <!-- endbuild -->
   </body>
 </html>
