@@ -1,0 +1,16 @@
+{
+	"current": 1,
+	"rowCount": 10,
+	"rows": [{
+		"encPgId": 1199,
+		"pgid": 19,
+		"username": "Andrea Silvestri",
+		"pgname": "Ciccio Pasticcio",
+		"creationdate": "17/10/2017",
+		"civilClass": "Cuoco",
+		"militaryClasses": "Ladro, Barbaro",
+		"px": 23,
+		"pc": 12
+	}],
+	"total": 1
+}

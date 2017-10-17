@@ -16,10 +16,11 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/jquery.bootgrid.min.css">
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
-  <body>
+  <body class="pg-list-page">
     <!--[if lt IE 10]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -40,19 +41,18 @@
       </nav>
       <div class="container">
 
-        <table id="recap-grid" class="table table-condensed table-hover table-striped">
+        <table id="pg-grid" class="table table-condensed table-hover table-striped">
           <thead>
             <tr>
               <th data-column-id="pgid" data-type="numeric" data-sortable="true">ID PG</th>
-              <th data-column-id="username" data-type="string" data-sortable="true">Nome Giocatore</th>
-              <th data-column-id="pgname" data-type="string" data-sortable="true">Nome Personaggio</th>
-              <th data-column-id="creationdate" data-type="date" data-sortable="true">Data Creazione</th>
-              <th data-column-id="px" data-sortable="true">PX</th>
-              <th data-column-id="pc" data-sortable="true">PC</th>
-              <th data-column-id="civilClass" data-sortable="true">Classe Civile</th>
-              <th data-column-id="civilClass" data-sortable="true">Classe Civile</th>
-              <th data-column-id="militaryClasses" data-formatter="militaryClasses" data-sortable="true">Classi Militari</th>
-              <th data-column-id="actions" data-formatter="commands" data-sortable="false">Azioni</th>
+              <th data-column-id="username" data-sortable="true">Nome Giocatore</th>
+              <th data-column-id="pgname" data-formatter="pgnameFormatter" data-sortable="true">Nome Personaggio</th>
+              <th data-column-id="creationdate" data-sortable="true">Data Creazione</th>
+              <th data-column-id="civilClass" data-formatter="civilClassFormatter" data-sortable="true">Classe Civile</th>
+              <th data-column-id="militaryClasses" data-formatter="militaryClassesFormatter" data-sortable="true">Classi Militari</th>
+              <th data-column-id="px" data-formatter="pxFormatter" data-sortable="true">PX</th>
+              <th data-column-id="pc" data-formatter="pcFormatter" data-sortable="true">PC</th>
+              <th data-column-id="actions" data-formatter="commandsFormatter" data-sortable="false">Azioni</th>
             </tr>
           </thead>
         </table>
@@ -68,6 +68,8 @@
     <script src="/bower_components/jquery/dist/jquery.js"></script>
     <script src="/bower_components/popper.js/dist/umd/popper.js"></script>
     <!-- endbower -->
+    <script src="scripts/jquery.bootgrid.min.js"></script>
+    <script src="scripts/jquery.bootgrid.fa.min.js"></script>
     <!-- endbuild -->
 
     

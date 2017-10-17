@@ -6,6 +6,10 @@
 @import "bower_components/bootstrap/scss/bootstrap.scss";
 // endbower
 
+.hidden {
+  display: none;
+}
+
 body > .container {
   display: flex;
   flex-direction: column;
@@ -24,6 +28,11 @@ body > .container {
 
 .registration-page .container > .container {
   flex-direction: column;
+}
+
+.pg-list-page .container > .container {
+  display: block;
+  font-size: 0.9rem;
 }
 
 .registration-page .card {
@@ -165,5 +174,26 @@ ul.list-select li.selected:hover {
   #loginCard {
     flex: .5;
   }
+}
+
+.data-showed, .data-edit {
+	position:relative;
+}
+
+.data-showed > .fa-pencil,
+.data-edit > .fa-check {
+  display: inline-block;
+  position: absolute;
+  right: 0;
+}
+
+.data-showed > .fa-pencil {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.data-showed:hover > .fa-pencil {
+  opacity: 1;
+  pointer-events: all;
 }
 
