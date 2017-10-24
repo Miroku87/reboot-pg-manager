@@ -31,7 +31,6 @@
         {
             $( '#search-input' ).on( 'keyup', function ()
             {
-                console.log( $( '#search-input' ).val() );
                 var term = $( '#search-input' ).val().trim();
                 if ( term.length === 0 )
                 {
