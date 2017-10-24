@@ -35,10 +35,6 @@ body > .container {
 .card {
   margin-bottom: 20px;
 }
-/*
-.card:first-child {
-  margin-top: 20px;
-}*/
 
 .footer {
   border-top: 1px solid #ddd;
@@ -138,36 +134,6 @@ ul.list-select li.selected:hover {
     margin: 0 auto;
   }
 }
-/*
-@include media-breakpoint-up(xs) {
-  #loginCard {
-    flex: 1;
-  }
-}
-
-@include media-breakpoint-up(sm) {
-  #loginCard {
-    flex: 1;
-  }
-}
-
-@include media-breakpoint-up(md) {
-  #loginCard {
-    flex: .8;
-  }
-}
-
-@include media-breakpoint-up(lg) {
-  #loginCard {
-    flex: .6;
-  }
-}
-
-@include media-breakpoint-up(xl) {
-  #loginCard {
-    flex: .5;
-  }
-}*/
 
 .data-showed, .data-edit {
 	position:relative;
@@ -193,3 +159,7 @@ ul.list-select li.selected:hover {
   pointer-events: all;
 }
 
+.data-edit > input,
+.data-edit > select{
+  width: calc(100% - 15px);
+}

@@ -5,9 +5,10 @@
     "bootstrap": "https://github.com/twbs/bootstrap.git#v3.3.7",
     "components-font-awesome": "latest",
     "jquery": "1.12.4",
+    "jqlite": "kilt-jqlite#^0.2.42",
+    "iCheck": "icheck#^1.0.2",
     "popper.js": "^1.12.5",
     "admin-lte": "^2.4.2",
-    "tether": "^1.4.0",
-    "jqlite": "kilt-jqlite#^0.2.42"
+    "tether": "^1.4.0"
   }
 }

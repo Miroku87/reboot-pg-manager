@@ -9,6 +9,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>AdminLTE 2 | Starter</title>
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon">
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- build:css(.) styles/vendor.css -->
@@ -27,7 +29,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="/bower_components/Ionicons/css/ionicons.css" />
   <link rel="stylesheet" href="/bower_components/admin-lte/dist/css/AdminLTE.css" />
   <!-- endbower -->
-  <link rel="stylesheet" href="styles/jquery.bootgrid.min.css">
+  <link rel="stylesheet" href="styles/vendors/jquery.bootgrid.min.css">
   <link rel="stylesheet" href="/bower_components/admin-lte/dist/css/skins/skin-black.css" />
   <link rel="stylesheet" href="styles/main.css" />
   <!-- endbuild -->
@@ -70,9 +72,9 @@ desired effect
       <!-- Logo -->
       <a href="index2.html" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini">Rb</span>
+        <span class="logo-mini"><img src="images/reboot_logo_small.jpg" width="45" /></span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg">Reboot Live</span>
+        <span class="logo-lg"><b>Reboot</b> Live</span>
       </a>
 
       <!-- Header Navbar -->
@@ -296,13 +298,13 @@ desired effect
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
-          Lista Personaggi
-          <small>Qui vedrai tutti i personaggi e potrai modificarne i dati.</small>
+          Gestione Personaggi
+          <small>Qui potrai gestire i personaggi e tutto ciò che li riguarda.</small>
         </h1>
-        <ol class="breadcrumb">
+        <!--<ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
           <li class="active">Here</li>
-        </ol>
+        </ol>-->
       </section>
 
       <!-- Main content -->
@@ -311,6 +313,18 @@ desired effect
         <!--------------------------
           | Your Page Content Here |
           -------------------------->
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Azioni Generiche</h3>
+          </div>
+          <div class="box-body">
+            <a class="btn btn-app" data-toggle="tooltip" title="Si applica ai PG che hanno partecipato all'ultimo evento'">
+              <i class="fa fa-edit"></i> Assegna PX e PC
+            </a>
+          </div>
+          <!-- /.box-body -->
+        </div>
+
         <div class="box">
           <div class="box-header with-border">
             <h3 class="box-title">Tabella Personaggi</h3>
@@ -324,7 +338,7 @@ desired effect
               </button>
             </div-->
           </div>
-          <div class="box-body" style="">
+          <div class="box-body">
 
             <table id="pg-grid" class="table table-condensed table-hover table-striped table-bordered responsive">
               <thead>
@@ -446,6 +460,8 @@ desired effect
   <!-- build:js(.) scripts/vendor.js -->
   <!-- bower:js -->
   <script src="/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/bower_components/jqlite/jqlite.js"></script>
+  <script src="/bower_components/iCheck/icheck.min.js"></script>
   <script src="/bower_components/popper.js/dist/umd/popper.js"></script>
   <script src="/bower_components/bootstrap-slider/bootstrap-slider.js"></script>
   <script src="/bower_components/chart.js/Chart.js"></script>
@@ -458,7 +474,6 @@ desired effect
   <script src="/bower_components/fastclick/lib/fastclick.js"></script>
   <script src="/bower_components/Flot/jquery.flot.js"></script>
   <script src="/bower_components/fullcalendar/dist/fullcalendar.js"></script>
-  <script src="/bower_components/jqlite/jqlite.js"></script>
   <script src="/bower_components/inputmask/dist/inputmask/inputmask.js"></script>
   <script src="/bower_components/inputmask/dist/inputmask/inputmask.extensions.js"></script>
   <script src="/bower_components/inputmask/dist/inputmask/inputmask.date.extensions.js"></script>
@@ -493,14 +508,14 @@ desired effect
   <!-- endbower -->
   <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="/bower_components/admin-lte/dist/js/adminlte.min.js"></script>
-  <script src="scripts/jquery.bootgrid.min.js"></script>
-  <script src="scripts/jquery.bootgrid.fa.min.js"></script>
+  <script src="scripts/vendors/jquery.bootgrid.min.js"></script>
+  <script src="scripts/vendors/jquery.bootgrid.fa.min.js"></script>
   <!-- endbuild -->
   <!-- build:js(.tmp) scripts/pg-list-manager-main.js -->
-  <script src="scripts/PgListManager.js"></script>
+  <script src="scripts/controllers/PgListManager.js"></script>
   <!-- endbuild -->  
   <!-- build:js(.tmp) scripts/admin-lte-manager.js -->
-  <script src="scripts/AdminLTEManager.js"></script>
+  <script src="scripts/controllers/AdminLTEManager.js"></script>
   <!-- endbuild -->
   <!-- Optionally, you can add Slimscroll and FastClick plugins.
        Both of these plugins are recommended to enhance the
