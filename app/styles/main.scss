@@ -1,11 +1,4 @@
-﻿$enable-flex: true;
-
-
-
-// bower:scss
-@import "bower_components/bootstrap/scss/bootstrap.scss";
-// endbower
-
+﻿
 .hidden {
   display: none;
 }
@@ -145,7 +138,7 @@ ul.list-select li.selected:hover {
     margin: 0 auto;
   }
 }
-
+/*
 @include media-breakpoint-up(xs) {
   #loginCard {
     flex: 1;
@@ -174,7 +167,7 @@ ul.list-select li.selected:hover {
   #loginCard {
     flex: .5;
   }
-}
+}*/
 
 .data-showed, .data-edit {
 	position:relative;
@@ -185,6 +178,9 @@ ul.list-select li.selected:hover {
   display: inline-block;
   position: absolute;
   right: 0;
+  top: 50%;
+  transform: translate3d(0,-50%,0);
+  cursor: pointer;
 }
 
 .data-showed > .fa-pencil {

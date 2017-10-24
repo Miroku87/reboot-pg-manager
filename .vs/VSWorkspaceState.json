@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\app",
+    "\\app\\scripts",
     "\\app\\styles"
   ],
-  "SelectedNode": "\\app\\gestione_pg.html",
+  "SelectedNode": "\\app\\scripts\\test.json",
   "PreviewInSolutionExplorer": false
 }

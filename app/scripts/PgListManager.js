@@ -12,15 +12,10 @@
             $( document ).ready( function ( e )
             {
                 this.setBootgrid();
-                this.populateDemo();
             }.bind( this ) );
         },
-		
-		populateDemo: function()
-		{
-		},
 
-        setListeners: function ()
+        setGridListeners: function ()
         {
             $( "[data-toggle='tooltip']" ).tooltip();
 			
@@ -55,16 +50,15 @@
         getCivilClassesSelect: function ()
         {
 			return "<select></select>";
-		},
+        },
 
         getMilitaryClassesSelect: function ()
         {
-			return "<select></select>";
-		},
+            return "<select></select>";
+        },
 
         setBootgrid: function ()
         {
-			console.log(PG_LIST_REQUEST);
             $( "#pg-grid" ).bootgrid( {
                 labels: {
                     all: "Tutti",
@@ -123,7 +117,7 @@
                 }
             } ).on( "loaded.rs.jquery.bootgrid", function ( e )
             {
-                this.setListeners();
+                this.setGridListeners();
             }.bind( this ) );
         }
     };
