@@ -2,9 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\app",
+    "\\app\\data",
     "\\app\\scripts",
-    "\\app\\styles"
+    "\\app\\scripts\\controllers",
+    "\\app\\scripts\\models",
+    "\\app\\scripts\\utils",
+    "\\app\\scripts\\vendors",
+    "\\app\\styles",
+    "\\app\\styles\\vendors"
   ],
-  "SelectedNode": "\\app\\scripts\\test.json",
+  "SelectedNode": "\\app\\scripts\\controllers\\PgListManager.js",
   "PreviewInSolutionExplorer": false
 }

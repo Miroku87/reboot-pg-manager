@@ -3,4 +3,5 @@ dist
 .tmp
 .vs
 .vs/**
+.idea
 bower_components

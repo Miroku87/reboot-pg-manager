@@ -21,5 +21,174 @@
             } );
 
             parent.append( items );
+        },
+
+        showError: function(errorText)
+        {
+            if($("#errorDialog").length > 0)
+            {
+                $('.modal').modal('hide');
+                $("#errorDialog").find('#errorMsg').html(errorText);
+                $("#errorDialog").modal({
+                    backdrop: 'static'
+                });
+            }
+            else
+                throw new Error("No error modal found.");
+        },
+
+        showConfirm: function(question,noPasswordError,onConfirm)
+        {
+            if($("#confirmWithPassword").length > 0)
+            {
+                $('.modal').modal('hide');
+                $("#confirmWithPassword").find("#confirmText").html(question);
+                $("#confirmWithPassword").find("input[name='confirmpassword']").unbind("keypress");
+                $("#confirmWithPassword").find("#confirmButton").unbind("click");
+                $("#confirmWithPassword").find("input[name='confirmpassword']").val("");
+
+                $("#confirmWithPassword").find("#confirmButton").click(function (e)
+                {
+                    if( $("#confirmWithPassword").find("input[name='confirmpassword']").val() == "" ||
+                        /^\s+$/.test($("#confirmWithPassword").find("input[name='confirmpassword']").val()))
+                    {
+                        Utils.showError(noPasswordError);
+                        return; //function will not keep on executing
+                    }
+
+                    $.post(CHECK_PASSWORD,
+                        {
+                            confirmpassword: $("#confirmWithPassword").find("input[name='confirmpassword']").val()
+                        }, function (data)
+                        {
+                            var res = JSON.parse(data);
+                            if(res.type == "success")
+                            {
+                                onConfirm();
+                            }
+                            else if (res.type == "error")
+                            {
+                                Utils.showError(res.text);
+                            }
+                        });
+                });
+
+                $("#confirmWithPassword").find("input[name='confirmpassword']").keypress(function(event) {
+                    if (event.which == 13) {
+                        event.preventDefault();
+                        $("#confirmWithPassword").find("#confirmButton").click();
+                    }
+                });
+
+                $("#confirmWithPassword").modal({
+                    backdrop: "static"
+                });
+
+                $("#confirmWithPassword").find("input[name='confirmpassword']").focus();
+            }
+            else
+                throw new Error("No confirm modal found.");
+        },
+
+        setCookie: function (cname, cvalue, exdays)
+        {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            var expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + "; " + expires;
+        },
+
+        deleteCookie: function (cname)
+        {
+            document.cookie = cname + "=" + "; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+        },
+
+        getCookie: function (cname)
+        {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++)
+            {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1);
+                if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+            }
+            return "";
+        },
+
+        isLink: function (str)
+        {
+            var urlPatt = new RegExp(
+                "^" +
+                    // protocol identifier
+                "(?:(?:https?|ftp)://)" +
+                    // user:pass authentication
+                "(?:\\S+(?::\\S*)?@)?" +
+                "(?:" +
+                    // IP address exclusion
+                    // private & local networks
+                "(?!(?:10|127)(?:\\.\\d{1,3}){3})" +
+                "(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})" +
+                "(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})" +
+                    // IP address dotted notation octets
+                    // excludes loopback network 0.0.0.0
+                    // excludes reserved space >= 224.0.0.0
+                    // excludes network & broacast addresses
+                    // (first & last IP address of each class)
+                "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" +
+                "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" +
+                "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" +
+                "|" +
+                    // host name
+                "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
+                    // domain name
+                "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" +
+                    // TLD identifier
+                "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" +
+                ")" +
+                    // port number
+                "(?::\\d{2,5})?" +
+                    // resource path
+                "(?:/\\S*)?" +
+                "$", "i");
+
+            return urlPatt.test(str);
+        },
+
+        containsLinks: function (str)
+        {
+            var urlPatt = new RegExp(
+                // protocol identifier
+                "(?:(?:https?|ftp)://)" +
+                    // user:pass authentication
+                "(?:\\S+(?::\\S*)?@)?" +
+                "(?:" +
+                    // IP address exclusion
+                    // private & local networks
+                "(?!(?:10|127)(?:\\.\\d{1,3}){3})" +
+                "(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})" +
+                "(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})" +
+                    // IP address dotted notation octets
+                    // excludes loopback network 0.0.0.0
+                    // excludes reserved space >= 224.0.0.0
+                    // excludes network & broacast addresses
+                    // (first & last IP address of each class)
+                "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" +
+                "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" +
+                "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" +
+                "|" +
+                    // host name
+                "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
+                    // domain name
+                "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" +
+                    // TLD identifier
+                "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" +
+                ")" +
+                    // port number
+                "(?::\\d{2,5})?" +
+                    // resource path
+                "(?:/\\S*)?", "ig");
+
+            return urlPatt.test(str);
         }
     };

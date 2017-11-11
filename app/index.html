@@ -73,26 +73,26 @@ desired effect
     <div class="login-box-body">
       <p class="login-box-msg">Inserisci i tuoi dati per entrare nel gestionale.</p>
 
-      <form action="lista_pg.html" method="get">
+      <form method="post">
         <div class="form-group has-feedback">
-          <input type="email" class="form-control" placeholder="Email">
+          <input type="email" name="usermail" class="form-control" placeholder="Email">
           <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback">
-          <input type="password" class="form-control" placeholder="Password">
+          <input type="password" name="password" class="form-control" placeholder="Password">
           <span class="glyphicon glyphicon-lock form-control-feedback"></span>
         </div>
         <div class="row">
           <div class="col-xs-8">
             <div class="checkbox icheck">
               <label>
-                <input type="checkbox"> Ricordami
+                <input type="checkbox" name="userremember"> Ricordami
               </label>
             </div>
           </div>
           <!-- /.col -->
           <div class="col-xs-4">
-            <button type="submit" class="btn btn-primary btn-block btn-flat">Entra</button>
+            <button id="login" type="button" class="btn btn-primary btn-block btn-flat">Entra</button>
           </div>
           <!-- /.col -->
         </div>
@@ -116,6 +116,22 @@ desired effect
 
     </div>
     <!-- /.login-box-body -->
+  </div>
+  <div id="errorDialog" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header dialog-header-error">
+                  <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Chiudi</span></button>
+                  <h4 class="modal-title text-danger"><span class="glyphicon glyphicon-warning-sign"></span> ERRORE</h4>
+              </div>
+              <div class="modal-body text-danger">
+                  <p id="errorMsg"></p>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+                  </div>
+              </div>
+          </div>
+      </div>
   </div>
   <!-- /.login-box -->
   <!-- REQUIRED JS SCRIPTS -->
@@ -174,8 +190,9 @@ desired effect
   <script src="scripts/vendors/jquery.bootgrid.fa.min.js"></script>
   <!-- endbuild -->
   <!-- build:js(.tmp) scripts/pg-list-manager-main.js -->
+  <script src="scripts/utils/Utils.js"></script>
   <script src="scripts/controllers/LoginManager.js"></script>
-  <!-- endbuild --> 
+  <!-- endbuild -->
   <!-- Optionally, you can add Slimscroll and FastClick plugins.
        Both of these plugins are recommended to enhance the
        user experience. -->

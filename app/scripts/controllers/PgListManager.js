@@ -1,8 +1,8 @@
 ﻿var PgListManager = function ()
 {
-    var SERVER = window.location.protocol + "//" + window.location.host + "/",
-        SECTION_NAME = window.location.href.replace(SERVER, "").split("/")[0] + "/",
-        PG_LIST_REQUEST = SERVER + "data/test.json";//SERVER + SECTION_NAME;
+    var SERVER          = window.location.protocol + "//" + window.location.host + "/",
+        SECTION_NAME    = window.location.href.replace(SERVER, "").split("/")[0] + "/",
+        PG_LIST_REQUEST = "http://localhost/reboot-live-api/api.php/charactersmanager/mostratuttipersonaggi";//SERVER + SECTION_NAME;
 
     return {
         init: function ()
@@ -42,14 +42,46 @@
 			});
 		},
 
-        getCivilClassesSelect: function ()
+        getClassesSelect: function ( lista, tipo )
         {
-			return "<select></select>";
+            if( !lista )
+                return "";
+
+            var classes  = JSON.parse( window.localStorage.getItem( "classinfos" ))[ "classi_" + tipo ],
+                selects  = "",
+                options  = "",
+                selected = false;
+            for( var l in lista )
+            {
+                if( lista[l].id_classe )
+                {
+                    for (var c in classes)
+                    {
+                        if (classes[c].id_classe)
+                        {
+                            selected = classes[c].id_classe === lista[l].id_classe ? "selected" : "";
+                            options += "<option value='" + classes[c].id_classe + "' " + selected + ">" + classes[c].nome_classe + "</option>";
+                        }
+                    }
+
+                    selects += "<select>" + options + "</select><br>";
+                    options = "";
+                }
+            }
+
+            classes = options = "";
+            selected = false;
+
+			return selects;
         },
 
-        getMilitaryClassesSelect: function ()
+        getClassesName: function ( lista )
         {
-            return "<select></select><br/><select></select>";
+            if( !lista )
+                return "";
+
+            var classes = lista.map( function( item ){ return item.nome_classe; });
+			return classes.join(", ");
         },
 
         setBootgrid: function ()
@@ -65,35 +97,38 @@
                 },
                 ajax: true,
 				ajaxSettings: {
-					method: "GET"
+					method: "POST",
+                    xhrFields: {
+                        withCredentials: true
+                    }
 				},
                 url: PG_LIST_REQUEST,
                 rowCount: [10, 50, 100],
                 formatters: {
                     "pgnameFormatter": function ( column, row )
                     {
-						return "<div class='data-showed'>" + row.pgname + "<span class=\"fa fa-pencil\"></span></div>\
-						<div class='data-edit hidden'><input type='text' value='" + row.pgname + "' /><span class=\"fa fa-check\"></span></div>";
+						return "<div class='data-showed'>" + row.nome_personaggio + "<span class=\"fa fa-pencil\"></span></div>\
+						<div class='data-edit hidden'><input type='text' value='" + row.nome_personaggio + "' /><span class=\"fa fa-check\"></span></div>";
 					},
                     "civilClassFormatter": function ( column, row )
                     {
-						return "<div class='data-showed'>" + row.civilClass + "<span class=\"fa fa-pencil\"></span></div>\
-						<div class='data-edit hidden'>" + this.getCivilClassesSelect( row.civilClass ) + "<span class=\"fa fa-check\"></span></div>";
+						return "<div class='data-showed'>" + this.getClassesName( row.lista_classi_civili ) + "<span class=\"fa fa-pencil\"></span></div>\
+						<div class='data-edit hidden'>" + this.getClassesSelect( row.lista_classi_civili, "civili" ) + "<span class=\"fa fa-check\"></span></div>";
 					}.bind( this ),
                     "militaryClassesFormatter": function ( column, row )
                     {
-						return "<div class='data-showed'>" + row.militaryClasses + "<span class=\"fa fa-pencil\"></span></div>\
-						<div class='data-edit hidden'>" + this.getMilitaryClassesSelect( row.militaryClasses ) + "<span class=\"fa fa-check\"></span></div>";
+						return "<div class='data-showed'>" + this.getClassesName( row.lista_classi_militari ) + "<span class=\"fa fa-pencil\"></span></div>\
+						<div class='data-edit hidden'>" + this.getClassesSelect( row.lista_classi_militari, "militari" ) + "<span class=\"fa fa-check\"></span></div>";
 					}.bind( this ),
                     "pxFormatter": function ( column, row )
                     {
-						return "<div class='data-showed'>" + row.px + "<span class=\"fa fa-pencil\"></span></div>\
-						<div class='data-edit hidden'><input type='number' min='1' value='" + row.px + "' /><span class=\"fa fa-check\"></span></div>";
+						return "<div class='data-showed'>" + row.px_personaggio + "<span class=\"fa fa-pencil\"></span></div>\
+						<div class='data-edit hidden'><input type='number' min='1' value='" + row.px_personaggio + "' /><span class=\"fa fa-check\"></span></div>";
 					},
                     "pcFormatter": function ( column, row )
                     {
-						return "<div class='data-showed'>" + row.pc + "<span class=\"fa fa-pencil\"></span></div>\
-						<div class='data-edit hidden'><input type='number' min='1' value='" + row.pc + "' /><span class=\"fa fa-check\"></span></div>";
+						return "<div class='data-showed'>" + row.pc_personaggio + "<span class=\"fa fa-pencil\"></span></div>\
+						<div class='data-edit hidden'><input type='number' min='1' value='" + row.pc_personaggio + "' /><span class=\"fa fa-check\"></span></div>";
 					},
                     "commandsFormatter": function ( column, row )
                     {
