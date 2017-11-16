@@ -1,15 +1,93 @@
 ﻿var RegistrationManager = function ()
 {
-    var CIVILIAN_LIST_ID = "listaAbilitaCivili",
+    var CIVILIAN_LIST_ID   = "listaAbilitaCivili",
         CIVILIAN_BUCKET_ID = "listaAbilitaCiviliAcquistate",
-        MILITARY_LIST_ID = "listaAbilitaMilitari",
+        MILITARY_LIST_ID   = "listaAbilitaMilitari",
         MILITARY_BUCKET_ID = "listaAbilitaMilitariAcquistate",
-        EXP = "Esperienza",
-        COM = "Combattimento",
-        PX_TOT = 10,
-        PC_TOT = 10;
+        EXP                = "Esperienza",
+        COM                = "Combattimento",
+        PX_TOT             = 10,
+        PC_TOT             = 10;
 
     return {
+        init: function ()
+        {
+            this.getDataFromStorage();
+            this.setListeners();
+            this.setClassList();
+        },
+
+        getDataFromStorage: function ()
+        {
+            this.classInfos = JSON.parse( window.localStorage.getItem("classinfos") );
+        },
+
+        setListeners: function ()
+        {
+            $("[data-toggle='tooltip']").tooltip();
+        },
+
+        onClasseCivileSelezionata: function ()
+        {
+            var id_classe     = $("#classeCivileSelect").val(),
+                abilita_lista = this.classInfos.abilita_civili,
+                abilita       = {},
+                abilita_elem  = {};
+
+            for( var a in abilita_lista )
+            {
+                abilita = abilita_lista[a];
+                if( abilita.id_classe && abilita.id_classe === id_classe )
+                {
+                    abilita_elem = $( "<li data=\"" + abilita.id_abilita + "\">" + abilita.nome_abilita + "</li>" );
+                    abilita_elem.attr("data-toggle","popover");
+                    abilita_elem.attr("data-placement","top");
+                    abilita_elem.attr("data-content","popover");
+                    /*abilita_elem.popover( {
+                        placement: "top",
+                        content: "dfasfasf"//abilita.descrizione_abilita
+                    } );*/
+                    $("#" + CIVILIAN_LIST_ID).append(abilita_elem);
+                }
+            }
+
+            this.setPopovers();
+            this.setupListSelect();
+            this.setupAbilityMarket();
+        },
+
+        onClasseMilitareSelezionata: function ()
+        {
+        },
+
+        setClassList: function ()
+        {
+            var classe = {};
+
+            for( var cc in this.classInfos.classi_civili )
+            {
+                classe = this.classInfos.classi_civili[cc];
+                if( classe.id_classe )
+                    $("#classeCivileSelect")
+                        .append( "<option value=\"" + classe.id_classe + "\">" + classe.nome_classe + "</option>" );
+            }
+
+            for( var cc in this.classInfos.classi_militari )
+            {
+                classe = this.classInfos.classi_militari[cc];
+
+                if( classe.id_classe )
+                    $("#classeMilitareSelect")
+                        .append( "<option value=\"" + classe.id_classe + "\">" + classe.nome_classe + "</option>" );
+            }
+
+            $("#classeCivileSelect")
+                .change( this.onClasseCivileSelezionata.bind(this) );
+
+            $("#classeMilitareSelect")
+                .change( this.onClasseCivileSelezionata.bind(this) );
+        },
+
         setPopovers: function ()
         {
             var is_mobile = Utils.isDeviceMobile();
@@ -136,7 +214,5 @@
 
 // eslint-disable-line no-console
 $(function () {
-    RegistrationManager.setPopovers();
-    RegistrationManager.setupListSelect();
-    RegistrationManager.setupAbilityMarket();
+    RegistrationManager.init();
 });

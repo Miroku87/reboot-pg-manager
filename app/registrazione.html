@@ -69,47 +69,53 @@ desired effect
       <b>Reboot</b> Live
     </div>
 
-    <div class="register-box-body">
+    <div id="formRegistrazione" class="register-box-body">
       <p class="login-box-msg">Registra un nuovo account</p>
 
-      <form action="registrazione_avvenuta.html" method="post">
-        <div class="form-group has-feedback">
-          <input type="text" class="form-control" placeholder="Nome">
-          <span class="glyphicon glyphicon-user form-control-feedback"></span>
-        </div>
-        <div class="form-group has-feedback">
-          <input type="text" class="form-control" placeholder="Cognome">
-          <span class="glyphicon glyphicon-user form-control-feedback"></span>
-        </div>
-        <div class="form-group has-feedback">
-          <input type="email" class="form-control" placeholder="Email">
-          <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-        </div>
-        <div class="form-group has-feedback">
-          <input type="password" class="form-control" placeholder="Password">
-          <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-        </div>
-        <div class="form-group has-feedback">
-          <input type="password" class="form-control" placeholder="Reinserisci password">
-          <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
-        </div>
-        <div class="row">
-          <div class="col-xs-8">
-            <div class="checkbox icheck">
-              <label>
-                <input type="checkbox"> Accetto i <a href="#">termini e le condizioni</a>
-              </label>
-            </div>
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" name="nome" placeholder="Nome">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" name="cognome" placeholder="Cognome">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" name="codicefiscale" placeholder="Codice Fiscale">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <textarea type="text" class="form-control" name="note" rows="6" placeholder="Note (problemi di salute, alimentari o altre cose importanti che lo staff deve sapere)"></textarea>
+        <span class="glyphicon glyphicon-heart form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="email" class="form-control" name="mail" placeholder="Email">
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" class="form-control" name="password1" placeholder="Password">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" class="form-control" name="password2" placeholder="Reinserisci password">
+        <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+      </div>
+      <div class="row">
+        <div class="col-xs-8">
+          <div class="checkbox icheck">
+            <label>
+              <input type="checkbox" name="condizioni"> Accetto i <a href="#">termini e le condizioni</a>
+            </label>
           </div>
-          <!-- /.col -->
-          <div class="col-xs-4">
-            <button type="submit" class="btn btn-primary btn-block btn-flat">Invia i dati</button>
-          </div>
-          <!-- /.col -->
         </div>
-      </form>
+        <!-- /.col -->
+        <div class="col-xs-4">
+          <button id="inviaDati" type="submit" class="btn btn-primary btn-block btn-flat">Invia i dati</button>
+        </div>
+        <!-- /.col -->
+      </div>
 
-      <div class="social-auth-links text-center">
+      <!--div class="social-auth-links text-center">
         <p>- OPPURE -</p>
         <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
           <i class="fa fa-facebook"></i> Registrati usando i dati di 
@@ -119,11 +125,43 @@ desired effect
           <i class="fa fa-google-plus"></i> Registrati usando i dati di 
           Google+
         </a>
-      </div>
+      </div-->
 
       <a href="index.html" class="text-center">Ho già un account</a>
     </div>
     <!-- /.form-box -->
+  </div>
+  <div id="errorDialog" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header dialog-header-error">
+          <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Chiudi</span></button>
+          <h4 class="modal-title text-danger"><span class="glyphicon glyphicon-warning-sign"></span> ERRORE</h4>
+        </div>
+        <div class="modal-body text-danger">
+          <p id="errorMsg"></p>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="message" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header dialog-header-error">
+          <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Chiudi</span></button>
+          <h4 class="modal-title text-success">MESSAGGIO</h4>
+        </div>
+        <div class="modal-body">
+          <p id="messageText"></p>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <!-- /.register-box -->
   <!-- REQUIRED JS SCRIPTS -->
@@ -182,8 +220,10 @@ desired effect
   <script src="scripts/vendors/jquery.bootgrid.fa.min.js"></script>
   <!-- endbuild -->
   <!-- build:js(.tmp) scripts/pg-list-manager-main.js -->
-  <script src="scripts/controllers/LoginManager.js"></script>
-  <!-- endbuild --> 
+  <script src="scripts/utils/Constants.js"></script>
+  <script src="scripts/utils/Utils.js"></script>
+  <script src="scripts/controllers/RegistrationManager.js"></script>
+  <!-- endbuild -->
   <!-- Optionally, you can add Slimscroll and FastClick plugins.
        Both of these plugins are recommended to enhance the
        user experience. -->

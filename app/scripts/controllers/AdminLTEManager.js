@@ -25,6 +25,37 @@
             } );
 
             $( '.sidebar-menu li.active' ).data( 'lte.pushmenu.active', true );
+            $( '#logoutBtn' ).click( this.logout.bind(this) );
+        },
+
+        logout: function ()
+        {
+            $.ajax({
+                url: Constants.API_GET_LOGOUT,
+                method: "GET",
+                data: "",
+                cache: false,
+                //contentType: false,
+                //processData: false,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function( data )
+                {
+                    if ( data.status === "ok" )
+                    {
+                        window.location.href = Constants.SITE_URL;
+                    }
+                    else if ( data.status === "error" )
+                    {
+                        Utils.showError( data.message );
+                    }
+                },
+                error: function ( err )
+                {
+                    Utils.showError( err );
+                }
+            });
         },
 
         setupMenuSearch: function ()

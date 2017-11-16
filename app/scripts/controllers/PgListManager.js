@@ -1,13 +1,15 @@
 ﻿var PgListManager = function ()
 {
-    var SERVER          = window.location.protocol + "//" + window.location.host + "/",
-        SECTION_NAME    = window.location.href.replace(SERVER, "").split("/")[0] + "/",
-        PG_LIST_REQUEST = "http://localhost/reboot-live-api/api.php/charactersmanager/mostratuttipersonaggi";//SERVER + SECTION_NAME;
-
     return {
         init: function ()
         {
+            this.getDataFromStorage();
             this.setBootgrid();
+        },
+
+        getDataFromStorage: function ()
+        {
+            this.classInfos = JSON.parse( window.localStorage.getItem("classinfos") );
         },
 
         setGridListeners: function ()
@@ -47,10 +49,11 @@
             if( !lista )
                 return "";
 
-            var classes  = JSON.parse( window.localStorage.getItem( "classinfos" ))[ "classi_" + tipo ],
+            var classes  = this.classInfos[ "classi_" + tipo ],
                 selects  = "",
                 options  = "",
                 selected = false;
+
             for( var l in lista )
             {
                 if( lista[l].id_classe )
@@ -102,7 +105,7 @@
                         withCredentials: true
                     }
 				},
-                url: PG_LIST_REQUEST,
+                url: Constants.API_GET_ALL_PGS,
                 rowCount: [10, 50, 100],
                 formatters: {
                     "pgnameFormatter": function ( column, row )

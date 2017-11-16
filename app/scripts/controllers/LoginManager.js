@@ -1,7 +1,5 @@
 var LoginManager = function () {
 	var SERVER              = window.location.protocol + "//" + window.location.host + "/",
-		CHECK_LOGIN_REQUEST = "http://localhost/reboot-live-api/api.php/usersmanager/login",
-		INFO_REQUEST        = "http://localhost/reboot-live-api/api.php/charactersmanager/recuperainfoclassi",
 		MAIN_PAGE           = SERVER + "lista_pg.html",
 		COOKIE_EXPIRES      = 15;
 
@@ -56,7 +54,7 @@ var LoginManager = function () {
 					Utils.deleteCookie("usermail");
 
 				$.ajax({
-					url: CHECK_LOGIN_REQUEST,
+					url: Constants.API_POST_LOGIN,
 					data: $("input").serialize(),
 					method: "POST",
 					xhrFields: {
@@ -87,7 +85,7 @@ var LoginManager = function () {
 		getGenericInfo: function ()
 		{
 			$.ajax({
-				url: INFO_REQUEST,
+				url: Constants.API_GET_INFO,
 				method: "GET",
 				xhrFields: {
 					withCredentials: true
@@ -99,7 +97,7 @@ var LoginManager = function () {
 					if ( data.status === "ok" )
 					{
 						window.localStorage.setItem( 'classinfos', JSON.stringify( data.info ) );
-						window.location.href = MAIN_PAGE;
+						window.location.href = Constants.MAIN_PAGE;
 					}
 					else if ( data.status === "error" )
 					{

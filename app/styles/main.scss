@@ -2,7 +2,7 @@
 .hidden {
   display: none;
 }
-
+/*
 body > .container {
   display: flex;
   flex-direction: column;
@@ -18,9 +18,9 @@ body > .container {
   justify-content: center;
   padding-top: 20px;
 }
-
-.registration-page .container > .container {
-  flex-direction: column;
+*/
+.register-page textarea {
+    resize: none;
 }
 
 .pg-list-page .container > .container {
@@ -28,28 +28,13 @@ body > .container {
   font-size: 0.9rem;
 }
 
-.registration-page .card {
-  align-self: stretch;
-}
-
-.card {
-  margin-bottom: 20px;
-}
-
 .footer {
   border-top: 1px solid #ddd;
   padding-top: 10px;
 }
 
-.fx-row {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.fx-col-2 {
-  width: 49%;
+.crea-pg-page .row {
+  padding-top: 10px;
 }
 
 .move-item-horizontal {
@@ -61,10 +46,6 @@ body > .container {
 }
 .move-item-vertical > button {
   margin: 20px 0;
-}
-
-.xs-centered-block {
-  margin: 0;
 }
 
 #loginCard {
@@ -87,8 +68,8 @@ ul.list-select {
   overflow: auto;
   display: block;
   width: 100%;
-  padding: 0.5rem 0.75rem;
-  font-size: 1rem;
+  padding: 1rem 1.25rem;
+  font-size: 1.5rem;
   line-height: 1.25;
   color: #495057;
   background-color: #fff;
@@ -109,29 +90,17 @@ ul.list-select li:hover {
 
 ul.list-select li.selected,
 ul.list-select li.selected:hover {
-  background-color: theme-color("primary");
+  background-color: #3c8dbc;
   color: white;
 }
 
-@media (max-width: 576px) {
-  .fx-row {
-    flex-direction: column;
-  }
-
-  .fx-col-2 {
-    width: 100%;
-  }
-
+@media (max-width: 767px) {
   .move-item-horizontal {
     display: none;
   }
 
   .move-item-vertical {
     display: initial;
-  }
-
-  .xs-centered-block {
-    margin: 0 auto;
   }
 }
 
