@@ -6,20 +6,22 @@
         MILITARY_BUCKET_ID = "listaAbilitaMilitariAcquistate",
         EXP                = "Esperienza",
         COM                = "Combattimento",
-        PX_TOT             = 10,
-        PC_TOT             = 10;
+        PX_TOT             = 100,
+        PC_TOT             = 18;
 
     return {
         init: function ()
         {
-            this.getDataFromStorage();
+            this.setSharedVariables();
             this.setListeners();
             this.setClassList();
         },
 
-        getDataFromStorage: function ()
+        setSharedVariables: function ()
         {
             this.classInfos = JSON.parse( window.localStorage.getItem("classinfos") );
+            this.px_ora     = PX_TOT;
+            this.pc_ora     = PC_TOT;
         },
 
         setListeners: function ()
@@ -27,26 +29,35 @@
             $("[data-toggle='tooltip']").tooltip();
         },
 
+        prerequisitoCivileRaggiunto: function ( abilita )
+        {
+            if( parseInt( abilita.prerequisito_abilita ) === -1 )
+                return $("#" + CIVILIAN_BUCKET_ID).find("li").length >= 4;
+
+            return abilita.prerequisito_abilita === null || $( "#"+CIVILIAN_BUCKET_ID ).find("li[data='"+abilita.prerequisito_abilita+"']").length > 0;
+        },
+
         onClasseCivileSelezionata: function ()
         {
             var id_classe     = $("#classeCivileSelect").val(),
-                abilita_lista = this.classInfos.abilita_civili,
+                abilita_lista = this.classInfos.abilita_civili.filter( function( item ){ return item.id_classe && item.id_classe === id_classe; } ),
                 abilita       = {},
                 abilita_elem  = {};
+
+            $( "#" + CIVILIAN_LIST_ID ).html("");
 
             for( var a in abilita_lista )
             {
                 abilita = abilita_lista[a];
-                if( abilita.id_classe && abilita.id_classe === id_classe )
+                if( parseInt( abilita.costo_abilita ) <= this.px_ora &&
+                    this.prerequisitoCivileRaggiunto( abilita ) &&
+                    $("#"+CIVILIAN_BUCKET_ID).find("li[data='"+abilita.id_abilita+"']").length === 0 )
                 {
                     abilita_elem = $( "<li data=\"" + abilita.id_abilita + "\">" + abilita.nome_abilita + "</li>" );
                     abilita_elem.attr("data-toggle","popover");
                     abilita_elem.attr("data-placement","top");
-                    abilita_elem.attr("data-content","popover");
-                    /*abilita_elem.popover( {
-                        placement: "top",
-                        content: "dfasfasf"//abilita.descrizione_abilita
-                    } );*/
+                    abilita_elem.attr("data-content",abilita.descrizione_abilita);
+
                     $("#" + CIVILIAN_LIST_ID).append(abilita_elem);
                 }
             }
@@ -56,8 +67,59 @@
             this.setupAbilityMarket();
         },
 
+	    /**
+         * -1: servono tutte le abilta della classe dell'abilita che si sta cercando di inserire
+         * -2: servono FUOCO A TERRA e TIRATORE SCELTO (id 44 e 39)
+         * -3: servono almeno 5 abilita di Supporto Base (id 5)
+         * -4: servono almeno 3 abilita "CONTROLLER"
+         * @param abilita
+         * @returns {boolean}
+         */
+        prerequisitoMilitareRaggiunto: function ( abilita, lista )
+        {
+            //TODO: gestire anche la possibilità di avere abilità di più classi nelle liste
+            if( parseInt( abilita.prerequisito_abilita ) === -1 )
+                return $("#" + MILITARY_BUCKET_ID).find("li").length === lista.length - 1;
+            else if( parseInt( abilita.prerequisito_abilita ) === -2 )
+                return $("#" + MILITARY_BUCKET_ID).find("li[data='44']").length > 0 && $("#" + MILITARY_BUCKET_ID).find("li[data='39']").length > 0;
+            else if( parseInt( abilita.prerequisito_abilita ) === -3 && abilita.id_classe === 5 )
+            {
+                return $("#" + MILITARY_BUCKET_ID).find("li[data='44']").length > 0;
+            }
+            else if( parseInt( abilita.prerequisito_abilita ) === -4 )
+                return false;
+
+            return abilita.prerequisito_abilita === null || $( "#"+MILITARY_BUCKET_ID ).find("li[data='"+abilita.prerequisito_abilita+"']").length > 0;
+        },
+
         onClasseMilitareSelezionata: function ()
         {
+            var id_classe     = $("#classeMilitareSelect").val(),
+                abilita_lista = this.classInfos.abilita_militari.filter( function( item ){ return item.id_classe && item.id_classe === id_classe; } ),
+                abilita       = {},
+                abilita_elem  = {};
+
+            $( "#" + MILITARY_LIST_ID ).html("");
+
+            for( var a in abilita_lista )
+            {
+                abilita = abilita_lista[a];
+                if( this.pc_ora >= 1 &&
+                    this.prerequisitoMilitareRaggiunto( abilita, abilita_lista ) &&
+                    $("#"+MILITARY_BUCKET_ID).find("li[data='"+abilita.id_abilita+"']").length === 0 )
+                {
+                    abilita_elem = $( "<li data=\"" + abilita.id_abilita + "\">" + abilita.nome_abilita + "</li>" );
+                    abilita_elem.attr("data-toggle","popover");
+                    abilita_elem.attr("data-placement","top");
+                    abilita_elem.attr("data-content",abilita.descrizione_abilita);
+
+                    $("#" + MILITARY_LIST_ID).append(abilita_elem);
+                }
+            }
+
+            this.setPopovers();
+            this.setupListSelect();
+            this.setupAbilityMarket();
         },
 
         setClassList: function ()
@@ -167,10 +229,15 @@
 
             this.updateRemainingPoints( points, selected.length * -1 );
 
+            if( list_id === CIVILIAN_LIST_ID )
+                this.onClasseCivileSelezionata();
+            else
+                this.onClasseMilitareSelezionata();
+
             Utils.sortChildrenByAttribute( $( '#' + list_id ), "li", "data" );
             Utils.sortChildrenByAttribute( $( '#' + bucket_id ), "li", "data" );
         },
-
+		//TODO: controllare che dopo il drop i prerequisiti esistano ancora
         dropAbilities: function ( list_id, bucket_id )
         {
             var selected = $( '#' + bucket_id ).find( 'li.selected' ),

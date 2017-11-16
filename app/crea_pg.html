@@ -6,6 +6,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <html>
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>AdminLTE 2 | Starter</title>
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
@@ -15,18 +16,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- build:css(.) styles/vendor.css -->
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
     <!-- bower:css -->
-    <link rel="stylesheet" href="/bower_components/components-font-awesome/css/font-awesome.css"/>
-    <link rel="stylesheet" href="/bower_components/bootstrap-slider/slider.css"/>
-    <link rel="stylesheet" href="/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css"/>
-    <link rel="stylesheet" href="/bower_components/datatables.net-bs/css/dataTables.bootstrap.css"/>
-    <link rel="stylesheet" href="/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css"/>
-    <link rel="stylesheet" href="/bower_components/bootstrap-daterangepicker/daterangepicker.css"/>
-    <link rel="stylesheet" href="/bower_components/fullcalendar/dist/fullcalendar.css"/>
-    <link rel="stylesheet" href="/bower_components/ion.rangeSlider/css/ion.rangeSlider.css"/>
-    <link rel="stylesheet" href="/bower_components/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css"/>
-    <link rel="stylesheet" href="/bower_components/morris.js/morris.css"/>
-    <link rel="stylesheet" href="/bower_components/Ionicons/css/ionicons.css"/>
-    <link rel="stylesheet" href="/bower_components/admin-lte/dist/css/AdminLTE.css"/>
+    <link rel="stylesheet" href="/bower_components/components-font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="/bower_components/bootstrap-slider/slider.css" />
+    <link rel="stylesheet" href="/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css" />
+    <link rel="stylesheet" href="/bower_components/datatables.net-bs/css/dataTables.bootstrap.css" />
+    <link rel="stylesheet" href="/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" />
+    <link rel="stylesheet" href="/bower_components/bootstrap-daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" href="/bower_components/fullcalendar/dist/fullcalendar.css" />
+    <link rel="stylesheet" href="/bower_components/ion.rangeSlider/css/ion.rangeSlider.css" />
+    <link rel="stylesheet" href="/bower_components/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css" />
+    <link rel="stylesheet" href="/bower_components/morris.js/morris.css" />
+    <link rel="stylesheet" href="/bower_components/Ionicons/css/ionicons.css" />
+    <link rel="stylesheet" href="/bower_components/admin-lte/dist/css/AdminLTE.css" />
     <!-- endbower -->
     <link rel="stylesheet" href="styles/vendors/jquery.bootgrid.min.css">
     <link rel="stylesheet" href="/bower_components/admin-lte/dist/css/skins/skin-black.css"/>
@@ -73,7 +74,7 @@ desired effect
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><img src="images/reboot_logo_small.jpg" width="45"/></span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Reboot</b> Live</span>
+            <span class="logo-lg"><b>Reboot</b> Live </span>
         </a>
 
         <!-- Header Navbar -->
@@ -318,6 +319,7 @@ desired effect
                     <h3 class="box-title">Inserisci i dati del tuo personaggio</h3>
                 </div>
                 <div class="box-body">
+                    <p id="test"></p>
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon6"><span class="fa fa-user"
                                                                                 aria-hidden="true"></span></span>
@@ -343,9 +345,8 @@ desired effect
                     </div>
                     <div class="form-group">
                         <h4>Scegli le abilità per la Classe Civile</h4>
-
-                        <div>Punti Esperienza disponibili: <span id="puntiEsperienza"
-                                                                 class="badge badge-success">10</span></div>
+                        <p>Punti Esperienza disponibili: <span id="puntiEsperienza" class="badge badge-success">10</span></p>
+                        <p>Se non vedi un'abilit&agrave; nella lista vuol dire che non hai selezionato ancora i prerequisiti.</p>
                         <div class="row">
                             <div class="col-sm-5">
                                 <ul class="list-select" id="listaAbilitaCivili">
@@ -388,36 +389,11 @@ desired effect
                     </div>
                     <div class="form-group">
                         <h4>Scegli le abilità per le Classi Militari</h4>
-
-                        <div>Punti Combattimento disponibili: <span id="puntiCombattimento" class="badge badge-success">10</span>
-                        </div>
+                        <p>Punti Combattimento disponibili: <span id="puntiCombattimento" class="badge badge-success">10</span></p>
+                        <p>Se non vedi un'abilit&agrave; nella lista vuol dire che non hai selezionato ancora i prerequisiti.</p>
                         <div class="row">
                             <div class="col-sm-5">
                                 <ul class="list-select" id="listaAbilitaMilitari">
-                                    <li data="1" data-toggle="popover" data-placement="top"
-                                        data-content="Descrizione descrizione descrizione descrizione">X
-                                    </li>
-                                    <li data="2" data-toggle="popover" data-placement="top"
-                                        data-content="Descrizione descrizione descrizione descrizione">Y
-                                    </li>
-                                    <li data="3" data-toggle="popover" data-placement="top"
-                                        data-content="Descrizione descrizione descrizione descrizione">Z
-                                    </li>
-                                    <li data="4" data-toggle="popover" data-placement="top"
-                                        data-content="Descrizione descrizione descrizione descrizione">K
-                                    </li>
-                                    <li data="5" data-toggle="popover" data-placement="top"
-                                        data-content="Descrizione descrizione descrizione descrizione">J
-                                    </li>
-                                    <li data="6" data-toggle="popover" data-placement="top"
-                                        data-content="Descrizione descrizione descrizione descrizione">P
-                                    </li>
-                                    <li data="7" data-toggle="popover" data-placement="top"
-                                        data-content="Descrizione descrizione descrizione descrizione">Q
-                                    </li>
-                                    <li data="8" data-toggle="popover" data-placement="top"
-                                        data-content="Descrizione descrizione descrizione descrizione">R
-                                    </li>
                                 </ul>
                             </div>
                             <div class="col-sm-2 text-center">
