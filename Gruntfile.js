@@ -15,8 +15,10 @@ module.exports = function (grunt) {
 
   // Automatically load required grunt tasks
   require('jit-grunt')(grunt, {
-    useminPrepare: 'grunt-usemin'
+    useminPrepare: 'grunt-usemin',
+	nunjucks : 'grunt-nunjucks-2-html'
   });
+  grunt.loadNpmTasks('grunt-nunjucks-2-html');
 
   // Configurable paths
   var config = {
@@ -54,7 +56,11 @@ module.exports = function (grunt) {
       styles: {
         files: ['<%= config.app %>/styles/{,*/}*.css'],
         tasks: ['newer:copy:styles', 'postcss']
-      }
+      },
+	  nunjucks: {
+		files: ['<%= config.app %>/*.html','<%= config.app %>/templates/*.html'],
+		tasks: ['nunjucks']
+	  }
     },
 
     browserSync: {
@@ -68,7 +74,8 @@ module.exports = function (grunt) {
       livereload: {
         options: {
           files: [
-            '<%= config.app %>/{,*/}*.html',
+            //'<%= config.app %>/{,*/}*.html',
+            '.tmp/*.html',
             '.tmp/styles/{,*/}*.css',
             '<%= config.app %>/images/{,*/}*',
             '.tmp/scripts/{,*/}*.js'
@@ -103,6 +110,24 @@ module.exports = function (grunt) {
         }
       }
     },
+	
+	//renders the html templates
+	nunjucks: {
+	  options: {
+		  data: {}
+	  },
+	  render: {
+		files: [
+		   {
+			  expand: true,
+			  cwd: "./app/",
+			  src: "*.html",
+			  dest: ".tmp/",
+			  ext: ".html"
+		   }
+		]
+	  }
+	},
 
     // Empties folders to start fresh
     clean: {
@@ -220,7 +245,8 @@ module.exports = function (grunt) {
     // Automatically inject Bower components into the HTML file
     wiredep: {
       app: {
-        src: ['<%= config.app %>/*.html'],
+        //src: ['<%= config.app %>/*.html'],
+        src: ['.temp/*.html'],
         exclude: ['bootstrap.js'],
         ignorePath: /^(\.\.\/)*\.\./
       },
@@ -389,6 +415,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+	  'nunjucks',
       'wiredep',
       'concurrent:server',
       'postcss',

@@ -19,12 +19,14 @@
     "grunt-filerev": "^2.2.0",
     "grunt-mocha": "^0.4.12",
     "grunt-newer": "^1.1.0",
+    "grunt-nunjucks-2-html": "^2.1.0",
     "grunt-postcss": "^0.6.0",
     "grunt-sass": "^1.0.0",
     "grunt-svgmin": "^2.0.1",
     "grunt-usemin": "^3.0.0",
     "grunt-wiredep": "^2.0.0",
     "jit-grunt": "^0.9.1",
+    "nunjucks": "^3.0.1",
     "time-grunt": "^1.1.0"
   },
   "engines": {

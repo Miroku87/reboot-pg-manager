@@ -34,7 +34,7 @@
             if( parseInt( abilita.prerequisito_abilita ) === -1 )
                 return $("#" + CIVILIAN_BUCKET_ID).find("li").length >= 4;
 
-            return abilita.prerequisito_abilita === null || $( "#"+CIVILIAN_BUCKET_ID ).find("li[data='"+abilita.prerequisito_abilita+"']").length > 0;
+            return abilita.prerequisito_abilita === null || $( "#"+CIVILIAN_BUCKET_ID ).find("li[data-id='"+abilita.prerequisito_abilita+"']").length > 0;
         },
 
         onClasseCivileSelezionata: function ()
@@ -51,9 +51,9 @@
                 abilita = abilita_lista[a];
                 if( parseInt( abilita.costo_abilita ) <= this.px_ora &&
                     this.prerequisitoCivileRaggiunto( abilita ) &&
-                    $("#"+CIVILIAN_BUCKET_ID).find("li[data='"+abilita.id_abilita+"']").length === 0 )
+                    $("#"+CIVILIAN_BUCKET_ID).find("li[data-id='"+abilita.id_abilita+"']").length === 0 )
                 {
-                    abilita_elem = $( "<li data=\"" + abilita.id_abilita + "\">" + abilita.nome_abilita + "</li>" );
+                    abilita_elem = $( "<li data-id=\"" + abilita.id_abilita + "\" data-classe=\"" + abilita.id_classe + "\">" + abilita.nome_abilita + "</li>" );
                     abilita_elem.attr("data-toggle","popover");
                     abilita_elem.attr("data-placement","top");
                     abilita_elem.attr("data-content",abilita.descrizione_abilita);
@@ -81,15 +81,15 @@
             if( parseInt( abilita.prerequisito_abilita ) === -1 )
                 return $("#" + MILITARY_BUCKET_ID).find("li").length === lista.length - 1;
             else if( parseInt( abilita.prerequisito_abilita ) === -2 )
-                return $("#" + MILITARY_BUCKET_ID).find("li[data='44']").length > 0 && $("#" + MILITARY_BUCKET_ID).find("li[data='39']").length > 0;
+                return $("#" + MILITARY_BUCKET_ID).find("li[data-id='44']").length > 0 && $("#" + MILITARY_BUCKET_ID).find("li[data-id='39']").length > 0;
             else if( parseInt( abilita.prerequisito_abilita ) === -3 && abilita.id_classe === 5 )
             {
-                return $("#" + MILITARY_BUCKET_ID).find("li[data='44']").length > 0;
+                return $("#" + MILITARY_BUCKET_ID).find("li[data-id='44']").length > 0;
             }
             else if( parseInt( abilita.prerequisito_abilita ) === -4 )
                 return false;
 
-            return abilita.prerequisito_abilita === null || $( "#"+MILITARY_BUCKET_ID ).find("li[data='"+abilita.prerequisito_abilita+"']").length > 0;
+            return abilita.prerequisito_abilita === null || $( "#"+MILITARY_BUCKET_ID ).find("li[data-id='"+abilita.prerequisito_abilita+"']").length > 0;
         },
 
         onClasseMilitareSelezionata: function ()
@@ -106,7 +106,7 @@
                 abilita = abilita_lista[a];
                 if( this.pc_ora >= 1 &&
                     this.prerequisitoMilitareRaggiunto( abilita, abilita_lista ) &&
-                    $("#"+MILITARY_BUCKET_ID).find("li[data='"+abilita.id_abilita+"']").length === 0 )
+                    $("#"+MILITARY_BUCKET_ID).find("li[data-id='"+abilita.id_abilita+"']").length === 0 )
                 {
                     abilita_elem = $( "<li data=\"" + abilita.id_abilita + "\">" + abilita.nome_abilita + "</li>" );
                     abilita_elem.attr("data-toggle","popover");
