@@ -1,5 +1,5 @@
 ﻿{% extends "./templates/main_template.html" %}
-{% set body_classes= "hold-transition skin-black fixed sidebar-mini crea-pg-page" %}
+{% set body_classes = body_classes + " crea-pg-page" %}
 {% set section = "creapg" %}
 {% block mainContent %}
 {{ super() }}
@@ -20,18 +20,31 @@
             </div>
             <br/>
 
-            <div class="form-group">
-                <h4>Scegli una Classe Civile</h4>
+            <div class="form-group" id="contenitoreClassiCivili">
+                <h4>Scegli una o più Classi Civili</h4>
+                <p>Ti ricordiamo lo schema dei costi delle Classi Civili:</p>
                 <div class="row">
-                    <div class="col-sm-11">
-                        <select class="form-control" id="classeCivileSelect">
-                            <option value="-1">Scegli una Classe...</option>
-                        </select>
+                    <div class="col-sm-5">
+                        <ul class="list-select" id="listaClassiCivili">
+                        </ul>
                     </div>
-                    <div class="col-sm-1 text-center">
-                        <a href="crea_pg.html" class="btn btn-primary" data-toggle="tooltip" title="Compra un'altra Classe Civile">
-                            <i class="fa fa-plus"></i>
-                        </a>
+                    <div class="col-sm-2 text-center">
+                        <div class="move-item-horizontal">
+                            <button class="btn btn-primary compra-classe-civile-btn">&gt;&gt;</button>
+                            <br/><br/>
+                            <button class="btn btn-primary butta-classe-civile-btn">&lt;&lt;</button>
+                        </div>
+                        <div class="move-item-vertical">
+                            <button class="btn btn-primary compra-classe-civile-btn"><span
+                                    class="fa fa-chevron-down" aria-hidden="true"></span></button>
+                            &nbsp;&nbsp;
+                            <button class="btn btn-primary butta-classe-civile-btn"><span
+                                    class="fa fa-chevron-up" aria-hidden="true"></span></button>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <ul class="list-select" id="listaClassiCiviliAcquistate">
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -64,18 +77,30 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
-                <h4>Scegli due Classi Militari</h4>
+            <div class="form-group" id="contenitoreClassiMilitari">
+                <h4>Scegli una o due Classi Militari</h4>
                 <div class="row">
-                    <div class="col-sm-11">
-                        <select class="form-control" id="classeMilitareSelect">
-                            <option value="-1">Scegli una Classe...</option>
-                        </select>
+                    <div class="col-sm-5">
+                        <ul class="list-select" id="listaClassiMilitari">
+                        </ul>
                     </div>
-                    <div class="col-sm-1 text-center">
-                        <a href="crea_pg.html" class="btn btn-primary" data-toggle="tooltip" title="Compra un'altra Classe Militare">
-                        <i class="fa fa-plus"></i>
-                    </a>
+                    <div class="col-sm-2 text-center">
+                        <div class="move-item-horizontal">
+                            <button class="btn btn-primary compra-classe-militare-btn">&gt;&gt;</button>
+                            <br/><br/>
+                            <button class="btn btn-primary butta-classe-militare-btn">&lt;&lt;</button>
+                        </div>
+                        <div class="move-item-vertical">
+                            <button class="btn btn-primary compra-classe-militare-btn"><span
+                                    class="fa fa-chevron-down" aria-hidden="true"></span></button>
+                            &nbsp;&nbsp;
+                            <button class="btn btn-primary butta-militare-civile-btn"><span
+                                    class="fa fa-chevron-up" aria-hidden="true"></span></button>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <ul class="list-select" id="listaClassiMilitariAcquistate">
+                        </ul>
                     </div>
                 </div>
             </div>

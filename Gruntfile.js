@@ -114,7 +114,9 @@ module.exports = function (grunt) {
 	//renders the html templates
 	nunjucks: {
 	  options: {
-		  data: {}
+		  data: {
+            body_classes: ""
+          }
 	  },
 	  render: {
 		files: [

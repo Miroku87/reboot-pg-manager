@@ -35,6 +35,11 @@ body > .container {
 
 .crea-pg-page .row {
   padding-top: 10px;
+  margin-bottom: 10px;
+}
+
+.crea-pg-page .list-select > li[disabled]{
+  opacity: .5;
 }
 
 .move-item-horizontal {
@@ -63,7 +68,7 @@ body > .container {
 }
 
 ul.list-select {
-  height: 105px;
+  height: 180px;
   list-style: none;
   overflow: auto;
   display: block;
@@ -94,16 +99,6 @@ ul.list-select li.selected:hover {
   color: white;
 }
 
-@media (max-width: 767px) {
-  .move-item-horizontal {
-    display: none;
-  }
-
-  .move-item-vertical {
-    display: initial;
-  }
-}
-
 .data-showed, .data-edit {
 	position:relative;
 }
@@ -131,4 +126,14 @@ ul.list-select li.selected:hover {
 .data-edit > input,
 .data-edit > select{
   width: calc(100% - 15px);
+}
+
+@media (max-width: 767px) {
+  .move-item-horizontal {
+    display: none;
+  }
+
+  .move-item-vertical {
+    display: initial;
+  }
 }
