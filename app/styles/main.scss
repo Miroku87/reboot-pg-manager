@@ -33,25 +33,6 @@ body > .container {
   padding-top: 10px;
 }
 
-.crea-pg-page .row {
-  padding-top: 10px;
-  margin-bottom: 10px;
-}
-
-.crea-pg-page .list-select > li[disabled]{
-  opacity: .5;
-}
-
-.move-item-horizontal {
-  display: initial;
-}
-
-.move-item-vertical {
-  display: none;
-}
-.move-item-vertical > button {
-  margin: 20px 0;
-}
 
 #loginCard {
   flex: .5;
@@ -128,12 +109,58 @@ ul.list-select li.selected:hover {
   width: calc(100% - 15px);
 }
 
+.pull-center {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/** PAGINA CREAZIONE PG **/
+
+.crea-pg-page .row {
+  padding-top: 10px;
+  margin-bottom: 10px;
+}
+
+.crea-pg-page .list-select > li[disabled]{
+  opacity: .5;
+}
+
+.crea-pg-page .button-cell{
+  height: 180px;
+}
+
+.crea-pg-page .move-item-horizontal {
+  display: initial;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.crea-pg-page .move-item-vertical {
+  display: none;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,0);
+}
+.crea-pg-page .move-item-vertical > button {
+  margin: 20px 0;
+}
+
 @media (max-width: 767px) {
-  .move-item-horizontal {
+
+  .crea-pg-page .button-cell{
+    height: initial;
+    margin-bottom: 10px;
+  }
+
+  .crea-pg-page .move-item-horizontal {
     display: none;
   }
 
-  .move-item-vertical {
-    display: initial;
+  .crea-pg-page .move-item-vertical {
+    display: inline-block;
   }
 }

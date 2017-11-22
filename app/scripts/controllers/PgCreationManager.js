@@ -10,10 +10,11 @@
         MILITARY_ABILITY_BUCKET_ID = "listaAbilitaMilitariAcquistate",
         MILITARY_BASE_CLASS_LABEL  = "base",
         MILITARY_ADVA_CLASS_LABEL  = "avanzata",
-        EXP                = "Esperienza",
-        COM                = "Combattimento",
-        PX_TOT             = 100,
-        PC_TOT             = 18;
+        EXP                        = "Esperienza",
+        COM                        = "Combattimento",
+        PX_TOT                     = 100,
+        PC_TOT                     = 18,
+        COSTI_PROFESSIONI          = [30,50,70,100,100,150,200];
 
     return {
         init: function ()
@@ -28,11 +29,15 @@
             this.classInfos = JSON.parse( window.localStorage.getItem("classinfos") );
             this.px_ora     = PX_TOT;
             this.pc_ora     = PC_TOT;
+
+            this.updateRemainingPoints( EXP, this.px_ora );
+            this.updateRemainingPoints( COM, this.pc_ora );
         },
 
         setListeners: function ()
         {
             $("[data-toggle='tooltip']").tooltip();
+            $("#inviaDati").click(this.inviaDati.bind(this));
         },
 
         nomeRequisito: function ( element )
@@ -86,7 +91,7 @@
                 if( parseInt( abilita.costo_abilita ) <= this.px_ora &&
                     $("#"+CIVILIAN_ABILITY_BUCKET_ID).find("li[data-id='"+abilita.id_abilita+"']").length === 0 )
                 {
-                    abilita_elem = $( "<li data-id=\"" + abilita.id_abilita + "\" data-classe=\"" + abilita.id_classe + "\" data-prerequisito=\"" + abilita.prerequisito_abilita + "\">" + abilita.nome_abilita + "</li>" );
+                    abilita_elem = $( "<li data-id=\"" + abilita.id_abilita + "\" data-classe=\"" + abilita.id_classe + "\" data-prerequisito=\"" + abilita.prerequisito_abilita + "\" data-costo='" + abilita.costo_abilita + "'>" + abilita.nome_abilita + "</li>" );
                     abilita_elem.attr("data-toggle","popover");
                     abilita_elem.attr("data-placement","top");
                     abilita_elem.attr("data-content",abilita.descrizione_abilita);
@@ -141,10 +146,10 @@
             for( var a in abilita_lista )
             {
                 abilita = abilita_lista[a];
-                if( parseInt( abilita.costo_abilita ) <= this.px_ora &&
+                if( parseInt( abilita.costo_abilita ) <= this.pc_ora &&
                     $("#"+MILITARY_ABILITY_BUCKET_ID).find("li[data-id='"+abilita.id_abilita+"']").length === 0 )
                 {
-                    abilita_elem = $( "<li data-id=\"" + abilita.id_abilita + "\" data-classe=\"" + abilita.id_classe + "\" data-prerequisito=\"" + abilita.prerequisito_abilita + "\">" + abilita.nome_abilita + "</li>" );
+                    abilita_elem = $( "<li data-id=\"" + abilita.id_abilita + "\" data-classe=\"" + abilita.id_classe + "\" data-prerequisito=\"" + abilita.prerequisito_abilita + "\" data-costo='" + abilita.costo_abilita + "'>" + abilita.nome_abilita + "</li>" );
                     abilita_elem.attr("data-toggle","popover");
                     abilita_elem.attr("data-placement","top");
                     abilita_elem.attr("data-content",abilita.descrizione_abilita);
@@ -300,7 +305,7 @@
         updateRemainingPoints: function ( which, offset )
         {
             var actual_points = parseInt( $( '#punti' + which ).text(), 10 ),
-                new_points = actual_points + offset,
+                new_points = offset,//actual_points + offset,
                 tot = which === EXP ? PX_TOT : PC_TOT;
 
             $( '#punti' + which ).text( new_points );
@@ -314,20 +319,41 @@
                 $( '#punti' + which ).addClass( "badge-danger" );
         },
 
+        calcolaCostoClassiCivili: function ( )
+        {
+            var costo = 0;
+
+            $("#"+CIVILIAN_CLASS_BUCKET_ID).find("li").each(function ( i, elem )
+            {
+                costo += COSTI_PROFESSIONI[i];
+                $(elem).text( $(elem).text().replace(/\(.*?\)/,"") + " ( " + COSTI_PROFESSIONI[i] + " PX )" );
+            });
+
+            return costo;
+        },
+
         spostaNelCestino: function ( list_id, bucket_id )
         {
             var selected = $( '#' + list_id ).find( 'li.selected' ),
-                points = list_id === CIVILIAN_ABILITY_LIST_ID ? EXP : COM;
-
+                points   = list_id.toLowerCase().indexOf("civili") !== -1 ? EXP : COM,
+                costo    = selected.toArray()
+                                   .map( function( item ){ return parseInt( $(item).attr("data-costo") ); } )
+                                   .reduce( function( pre, curr ){ console.log(pre,curr); return pre + curr; } );
+            console.log(costo);
             $( '[data-toggle="popover"]' ).popover( "hide" );
             selected
                 .removeClass( "selected" )
                 .appendTo( $( '#' + bucket_id ) );
 
-            //this.updateRemainingPoints( points, selected.length * -1 );
 
             Utils.sortChildrenByAttribute( $( '#' + list_id ), "li", "data-id" );
             Utils.sortChildrenByAttribute( $( '#' + bucket_id ), "li", "data-id" );
+
+            if( list_id === CIVILIAN_CLASS_LIST_ID )
+            {
+                var costo = this.calcolaCostoClassiCivili();
+                this.updateRemainingPoints( points, this.px_ora -= costo );
+            }
         },
 		//TODO: controllare che dopo il drop i prerequisiti esistano ancora
         rimuoviDalCestino: function ( list_id, bucket_id )
@@ -406,6 +432,11 @@
                 this.rimuoviDalCestino( MILITARY_ABILITY_LIST_ID, MILITARY_ABILITY_BUCKET_ID );
                 this.aggiornaListaAbilitaMilitari();
             }.bind( this ) );
+        },
+
+        inviaDati: function ()
+        {
+
         }
     };
 }();
