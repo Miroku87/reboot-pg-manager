@@ -16,7 +16,7 @@
         <div class="input-group">
                 <span class="input-group-addon" id="basic-addon6"><span class="fa fa-user"
                                                                         aria-hidden="true"></span></span>
-            <input type="text" class="form-control" placeholder="Nome Personaggio"
+            <input type="text" id="nomePG" name="nome_pg" class="form-control" placeholder="Nome Personaggio"
                    aria-label="CharacterName" aria-describedby="basic-addon6"/>
         </div>
     </div>
@@ -30,8 +30,6 @@
             <h4>Scegli una o più Classi Civili</h4>
 
             <p>Punti Esperienza disponibili: <span id="puntiEsperienza" class="badge badge-success">0</span></p>
-
-            <p>Ti ricordiamo lo schema dei costi delle Classi Civili:</p>
 
             <div class="row">
                 <div class="col-sm-5">
@@ -156,7 +154,7 @@
     </div>
     <!-- /.box-body -->
 </div>
-<button id="inviaDati" class="btn btn-primary pull-center">Invia Dati</button>
+<button id="inviaDati" class="btn btn-success pull-center">Invia Dati</button>
 {% endblock %}
 {% block managers %}
 {{ super() }}

@@ -52,9 +52,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 {% block content %}
 {% endblock %}
 {% block modals %}
-<div id="errorDialog" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true"
-     data-keyboard="false">
-    <div class="modal-dialog modal-lg">
+<div id="errorDialog" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header dialog-header-error">
                 <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Chiudi</span></button>
@@ -63,9 +62,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="modal-body text-danger">
                 <p id="errorMsg"></p>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="message" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header dialog-header-primary">
+                <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Chiudi</span></button>
+                <h4 class="modal-title text-primary">MESSAGGIO</h4>
+            </div>
+            <div class="modal-body">
+                <p id="messageText"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
             </div>
         </div>
     </div>
