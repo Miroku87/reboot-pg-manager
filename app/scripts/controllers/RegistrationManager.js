@@ -14,8 +14,8 @@
 				radioClass: 'iradio_square-blue',
 				increaseArea: '20%' // optional
 			});
-			$("#message").on( "hide.bs.modal", this.gotoLogin.bind(this) );
-			$("#inviaDati").click( this.inviaDati.bind(this) );
+            $("#inviaDatiGiocatore").click( this.inviaDati.bind(this) );
+			$("#message").on( "hidden.bs.modal", this.gotoLogin.bind(this) );
 		},
 
 		gotoLogin: function ()

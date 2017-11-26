@@ -58,6 +58,7 @@
     }
   },
   "dependencies": {
-    "popper.js": "^1.12.5"
+    "popper.js": "^1.12.5",
+    "uglify-js": "^3.2.0"
   }
 }

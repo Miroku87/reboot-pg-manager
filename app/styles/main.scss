@@ -2,23 +2,15 @@
 .hidden {
   display: none;
 }
-/*
-body > .container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  align-content: center;
+
+.no-overflow {
+  overflow: hidden;
 }
 
-.container > .container {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  padding-top: 20px;
+.login-box, .register-box {
+  margin: 3% auto;
 }
-*/
+
 .register-page textarea {
     resize: none;
 }
@@ -31,11 +23,6 @@ body > .container {
 .footer {
   border-top: 1px solid #ddd;
   padding-top: 10px;
-}
-
-
-#loginCard {
-  flex: .5;
 }
 
 .popover .popover-close-btn {
@@ -149,8 +136,8 @@ ul.list-select li.selected:hover {
   margin: 20px 0;
 }
 
-@media (max-width: 767px) {
-
+@media (max-width: 767px)
+{
   .crea-pg-page .button-cell{
     height: initial;
     margin-bottom: 10px;

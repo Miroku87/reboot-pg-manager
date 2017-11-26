@@ -8,6 +8,7 @@ Constants.API_POST_LOGIN    = Constants.API_URL + "/usersmanager/login";
 Constants.API_POST_CREAPG   = Constants.API_URL + "/charactersmanager/creapg";
 
 Constants.API_GET_LOGOUT    = Constants.API_URL + "/usersmanager/logout";
+Constants.API_GET_ACESS     = Constants.API_URL + "/usersmanager/controllaaccesso";
 Constants.API_GET_INFO      = Constants.API_URL + "/charactersmanager/recuperainfoclassi";
 Constants.API_GET_ALL_PGS   = Constants.API_URL + "/charactersmanager/mostratuttipersonaggi";
 Constants.API_GET_MY_PGS    = Constants.API_URL + "/charactersmanager/mostramieipersonaggi";

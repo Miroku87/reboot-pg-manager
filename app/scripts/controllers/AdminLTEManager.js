@@ -1,15 +1,15 @@
 ﻿var AdminLTEManager = function ()
 {
-    var SERVER = window.location.protocol + "//" + window.location.host + "/",
-        SECTION_NAME = window.location.href.replace( SERVER, "" ).split( "/" )[0] + "/",
-        PG_LIST_REQUEST = SERVER + "scripts/test.json",//SERVER + SECTION_NAME,
-        PLAYER_SECTION = "giocatore/",
-        ADMIN_SECTION = "staff/";
+    var SERVER       = window.location.protocol + "//" + window.location.host + "/",
+        SECTION_NAME = window.location.href.replace( SERVER, "" ).split( "/" )[0];
 
     return {
 
         init: function ()
         {
+            if( SECTION_NAME !== "" && SECTION_NAME !== "index.html" && SECTION_NAME !== "registrazione.html" )
+                Utils.controllaAccessoPagina( SECTION_NAME );
+
             this.setListeners();
         },
 		

@@ -19,6 +19,7 @@
     return {
         init: function ()
         {
+
             this.setSharedVariables();
             this.setClassList();
             this.setListeners();
@@ -42,14 +43,20 @@
 
         setClassList: function ()
         {
-            var classe       = {};
+            var classe = {},
+                elem   = {},
+                costo  = 0;
 
             for( var cc in this.classInfos.classi_civili )
             {
                 classe = this.classInfos.classi_civili[cc];
                 if( classe.id_classe )
-                    $("#" + CIVILIAN_CLASS_LIST_ID)
-                        .append( "<li data-id=\"" + classe.id_classe + "\">" + classe.nome_classe + "</li>" );
+                {
+                    costo = COSTI_PROFESSIONI[ $( "#" + CIVILIAN_CLASS_BUCKET_ID).find("list").size() ];
+                    elem  = $("<li data-id=\"" + classe.id_classe + "\" data-costo='" + costo + "'>" + classe.nome_classe + " ( " + costo + " PX )</li>");
+                    elem.dblclick( this.elementoDoppioClick.bind( this ) );
+                    $("#" + CIVILIAN_CLASS_LIST_ID) .append( elem );
+                }
             }
 
             for( var cc in this.classInfos.classi_militari )
@@ -59,10 +66,9 @@
                 if( classe.id_classe )
                 {
                     var disabled = parseInt( cc ) % 2 !== 0 ? "disabled='disabled'" : "";
-                    //var disabled = classe.nome_classe.indexOf( MILITARY_ADVA_CLASS_LABEL ) !== -1 ?
-                    // "disabled='disabled'" : "";
-                    $("#" + MILITARY_CLASS_LIST_ID)
-                        .append("<li data-id=\"" + classe.id_classe + "\" data-costo='1' "+disabled+">" + classe.nome_classe + "</li>");
+                    elem = $( "<li data-id=\"" + classe.id_classe + "\" data-costo='1' "+disabled+">" + classe.nome_classe + "</li>" );
+                    elem.dblclick( this.elementoDoppioClick.bind( this ) );
+                    $("#" + MILITARY_CLASS_LIST_ID).append( elem );
                 }
             }
 
@@ -131,6 +137,8 @@
                     if( !this.prerequisitoCivileRaggiunto( abilita ) )
                         abilita_elem.attr("disabled",true);
 
+                    abilita_elem.dblclick( this.elementoDoppioClick.bind( this ) );
+
                     $("#" + CIVILIAN_ABILITY_LIST_ID).append(abilita_elem);
                 }
             }
@@ -196,6 +204,8 @@
 
                     if( !this.prerequisitoMilitareRaggiunto( abilita ) )
                         abilita_elem.attr("disabled",true);
+
+                    abilita_elem.dblclick( this.elementoDoppioClick.bind( this ) );
 
                     $("#" + MILITARY_ABILITY_LIST_ID).append(abilita_elem);
                 }
@@ -270,12 +280,52 @@
             return true;
         },
 
+        resettaCostoClassiCivili: function ()
+        {
+            var costo       = 0,
+                selected    =  $( "#"+CIVILIAN_CLASS_LIST_ID ).find("li.selected").size(),
+                nel_cestino = $( "#"+CIVILIAN_CLASS_BUCKET_ID ).find("li").size();
+
+            $( "#"+CIVILIAN_CLASS_BUCKET_ID ).find("li").each(function ( i, elem )
+            {
+                costo = COSTI_PROFESSIONI[ i ];
+                $(elem).attr("data-costo", costo );
+                $(elem).text( $(elem).text().replace(/\(.*?\)/,"") + " ( " + costo + " PX )" );
+            });
+
+            $( "#"+CIVILIAN_CLASS_LIST_ID ).find("li.selected").each(function ( i, elem )
+            {
+                costo = COSTI_PROFESSIONI[ nel_cestino + i ];
+                $(elem).attr("data-costo", costo );
+                $(elem).text( $(elem).text().replace(/\(.*?\)/,"") + " ( " + costo + " PX )" );
+            });
+
+            $( "#"+CIVILIAN_CLASS_LIST_ID ).find("li").not(".selected").each(function ( i, elem )
+            {
+                costo = COSTI_PROFESSIONI[ nel_cestino + selected ];
+                $(elem).attr("data-costo", costo );
+                $(elem).text( $(elem).text().replace(/\(.*?\)/,"") + " ( " + costo + " PX )" );
+            });
+        },
+
         resettaDisponibilitaClassiMilitari: function ()
         {
             if( $( "#"+MILITARY_CLASS_BUCKET_ID).find("li").size() === 0 )
             {
                 $("#listaClassiMilitari").find("li:nth-child(odd)").attr("disabled", null);
                 $("#listaClassiMilitari").find("li:nth-child(even)").attr("disabled", true);
+            }
+            else if( $( "#"+MILITARY_CLASS_BUCKET_ID).find("li").size() === 1 )
+            {
+                var elem = $( "#"+MILITARY_CLASS_BUCKET_ID).find("li");
+                $("#listaClassiMilitari").find("li:nth-child(odd)").attr("disabled", true);
+                $("#listaClassiMilitari").find("li:nth-child(even)").attr("disabled", null);
+                $( "#"+MILITARY_CLASS_LIST_ID).find("li[data-id='"+( parseInt( elem.attr("data-id") ) + 1 )+"']").attr("disabled",null);
+            }
+            else if( $( "#"+MILITARY_CLASS_BUCKET_ID).find("li").size() === 2 )
+            {
+                var elem = $( "#"+MILITARY_CLASS_BUCKET_ID).find("li");
+                $("#listaClassiMilitari").find("li").attr("disabled", true);
             }
         },
 
@@ -321,6 +371,8 @@
             else if ( !elem.parent().is( $( "#"+MILITARY_CLASS_LIST_ID ) ) )
                 this.resettaDisponibilitaClassiMilitari();
 
+            if( elem.parent().is( $( "#"+CIVILIAN_CLASS_LIST_ID ) ) )
+                this.resettaCostoClassiCivili();
         },
 
         setupListSelect: function ()
@@ -357,33 +409,32 @@
 
         calcolaCosto: function ( selected, list_id )
         {
-            var costo       = 0;
+            var costo = 0;
 
-            if( list_id === CIVILIAN_CLASS_LIST_ID && !selected.first().attr("data-costo") )
+            if( list_id === CIVILIAN_CLASS_LIST_ID )
             {
-                var num_cestino  = $("#"+CIVILIAN_CLASS_BUCKET_ID).find("li").size(),
-                    costo_classe = 0;
+                var num_cestino  = $("#"+CIVILIAN_CLASS_BUCKET_ID).find("li").size();
 
-                selected.each( function( i, elem )
+                if( selected.first().parent().is( $( "#" + CIVILIAN_CLASS_BUCKET_ID ) ) )
+                    num_cestino--;
+
+                selected.each( function( i )
                 {
-                    costo_classe = COSTI_PROFESSIONI[ num_cestino + i ];
-                    $(elem).attr("data-costo", costo_classe );
-                    $(elem).text( $(elem).text().replace(/\(.*?\)/,"") + " ( " + costo_classe + " PX )" );
+                    costo += COSTI_PROFESSIONI[ num_cestino + i ];
                 } );
             }
-            else if ( list_id === CIVILIAN_CLASS_LIST_ID && selected.first().attr("data-costo") )
+            else
             {
-                selected.each( function( i, elem )
-                {
-                    costo += parseInt( $(elem).attr("data-costo") );
-                    $(elem).attr("data-costo", null );
-                    $(elem).text( $(elem).text().replace(/\(.*?\)/,"")  );
-                } );
+                costo = selected.toArray()
+                                 .map(function (item)
+                                 {
+                                     return parseInt($(item).attr("data-costo")) || 0;
+                                 })
+                                 .reduce(function (pre, curr)
+                                 {
+                                     return pre + curr;
+                                 });
             }
-
-            costo += selected.toArray()
-                    .map( function( item ){ return parseInt( $(item).attr("data-costo") ) || 0; } )
-                    .reduce( function( pre, curr ){ return pre + curr; } );
 
             return costo;
         },
@@ -418,7 +469,6 @@
             Utils.sortChildrenByAttribute( $( '#' + bucket_id ), "li", "data-id" );
         },
 
-		//TODO: controllare che dopo il drop i prerequisiti esistano ancora
         rimuoviDalCestino: function ( list_id, bucket_id )
         {
             var selected  = $( '#' + bucket_id ).find( 'li.selected' ),
@@ -437,6 +487,59 @@
             Utils.sortChildrenByAttribute( $( '#' + bucket_id ), "li", "data-id" );
         },
 
+        elementoDoppioClick: function ( e )
+        {
+            var clicked = $( e.target );
+            clicked.addClass("selected");
+
+            if( clicked.parent().is( $( "#" + CIVILIAN_CLASS_LIST_ID ) ) )
+            {
+                this.spostaNelCestino( CIVILIAN_CLASS_LIST_ID, CIVILIAN_CLASS_BUCKET_ID );
+                this.aggiornaListaAbilitaCivili();
+                this.resettaCostoClassiCivili();
+            }
+            else if( clicked.parent().is( $( "#" + CIVILIAN_ABILITY_LIST_ID ) ) )
+            {
+                this.spostaNelCestino( CIVILIAN_ABILITY_LIST_ID, CIVILIAN_ABILITY_BUCKET_ID );
+                this.aggiornaListaAbilitaCivili();
+                this.resettaCostoClassiCivili();
+            }
+            else if( clicked.parent().is( $( "#" + MILITARY_CLASS_LIST_ID ) ) )
+            {
+                this.spostaNelCestino( MILITARY_CLASS_LIST_ID, MILITARY_CLASS_BUCKET_ID );
+                this.aggiornaListaAbilitaMilitari();
+                this.resettaDisponibilitaClassiMilitari();
+            }
+            else if( clicked.parent().is( $( "#" + MILITARY_ABILITY_LIST_ID ) ) )
+            {
+                this.spostaNelCestino( MILITARY_ABILITY_LIST_ID, MILITARY_ABILITY_BUCKET_ID );
+                this.aggiornaListaAbilitaMilitari();
+            }
+            else if( clicked.parent().is( $( "#" + CIVILIAN_CLASS_BUCKET_ID ) ) )
+            {
+                this.rimuoviDalCestino( CIVILIAN_CLASS_LIST_ID, CIVILIAN_CLASS_BUCKET_ID );
+                this.aggiornaListaAbilitaCivili();
+                this.resettaCostoClassiCivili();
+            }
+            else if( clicked.parent().is( $( "#" + CIVILIAN_ABILITY_BUCKET_ID ) ) )
+            {
+                this.rimuoviDalCestino( CIVILIAN_ABILITY_LIST_ID, CIVILIAN_ABILITY_BUCKET_ID );
+                this.aggiornaListaAbilitaCivili();
+                this.resettaCostoClassiCivili();
+            }
+            else if( clicked.parent().is( $( "#" + MILITARY_CLASS_BUCKET_ID ) ) )
+            {
+                this.rimuoviDalCestino( MILITARY_CLASS_LIST_ID, MILITARY_CLASS_BUCKET_ID );
+                this.aggiornaListaAbilitaMilitari();
+                this.resettaDisponibilitaClassiMilitari();
+            }
+            else if( clicked.parent().is( $( "#" + MILITARY_ABILITY_BUCKET_ID ) ) )
+            {
+                this.rimuoviDalCestino( MILITARY_ABILITY_LIST_ID, MILITARY_ABILITY_BUCKET_ID );
+                this.aggiornaListaAbilitaMilitari();
+            }
+        },
+
         setupClassesMarket: function ()
         {
             $( '.compra-classe-civile-btn' ).unbind("click");
@@ -444,13 +547,15 @@
             {
                 this.spostaNelCestino( CIVILIAN_CLASS_LIST_ID, CIVILIAN_CLASS_BUCKET_ID );
                 this.aggiornaListaAbilitaCivili();
+                this.resettaCostoClassiCivili();
             }.bind( this ) );
 
             $( '.butta-classe-civile-btn' ).unbind("click");
             $( '.butta-classe-civile-btn' ).click( function ()
             {
                 this.rimuoviDalCestino( CIVILIAN_CLASS_LIST_ID, CIVILIAN_CLASS_BUCKET_ID );
-                this.aggiornaListaAbilitaCivili();
+                this.aggiornaListaAbilitaCivili()
+                this.resettaCostoClassiCivili();
             }.bind( this ) );
 
             $( '.compra-classe-militare-btn' ).unbind("click");
