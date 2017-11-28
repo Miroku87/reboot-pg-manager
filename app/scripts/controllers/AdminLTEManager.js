@@ -1,13 +1,13 @@
 ﻿var AdminLTEManager = function ()
 {
     var SERVER       = window.location.protocol + "//" + window.location.host + "/",
-        SECTION_NAME = window.location.href.replace( SERVER, "" ).split( "/" )[0];
+        SECTION_NAME = window.location.href.replace( SERVER, "" ).split( "/").shift().split(".").shift();
 
     return {
 
         init: function ()
         {
-            if( SECTION_NAME !== "" && SECTION_NAME !== "index.html" && SECTION_NAME !== "registrazione.html" )
+            if( SECTION_NAME !== "" && SECTION_NAME !== "index" && SECTION_NAME !== "registrazione" )
                 Utils.controllaAccessoPagina( SECTION_NAME );
 
             this.setListeners();

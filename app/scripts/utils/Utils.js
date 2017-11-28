@@ -24,6 +24,7 @@
 
         showError: function(errorText)
         {
+            console.log( new Error().stack );
             if($("#errorDialog").length > 0)
             {
                 $('.modal').modal('hide');
@@ -171,12 +172,16 @@
                     {
                         if ( data.status === "error" )
                         {
-                            window.location.href = Constants.LOGIN_PAGE;
+                            $("#errorDialog").on("hidden.bs.modal", function ()
+                            {
+                                window.location.href = Constants.LOGIN_PAGE;
+                            });
+                            Utils.showError( data.message );
                         }
                     }.bind(this),
-                    error: function ( err )
+                    error: function ( jqXHR, textStatus, errorThrown )
                     {
-                        Utils.showError( err );
+                        Utils.showError( textStatus+"<br>"+errorThrown );
                     }
                 }
             );

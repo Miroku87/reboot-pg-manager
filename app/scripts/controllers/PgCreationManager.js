@@ -31,8 +31,8 @@
             this.px_ora     = PX_TOT;
             this.pc_ora     = PC_TOT;
 
-            this.updateRemainingPoints( EXP, this.px_ora );
-            this.updateRemainingPoints( COM, this.pc_ora );
+            this.aggiornaPuntiRimanenti( EXP, this.px_ora );
+            this.aggiornaPuntiRimanenti( COM, this.pc_ora );
         },
 
         setListeners: function ()
@@ -152,6 +152,16 @@
             this.setPopovers();
             this.setupListSelect();
             this.setupAbilityMarket();
+        },
+
+        aggiornaListaClassiMilitari: function ()
+        {
+            $( "#" + MILITARY_CLASS_BUCKET_ID ).find("li").each(function ( i, elem )
+            {
+                if( parseInt( $( elem ).attr("data-id") ) % 2 === 0 )
+                    $( elem ).appendTo( $( "#" + MILITARY_CLASS_LIST_ID ) );
+            });
+            Utils.sortChildrenByAttribute( $( '#' + MILITARY_CLASS_LIST_ID ), "li", "data-id" );
         },
 
 	    /**
@@ -390,7 +400,7 @@
             });
         },
 
-        updateRemainingPoints: function ( which, offset )
+        aggiornaPuntiRimanenti: function ( which, offset )
         {
             var actual_points = parseInt( $( '#punti' + which ).text(), 10 ),
                 new_points = offset,//actual_points + offset,
@@ -405,6 +415,80 @@
                 $( '#punti' + which ).addClass( "badge-warning" );
             else if ( new_points / tot < .25 )
                 $( '#punti' + which ).addClass( "badge-danger" );
+        },
+
+        ricalcolaPuntiAttuali: function ()
+        {
+            var costo_classi_civili    = 0,
+                costo_abilita_civili   = 0,
+                costo_classi_militari  = 0,
+                costo_abilita_militari = 0;
+
+            try
+            {
+                costo_classi_civili =
+                    $("#" + CIVILIAN_CLASS_BUCKET_ID).find("li").toArray()
+                                     .map(function (item)
+                                     {
+                                         return parseInt($(item).attr("data-costo")) || 0;
+                                     })
+                                     .reduce(function (pre, curr)
+                                     {
+                                         return pre + curr;
+                                     }, 0);
+            }
+            catch (e){}
+
+            try
+            {
+                costo_abilita_civili =
+                    $( "#"+CIVILIAN_ABILITY_BUCKET_ID ).find("li").toArray()
+                                    .map(function (item)
+                                    {
+                                        return parseInt($(item).attr("data-costo")) || 0;
+                                    })
+                                    .reduce(function (pre, curr)
+                                    {
+                                        return pre + curr;
+                                    }, 0);
+            }
+            catch (e){}
+
+            try
+            {
+                costo_classi_militari =
+                    $( "#"+MILITARY_CLASS_BUCKET_ID ).find("li").toArray()
+                                    .map(function (item)
+                                    {
+                                        return parseInt($(item).attr("data-costo")) || 0;
+                                    })
+                                    .reduce(function (pre, curr)
+                                    {
+                                        return pre + curr;
+                                    }, 0);
+            }
+            catch (e){}
+
+            try
+            {
+                costo_abilita_militari =
+                    $( "#"+MILITARY_ABILITY_BUCKET_ID ).find("li").toArray()
+                                    .map(function (item)
+                                    {
+                                        return parseInt($(item).attr("data-costo")) || 0;
+                                    })
+                                    .reduce(function (pre, curr)
+                                    {
+                                        return pre + curr;
+                                    }, 0);
+            }
+            catch (e){}
+
+            this.px_ora = PX_TOT - ( costo_classi_civili + costo_abilita_civili );
+            this.pc_ora = PC_TOT - ( costo_classi_militari + costo_abilita_militari );
+
+            this.aggiornaPuntiRimanenti( EXP, this.px_ora );
+            this.aggiornaPuntiRimanenti( COM, this.pc_ora );
         },
 
         calcolaCosto: function ( selected, list_id )
@@ -463,7 +547,7 @@
                 .removeClass( "selected" )
                 .appendTo( $( '#' + bucket_id ) );
 
-            this.updateRemainingPoints( points, this[prop_punti] -= costo );
+            this.aggiornaPuntiRimanenti( points, this[prop_punti] -= costo );
 
             Utils.sortChildrenByAttribute( $( '#' + list_id ), "li", "data-id" );
             Utils.sortChildrenByAttribute( $( '#' + bucket_id ), "li", "data-id" );
@@ -471,17 +555,12 @@
 
         rimuoviDalCestino: function ( list_id, bucket_id )
         {
-            var selected  = $( '#' + bucket_id ).find( 'li.selected' ),
-                points     = list_id.toLowerCase().indexOf("civili") !== -1 ? EXP : COM,
-                prop_punti = list_id.toLowerCase().indexOf("civili") !== -1 ? "px_ora" : "pc_ora",
-                costo      = this.calcolaCosto( selected, list_id );
+            var selected  = $( '#' + bucket_id ).find( 'li.selected' );
 
             $( '[data-toggle="popover"]' ).popover( "hide" );
             selected
                 .removeClass( "selected" )
                 .appendTo( $( '#' + list_id ) );
-
-            this.updateRemainingPoints( points, this[prop_punti] += costo );
 
             Utils.sortChildrenByAttribute( $( '#' + list_id ), "li", "data-id" );
             Utils.sortChildrenByAttribute( $( '#' + bucket_id ), "li", "data-id" );
@@ -520,23 +599,27 @@
                 this.rimuoviDalCestino( CIVILIAN_CLASS_LIST_ID, CIVILIAN_CLASS_BUCKET_ID );
                 this.aggiornaListaAbilitaCivili();
                 this.resettaCostoClassiCivili();
+                this.ricalcolaPuntiAttuali();
             }
             else if( clicked.parent().is( $( "#" + CIVILIAN_ABILITY_BUCKET_ID ) ) )
             {
                 this.rimuoviDalCestino( CIVILIAN_ABILITY_LIST_ID, CIVILIAN_ABILITY_BUCKET_ID );
                 this.aggiornaListaAbilitaCivili();
                 this.resettaCostoClassiCivili();
+                this.ricalcolaPuntiAttuali();
             }
             else if( clicked.parent().is( $( "#" + MILITARY_CLASS_BUCKET_ID ) ) )
             {
                 this.rimuoviDalCestino( MILITARY_CLASS_LIST_ID, MILITARY_CLASS_BUCKET_ID );
                 this.aggiornaListaAbilitaMilitari();
                 this.resettaDisponibilitaClassiMilitari();
+                this.ricalcolaPuntiAttuali();
             }
             else if( clicked.parent().is( $( "#" + MILITARY_ABILITY_BUCKET_ID ) ) )
             {
                 this.rimuoviDalCestino( MILITARY_ABILITY_LIST_ID, MILITARY_ABILITY_BUCKET_ID );
                 this.aggiornaListaAbilitaMilitari();
+                this.ricalcolaPuntiAttuali();
             }
         },
 
@@ -556,6 +639,7 @@
                 this.rimuoviDalCestino( CIVILIAN_CLASS_LIST_ID, CIVILIAN_CLASS_BUCKET_ID );
                 this.aggiornaListaAbilitaCivili()
                 this.resettaCostoClassiCivili();
+                this.ricalcolaPuntiAttuali();
             }.bind( this ) );
 
             $( '.compra-classe-militare-btn' ).unbind("click");
@@ -569,8 +653,10 @@
             $( '.butta-classe-militare-btn' ).click( function ()
             {
                 this.rimuoviDalCestino( MILITARY_CLASS_LIST_ID, MILITARY_CLASS_BUCKET_ID );
+                this.aggiornaListaClassiMilitari();
                 this.aggiornaListaAbilitaMilitari();
                 this.resettaDisponibilitaClassiMilitari();
+                this.ricalcolaPuntiAttuali();
             }.bind( this ) );
         },
 
@@ -588,6 +674,7 @@
             {
                 this.rimuoviDalCestino( CIVILIAN_ABILITY_LIST_ID, CIVILIAN_ABILITY_BUCKET_ID );
                 this.aggiornaListaAbilitaCivili();
+                this.ricalcolaPuntiAttuali();
             }.bind( this ) );
 
             $( '.compra-abilita-militare-btn' ).unbind("click");
@@ -602,6 +689,7 @@
             {
                 this.rimuoviDalCestino( MILITARY_ABILITY_LIST_ID, MILITARY_ABILITY_BUCKET_ID );
                 this.aggiornaListaAbilitaMilitari();
+                this.ricalcolaPuntiAttuali();
             }.bind( this ) );
         },
 
