@@ -113,6 +113,10 @@ ul.list-select li.selected:hover {
   opacity: .5;
 }
 
+.crea-pg-page .list-select > li{
+  cursor: pointer;
+}
+
 .crea-pg-page .button-cell{
   height: 180px;
 }

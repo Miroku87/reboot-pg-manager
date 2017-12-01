@@ -67,48 +67,19 @@ var LoginManager = function () {
 						if ( data.status === "ok" )
 						{
 							window.localStorage.setItem( 'user', JSON.stringify( data.user_info ) );
-							this.getGenericInfo.call(this);
+                            window.location.href = Constants.MAIN_PAGE;
 						}
 						else if ( data.status === "error" )
 						{
 							Utils.showError( data.message );
 						}
 					}.bind(this),
-					error: function ( err )
-					{
-						Utils.showError( err );
-					}
+                    error: function ( jqXHR, textStatus, errorThrown )
+                    {
+                        Utils.showError( textStatus+"<br>"+errorThrown );
+                    }
 				});
 			}
-		},
-
-		getGenericInfo: function ()
-		{
-			$.ajax({
-				url: Constants.API_GET_INFO,
-				method: "GET",
-				xhrFields: {
-					withCredentials: true
-				},
-				success: function( data )
-				{
-					//console.log(data);
-					//var res = JSON.parse( data );
-					if ( data.status === "ok" )
-					{
-						window.localStorage.setItem( 'classinfos', JSON.stringify( data.info ) );
-						window.location.href = Constants.MAIN_PAGE;
-					}
-					else if ( data.status === "error" )
-					{
-						Utils.showError( data.message );
-					}
-				},
-				error: function ( err )
-				{
-					Utils.showError( err );
-				}
-			});
 		},
 
 		checkCookie: function ()

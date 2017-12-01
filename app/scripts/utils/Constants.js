@@ -15,3 +15,9 @@ Constants.API_GET_MY_PGS    = Constants.API_URL + "/charactersmanager/mostramiei
 
 Constants.LOGIN_PAGE        = Constants.SITE_URL + "/";
 Constants.MAIN_PAGE         = Constants.SITE_URL + "/main.html";
+
+Constants.PREREQUISITO_TUTTE_ABILITA    = -1;
+Constants.PREREQUISITO_F_TERRA_T_SCELTO = -2;
+Constants.PREREQUISITO_5_SUPPORTO_BASE  = -3;
+Constants.PREREQUISITO_3_CONTROLLER     = -4;
+Constants.PREREQUISITO_4_SPORTIVO       = -5;

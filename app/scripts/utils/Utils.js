@@ -24,7 +24,6 @@
 
         showError: function(errorText)
         {
-            console.log( new Error().stack );
             if($("#errorDialog").length > 0)
             {
                 $('.modal').modal('hide');

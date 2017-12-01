@@ -102,10 +102,10 @@
 						Utils.showError( data.message );
 					}
 				},
-				error: function ( err )
-				{
-					Utils.showError( err );
-				}
+                error: function ( jqXHR, textStatus, errorThrown )
+                {
+                    Utils.showError( textStatus+"<br>"+errorThrown );
+                }
 			});
 		}
 	}

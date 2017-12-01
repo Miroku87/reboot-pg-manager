@@ -51,9 +51,9 @@
                         Utils.showError( data.message );
                     }
                 },
-                error: function ( err )
+                error: function ( jqXHR, textStatus, errorThrown )
                 {
-                    Utils.showError( err );
+                    Utils.showError( textStatus+"<br>"+errorThrown );
                 }
             });
         },
