@@ -228,14 +228,15 @@
 
         nomeRequisito: function ( element )
         {
-            var id_prerequisito = parseInt( element.attr("data-prerequisito"));
+            var id_prerequisito = parseInt( element.attr("data-prerequisito")),
+                abilita_array   = Array.prototype.concat.apply( [], Object.keys( this.classInfos.abilita ).map( function( i ){ return this.classInfos.abilita[i]; }.bind( this ) ) );
 
             if( element.parent().is( $( "#"+CIVILIAN_ABILITY_LIST_ID ) ) )
             {
                 if( id_prerequisito === Constants.PREREQUISITO_4_SPORTIVO )
                     return "Almeno 4 abilit&agrave; da Sportivo.";
 
-                return $.map(this.classInfos.abilita.civile).filter( function( item ){ return parseInt( item.id_abilita ) === id_prerequisito; } )[0].nome_abilita;
+                return abilita_array.filter( function( item ){ return parseInt( item.id_abilita ) === id_prerequisito; } )[0].nome_abilita;
             }
             else if ( element.parent().is( $( "#"+MILITARY_ABILITY_LIST_ID ) ) )
             {
@@ -250,7 +251,7 @@
                 else if( id_prerequisito === Constants.PREREQUISITO_3_CONTROLLER )
                     return "almeno 3 abilit&agrave; per CONTROLLER.";
 
-                return $.map(this.classInfos.abilita.militare).filter( function( item ){ return parseInt( item.id_abilita ) === id_prerequisito; } )[0].nome_abilita;
+                return abilita_array.filter( function( item ){ return parseInt( item.id_abilita ) === id_prerequisito; } )[0].nome_abilita;
             }
         },
 
@@ -727,12 +728,17 @@
                 return false;
             }
 
-            var classi_civili    = $( "#" + CIVILIAN_CLASS_BUCKET_ID).find("li").toArray().reduce( function( pre, curr ){ return pre + "classi_civili[]=" + $(curr).attr("data-id") + "&"; }, ""),
-                abilita_civili   = $( "#" + CIVILIAN_ABILITY_BUCKET_ID ).find("li").toArray().reduce( function( pre, curr ){ return pre + "abilita_civili[]=" + $(curr).attr("data-id") + "&"; }, ""),
-                classi_militari  = $( "#" + MILITARY_CLASS_BUCKET_ID ).find("li").toArray().reduce( function( pre, curr ){ return pre + "classi_militari[]=" + $(curr).attr("data-id") + "&"; }, ""),
-                abilita_militari = $( "#" + MILITARY_ABILITY_BUCKET_ID ).find("li").toArray().reduce( function( pre, curr ){ return pre + "abilita_militari[]=" + $(curr).attr("data-id") + "&"; }, ""),
+            var id_cl     = 0,
+                id_ab     = 0,
+                classi    = $( "#" + CIVILIAN_CLASS_BUCKET_ID + " li, #" + MILITARY_CLASS_BUCKET_ID + " li")
+                                .toArray()
+                                .reduce( function( pre, curr ){ return pre + "classi["+id_cl+"][id]=" + $(curr).attr("data-id") + "&classi["+(id_cl++)+"][pre]=" + ( $(curr).attr("data-prerequisito") || "null" ) + "&"; }, ""),
 
-                data             = "nome=" + encodeURIComponent( $( "#nomePG").val() ) + "&" + classi_civili + abilita_civili + classi_militari + abilita_militari;
+                abilita   = $( "#" + CIVILIAN_ABILITY_BUCKET_ID + " li, #" + MILITARY_ABILITY_BUCKET_ID + " li")
+                                .toArray()
+                                .reduce( function( pre, curr ){ return pre + "abilita["+id_ab+"][id]=" + $(curr).attr("data-id") + "&abilita["+(id_ab++)+"][pre]=" + ( $(curr).attr("data-prerequisito") || "null" ) + "&"; }, ""),
+
+                data             = "nome=" + encodeURIComponent( $( "#nomePG").val() ) + "&" + classi + abilita;
 
             $.ajax(
                 Constants.API_POST_CREAPG,
