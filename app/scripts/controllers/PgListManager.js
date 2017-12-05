@@ -3,13 +3,7 @@
     return {
         init: function ()
         {
-            this.getDataFromStorage();
-            this.setBootgrid();
-        },
-
-        getDataFromStorage: function ()
-        {
-            this.classInfos = JSON.parse( window.localStorage.getItem("classinfos") );
+            this.getClassesInfo();
         },
 
         setGridListeners: function ()
@@ -49,7 +43,8 @@
             if( !lista )
                 return "";
 
-            var classes  = this.classInfos[ "classi_" + tipo ],
+            var lista    = lista.filter( function( item ){ return item.id_classe && item.tipo_classe === tipo; }),
+                classes  = this.infos.classi[ tipo ],
                 selects  = "",
                 options  = "",
                 selected = false;
@@ -67,6 +62,7 @@
                         }
                     }
 
+                    options += "<option value='delete_" + classes[c].id_classe + "'>[Elimina]</option>";;
                     selects += "<select>" + options + "</select><br>";
                     options = "";
                 }
@@ -78,13 +74,15 @@
 			return selects;
         },
 
-        getClassesName: function ( lista )
+        getClassesName: function ( lista, tipo )
         {
             if( !lista )
                 return "";
 
-            var classes = lista.map( function( item ){ return item.nome_classe; });
-			return classes.join(", ");
+            var classes = lista.filter( function( item ){ return item.id_classe && item.tipo_classe === tipo; });
+            classes = classes.map( function( item ){ return item.nome_classe; });
+
+            return classes.join(", ");
         },
 
         setBootgrid: function ()
@@ -115,13 +113,13 @@
 					},
                     "civilClassFormatter": function ( column, row )
                     {
-						return "<div class='data-showed'>" + this.getClassesName( row.lista_classi_civili ) + "<span class=\"fa fa-pencil\"></span></div>\
-						<div class='data-edit hidden'>" + this.getClassesSelect( row.lista_classi_civili, "civili" ) + "<span class=\"fa fa-check\"></span></div>";
+						return "<div class='data-showed'>" + this.getClassesName( row.classi, "civile" ) + "<span class=\"fa fa-pencil\"></span></div>\
+						<div class='data-edit hidden'>" + this.getClassesSelect( row.classi, "civile" ) + "<span class=\"fa fa-check\"></span></div>";
 					}.bind( this ),
                     "militaryClassesFormatter": function ( column, row )
                     {
-						return "<div class='data-showed'>" + this.getClassesName( row.lista_classi_militari ) + "<span class=\"fa fa-pencil\"></span></div>\
-						<div class='data-edit hidden'>" + this.getClassesSelect( row.lista_classi_militari, "militari" ) + "<span class=\"fa fa-check\"></span></div>";
+						return "<div class='data-showed'>" + this.getClassesName( row.classi, "militare" ) + "<span class=\"fa fa-pencil\"></span></div>\
+						<div class='data-edit hidden'>" + this.getClassesSelect( row.classi, "militare" ) + "<span class=\"fa fa-check\"></span></div>";
 					}.bind( this ),
                     "pxFormatter": function ( column, row )
                     {
@@ -152,10 +150,37 @@
             {
                 this.setGridListeners();
             }.bind( this ) );
-        }
+        },
+
+        getClassesInfo: function ()
+        {
+            $.ajax({
+                url: Constants.API_GET_INFO,
+                method: "GET",
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function( data )
+                {
+                    if ( data.status === "ok" )
+                    {
+                        this.infos = data.info;
+                        this.setBootgrid();
+                    }
+                    else if ( data.status === "error" )
+                    {
+                        Utils.showError( data.message );
+                    }
+                }.bind(this),
+                error: function ( jqXHR, textStatus, errorThrown )
+                {
+                    Utils.showError( textStatus+"<br>"+errorThrown );
+                }
+            });
+        },
     };
 }();
 
-$(function (e) {
+$(function () {
     PgListManager.init();
 });
