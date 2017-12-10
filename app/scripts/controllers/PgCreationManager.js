@@ -586,7 +586,7 @@
         {
             var clicked = $( e.target );
             clicked.addClass("selected");
-            console.log("elementoDoppioClick",clicked,clicked.parent());
+
             if( clicked.parent().is( $( "#" + CIVILIAN_CLASS_LIST_ID ) ) )
                 this.compraClassiCivili.call( this );
             else if( clicked.parent().is( $( "#" + CIVILIAN_ABILITY_LIST_ID ) ) )

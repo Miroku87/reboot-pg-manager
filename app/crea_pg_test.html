@@ -1,0 +1,163 @@
+﻿{% extends "./templates/main_template.html" %}
+{% set body_classes = body_classes + " crea-pg-page" %}
+{% set section = "creapg" %}
+{% set titolo_sezione = "Creazione nuovo personaggio"  %}
+{% set descrizione_sezione = "Compila i campi con i dati del tuo nuovo personaggio."  %}
+{% block mainContent %}
+{{ super() }}
+<!--------------------------
+  | Your Page Content Here |
+  -------------------------->
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Anagrafica personaggio</h3>
+    </div>
+    <div class="box-body">
+        <div class="input-group">
+                <span class="input-group-addon" id="basic-addon6"><span class="fa fa-user"
+                                                                        aria-hidden="true"></span></span>
+            <input type="text" id="nomePG" name="nome_pg" class="form-control" placeholder="Nome Personaggio"
+                   aria-label="CharacterName" aria-describedby="basic-addon6"/>
+        </div>
+    </div>
+</div>
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Professione personaggio</h3>
+    </div>
+    <div class="box-body">
+        <div class="form-group" id="contenitoreClassiCivili">
+            <h4>Scegli una o più Classi Civili</h4>
+
+            <p>Punti Esperienza disponibili: <span id="puntiEsperienza" class="badge badge-success">0</span></p>
+
+            <div class="row">
+                <div class="col-sm-5">
+                    <ul class="list-select" id="listaClassiCivili">
+                    </ul>
+                </div>
+                <div class="col-sm-2 button-cell">
+                    <div class="move-item-horizontal">
+                        <button class="btn btn-primary compra-classe-civile-btn" id="aggiungiClasseCivile">&gt;&gt;</button>
+                        <br/><br/>
+                        <button class="btn btn-primary butta-classe-civile-btn" id="rimuoviClasseCivile">&lt;&lt;</button>
+                    </div>
+                    <div class="move-item-vertical">
+                        <button class="btn btn-primary compra-classe-civile-btn"><span
+                                class="fa fa-chevron-down" aria-hidden="true"></span></button>
+                        &nbsp;&nbsp;
+                        <button class="btn btn-primary butta-classe-civile-btn"><span
+                                class="fa fa-chevron-up" aria-hidden="true"></span></button>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <ul class="list-select" id="listaClassiCiviliAcquistate">
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <h4>Scegli le abilità per la Classe Civile</h4>
+
+            <p>Se non vedi un'abilit&agrave; nella lista vuol dire che non hai selezionato ancora i prerequisiti.</p>
+
+            <div class="row">
+                <div class="col-sm-5">
+                    <ul class="list-select" id="listaAbilitaCivili">
+                    </ul>
+                </div>
+                <div class="col-sm-2 button-cell">
+                    <div class="move-item-horizontal">
+                        <button class="btn btn-primary compra-abilita-civile-btn">&gt;&gt;</button>
+                        <br/><br/>
+                        <button class="btn btn-primary butta-abilita-civile-btn">&lt;&lt;</button>
+                    </div>
+                    <div class="move-item-vertical">
+                        <button class="btn btn-primary compra-abilita-civile-btn"><span
+                                class="fa fa-chevron-down" aria-hidden="true"></span></button>
+                        &nbsp;&nbsp;
+                        <button class="btn btn-primary butta-abilita-civile-btn"><span
+                                class="fa fa-chevron-up" aria-hidden="true"></span></button>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <ul class="list-select" id="listaAbilitaCiviliAcquistate">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Classe personaggio</h3>
+    </div>
+    <div class="box-body">
+        <div class="form-group" id="contenitoreClassiMilitari">
+            <h4>Scegli una o due Classi Militari</h4>
+
+            <p>Punti Combattimento disponibili: <span id="puntiCombattimento" class="badge badge-success">0</span></p>
+
+            <div class="row">
+                <div class="col-sm-5">
+                    <ul class="list-select" id="listaClassiMilitari">
+                    </ul>
+                </div>
+                <div class="col-sm-2 button-cell">
+                    <div class="move-item-horizontal">
+                        <button class="btn btn-primary compra-classe-militare-btn">&gt;&gt;</button>
+                        <br/><br/>
+                        <button class="btn btn-primary butta-classe-militare-btn">&lt;&lt;</button>
+                    </div>
+                    <div class="move-item-vertical">
+                        <button class="btn btn-primary compra-classe-militare-btn"><span
+                                class="fa fa-chevron-down" aria-hidden="true"></span></button>
+                        &nbsp;&nbsp;
+                        <button class="btn btn-primary butta-militare-civile-btn"><span
+                                class="fa fa-chevron-up" aria-hidden="true"></span></button>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <ul class="list-select" id="listaClassiMilitariAcquistate">
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group"> 
+            <h4>Scegli le abilità per le Classi Militari</h4>
+
+            <div class="row">
+                <div class="col-sm-5">
+                    <ul class="list-select" id="listaAbilitaMilitari">
+                    </ul>
+                </div>
+                <div class="col-sm-2 button-cell">
+                    <div class="move-item-horizontal">
+                        <button class="btn btn-primary compra-abilita-militare-btn">&gt;&gt;</button>
+                        <br/><br/>
+                        <button class="btn btn-primary butta-abilita-militare-btn">&lt;&lt;</button>
+                    </div>
+                    <div class="move-item-vertical">
+                        <button class="btn btn-primary compra-abilita-militare-btn"><span
+                                class="fa fa-chevron-down" aria-hidden="true"></span></button>
+                        &nbsp;&nbsp;
+                        <button class="btn btn-primary butta-abilita-militare-btn"><span
+                                class="fa fa-chevron-up" aria-hidden="true"></span></button>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <ul class="list-select" id="listaAbilitaMilitariAcquistate"></ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- /.box-body -->
+</div>
+<button id="inviaDati" class="btn btn-success pull-center">Invia Dati</button>
+{% endblock %}
+{% block managers %}
+{{ super() }}
+<script src="scripts/utils/MultiSelector.js"></script>
+<script src="scripts/controllers/PgCreationManager_test.js"></script>
+{% endblock %}

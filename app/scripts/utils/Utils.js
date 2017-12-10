@@ -22,6 +22,22 @@
             parent.append( items );
         },
 
+        /**
+         *
+         * @param {Array} arr
+         * @param {string} key
+         */
+        sortArrayByAttribute: function ( arr, key )
+        {
+            arr.sort(function ( a, b )
+            {
+                if( typeof a === "string" || typeof b === "string" )
+                    return ( a[key]+"" ).localeCompare( b[key]+"" );
+
+                return a[key] - b[key];
+            });
+        },
+
         showError: function(errorText)
         {
             if($("#errorDialog").length > 0)

@@ -7,7 +7,7 @@
 
         init: function ()
         {
-            if( SECTION_NAME !== "" && SECTION_NAME !== "index" && SECTION_NAME !== "registrazione" )
+            if( SECTION_NAME !== "" && SECTION_NAME !== "index" && SECTION_NAME !== "registrazione" && SECTION_NAME.indexOf( "test" ) === -1 )
                 Utils.controllaAccessoPagina( SECTION_NAME );
 
             this.setListeners();
