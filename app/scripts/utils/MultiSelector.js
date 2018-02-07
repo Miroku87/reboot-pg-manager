@@ -7,18 +7,19 @@ var MultiSelector = MultiSelector || (function ()
     var DEFAULT_PARAMS = {
             id_lista           : "lista",
             id_carrello        : "carrello",
-            id_btn_aggiungi    : "aggiungi",
-            id_btn_rimuovi     : "rimuovi",
+            btn_aggiungi       : "aggiungi",
+            btn_rimuovi        : "rimuovi",
             ordina_per_attr    : "id",
             dati_lista         : [],
             dati_carrello      : [],
             max_selezioni      : null,
-            elemAggiunto       : null,
-            elemRimosso        : null,
+            elemAggiunti       : null,
+            elemRimossi        : null,
             elemSelezionato    : null,
             elemNegatoCliccato : null,
             elemRenderizzato   : null,
-            aggiuntaPossibile  : null
+            aggiuntaPossibile  : null,
+            onError            : null
         },
         ATTR_TYPES     = ["number","string","boolean"];
 
@@ -39,15 +40,10 @@ var MultiSelector = MultiSelector || (function ()
                 this._settings[d] = DEFAULT_PARAMS[d];
         }
 
-        if( this._settings.dati_lista === null )
-            throw new Error("Il parametro dati_lista non può essere nullo.");
-
         this._dati_lista    = this._settings.dati_lista;
         this._dati_carrello = this._settings.dati_carrello;
 
-        _getDOMElements.call(this);
-        _impostaPulsanti.call( this );
-        _aggiornaListe.call(this);
+        return this;
     }
 
     MultiSelector.ERRORS = {
@@ -58,12 +54,26 @@ var MultiSelector = MultiSelector || (function ()
     MultiSelector.prototype = Object.create( Object.prototype );
     MultiSelector.prototype.constructor = MultiSelector;
 
+    function _getJQueryObj( obj )
+    {
+        var jobj = {};
+
+        if( typeof obj === "string" )
+            jobj = $( "#" + obj );
+        else if ( obj instanceof $ )
+            jobj = obj;
+        else if ( obj instanceof HTMLElement )
+            jobj = $( obj );
+
+        return jobj;
+    }
+
     function _getDOMElements()
     {
-        this.elem_lista    = $( "#" + this._settings.id_lista );
-        this.elem_carrello = $( "#" + this._settings.id_carrello );
-        this.elem_aggiungi = $( "#" + this._settings.id_btn_aggiungi );
-        this.elem_rimuovi  = $( "#" + this._settings.id_btn_rimuovi );
+        this.elem_lista    = _getJQueryObj( this._settings.id_lista );
+        this.elem_carrello = _getJQueryObj( this._settings.id_carrello );
+        this.elem_aggiungi = _getJQueryObj( this._settings.btn_aggiungi );
+        this.elem_rimuovi  = _getJQueryObj( this._settings.btn_rimuovi );
 
         if( !this.elem_lista.is("ul") )
             throw new Error( "L'elemento lista deve essere un tag UL." );
@@ -74,6 +84,7 @@ var MultiSelector = MultiSelector || (function ()
 
     function _aggiornaListe( )
     {
+        console.log(this._settings.id_lista, this._dati_carrello );
         _riempiDOMListe.call( this, this.elem_carrello, this._dati_carrello );
         _riempiDOMListe.call( this, this.elem_lista, this._dati_lista );
         _impostaEventi.call( this, this.elem_carrello );
@@ -150,9 +161,26 @@ var MultiSelector = MultiSelector || (function ()
         }
     }
 
-    function _elementoDoppioClick()
+    function _elementoDoppioClick( e )
     {
+        var cliccato   = $( e.target ),
+            tipo_lista = cliccato.parent().is( this.elem_lista ) ? "lista" : "carrello";
 
+        if ( cliccato.is("[disabled]") )
+        {
+            if (typeof this._settings.onError === "function")
+                this._settings.onError(MultiSelector.ERRORS.ELEM_NEGATO_CLICCATO);
+
+            return false;
+        }
+
+        cliccato.addClass( "selected" );
+        this._selezionati.push( tipo_lista + "_" + cliccato.attr( "data-index" ) );
+
+        if( cliccato.parent().is( this.elem_lista ) )
+            _aggiungiElementoACarrello.call( this );
+        else if ( cliccato.parent().is( this.elem_carrello ) )
+            _rimuoviElementoDaCarrello.call( this );
     }
 
     function _impostaEventi( lista )
@@ -214,12 +242,18 @@ var MultiSelector = MultiSelector || (function ()
 
     function _aggiungiElementoACarrello( )
     {
+        if( this._selezionati.filter( function( elem ){ return elem.indexOf( "lista" ) !== -1; }).length === 0 )
+            return false;
+
         _sposta.call( this, this._dati_lista, this._dati_carrello );
         _aggiornaListe.call(this);
     }
 
     function _rimuoviElementoDaCarrello( )
     {
+        if( this._selezionati.filter( function( elem ){ return elem.indexOf( "carrello" ) !== -1; }).length === 0 )
+            return false;
+
         _sposta.call( this, this._dati_carrello, this._dati_lista );
         _aggiornaListe.call(this);
     }
@@ -246,6 +280,12 @@ var MultiSelector = MultiSelector || (function ()
 
         Utils.sortArrayByAttribute( da_lista, this._settings.ordina_per_attr );
         Utils.sortArrayByAttribute( in_lista, this._settings.ordina_per_attr );
+
+        if ( typeof this._settings.elemAggiunti === "function" && $( da_lista ).is( this._dati_lista ) )
+            this._settings.elemAggiunti( selezionati, da_lista, in_lista );
+
+        if ( typeof this._settings.elemRimossi === "function" && !$( da_lista ).is( this._dati_lista ) )
+            this._settings.elemRimossi( selezionati, in_lista, da_lista );
 
         this._selezionati = [];
     }
@@ -294,7 +334,25 @@ var MultiSelector = MultiSelector || (function ()
 
     MultiSelector.prototype.aggiungiDatiLista = function( dati )
     {
+        this._dati_lista = this._dati_lista.concat( dati );
+        _aggiornaListe.call(this);
+    };
 
+    MultiSelector.prototype.rimuoviDaCarrello = function( chiave_primaria, valore )
+    {
+        try
+        {
+            var dato = this._dati_carrello.filter( function( el ){ return el[chiave_primaria] === valore; })[0];
+
+            if( dato )
+                this._selezionati.push( dato )
+
+            _rimuoviElementoDaCarrello.call( this );
+        }
+        catch( e )
+        {
+
+        }
     };
 
     MultiSelector.prototype.deselezionaTutti = function( dati )
@@ -304,9 +362,14 @@ var MultiSelector = MultiSelector || (function ()
         this.elem_carrello.children().removeClass("selected");
     };
 
-    MultiSelector.prototype.numeroAggiunti = function( )
+    MultiSelector.prototype.numeroCarrello = function( )
     {
         return this.elem_carrello.find("li").size();
+    };
+
+    MultiSelector.prototype.numeroLista = function( )
+    {
+        return this.elem_lista.find("li").size();
     };
 
     MultiSelector.prototype.lista = function( )
@@ -317,6 +380,13 @@ var MultiSelector = MultiSelector || (function ()
     MultiSelector.prototype.carrello = function( )
     {
         return this._dati_carrello;
+    };
+
+    MultiSelector.prototype.crea = function( )
+    {
+        _getDOMElements.call(this);
+        _impostaPulsanti.call( this );
+        _aggiornaListe.call(this);
     };
 
     return MultiSelector;

@@ -22,23 +22,14 @@
             this.getClassesInfo();
         },
 
-        controllaPrerequisitoClasseMilitare: function ( elem, dati_lista, dati_carrello )
+        onMSError: function ( err )
         {
-            return true;
-        },
-
-        controllaPrerequisitoAbilita: function ( elem, dati_lista, dati_carrello )
-        {
-            if( parseInt( elem.prerequisito_abilita ) === Constants.PREREQUISITO_4_SPORTIVO )
-                return dati_carrello.filter( function( e ){ return parseInt( e.id_classe ) === 1; }).length >= 4;
-
-            return false;
+            console.log( err );
         },
 
         classeCivileRenderizzata: function ( dato, lista, indice, dom_elem )
         {
-            dato.innerHTML = dom_elem[0].innerHTML = dato.nome_classe + " ( " + COSTI_PROFESSIONI[indice] + " PX )";
-            console.log( dati, dom_elem );
+            dato.innerHTML = dom_elem[0].innerHTML = dato.nome_classe + " ( " + COSTI_PROFESSIONI[ this.ms_classi_civili.numeroCarrello() ] + " PX )";
         },
 
         classeCivileSelezionata: function ( dati_lista, dom_elem )
@@ -46,7 +37,7 @@
 
         },
 
-        setClassList: function ()
+        impostaMSClassiCivili: function ()
         {
             var dati = [];
 
@@ -64,38 +55,148 @@
                 }
             }
 
-            /*for( var d in this.classInfos.abilita["1"] )
+            this.ms_classi_civili = new MultiSelector(
+                {
+                    id_lista           : CIVILIAN_CLASS_LIST_ID,
+                    id_carrello        : CIVILIAN_CLASS_BUCKET_ID,
+                    btn_aggiungi       : $( ".compra-classe-civile-btn" ),
+                    btn_rimuovi        : $( ".butta-classe-civile-btn" ),
+                    ordina_per_attr    : "id_classe",
+                    dati_lista         : dati,
+                    onError            : this.onMSError.bind( this ),
+                    elemSelezionato    : this.classeCivileSelezionata.bind(this),
+                    elemRenderizzato   : this.classeCivileRenderizzata.bind(this),
+                    elemAggiunti       : this.inserisciDatiAbilitaCivili.bind(this),
+                    elemRimossi        : this.inserisciDatiAbilitaMilitari.bind(this)
+                });
+            this.ms_classi_civili.crea();
+        },
+
+        classiMilitariRimosse: function ( rimossi, dati_lista, dati_carrello )
+        {
+            for( var r in rimossi )
             {
-                var dato = this.classInfos.abilita["1"][d];
+                var dato = rimossi[r];
+                if( dati_carrello.filter( function( el ){ return el.prerequisito_classe === dato.id_classe; }).length > 0 )
+                    this.ms_classi_militari.rimuoviDaCarrello( "id_classe", dato.id_classe );
+            }
+        },
+
+        classeMilitareAcquistabile: function ( id_prerequisito, elem, dati_lista, dati_carrello )
+        {
+            if( dati_carrello.length === 2 )
+                return false;
+
+            if( !id_prerequisito )
+                return true;
+
+            return dati_carrello.filter( function( el ){ return el.id_classe === id_prerequisito; }).length > 0;
+        },
+
+        impostaMSClassiMilitari: function ()
+        {
+            var dati = [];
+
+            for( var d in this.classInfos.classi.militare )
+            {
+                var dato = this.classInfos.classi.militare[d];
 
                 if( typeof dato === "object" )
                 {
                     dato = JSON.parse( JSON.stringify( dato ) );
 
-                    dato.innerHTML = dato.nome_abilita + " ( " + dato.costo_abilita + " PX )";
-                    dato.prerequisito = null;
-
-                    if( dato.prerequisito_abilita && dato.prerequisito_abilita > 0 )
-                        dato.prerequisito = { id_abilita: dato.prerequisito_abilita }
-                    else if( dato.prerequisito_abilita && dato.prerequisito_abilita < 0 )
-                        dato.prerequisito = this.controllaPrerequisitoAbilita;
-
-
+                    dato.innerHTML = dato.nome_classe + " ( 1 PC )";
+                    dato.prerequisito = this.classeMilitareAcquistabile.bind( this, dato.prerequisito_classe );
                     dati.push( dato );
                 }
-            }*/
+            }
 
-            var ms_classi_civili = new MultiSelector(
+            this.ms_classi_militari = new MultiSelector(
                 {
-                    id_lista           : CIVILIAN_CLASS_LIST_ID,
-                    id_carrello        : CIVILIAN_CLASS_BUCKET_ID,
-                    id_btn_aggiungi    : "aggiungiClasseCivile",
-                    id_btn_rimuovi     : "rimuoviClasseCivile",
+                    id_lista           : MILITARY_CLASS_LIST_ID,
+                    id_carrello        : MILITARY_CLASS_BUCKET_ID,
+                    btn_aggiungi       : $( ".compra-classe-militare-btn" ),
+                    btn_rimuovi        : $( ".butta-classe-militare-btn" ),
                     ordina_per_attr    : "id_classe",
                     dati_lista         : dati,
-                    elemSelezionato    : this.classeCivileSelezionata,
-                    elemRenderizzato   : this.classeCivileRenderizzata
+                    onError            : this.onMSError.bind( this ),
+                    elemRimossi        : this.classiMilitariRimosse.bind( this )
                 });
+            this.ms_classi_militari.crea();
+        },
+
+        controllaPrerequisitoAbilita: function ( elem, dati_lista, dati_carrello )
+        {
+            if( parseInt( elem.prerequisito_abilita ) === Constants.PREREQUISITO_TUTTE_ABILITA )
+                return dati_carrello.length >= this.classInfos.abilita[ elem.id_classe].length - 1;
+            else if( parseInt( elem.prerequisito_abilita ) === Constants.PREREQUISITO_F_TERRA_T_SCELTO )
+                return dati_carrello.filter( function( e )
+                    {
+                        return parseInt( e.id_abilita ) === Constants.ID_ABILITA_F_TERRA ||
+                            parseInt( e.id_abilita ) === Constants.ID_ABILITA_T_SCELTO;
+                    }).length === 2;
+            else if( parseInt( elem.prerequisito_abilita ) === Constants.PREREQUISITO_5_SUPPORTO_BASE )
+                return dati_carrello.filter( function( e ){ return parseInt( e.id_classe ) === Constants.ID_CLASSE_SUPPORTO_BASE; }).length >= 5;
+            else if( parseInt( elem.prerequisito_abilita ) === Constants.PREREQUISITO_3_CONTROLLER )
+                return dati_carrello.filter( function( e ){ return e.nome_classe.toLowerCase().indexOf( "controller" ) !== -1; }).length >= 3;
+            else if( parseInt( elem.prerequisito_abilita ) === Constants.PREREQUISITO_4_SPORTIVO )
+                return dati_carrello.filter( function( e ){ return parseInt( e.id_classe ) === Constants.ID_CLASSE_SPORTIVO; }).length >= 4;
+
+            return false;
+        },
+
+        impostaMSAbilitaCivili: function ()
+        {
+            this.ms_abilita_civili = new MultiSelector(
+                {
+                    id_lista           : CIVILIAN_ABILITY_LIST_ID,
+                    id_carrello        : CIVILIAN_ABILITY_BUCKET_ID,
+                    btn_aggiungi       : $( ".compra-abilita-civile-btn" ),
+                    btn_rimuovi        : $( ".butta-abilita-civile-btn" ),
+                    ordina_per_attr    : "id_abilita",
+                    onError            : this.onMSError.bind( this )
+                });
+            this.ms_abilita_civili.crea();
+        },
+
+        inserisciDatiAbilitaCivili: function ( selezionati, da_lista, in_lista  )
+        {
+            var dati = [];
+
+            for ( var s in selezionati )
+            {
+                var id_classe = selezionati[s].id_classe;
+
+                for (var d in this.classInfos.abilita[id_classe])
+                {
+                    var dato = this.classInfos.abilita[id_classe][d];
+
+                    if (typeof dato === "object")
+                    {
+                        dato = JSON.parse(JSON.stringify(dato));
+
+                        dato.innerHTML = dato.nome_abilita + " ( " + dato.costo_abilita + " PX )";
+                        dato.prerequisito = null;
+
+                        if (dato.prerequisito_abilita && dato.prerequisito_abilita > 0)
+                            dato.prerequisito = {id_abilita : dato.prerequisito_abilita};
+                        else if (dato.prerequisito_abilita && dato.prerequisito_abilita < 0)
+                            dato.prerequisito = this.controllaPrerequisitoAbilita.bind(this);
+
+                        dati.push(dato);
+                    }
+                }
+            }
+
+            this.ms_abilita_civili.aggiungiDatiLista( dati );
+        },
+
+        impostaMSAbilitaMilitari: function ()
+        {
+        },
+
+        inserisciDatiAbilitaMilitari: function ()
+        {
         },
 
         getClassesInfo: function ()
@@ -114,7 +215,10 @@
                     if ( data.status === "ok" )
                     {
                         this.classInfos = data.info;
-                        this.setClassList();
+                        this.impostaMSClassiCivili();
+                        this.impostaMSClassiMilitari();
+                        this.impostaMSAbilitaCivili();
+                        this.impostaMSAbilitaMilitari();
                     }
                     else if ( data.status === "error" )
                     {
