@@ -40,8 +40,8 @@ var MultiSelector = MultiSelector || (function ()
                 this._settings[d] = DEFAULT_PARAMS[d];
         }
 
-        this._dati_lista    = this._settings.dati_lista;
-        this._dati_carrello = this._settings.dati_carrello;
+        this._dati_lista    = this._settings.dati_lista.concat();
+        this._dati_carrello = this._settings.dati_carrello.concat();
 
         return this;
     }
@@ -84,7 +84,6 @@ var MultiSelector = MultiSelector || (function ()
 
     function _aggiornaListe( )
     {
-        console.log(this._settings.id_lista, this._dati_carrello );
         _riempiDOMListe.call( this, this.elem_carrello, this._dati_carrello );
         _riempiDOMListe.call( this, this.elem_lista, this._dati_lista );
         _impostaEventi.call( this, this.elem_carrello );
@@ -281,13 +280,12 @@ var MultiSelector = MultiSelector || (function ()
         Utils.sortArrayByAttribute( da_lista, this._settings.ordina_per_attr );
         Utils.sortArrayByAttribute( in_lista, this._settings.ordina_per_attr );
 
-        if ( typeof this._settings.elemAggiunti === "function" && $( da_lista ).is( this._dati_lista ) )
-            this._settings.elemAggiunti( selezionati, da_lista, in_lista );
+        this._selezionati = [];
 
+        if ( typeof this._settings.elemAggiunti === "function" && $( da_lista ).is( this._dati_lista ) )
+            setTimeout(function(){ this._settings.elemAggiunti( selezionati, da_lista, in_lista )}.bind(this), 0);
         if ( typeof this._settings.elemRimossi === "function" && !$( da_lista ).is( this._dati_lista ) )
             this._settings.elemRimossi( selezionati, in_lista, da_lista );
-
-        this._selezionati = [];
     }
 
     function _setPopovers( elements )
@@ -334,28 +332,36 @@ var MultiSelector = MultiSelector || (function ()
 
     MultiSelector.prototype.aggiungiDatiLista = function( dati )
     {
-        this._dati_lista = this._dati_lista.concat( dati );
+        var nuovi_dati = dati.concat();
+        this._dati_lista = this._dati_lista.concat( nuovi_dati );
         _aggiornaListe.call(this);
     };
 
-    MultiSelector.prototype.rimuoviDaCarrello = function( chiave_primaria, valore )
+    MultiSelector.prototype.rimuoviDatiLista = function( chiave_primaria, valore )
     {
-        try
+        for( var d = this._dati_lista.length - 1; d >= 0; d-- )
         {
-            var dato = this._dati_carrello.filter( function( el ){ return el[chiave_primaria] === valore; })[0];
-
-            if( dato )
-                this._selezionati.push( dato )
-
-            _rimuoviElementoDaCarrello.call( this );
+            if( this._dati_lista[d][ chiave_primaria ] && this._dati_lista[d][ chiave_primaria ] === valore )
+                this._dati_lista.splice( d, 1 );
         }
-        catch( e )
-        {
 
-        }
+        _aggiornaListe.call(this);
     };
 
-    MultiSelector.prototype.deselezionaTutti = function( dati )
+    MultiSelector.prototype.spostaDaCarrello = function( chiave_primaria, valore )
+    {
+        for( var d = this._dati_carrello.length - 1; d >= 0; d-- )
+        {
+            if( this._dati_carrello[d][ chiave_primaria ] && this._dati_carrello[d][ chiave_primaria ] === valore )
+                this._dati_lista.push( this._dati_carrello.splice( d, 1 )[0] );
+        }
+
+        Utils.sortArrayByAttribute( this._dati_lista, this._settings.ordina_per_attr );
+
+        _aggiornaListe.call(this);
+    };
+
+    MultiSelector.prototype.deselezionaTutti = function( )
     {
         this._selezionati = [];
         this.elem_lista.children().removeClass("selected");
@@ -387,6 +393,11 @@ var MultiSelector = MultiSelector || (function ()
         _getDOMElements.call(this);
         _impostaPulsanti.call( this );
         _aggiornaListe.call(this);
+    };
+
+    MultiSelector.prototype.toString = function( )
+    {
+        return "[ MultiSelector - " + this._settings.id_lista + " ]";
     };
 
     return MultiSelector;
