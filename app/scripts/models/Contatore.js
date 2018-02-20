@@ -75,7 +75,7 @@ var Contatore = Contatore || (function ()
 
     Contatore.prototype.aumentaConteggio = function( valore )
     {
-        valore = typeof valore === "undefined" ? 1 : valore;
+        valore = typeof valore === "undefined" ? 1 : parseInt( valore, 10 );
 
         var nuovo_valore = this._valore_ora + valore;
 
@@ -88,7 +88,7 @@ var Contatore = Contatore || (function ()
 
     Contatore.prototype.diminuisciConteggio = function( valore )
     {
-        valore = typeof valore === "undefined" ? 1 : valore;
+        valore = typeof valore === "undefined" ? 1 : parseInt( valore, 10 );
 
         var nuovo_valore = this._valore_ora - valore;
 

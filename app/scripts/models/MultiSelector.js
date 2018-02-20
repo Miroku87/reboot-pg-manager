@@ -81,8 +81,8 @@ var MultiSelector = MultiSelector || (function ()
         if( !this.elem_lista.is("ul") )
             throw new Error( "L'elemento lista deve essere un tag UL." );
 
-        if( !this.elem_carrello.is("ul") )
-            throw new Error( "L'elemento carrello deve essere un tag UL." );
+        //if( !this.elem_carrello.is("ul") )
+            //throw new Error( "L'elemento carrello deve essere un tag UL." );
     }
 
     function _controllaPrerequisiti( indice_elem, dato )
@@ -114,12 +114,16 @@ var MultiSelector = MultiSelector || (function ()
         
         if( !enabled )
         {
-            var indice_sel =  this._selezionati.indexOf( "lista_"+indice_elem );
+            var lista      = MultiSelector.TIPI_LISTE.LISTA,
+                indice_sel =  this._selezionati.indexOf( lista+"_"+indice_elem );
             elem.removeClass("selected");
 
             if( indice_sel !== -1 )
             {
                 this._selezionati.splice(indice_sel, 1);
+
+                if (typeof this._settings.elemDeselezionato === "function")
+                    _eventoAsincrono.call( this, this._settings.elemDeselezionato, lista, this["_dati_"+lista][elem.attr("data-index")], this["_dati_"+lista], elem, this._selezionati );
             }
         }
     }
@@ -275,8 +279,8 @@ var MultiSelector = MultiSelector || (function ()
         lista.find("li").unbind("click");
         lista.find("li").click( _elementoCliccato.bind(this) );
 
-        lista.find("li").unbind("dblclick");
-        lista.find("li").dblclick( _elementoDoppioClick.bind(this) );
+        //lista.find("li").unbind("dblclick");
+        //lista.find("li").dblclick( _elementoDoppioClick.bind(this) );
     }
 
     function _impostaPulsanti()
@@ -420,6 +424,7 @@ var MultiSelector = MultiSelector || (function ()
 
     MultiSelector.prototype.deselezionaUltimo = function( )
     {
+        console.log(this._selezionati);
         var selezionato = this._selezionati.pop(),
             splittato   = selezionato.split("_"),
             lista       = splittato[0],
@@ -457,6 +462,14 @@ var MultiSelector = MultiSelector || (function ()
     MultiSelector.prototype.ridisegnaListe = function( )
     {
         _aggiornaListe.call( this, false );
+    };
+
+    MultiSelector.prototype.datiSelezionati = function( )
+    {
+        var indici_sel     = this._selezionati.map( function( elem ){ return parseInt( elem.replace(/\D/g, "") ); }),
+            selezionati    = this._dati_lista.filter( function( elem, i ){ return indici_sel.indexOf( i ) !== -1; });
+
+        return selezionati;
     };
 
     MultiSelector.prototype.crea = function( )

@@ -28,7 +28,6 @@
 			var errors     = "",
 				nome       = $("input[name='nome']").val(),
 				cognome    = $("input[name='cognome']").val(),
-				cf         = $("input[name='codicefiscale']").val(),
 				note       = $("textarea[name='note']").val(),
 				mail       = $("input[name='mail']").val(),
 				password1  = $("input[name='password1']").val(),
@@ -40,11 +39,6 @@
 
 			if ( cognome === "" || Utils.soloSpazi(cognome) )
 				errors += "Il campo Cognome non pu&ograve; essere vuoto.<br>";
-
-			if ( cf === "" || Utils.soloSpazi(cf) )
-				errors += "Il campo Codice Fiscale non pu&ograve; essere vuoto.<br>";
-			else if ( !Utils.controllaCF( cf ) )
-				errors += "Il campo Codice Fiscale contiene un valore non corretto.<br>";
 
 			if ( mail === "" || Utils.soloSpazi(mail) )
 				errors += "Il campo Mail non pu&ograve; essere vuoto.<br>";
@@ -71,7 +65,6 @@
 
 		inviaDati: function ()
 		{
-			console.log("sdfsdf");
 			var errors = this.controllaCampi();
 
 			if( errors )
