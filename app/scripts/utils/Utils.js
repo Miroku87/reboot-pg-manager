@@ -221,5 +221,24 @@
             var pattern = /^\s+$/;
 
             return pattern.test( stringa );
+        },
+
+        getJQueryObj: function( obj )
+        {
+            var jobj = {};
+
+            if( typeof obj === "string" )
+                jobj = $( "#" + obj );
+            else if ( obj instanceof $ )
+                jobj = obj;
+            else if ( obj instanceof HTMLElement )
+                jobj = $( obj );
+
+            return jobj;
+        },
+
+        trasformaInArray: function ( obj )
+        {
+            return Array.prototype.slice.call( obj );
         }
     };

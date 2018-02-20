@@ -3,10 +3,6 @@
 {% set section = "creapg" %}
 {% set titolo_sezione = "Creazione nuovo personaggio"  %}
 {% set descrizione_sezione = "Compila i campi con i dati del tuo nuovo personaggio."  %}
-{% block styles %}
-{{ super() }}
-<link rel="stylesheet" href="styles/multiselector.css"/>
-{% endblock %}
 {% block mainContent %}
 {{ super() }}
 <!--------------------------
@@ -42,9 +38,9 @@
                 </div>
                 <div class="col-sm-2 button-cell">
                     <div class="move-item-horizontal">
-                        <button class="btn btn-primary compra-classe-civile-btn" id="aggiungiClasseCivile">&gt;&gt;</button>
+                        <button class="btn btn-primary compra-classe-civile-btn">&gt;&gt;</button>
                         <br/><br/>
-                        <button class="btn btn-primary butta-classe-civile-btn" id="rimuoviClasseCivile">&lt;&lt;</button>
+                        <button class="btn btn-primary butta-classe-civile-btn">&lt;&lt;</button>
                     </div>
                     <div class="move-item-vertical">
                         <button class="btn btn-primary compra-classe-civile-btn"><span
@@ -109,9 +105,9 @@
                 </div>
                 <div class="col-sm-2 button-cell">
                     <div class="move-item-horizontal">
-                        <button class="btn btn-primary compra-classe-militare-btn" id="aggiungiClasseMilitare">&gt;&gt;</button>
+                        <button class="btn btn-primary compra-classe-militare-btn">&gt;&gt;</button>
                         <br/><br/>
-                        <button class="btn btn-primary butta-classe-militare-btn" id="rimuoviClasseMilitare">&lt;&lt;</button>
+                        <button class="btn btn-primary butta-classe-militare-btn">&lt;&lt;</button>
                     </div>
                     <div class="move-item-vertical">
                         <button class="btn btn-primary compra-classe-militare-btn"><span
@@ -162,6 +158,5 @@
 {% endblock %}
 {% block managers %}
 {{ super() }}
-<script src="scripts/utils/MultiSelector.js"></script>
-<script src="scripts/controllers/PgCreationManager_test.js"></script>
+<script src="scripts/controllers/PgCreationManager.js"></script>
 {% endblock %}

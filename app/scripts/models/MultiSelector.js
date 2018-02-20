@@ -16,6 +16,7 @@ var MultiSelector = MultiSelector || (function ()
             elemAggiunti       : null,
             elemRimossi        : null,
             elemSelezionato    : null,
+            elemDeselezionato  : null,
             elemNegatoCliccato : null,
             elemRenderizzato   : null,
             aggiuntaPossibile  : null,
@@ -51,29 +52,31 @@ var MultiSelector = MultiSelector || (function ()
         MAX_SELEZIONI_RAGGIUNTO : "massimoSelezioniRaggiunto"
     };
 
+    MultiSelector.TIPI_LISTE = {
+        LISTA    : "lista",
+        CARRELLO : "carrello"
+    };
+
     MultiSelector.prototype = Object.create( Object.prototype );
     MultiSelector.prototype.constructor = MultiSelector;
 
-    function _getJQueryObj( obj )
+    function _eventoAsincrono( callback )
     {
-        var jobj = {};
+        var arg_reali = Utils.trasformaInArray( arguments );
+        arg_reali.splice(0,1);
 
-        if( typeof obj === "string" )
-            jobj = $( "#" + obj );
-        else if ( obj instanceof $ )
-            jobj = obj;
-        else if ( obj instanceof HTMLElement )
-            jobj = $( obj );
-
-        return jobj;
+        setTimeout( function()
+        {
+            callback.apply( this, arg_reali );
+        }.bind(this), 0 );
     }
 
     function _getDOMElements()
     {
-        this.elem_lista    = _getJQueryObj( this._settings.id_lista );
-        this.elem_carrello = _getJQueryObj( this._settings.id_carrello );
-        this.elem_aggiungi = _getJQueryObj( this._settings.btn_aggiungi );
-        this.elem_rimuovi  = _getJQueryObj( this._settings.btn_rimuovi );
+        this.elem_lista    = Utils.getJQueryObj( this._settings.id_lista );
+        this.elem_carrello = Utils.getJQueryObj( this._settings.id_carrello );
+        this.elem_aggiungi = Utils.getJQueryObj( this._settings.btn_aggiungi );
+        this.elem_rimuovi  = Utils.getJQueryObj( this._settings.btn_rimuovi );
 
         if( !this.elem_lista.is("ul") )
             throw new Error( "L'elemento lista deve essere un tag UL." );
@@ -82,10 +85,66 @@ var MultiSelector = MultiSelector || (function ()
             throw new Error( "L'elemento carrello deve essere un tag UL." );
     }
 
-    function _aggiornaListe( )
+    function _controllaPrerequisiti( indice_elem, dato )
     {
-        _riempiDOMListe.call( this, this.elem_carrello, this._dati_carrello );
-        _riempiDOMListe.call( this, this.elem_lista, this._dati_lista );
+        var enabled     = false,
+            indici_sel  = this._selezionati.map( function( elem ){ return parseInt( elem.replace(/\D/g, "") ); }),
+            selezionati = this._dati_lista.filter( function( elem, i ){ return indici_sel.indexOf( i ) !== -1; }),
+            elem        = this.elem_lista.find("li").eq( indice_elem );
+
+        if( typeof dato.prerequisito === "function" )
+            enabled = dato.prerequisito( dato, this._dati_lista, this._dati_carrello, selezionati );
+        else if ( typeof dato.prerequisito === "object" && Object.keys( dato.prerequisito ).length > 0 )
+        {
+            var da_controllare = this._dati_carrello.concat( selezionati );
+            for( var dc in da_controllare )
+            {
+                var requisito_incontrato = true;
+                //Qui serve che "requisito_incontrato" sia false se anche una sola proprietà dell'oggetto this._dati_carrello[dc]
+                //non rispetta il prerequisito
+                for ( var p in dato.prerequisito )
+                    requisito_incontrato = requisito_incontrato && da_controllare[dc][p] === dato.prerequisito[p];
+
+                //Qui serve che "enabled" sia true se anche un solo "requisito_incontrato" è true;
+                enabled = enabled || requisito_incontrato;
+            }
+        }
+
+        elem.attr( "disabled", !enabled );
+        
+        if( !enabled )
+        {
+            var indice_sel =  this._selezionati.indexOf( "lista_"+indice_elem );
+            elem.removeClass("selected");
+
+            if( indice_sel !== -1 )
+            {
+                this._selezionati.splice(indice_sel, 1);
+            }
+        }
+    }
+
+    function _controllaTuttiPrerequisiti()
+    {
+        for( var d in this._dati_lista )
+        {
+            if ( !isNaN( parseInt(d, 10) ) )
+            {
+                var dato = this._dati_lista[d];
+
+                if ( dato.prerequisito )
+                    _controllaPrerequisiti.call(this, parseInt(d, 10), dato);
+            }
+        }
+    }
+
+    function _aggiornaListe( pulisci_liste )
+    {
+        pulisci_liste = typeof pulisci_liste === "undefined" ? true : pulisci_liste;
+
+        _riempiDOMListe.call( this, this.elem_carrello, this._dati_carrello, pulisci_liste );
+        _riempiDOMListe.call( this, this.elem_lista, this._dati_lista, pulisci_liste );
+        _controllaTuttiPrerequisiti.call( this );
         _impostaEventi.call( this, this.elem_carrello );
         _impostaEventi.call( this, this.elem_lista );
         _setPopovers.call( this, this.elem_carrello.children() );
@@ -108,54 +167,37 @@ var MultiSelector = MultiSelector || (function ()
         {
             var dato  = dati[d];
 
-            if( !isNaN( parseInt( d ) ) && lista_opposta.indexOf( dato ) === -1 )
+            if( !isNaN( parseInt( d, 10 ) ) && lista_opposta.indexOf( dato ) === -1 )
             {
-                var elem  = $("<li>");
-                elem.attr( "data-index", d );
+                var elem = {};
+                if( pulisci_lista )
+                {
+                    elem = $("<li>");
+                    elem.attr("data-index", d);
+                }
+                else
+                    elem = listaDOM.find("li").eq( d );
 
                 for( var dd in dato )
                 {
                     if ( dd === "innerHTML" )
-                        elem.html( dato[dd] );
+                        elem.html(dato[dd]);
                     else if ( dd === "prerequisito" )
                         elem.attr( "data-prerequisito", true );
-                    else if ( ATTR_TYPES.indexOf( typeof dato[dd] ) !== -1 )
+                    else if ( ATTR_TYPES.indexOf( typeof dato[dd] ) !== -1 && !elem.attr( "data-"+dd ) )
                         elem.attr( "data-"+dd, dato[dd] );
 
-                    elem.attr( "data-original-title", "" );
-                    elem.attr( "data-original", "" );
-                    elem.attr( "class", "" );
+                    if( pulisci_lista )
+                        elem.attr( "class", "" );
                 }
 
-                if( listaDOM.is( this.elem_lista ) && dato.prerequisito )
+                if( typeof this._settings.elemRenderizzato === 'function' )
+                    _eventoAsincrono.call( this, this._settings.elemRenderizzato, dato, dati, parseInt( d ), elem );
+
+                if( pulisci_lista )
                 {
-                    var enabled = false;
-
-                    if( typeof dato.prerequisito === "function" )
-                        enabled = dato.prerequisito(dato, this._dati_lista, this._dati_carrello);
-                    else if ( typeof dato.prerequisito === "object" && Object.keys( dato.prerequisito ).length > 0 )
-                    {
-                        for( var dc in this._dati_carrello )
-                        {
-                            var requisito_incontrato = true;
-                            //Qui serve che "requisito_incontrato" sia false se anche una sola proprietà dell'oggetto this._dati_carrello[dc]
-                            //non rispetta il prerequisito
-                            for ( var p in dato.prerequisito )
-                                requisito_incontrato = requisito_incontrato && this._dati_carrello[dc][p] === dato.prerequisito[p];
-
-                            //Qui serve che "enabled" sia true se anche un solo "requisito_incontrato" è true;
-                            enabled = enabled || requisito_incontrato;
-                        }
-                    }
-
-                    elem.attr( "disabled", !enabled );
+                    listaDOM.append(elem);
                 }
-
-                if( this._settings.elemRenderizzato )
-                    this._settings.elemRenderizzato( dato, dati, parseInt( d ), elem );
-
-                listaDOM.append( elem );
-                elem.dblclick( _elementoDoppioClick.bind( this ) );
             }
         }
     }
@@ -163,12 +205,12 @@ var MultiSelector = MultiSelector || (function ()
     function _elementoDoppioClick( e )
     {
         var cliccato   = $( e.target ),
-            tipo_lista = cliccato.parent().is( this.elem_lista ) ? "lista" : "carrello";
+            tipo_lista = cliccato.parent().is( this.elem_lista ) ? MultiSelector.TIPI_LISTE.LISTA : MultiSelector.TIPI_LISTE.CARRELLO;
 
         if ( cliccato.is("[disabled]") )
         {
             if (typeof this._settings.onError === "function")
-                this._settings.onError(MultiSelector.ERRORS.ELEM_NEGATO_CLICCATO);
+                _eventoAsincrono.call( this, this._settings.onError, MultiSelector.ERRORS.ELEM_NEGATO_CLICCATO );
 
             return false;
         }
@@ -182,16 +224,10 @@ var MultiSelector = MultiSelector || (function ()
             _rimuoviElementoDaCarrello.call( this );
     }
 
-    function _impostaEventi( lista )
-    {
-        lista.find("li").unbind("click");
-        lista.find("li").click( _elementoListaCliccato.bind(this) );
-    }
-
-    function _elementoListaCliccato( e )
+    function _elementoCliccato( e )
     {
         var target        = $(e.target),
-            tipo_lista    = target.parent().is( this.elem_lista ) ? "lista" : "carrello",
+            tipo_lista    = target.parent().is( this.elem_lista ) ? MultiSelector.TIPI_LISTE.LISTA : MultiSelector.TIPI_LISTE.CARRELLO,
             lista_opposta = target.parent().is( this.elem_lista ) ? this.elem_carrello : this.elem_lista;
 
         lista_opposta.find(".selected").removeClass("selected");
@@ -201,33 +237,46 @@ var MultiSelector = MultiSelector || (function ()
             if (target.is("[disabled]"))
             {
                 if (typeof this._settings.onError === "function")
-                    this._settings.onError(MultiSelector.ERRORS.ELEM_NEGATO_CLICCATO);
+                    _eventoAsincrono.call( this, this._settings.onError, MultiSelector.ERRORS.ELEM_NEGATO_CLICCATO );
 
                 return false;
             }
 
-            if (tipo_lista === "lista" && this._settings.max_selezioni && this.elem_carrello.size() >= this._settings.max_selezioni)
+            if (tipo_lista === MultiSelector.TIPI_LISTE.LISTA && this._settings.max_selezioni && this.elem_carrello.size() >= this._settings.max_selezioni)
             {
                 if (typeof this._settings.onError === "function")
-                    this._settings.onError(MultiSelector.ERRORS.MAX_SELEZIONI_RAGGIUNTO);
+                    _eventoAsincrono.call( this, this._settings.onError, MultiSelector.ERRORS.MAX_SELEZIONI_RAGGIUNTO );
 
                 return false;
             }
-
-            if (typeof this._settings.elemSelezionato === "function")
-                this._settings.elemSelezionato( this["_dati_"+tipo_lista], target );
 
             this._selezionati = this._selezionati.filter( function( elem ){ return elem.indexOf( tipo_lista ) !== -1; } );
             this._selezionati.push( tipo_lista+"_"+target.attr("data-index") );
+
+            if (typeof this._settings.elemSelezionato === "function")
+                _eventoAsincrono.call( this, this._settings.elemSelezionato, tipo_lista, this["_dati_"+tipo_lista][target.attr("data-index")], this["_dati_"+tipo_lista], target, this._selezionati );
         }
         else
         {
             var indice   = this._selezionati.indexOf( tipo_lista+"_"+target.attr("data-index") );
-
             this._selezionati.splice( indice, 1 );
+
+            if (typeof this._settings.elemDeselezionato === "function")
+                _eventoAsincrono.call( this, this._settings.elemDeselezionato, tipo_lista, this["_dati_"+tipo_lista][target.attr("data-index")], this["_dati_"+tipo_lista], target, this._selezionati );
         }
 
+        _controllaTuttiPrerequisiti.call( this );
+
         target.toggleClass( "selected" );
+    }
+
+    function _impostaEventi( lista )
+    {
+        lista.find("li").unbind("click");
+        lista.find("li").click( _elementoCliccato.bind(this) );
+
+        lista.find("li").unbind("dblclick");
+        lista.find("li").dblclick( _elementoDoppioClick.bind(this) );
     }
 
     function _impostaPulsanti()
@@ -241,7 +290,7 @@ var MultiSelector = MultiSelector || (function ()
 
     function _aggiungiElementoACarrello( )
     {
-        if( this._selezionati.filter( function( elem ){ return elem.indexOf( "lista" ) !== -1; }).length === 0 )
+        if( this._selezionati.filter( function( elem ){ return elem.indexOf( MultiSelector.TIPI_LISTE.LISTA ) !== -1; }).length === 0 )
             return false;
 
         _sposta.call( this, this._dati_lista, this._dati_carrello );
@@ -250,7 +299,7 @@ var MultiSelector = MultiSelector || (function ()
 
     function _rimuoviElementoDaCarrello( )
     {
-        if( this._selezionati.filter( function( elem ){ return elem.indexOf( "carrello" ) !== -1; }).length === 0 )
+        if( this._selezionati.filter( function( elem ){ return elem.indexOf( MultiSelector.TIPI_LISTE.CARRELLO ) !== -1; }).length === 0 )
             return false;
 
         _sposta.call( this, this._dati_carrello, this._dati_lista );
@@ -283,9 +332,9 @@ var MultiSelector = MultiSelector || (function ()
         this._selezionati = [];
 
         if ( typeof this._settings.elemAggiunti === "function" && $( da_lista ).is( this._dati_lista ) )
-            setTimeout(function(){ this._settings.elemAggiunti( selezionati, da_lista, in_lista )}.bind(this), 0);
+            _eventoAsincrono.call( this, this._settings.elemAggiunti, selezionati, da_lista, in_lista );
         if ( typeof this._settings.elemRimossi === "function" && !$( da_lista ).is( this._dati_lista ) )
-            this._settings.elemRimossi( selezionati, in_lista, da_lista );
+            _eventoAsincrono.call( this, this._settings.elemRimossi, selezionati, in_lista, da_lista );
     }
 
     function _setPopovers( elements )
@@ -295,7 +344,8 @@ var MultiSelector = MultiSelector || (function ()
         if ( !is_mobile )
         {
             elements.popover( {
-                trigger: 'hover'
+                trigger: 'hover',
+                placement: 'top'
             } );
         }
         else
@@ -364,8 +414,19 @@ var MultiSelector = MultiSelector || (function ()
     MultiSelector.prototype.deselezionaTutti = function( )
     {
         this._selezionati = [];
-        this.elem_lista.children().removeClass("selected");
-        this.elem_carrello.children().removeClass("selected");
+        this.elem_lista.find("li").removeClass("selected");
+        this.elem_carrello.find("li").removeClass("selected");
+    };
+
+    MultiSelector.prototype.deselezionaUltimo = function( )
+    {
+        var selezionato = this._selezionati.pop(),
+            splittato   = selezionato.split("_"),
+            lista       = splittato[0],
+            indice      = splittato[1],
+            elem        = this["elem_"+lista].find("li").eq( indice );
+
+        elem.removeClass("selected");
     };
 
     MultiSelector.prototype.numeroCarrello = function( )
@@ -378,6 +439,11 @@ var MultiSelector = MultiSelector || (function ()
         return this.elem_lista.find("li").size();
     };
 
+    MultiSelector.prototype.datiListaAttuali = function( )
+    {
+        return this._dati_lista;
+    };
+
     MultiSelector.prototype.lista = function( )
     {
         return this._dati_lista;
@@ -386,6 +452,11 @@ var MultiSelector = MultiSelector || (function ()
     MultiSelector.prototype.carrello = function( )
     {
         return this._dati_carrello;
+    };
+
+    MultiSelector.prototype.ridisegnaListe = function( )
+    {
+        _aggiornaListe.call( this, false );
     };
 
     MultiSelector.prototype.crea = function( )
