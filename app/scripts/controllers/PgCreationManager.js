@@ -467,9 +467,7 @@
                 return false;
             }
 
-            var id_cl     = 0,
-                id_ab     = 0,
-                classi    = cc_selezionate.concat( cm_selezionate )
+            var classi    = cc_selezionate.concat( cm_selezionate )
                                 .reduce( function( pre, curr )
                                 {
                                     return pre + "classi[]=" + curr.id_classe + "&";
