@@ -26,6 +26,8 @@
 
             $( '.sidebar-menu li.active' ).data( 'lte.pushmenu.active', true );
             $( '#logoutBtn' ).click( this.logout.bind(this) );
+
+            $( '#logo_link' ).attr("href", Constants.MAIN_PAGE );
         },
 
         logout: function ()

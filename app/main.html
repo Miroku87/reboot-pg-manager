@@ -3,65 +3,75 @@
 {% set section = "listapg" %}
 {% block mainContent %}
 {{ super() }}
-        <!--------------------------
-          | Your Page Content Here |
-          -------------------------->
-        <div class="box">
-          <div class="box-header with-border">
-            <h3 class="box-title">Azioni Generiche</h3>
-          </div>
-          <div class="box-body">
-            <a class="btn btn-app" data-toggle="tooltip" title="Si applica ai PG che hanno partecipato all'ultimo evento'">
-              <i class="fa fa-edit"></i> Assegna PX e PC
-            </a>
-            <a class="btn btn-app">
-              <i class="fa fa-plus"></i> Crea PNG
-            </a>
-            <a href="crea_pg.html" class="btn btn-app">
-              <i class="fa fa-plus"></i> Crea PG
-            </a>
-          </div>
-          <!-- /.box-body -->
-        </div>
+<!--------------------------
+  | Your Page Content Here |
+  -------------------------->
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title">Azioni Generiche</h3>
+    </div>
+    <div class="box-body">
+        <a class="btn btn-app" data-toggle="tooltip" title="Si applica ai PG che hanno partecipato all'ultimo evento'">
+            <i class="fa fa-edit"></i> Assegna PX e PC
+        </a>
+        <a class="btn btn-app">
+            <i class="fa fa-plus"></i> Crea PNG
+        </a>
+        <a href="crea_pg.html" class="btn btn-app">
+            <i class="fa fa-plus"></i> Crea PG
+        </a>
+    </div>
+    <!-- /.box-body -->
+</div>
 
-        <div class="box">
-          <div class="box-header with-border">
-            <h3 class="box-title">Tabella Personaggi</h3>
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title">Tabella Personaggi</h3>
 
-            <!--div class="box-tools pull-right">
-              <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
-                <i class="fa fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove">
-                <i class="fa fa-times"></i>
-              </button>
-            </div-->
-          </div>
-          <div class="box-body">
+        <!--div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+            <i class="fa fa-minus"></i>
+          </button>
+          <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove">
+            <i class="fa fa-times"></i>
+          </button>
+        </div-->
+    </div>
+    <div class="box-body">
 
+        <div class="box-body table-responsive no-padding">
             <table id="pg-grid" class="table table-condensed table-hover table-striped table-bordered responsive">
-              <thead>
+                <thead>
                 <tr>
-                  <th data-column-id="id_personaggio" data-type="numeric" data-sortable="true" data-order="asc">ID PG</th>
-                  <th data-column-id="nome_giocatore" data-sortable="true">Nome Giocatore</th>
-                  <th data-column-id="nome_personaggio" data-formatter="pgnameFormatter" data-sortable="true">Nome Personaggio</th>
-                  <th data-column-id="data_creazione_personaggio" data-sortable="true">Data Creazione</th>
-                  <th data-column-id="lista_classi_civili" data-formatter="civilClassFormatter" data-sortable="false">Classe Civile</th>
-                  <th data-column-id="lista_classi_militari" data-formatter="militaryClassesFormatter" data-sortable="false">Classi Militari</th>
-                  <th data-column-id="px_personaggio" data-formatter="pxFormatter" data-sortable="true">PX</th>
-                  <th data-column-id="pc_personaggio" data-formatter="pcFormatter" data-sortable="true">PC</th>
-                  <th data-column-id="actions" data-formatter="commandsFormatter" data-sortable="false">Azioni</th>
+                    <th data-column-id="id_personaggio" data-type="numeric" data-sortable="true" data-order="asc">ID
+                        PG
+                    </th>
+                    <th data-column-id="nome_giocatore" data-sortable="true">Nome Giocatore</th>
+                    <th data-column-id="nome_personaggio" data-formatter="pgnameFormatter" data-sortable="true">Nome
+                        Personaggio
+                    </th>
+                    <th data-column-id="data_creazione_personaggio" data-sortable="true">Data Creazione</th>
+                    <th data-column-id="lista_classi_civili" data-formatter="civilClassFormatter" data-sortable="false">
+                        Classe Civile
+                    </th>
+                    <th data-column-id="lista_classi_militari" data-formatter="militaryClassesFormatter"
+                        data-sortable="false">Classi Militari
+                    </th>
+                    <th data-column-id="px_personaggio" data-formatter="pxFormatter" data-sortable="true">PX</th>
+                    <th data-column-id="pc_personaggio" data-formatter="pcFormatter" data-sortable="true">PC</th>
+                    <th data-column-id="actions" data-formatter="commandsFormatter" data-sortable="false">Azioni</th>
                 </tr>
-              </thead>
+                </thead>
             </table>
-
-          </div>
-          <!-- /.box-body -->
-          <!--div class="box-footer" style="">
-            Footer
-          </div-->
-          <!-- /.box-footer-->
         </div>
+
+    </div>
+    <!-- /.box-body -->
+    <!--div class="box-footer" style="">
+      Footer
+    </div-->
+    <!-- /.box-footer-->
+</div>
 
 {% endblock %}
 {% block managers %}

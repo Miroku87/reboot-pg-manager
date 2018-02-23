@@ -11,7 +11,7 @@
   margin: 3% auto;
 }
 
-.register-page textarea {
+.register-page textarea{
     resize: none;
 }
 
@@ -142,7 +142,7 @@ ul.list-select li.selected:hover {
 
 @media (max-width: 767px)
 {
-  .crea-pg-page .button-cell{
+  .crea-pg-page .button-cell {
     height: initial;
     margin-bottom: 10px;
   }
@@ -154,4 +154,24 @@ ul.list-select li.selected:hover {
   .crea-pg-page .move-item-vertical {
     display: inline-block;
   }
+}
+
+/* PAGINA SCHEDA PG */
+.scheda-pg-page #invia_bg {
+  margin-top: 20px;
+}
+
+.scheda-pg-page textarea {
+  resize: vertical;
+}
+
+.scheda-pg-page #background_form,
+.scheda-pg-page #avviso_bg {
+  display: none;
+}
+
+.scheda-pg-page table,
+.scheda-pg-page .table > tbody > tr > th,
+.scheda-pg-page ul > li:first-child {
+  border-top-color: transparent;
 }

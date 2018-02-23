@@ -108,7 +108,7 @@
                 formatters: {
                     "pgnameFormatter": function ( column, row )
                     {
-						return "<div class='data-showed'>" + row.nome_personaggio + "<span class=\"fa fa-pencil\"></span></div>\
+						return "<div class='data-showed'><a href='"+Constants.PG_PAGE+"?i="+row.id_personaggio+"'>" + row.nome_personaggio + "</a><span class=\"fa fa-pencil\"></span></div>\
 						<div class='data-edit hidden'><input type='text' value='" + row.nome_personaggio + "' /><span class=\"fa fa-check\"></span></div>";
 					},
                     "civilClassFormatter": function ( column, row )
