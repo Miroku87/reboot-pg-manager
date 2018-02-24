@@ -15,6 +15,7 @@
         init: function ()
         {
             this.getClassesInfo();
+            this.getPGInfo();
             $("#inviaDati").click( this.inviaDati.bind(this) );
         },
 
@@ -49,7 +50,7 @@
             this.ms_classi_civili.ridisegnaListe();
         },
 
-        classeCivileSelezionata: function ( tipo_lista, dato, lista, dom_elem, selezionati )
+        classeCivileSelezionata: function ( tipo_lista, dato, lista, dom_elem, selezionati, da_utente )
         {
             if( tipo_lista !== MultiSelector.TIPI_LISTE.LISTA )
                 return false;
@@ -72,7 +73,9 @@
 
             try
             {
-                this.punti_exp.diminuisciConteggio( dato.costo_classe );
+                if( da_utente !== false )
+                    this.punti_exp.diminuisciConteggio( dato.costo_classe );
+
                 this.inserisciDatiAbilitaCivili([dato]);
             }
             catch ( e )
@@ -163,7 +166,8 @@
 
         impostaMSClassiCivili: function ()
         {
-            var dati = [];
+            var dati = [],
+                punti = this.pg_info ? this.pg_info.px_risparmiati : Constants.PX_TOT;
 
             for( var d in this.classInfos.classi.civile )
             {
@@ -176,6 +180,11 @@
                     dato.innerHTML = dato.nome_classe + " ( 30 PX )";
                     dato.costo_classe = 30;
                     dato.prerequisito = null;
+                    dato.gia_selezionato = false;
+
+                    if( this.pg_info )
+                        dato.gia_selezionato = this.pg_info.classi.civile.filter(function( e ){ return e.id_classe === dato.id_classe }).length > 0;
+
                     dati.push( dato );
                 }
             }
@@ -198,20 +207,22 @@
             this.punti_exp = new Contatore(
                 {
                     elemento    : $("#puntiEsperienza"),
-                    valore_max  : Constants.PX_TOT,
-                    valore_ora  : Constants.PX_TOT
+                    valore_max  : punti,
+                    valore_ora  : punti
                 }
             );
         },
 
-        classeMilitareSelezionata: function ( tipo_lista, dato )
+        classeMilitareSelezionata: function ( tipo_lista, dato, lista, dom_elem, selezionati, da_utente )
         {
             if( tipo_lista !== MultiSelector.TIPI_LISTE.LISTA )
                 return false;
 
             try
             {
-                this.punti_comb.diminuisciConteggio( dato.costo_classe );
+                if( da_utente !== false )
+                    this.punti_comb.diminuisciConteggio( dato.costo_classe );
+
                 this.inserisciDatiAbilitaMilitari( [dato] )
             }
             catch ( e )
@@ -249,7 +260,8 @@
 
         impostaMSClassiMilitari: function ()
         {
-            var dati = [];
+            var dati = [],
+                punti = this.pg_info ? this.pg_info.pc_risparmiati : Constants.PC_TOT;
 
             for( var d in this.classInfos.classi.militare )
             {
@@ -261,6 +273,11 @@
 
                     dato.innerHTML = dato.nome_classe + " ( 1 PC )";
                     dato.prerequisito = this.classeMilitareAcquistabile.bind( this, dato.prerequisito_classe );
+                    dato.gia_selezionato = false;
+
+                    if( this.pg_info )
+                        dato.gia_selezionato = this.pg_info.classi.militare.filter(function( e ){ return e.id_classe === dato.id_classe }).length > 0 || false;
+
                     dati.push( dato );
                 }
             }
@@ -282,8 +299,8 @@
             this.punti_comb = new Contatore(
                 {
                     elemento    : $("#puntiCombattimento"),
-                    valore_max  : Constants.PC_TOT,
-                    valore_ora  : Constants.PC_TOT
+                    valore_max  : punti,
+                    valore_ora  : punti
                 }
             );
         },
@@ -375,6 +392,10 @@
                         dato.innerHTML = dato.nome_abilita + " ( " + dato.costo_abilita + " " + px_testo + " )";
                         dato.prerequisito = null;
                         dato.title = dato.nome_abilita ? dato.nome_abilita : dato.nome_classe;
+                        dato.gia_selezionato = false;
+
+                        if( this.pg_info )
+                            dato.gia_selezionato = this.pg_info.abilita[dato.tipo_abilita].filter(function( e ){ return e.id_abilita === dato.id_abilita }).length > 0;
 
                         if( dato.descrizione_abilita )
                         {
@@ -404,6 +425,14 @@
         inserisciDatiAbilitaMilitari: function ( selezionati  )
         {
             this.inserisciDatiAbilita.call( this, selezionati, this.ms_abilita_militari );
+        },
+
+        getPGInfo: function ()
+        {
+            this.pg_info = JSON.parse( window.localStorage.getItem('logged_pg') );
+
+            //if( this.pg_info )
+              //  $("#anagrafica").hide();
         },
 
         getClassesInfo: function ()
@@ -436,9 +465,10 @@
             });
         },
 
-        goToMainPage: function ()
+        submitRedirect: function ()
         {
-            window.location.href = Constants.MAIN_PAGE;
+            var url = this.pg_info ? Constants.PG_PAGE + "?i=" + this.pg_info.id_personaggio : Constants.MAIN_PAGE;
+            window.location.href = url;
         },
 
         inviaDati: function ()
@@ -450,16 +480,24 @@
                 ac_selezionate = this.ms_abilita_civili.datiSelezionati(),
                 am_selezionate = this.ms_abilita_militari.datiSelezionati();
 
-            if( !$( "#nomePG").val() || ( $( "#nomePG").val() && vuoto.test( $( "#nomePG").val() ) ) )
-                errori += "<li>Il campo nome utente non pu&ograve; essere vuoto.</li>";
-            if( cc_selezionate.length === 0 )
-                errori += "<li>Devi acquistare almeno una professione.</li>";
-            if( cm_selezionate.length === 0 )
-                errori += "<li>Devi acquistare almeno un'abilit&agrave; civile.</li>";
-            if( ac_selezionate.length === 0 )
-                errori += "<li>Devi acquistare almeno una classe militare.</li>";
-            if( am_selezionate.length === 0 )
-                errori += "<li>Devi acquistare almeno un'abilit&agrave; militare.</li>";
+            if( !this.pg_info )
+            {
+                if (!$("#nomePG").val() || ( $("#nomePG").val() && vuoto.test($("#nomePG").val()) ))
+                    errori += "<li>Il campo nome utente non pu&ograve; essere vuoto.</li>";
+                if (cc_selezionate.length === 0)
+                    errori += "<li>Devi acquistare almeno una professione.</li>";
+                if (cm_selezionate.length === 0)
+                    errori += "<li>Devi acquistare almeno un'abilit&agrave; civile.</li>";
+                if (ac_selezionate.length === 0)
+                    errori += "<li>Devi acquistare almeno una classe militare.</li>";
+                if (am_selezionate.length === 0)
+                    errori += "<li>Devi acquistare almeno un'abilit&agrave; militare.</li>";
+            }
+            else if( this.pg_info && cc_selezionate.length === 0 && cm_selezionate.length === 0 && ac_selezionate.length === 0 && am_selezionate.length === 0 )
+            {
+                errori += "<li>Devi acquistare almeno una classe o un'abilit&agrave;.</li>";
+            }
+
 
             if( errori )
             {
@@ -473,18 +511,19 @@
                                 .reduce( function( pre, curr )
                                 {
                                     return pre + "classi[]=" + curr.id_classe + "&";
-                                }, ""),
+                                }, "") || "classi=&",
 
                 abilita   = ac_selezionate.concat( am_selezionate )
                                 .reduce( function( pre, curr )
                                 {
                                     return pre + "abilita[]=" + curr.id_abilita + "&";
-                                }, ""),
-
-                data             = "nome=" + encodeURIComponent( $( "#nomePG").val() ) + "&" + classi + abilita;
+                                }, "") || "abilita=&",
+                nome      = !this.pg_info ? "nome=" + encodeURIComponent( $( "#nomePG").val() ) : "id_utente="+this.pg_info.id_personaggio,
+                data      = nome + "&" + classi + abilita,
+                url       = this.pg_info ? Constants.API_POST_ACQUISTA : Constants.API_POST_CREAPG;
 
             $.ajax(
-                Constants.API_POST_CREAPG,
+                url,
                 {
                     method: "POST",
                     data: data,
@@ -498,10 +537,17 @@
                     {
                         if ( data.status === "ok" )
                         {
-                            $("#messageText").html("La creazione è avvenuta con successo.<br>Potrai vedere il tuo nuovo personaggio nella sezione apposita.<br>È consigliato aggiungere un Background.");
+                            var message = "";
+
+                            if( this.pg_info )
+                                message = "Acquisti effettuati con successo.";
+                            else
+                                message = "La creazione è avvenuta con successo.<br>Potrai vedere il tuo nuovo personaggio nella sezione apposita.<br>È consigliato aggiungere un Background.";
+
+                            $("#messageText").html( message );
                             $("#message").modal("show");
                             $("#message").unbind("hidden.bs.modal");
-                            $("#message").on("hidden.bs.modal", this.goToMainPage.bind(this) );
+                            $("#message").on("hidden.bs.modal", this.submitRedirect.bind(this) );
                         }
                         else if ( data.status === "error" )
                         {

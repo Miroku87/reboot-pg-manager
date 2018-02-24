@@ -187,7 +187,7 @@
                 Constants.API_GET_ACESS,
                 {
                     method: "POST",
-                    data: "section="+section,
+                    data: "section=" + section + "&" + window.location.search.substr(1),
                     cache: false,
                     //contentType: false,
                     //processData: false,

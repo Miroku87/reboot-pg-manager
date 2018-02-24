@@ -1,3 +1,9 @@
 .list-select > li {
   user-select: none;
 }
+
+.list-select > li[data-gia_selezionato='true'] {
+  background-color: #449d44;
+  color: white;
+  pointer-events: none;
+}

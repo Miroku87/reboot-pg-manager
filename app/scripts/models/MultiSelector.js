@@ -155,6 +155,22 @@ var MultiSelector = MultiSelector || (function ()
         _setPopovers.call( this, this.elem_lista.children() );
     }
 
+    function _controllaGiaSelezionati()
+    {
+        var tipo_lista = MultiSelector.TIPI_LISTE.LISTA;
+
+        for( var d in this._dati_lista )
+        {
+            var dato = this._dati_lista[d];
+
+            if ( dato.gia_selezionato )
+            {
+                if (typeof this._settings.elemSelezionato === "function")
+                    _eventoAsincrono.call( this, this._settings.elemSelezionato, tipo_lista, dato, this._dati_lista, dato.element, this._selezionati, false );
+            }
+        }
+    }
+
     function _riempiDOMListe( listaDOM, dati, pulisci_lista )
     {
         pulisci_lista = typeof pulisci_lista === "undefined" ? true : pulisci_lista;
@@ -177,6 +193,7 @@ var MultiSelector = MultiSelector || (function ()
                 if( pulisci_lista )
                 {
                     elem = $("<li>");
+                    dato.element = elem;
                     elem.attr("data-index", d);
                 }
                 else
@@ -194,6 +211,8 @@ var MultiSelector = MultiSelector || (function ()
                     if( pulisci_lista )
                         elem.attr( "class", "" );
                 }
+                if ( dato.gia_selezionato && this._selezionati.indexOf("lista_" + d) === -1 )
+                    this._selezionati.push("lista_" + d);
 
                 if( typeof this._settings.elemRenderizzato === 'function' )
                     _eventoAsincrono.call( this, this._settings.elemRenderizzato, dato, dati, parseInt( d ), elem );
@@ -467,7 +486,8 @@ var MultiSelector = MultiSelector || (function ()
     MultiSelector.prototype.datiSelezionati = function( )
     {
         var indici_sel     = this._selezionati.map( function( elem ){ return parseInt( elem.replace(/\D/g, "") ); }),
-            selezionati    = this._dati_lista.filter( function( elem, i ){ return indici_sel.indexOf( i ) !== -1; });
+            selezionati    = this._dati_lista.filter( function( elem, i ){ return indici_sel.indexOf( i ) !== -1; }),
+            selezionati    = selezionati.filter( function( elem ){ return !elem.gia_selezionato; });
 
         return selezionati;
     };
@@ -477,6 +497,7 @@ var MultiSelector = MultiSelector || (function ()
         _getDOMElements.call(this);
         _impostaPulsanti.call( this );
         _aggiornaListe.call(this);
+        _controllaGiaSelezionati.call(this);
     };
 
     MultiSelector.prototype.toString = function( )

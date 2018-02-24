@@ -1,8 +1,8 @@
 ﻿{% extends "./templates/main_template.html" %}
 {% set body_classes = body_classes + " crea-pg-page" %}
-{% set section = "creapg" %}
-{% set titolo_sezione = "Creazione nuovo personaggio"  %}
-{% set descrizione_sezione = "Compila i campi con i dati del tuo nuovo personaggio."  %}
+{% set section = section | default("creapg") %}
+{% set titolo_sezione = titolo_sezione | default("Creazione nuovo personaggio")  %}
+{% set descrizione_sezione = descrizione_sezione | default("Compila i campi con i dati del tuo nuovo personaggio.")  %}
 {% block styles %}
 {{ super() }}
 <link rel="stylesheet" href="styles/multiselector.css"/>
@@ -12,7 +12,8 @@
 <!--------------------------
   | Your Page Content Here |
   -------------------------->
-<div class="box box-primary">
+{% if section == "creapg" %}
+<div class="box box-primary" id="anagrafica">
     <div class="box-header with-border">
         <h3 class="box-title">Anagrafica personaggio</h3>
     </div>
@@ -25,7 +26,7 @@
         </div>
     </div>
 </div>
-
+{% endif %}
 <div class="row">
     <div class="col-sm-6">
         <div class="box box-primary">

@@ -124,7 +124,11 @@
                     if ( data.status === "ok" )
                     {
                         this.pg_info = data.result;
-                        window.localStorage.setItem( 'pg', JSON.stringify( this.pg_info ) );
+
+                        var pg_no_bg = JSON.parse( JSON.stringify( this.pg_info ) );
+                        delete pg_no_bg.background_personaggio;
+
+                        window.localStorage.setItem( 'logged_pg', JSON.stringify( pg_no_bg ) );
                         this.mostraDati();
                     }
                     else if ( data.status === "error" )
