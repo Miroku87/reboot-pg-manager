@@ -103,7 +103,7 @@
                         withCredentials: true
                     }
 				},
-                url: Constants.API_GET_ALL_PGS,
+                url: Constants.API_GET_PGS,
                 rowCount: [10, 50, 100],
                 formatters: {
                     "pgnameFormatter": function ( column, row )

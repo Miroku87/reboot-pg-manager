@@ -1,0 +1,17 @@
+﻿{% extends "./templates/main_template.html" %}
+{% set body_classes = body_classes + " gestione-giocatori-page" %}
+{% set section = "gestionegiocatori" %}
+{% set titolo_sezione = "Gestione Giocatori"  %}
+{% set descrizione_sezione = ""  %}
+{% block mainContent %}
+{{ super() }}
+<!--------------------------
+  | Your Page Content Here |
+  -------------------------->
+
+
+{% endblock %}
+{% block managers %}
+{{ super() }}
+<script src="scripts/controllers/PlayersManager.js"></script>
+{% endblock %}

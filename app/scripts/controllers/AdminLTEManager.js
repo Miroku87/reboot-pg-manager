@@ -11,13 +11,14 @@
                 Utils.controllaAccessoPagina( SECTION_NAME );
 
             this.setListeners();
+            this.personalizzaMenu();
         },
 		
         setListeners: function ()
         {
             this.setupMenuSearch();
 
-            $( 'ul' ).tree();
+            $( 'ul.tree' ).tree();
 
             $( '#sidebar-form' ).on( 'submit', function ( e )
             {
@@ -28,6 +29,40 @@
             $( '#logoutBtn' ).click( this.logout.bind(this) );
 
             $( '#logo_link' ).attr("href", Constants.MAIN_PAGE );
+        },
+
+        personalizzaMenu: function ()
+        {
+            this.user_info = JSON.parse( window.localStorage.getItem('user') );
+            this.pg_info = JSON.parse( window.localStorage.getItem('logged_pg') );
+
+            if( this.user_info )
+            {
+                var permessi_pagine = this.user_info.permessi.filter( function( el ){ return el.indexOf( "visualizza_pagina" ) !== -1; } );
+                for( var p in permessi_pagine )
+                {
+                    var permesso = permessi_pagine[p];
+
+                    if( typeof permesso === "string" && $("#btn_"+permesso).length > 0 )
+                        $("#btn_"+permesso).show();
+                }
+
+                $(".nome_giocatore").each(function( i, el )
+                {
+                    console.log(this.user_info.nome_giocatore);
+                    $(el).text( this.user_info.nome_giocatore );
+                }.bind( this ) );
+            }
+
+            if( this.pg_info )
+            {
+                if (this.pg_info.crafting_chimico)
+                    $("#btn_crafting_chimico").show();
+                if (this.pg_info.crafting_programmazione)
+                    $("#btn_crafting_programmazione").show();
+                if (this.pg_info.crafting_ingegneria)
+                    $("#btn_crafting_ingegneria").show();
+            }
         },
 
         logout: function ()

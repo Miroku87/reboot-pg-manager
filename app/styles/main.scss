@@ -157,7 +157,8 @@ ul.list-select li.selected:hover {
 }
 
 /* PAGINA SCHEDA PG */
-.scheda-pg-page #invia_bg {
+.scheda-pg-page #invia_bg,
+.scheda-pg-page #invia_note_master {
   margin-top: 20px;
 }
 
@@ -165,8 +166,10 @@ ul.list-select li.selected:hover {
   resize: vertical;
 }
 
+.inizialmente-nascosto,
 .scheda-pg-page #background_form,
-.scheda-pg-page #avviso_bg {
+.scheda-pg-page #avviso_bg,
+.scheda-pg-page #mostra_storico {
   display: none;
 }
 
@@ -175,3 +178,12 @@ ul.list-select li.selected:hover {
 .scheda-pg-page ul > li:first-child {
   border-top-color: transparent;
 }
+
+.no-mouse {
+  pointer-events: none;
+}
+
+/*.scheda-pg-page #lista_abilita_civili tbody > tr > td:last-child,
+.scheda-pg-page #lista_abilita_militari tbody > tr > td:last-child {
+  text-align: center;
+}*/

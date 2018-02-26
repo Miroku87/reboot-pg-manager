@@ -1,0 +1,17 @@
+﻿{% extends "./templates/main_template.html" %}
+{% set body_classes = body_classes + " crafting-chicmico-page" %}
+{% set section = "craftingchimico" %}
+{% set titolo_sezione = "Crafting Chimico"  %}
+{% set descrizione_sezione = ""  %}
+{% block mainContent %}
+{{ super() }}
+<!--------------------------
+  | Your Page Content Here |
+  -------------------------->
+
+
+{% endblock %}
+{% block managers %}
+{{ super() }}
+<script src="scripts/controllers/ChemicalCraftingManager.js"></script>
+{% endblock %}

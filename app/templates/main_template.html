@@ -129,7 +129,7 @@
                             <!-- The user image in the navbar-->
                             <img src="images/user2-160x160.jpg" class="user-image" alt="User Image">
                             <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                            <span class="hidden-xs">Alexander Pierce</span>
+                            <span class="hidden-xs nome_giocatore"></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- The user image in the menu -->
@@ -137,7 +137,7 @@
                                 <img src="images/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                                 <p>
-                                    Alexander Pierce - Web Developer
+                                    <span class="nome_giocatore"></span>
                                     <small>Member since Nov. 2012</small>
                                 </p>
                             </li>
@@ -168,9 +168,9 @@
                         </ul>
                     </li>
                     <!-- Control Sidebar Toggle Button -->
-                    <li>
+                    <!--li>
                         <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                    </li>
+                    </li-->
                 </ul>
             </div>
         </nav>
@@ -186,8 +186,8 @@
                 <div class="pull-left image">
                     <img src="images/user2-160x160.jpg" class="img-circle" alt="User Image">
                 </div>
-                <div class="pull-left info">
-                    <p>Alexander Pierce</p>
+                <div class="pull-left info" id="nome_personaggio">
+                    <p>Nessun PG Selezionato</p>
                     <!-- Status -->
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
@@ -209,18 +209,23 @@
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">Operazioni</li>
                 <!-- Optionally, you can add icons to the links -->
-                <li class="active"><a href="#"><i class="fa fa-cogs"></i> <span>Gestisci Personaggi</span></a></li>
-                <li class="treeview">><a href="#"><i class="fa fa-flask"></i> <span>Sezioni Consentite PG</span></a>
+                <li class="active"><a href="main.html"><i class="fa fa-cogs"></i> <span>Gestisci Personaggi</span></a></li>
+                <li id="btn_visualizza_pagina_gestione_giocatori" class="inizialmente-nascosto"><a href="gestione_giocatori.html"><i class="fa fa-cogs"></i> <span>Gestisci Giocatori</span></a></li>
+                <li id="btn_crafting_chimico" class="inizialmente-nascosto"><a href="crafting_chimico.html"><i class="fa fa-flask"></i> <span>Crafting Chimico</span></a></li>
+                <li id="btn_crafting_programmazione" class="inizialmente-nascosto"><a href="crafting_programmazione.html"><i class="fa fa-flask"></i> <span>Crafting Programmazione</span></a></li>
+                <li id="btn_crafting_ingegneria" class="inizialmente-nascosto"><a href="crafting_ingegneria.html"><i class="fa fa-flask"></i> <span>Crafting Ingegneria</span></a></li>
+                <li id="btn_visualizza_pagina_gestione_eventi" class="inizialmente-nascosto"><a href="gestione_eventi.html"><i class="fa fa-rocket"></i> <span>Gestisci Eventi</span></a></li>
+                <li><a href="messaggi.html"><i class="fa fa-envelope-o" class="inizialmente-nascosto"></i> <span>Messaggi</span></a></li>
+                <!--li class="treeview"><a href="#"><i class="fa fa-flask"></i> <span>Crafting</span>
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span></a>
                     <ul class="treeview-menu">
-                        <li><a href="#"><i class="fa fa-flask"></i> <span>Gestisci Crafting</span></a></li>
-                        <li><a href="#"><i class="fa fa-flask"></i> <span>Chimica</span></a></li><!-- solo se abilità appropriata -->
-                        <li><a href="#"><i class="fa fa-flask"></i> <span>Programmazione</span></a></li><!-- solo se abilità appropriata -->
-                        <li><a href="#"><i class="fa fa-flask"></i> <span>Ingegneria</span></a></li><!-- solo se abilità appropriata -->
+                        <li></li>
+                        <li></li>
+                        <li></li>
                     </ul>
-                </li>
-
-                <li><a href="#"><i class="fa fa-rocket"></i> <span>Gestisci Eventi</span></a></li>
-                <li><a href="#"><i class="fa fa-envelope-o"></i> <span>Messaggi</span></a></li>
+                </li-->
                 <!--<li class="treeview">
                   <a href="#">
                     <i class="fa fa-link"></i> <span>Multilevel</span>

@@ -1,0 +1,17 @@
+﻿{% extends "./templates/main_template.html" %}
+{% set body_classes = body_classes + " crafting-prog-page" %}
+{% set section = "craftingprog" %}
+{% set titolo_sezione = "Crafting di Programmazione"  %}
+{% set descrizione_sezione = ""  %}
+{% block mainContent %}
+{{ super() }}
+<!--------------------------
+  | Your Page Content Here |
+  -------------------------->
+
+
+{% endblock %}
+{% block managers %}
+{{ super() }}
+<script src="scripts/controllers/SoftwareCraftingManager.js"></script>
+{% endblock %}

@@ -1,0 +1,17 @@
+﻿{% extends "./templates/main_template.html" %}
+{% set body_classes = body_classes + " gestione-eventi-page" %}
+{% set section = "gestioneventi" %}
+{% set titolo_sezione = "Gestore degli Eventi Live"  %}
+{% set descrizione_sezione = "Qui potrai inserire o modificare le date degli eventi."  %}
+{% block mainContent %}
+{{ super() }}
+<!--------------------------
+  | Your Page Content Here |
+  -------------------------->
+
+
+{% endblock %}
+{% block managers %}
+{{ super() }}
+<script src="scripts/controllers/LiveEventsManager.js"></script>
+{% endblock %}

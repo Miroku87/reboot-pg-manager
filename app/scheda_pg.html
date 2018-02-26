@@ -22,6 +22,9 @@
             <div class="box-body">
                 <ul class="list-group list-group-unbordered">
                     <li class="list-group-item">
+                        <b>Giocatore</b> <a id="info_giocatore" class="pull-right"></a>
+                    </li>
+                    <li class="list-group-item">
                         <b>ID</b> <a id="info_id" class="pull-right"></a>
                     </li>
                     <li class="list-group-item">
@@ -134,7 +137,8 @@
                             <th>Distanza</th>
                             <th>Azioni</th>
                         </tr>
-                        </tbody></table>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <!-- /.box-body -->
@@ -162,6 +166,63 @@
                     <textarea id="testo_background" class="form-control" rows="5"></textarea>
                     <button id="invia_bg" class="btn btn-success pull-right">Invia Background</button>
                 </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+</div>
+<div class="row inizialmente-nascosto" id="recuperaNoteMaster">
+    <div class="col-sm-12">
+        <div class="box box-warning">
+            <div class="box-header with-border">
+                <h3 class="box-title">Note dei Master sul Personaggio</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <p id="avviso_note_master">Non &egrave; ancora stata ancora aggiunta nessuna nota.</p>
+                <p id="note_master"></p>
+                <p id="aggiungi_note_master">Aggiungi o modifica le note <a id="mostra_note_master">cliccando QUI <i class="fa fa-pencil"></i></a></p>
+                <div class="form-group inizialmente-nascosto" id="note_master_form">
+                    <textarea id="testo_note_master" class="form-control" rows="5"></textarea>
+                    <button id="invia_note_master" class="btn btn-success pull-right">Aggiorna Note Master</button>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+</div>
+<div class="row inizialmente-nascosto" id="recuperaStorico">
+    <div class="col-sm-12">
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h3 class="box-title">Storico Azioni sul Personaggio</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table class="table table-hover">
+                    <tbody><tr>
+                        <th>Esecutore</th>
+                        <th>Data</th>
+                        <th>Tipo</th>
+                        <th>Tabella</th>
+                        <th>Campo</th>
+                        <th>Vecchio Valore</th>
+                        <th>Nuove Valore</th>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
             <!-- /.box-body -->
         </div>
