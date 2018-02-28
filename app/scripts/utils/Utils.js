@@ -49,6 +49,18 @@
             });
         },
 
+        showMessage: function(text)
+        {
+            if($("#message").length > 0)
+            {
+                $('.modal').modal('hide');
+                $("#messageText").html("Elemento eliminato con successo.");
+                $("#message").modal("show");
+            }
+            else
+                throw new Error("No error modal found.");
+        },
+
         showError: function(errorText)
         {
             if($("#errorDialog").length > 0)
@@ -63,46 +75,56 @@
                 throw new Error("No error modal found.");
         },
 
-        showConfirm: function(question,noPasswordError,onConfirm)
+        showConfirm: function( question, onConfirm )
         {
             if($("#confirmWithPassword").length > 0)
             {
                 $('.modal').modal('hide');
-                $("#confirmWithPassword").find("#confirmText").html(question);
-                $("#confirmWithPassword").find("input[name='confirmpassword']").unbind("keypress");
-                $("#confirmWithPassword").find("#confirmButton").unbind("click");
-                $("#confirmWithPassword").find("input[name='confirmpassword']").val("");
+                $("#confirmWithPassword").find("#confirm_text").html(question);
+                $("#confirmWithPassword").find("#confirm_password").unbind("keypress");
+                $("#confirmWithPassword").find("#confirm_button").unbind("click");
+                $("#confirmWithPassword").find("input#confirm_password").val("");
 
-                $("#confirmWithPassword").find("#confirmButton").click(function (e)
+                $("#confirmWithPassword").find("#confirm_button").click(function (e)
                 {
-                    if( $("#confirmWithPassword").find("input[name='confirmpassword']").val() == "" ||
-                        /^\s+$/.test($("#confirmWithPassword").find("input[name='confirmpassword']").val()))
+                    if( $("#confirmWithPassword").find("input#confirm_password").val() == "" ||
+                        /^\s+$/.test($("#confirmWithPassword").find("input#confirm_password").val()))
                     {
-                        Utils.showError(noPasswordError);
+                        Utils.showError( "Non &egrave; stata inserita nessuna password." );
                         return; //function will not keep on executing
                     }
 
-                    $.post(CHECK_PASSWORD,
+                    $.ajax({
+                        url: Constants.API_CHECK_PWD,
+                        data: {
+                            confirmpassword: $("#confirmWithPassword").find("input#confirm_password").val()
+                        },
+                        method: "POST",
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        success: function( data )
                         {
-                            confirmpassword: $("#confirmWithPassword").find("input[name='confirmpassword']").val()
-                        }, function (data)
-                        {
-                            var res = JSON.parse(data);
-                            if(res.type == "success")
+                            if ( data.status === "ok" )
                             {
                                 onConfirm();
                             }
-                            else if (res.type == "error")
+                            else if ( data.status === "error" )
                             {
-                                Utils.showError(res.text);
+                                Utils.showError( data.message );
                             }
-                        });
+                        }.bind(this),
+                        error: function ( jqXHR, textStatus, errorThrown )
+                        {
+                            Utils.showError( textStatus+"<br>"+errorThrown );
+                        }
+                    });
                 });
 
-                $("#confirmWithPassword").find("input[name='confirmpassword']").keypress(function(event) {
+                $("#confirmWithPassword").find("input#confirm_password").keypress(function(event) {
                     if (event.which == 13) {
                         event.preventDefault();
-                        $("#confirmWithPassword").find("#confirmButton").click();
+                        $("#confirmWithPassword").find("#confirm_button").click();
                     }
                 });
 
@@ -110,7 +132,7 @@
                     backdrop: "static"
                 });
 
-                $("#confirmWithPassword").find("input[name='confirmpassword']").focus();
+                $("#confirmWithPassword").find("input#confirm_password").focus();
             }
             else
                 throw new Error("No confirm modal found.");

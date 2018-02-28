@@ -7,6 +7,15 @@
   overflow: hidden;
 }
 
+.no-mouse {
+  pointer-events: none;
+}
+
+.modal-footer {
+  clear:both;
+}
+
+
 .login-box, .register-box {
   margin: 3% auto;
 }
@@ -162,6 +171,10 @@ ul.list-select li.selected:hover {
   margin-top: 20px;
 }
 
+.scheda-pg-page #confirm_button {
+  margin: 10px 0;
+}
+
 .scheda-pg-page textarea {
   resize: vertical;
 }
@@ -177,10 +190,6 @@ ul.list-select li.selected:hover {
 .scheda-pg-page .table > tbody > tr > th,
 .scheda-pg-page ul > li:first-child {
   border-top-color: transparent;
-}
-
-.no-mouse {
-  pointer-events: none;
 }
 
 /*.scheda-pg-page #lista_abilita_civili tbody > tr > td:last-child,

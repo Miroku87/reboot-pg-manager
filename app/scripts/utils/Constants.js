@@ -11,10 +11,15 @@ Constants.API_POST_EDIT_PG   = Constants.API_URL + "/charactersmanager/modificap
 
 Constants.API_GET_LOGOUT     = Constants.API_URL + "/usersmanager/logout";
 Constants.API_GET_ACESS      = Constants.API_URL + "/usersmanager/controllaaccesso";
+Constants.API_CHECK_PWD      = Constants.API_URL + "/usersmanager/controllapwd";
 Constants.API_GET_PG_LOGIN   = Constants.API_URL + "/charactersmanager/loginpg";
 Constants.API_GET_INFO       = Constants.API_URL + "/charactersmanager/recuperainfoclassi";
 Constants.API_GET_PGS        = Constants.API_URL + "/charactersmanager/mostrapersonaggi";
 Constants.API_GET_STORICO_PG = Constants.API_URL + "/charactersmanager/recuperastorico";
+Constants.API_GET_RICETTE    = Constants.API_URL + "/craftingmanager/recuperaricette";
+
+Constants.API_DEL_CLASSE_PG  = Constants.API_URL + "/charactersmanager/rimuoviclassepg";
+Constants.API_DEL_ABILITA_PG = Constants.API_URL + "/charactersmanager/rimuoviabilitapg";
 
 Constants.LOGIN_PAGE         = Constants.SITE_URL + "/";
 Constants.MAIN_PAGE          = Constants.SITE_URL + "/main.html";

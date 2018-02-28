@@ -8,6 +8,7 @@
 
 			this.faiLoginPG();
             this.recuperaStoricoAzioni();
+            this.recuperaRicetteCrafting();
 			this.setListeners();
 		},
 
@@ -30,14 +31,98 @@
             $( "#invia_note_master" ).click( this.inviaModifichePG.bind( this, "note_master_personaggio", $("#testo_note_master") ) );
 		},
 
+        abilitaIsPrerequisito: function ( id_ab, id_cl, nome_ab, n_sup_base, n_control, n_sportivo, el )
+        {
+            return el.prerequisito_abilita !== null &&
+                (
+                    el.prerequisito_abilita === id_ab ||
+                    el.prerequisito_abilita === Constants.PREREQUISITO_TUTTE_ABILITA && id_cl === el.classi_id_classe ||
+                    (
+                        el.prerequisito_abilita === Constants.PREREQUISITO_F_TERRA_T_SCELTO &&
+                        (
+                            id_ab === Constants.ID_ABILITA_F_TERRA ||
+                            id_ab === Constants.ID_ABILITA_T_SCELTO
+                        )
+                    ) ||
+                    el.prerequisito_abilita === Constants.PREREQUISITO_5_SUPPORTO_BASE && id_cl === Constants.ID_CLASSE_SUPPORTO_BASE && n_sup_base - 1 < 5 ||
+                    el.prerequisito_abilita === Constants.PREREQUISITO_4_SPORTIVO && id_cl === Constants.ID_CLASSE_SPORTIVO && n_sportivo - 1 < 4 ||
+                    el.prerequisito_abilita === Constants.PREREQUISITO_3_CONTROLLER && nome_ab.toLowerCase().indexOf("controller") !== -1 && n_control - 1 < 3
+                );
+        },
+
+        eliminazioneConfermata: function ( cosa, id )
+        {
+            var url  = "",
+                data = {};
+
+            if( cosa === "classe" )
+            {
+                url  = Constants.API_DEL_CLASSE_PG;
+                data = {
+                    pg_id     : this.pg_info.id_personaggio,
+                    id_classe : id
+                };
+            }
+            else if ( cosa === "abilita" )
+            {
+                url  = Constants.API_DEL_ABILITA_PG;
+                data = {
+                    pg_id      : this.pg_info.id_personaggio,
+                    id_abilita : id
+                };
+            }
+
+            $.ajax({
+                url: url,
+                data: data,
+                method: "POST",
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function( data )
+                {
+                    if ( data.status === "ok" )
+                    {
+                        Utils.showMessage("Elemento eliminato con successo.");
+                    }
+                    else if ( data.status === "error" )
+                    {
+                        Utils.showError( data.message );
+                    }
+                }.bind(this),
+                error: function ( jqXHR, textStatus, errorThrown )
+                {
+                    Utils.showError( textStatus+"<br>"+errorThrown );
+                }
+            });
+        },
+
         eliminaClasse: function ( e )
 		{
-            console.log( $(e.currentTarget).attr("data-id") );
+            var id_classe  = $(e.currentTarget).attr("data-id"),
+                t_abilita  = this.pg_info.abilita.civile.concat( this.pg_info.abilita.militare ),
+                abilita    = t_abilita.filter(function( el ){ return el.classi_id_classe === id_classe; }),
+                abilita    = abilita.map( function( el ){ return el.nome_abilita; } ),
+                abilita    = abilita.length > 0 ? abilita : ["Nessuna"],
+                lista      = "<ul><li>"+abilita.join("</li><li>")+"</li></ul>";
+
+            Utils.showConfirm( "Cancellando questa classe anche le seguenti abilit&agrave; verranno eliminate:"+lista+"Sicuro di voler procedere?", this.eliminazioneConfermata.bind(this, "classe", id_classe) );
 		},
 
         eliminaAbilita: function ( e )
 		{
-            console.log( $(e.currentTarget).attr("data-id") );
+            var id_abilita = $(e.currentTarget).attr("data-id"),
+                t_abilita  = this.pg_info.abilita.civile.concat( this.pg_info.abilita.militare ),
+                dato_ab    = t_abilita.filter( function( el ){ return el.id_abilita === id_abilita; })[0],
+                n_sup_base = t_abilita.filter( function( el ){ return el.classi_id_classe === Constants.ID_CLASSE_SUPPORTO_BASE; } ).length,
+                n_control  = t_abilita.filter( function( el ){ return el.nome_abilita.toLowerCase().indexOf("controller") !== -1; } ).length,
+                n_sportivo = t_abilita.filter( function( el ){ return el.classi_id_classe === Constants.ID_CLASSE_SPORTIVO; } ).length,
+                abilita    = t_abilita.filter( this.abilitaIsPrerequisito.bind( this, id_abilita, dato_ab.classi_id_classe, dato_ab.nome_abilita, n_sup_base, n_control, n_sportivo ) ),
+                abilita    = abilita.map( function( el ){ return el.nome_abilita; } ),
+                abilita    = abilita.length > 0 ? abilita : ["Nessuna"],
+                lista      = "<ul><li>"+abilita.join("</li><li>")+"</li></ul>";
+
+            Utils.showConfirm( "Cancellando questa abilit&agrave; anche le seguenti verranno eliminate:"+lista+"Sicuro di voler procedere?", this.eliminazioneConfermata.bind(this, "classe", id_abilita) );
 		},
 
         mostraDati: function ()
@@ -155,6 +240,11 @@
             $( "#recuperaStorico").show();
         },
 
+        mostraRicette: function ()
+        {
+            $( "#ricettePersonaggio").show();
+        },
+
         personalizzaMenu: function ()
         {
             if( this.pg_info )
@@ -203,6 +293,36 @@
                     {
                         Utils.showError( data.message );
                     }
+                }.bind(this),
+                error: function ( jqXHR, textStatus, errorThrown )
+                {
+                    Utils.showError( textStatus+"<br>"+errorThrown );
+                }
+            });
+        },
+
+        recuperaRicetteCrafting: function ()
+        {
+            $.ajax({
+                url: Constants.API_GET_RICETTE,
+                method: "GET",
+                xhrFields: {
+                    withCredentials: true
+                },
+                data: {
+                    pgid : Utils.getParameterByName( "i" )
+                },
+                success: function( data )
+                {
+                    if ( data.status === "ok" )
+                    {
+                        this.storico = data.result;
+                        this.mostraRicette();
+                    }
+                    /*else if ( data.status === "error" )
+                    {
+                        Utils.showError( data.message );
+                    }*/
                 }.bind(this),
                 error: function ( jqXHR, textStatus, errorThrown )
                 {
@@ -263,8 +383,8 @@
 
                         window.localStorage.setItem( 'logged_pg', JSON.stringify( pg_no_bg ) );
 
-                        this.personalizzaMenu();
-                        this.mostraDati();
+                        this.personalizzaMenu.call( this );
+                        this.mostraDati.call( this );
                     }
                     else if ( data.status === "error" )
                     {
