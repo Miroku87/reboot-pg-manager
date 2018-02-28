@@ -303,6 +303,8 @@
 
         recuperaRicetteCrafting: function ()
         {
+            return false;
+
             $.ajax({
                 url: Constants.API_GET_RICETTE,
                 method: "GET",
