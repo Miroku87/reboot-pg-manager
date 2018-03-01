@@ -49,7 +49,6 @@
 
                 $(".nome_giocatore").each(function( i, el )
                 {
-                    console.log(this.user_info.nome_giocatore);
                     $(el).text( this.user_info.nome_giocatore );
                 }.bind( this ) );
             }

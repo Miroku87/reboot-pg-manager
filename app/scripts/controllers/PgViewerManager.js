@@ -31,23 +31,52 @@
             $( "#invia_note_master" ).click( this.inviaModifichePG.bind( this, "note_master_personaggio", $("#testo_note_master") ) );
 		},
 
-        abilitaIsPrerequisito: function ( id_ab, id_cl, nome_ab, n_sup_base, n_control, n_sportivo, el )
+        classeIsPrerequisito: function ( id_cl, el )
         {
-            return el.prerequisito_abilita !== null &&
-                (
-                    el.prerequisito_abilita === id_ab ||
-                    el.prerequisito_abilita === Constants.PREREQUISITO_TUTTE_ABILITA && id_cl === el.classi_id_classe ||
-                    (
-                        el.prerequisito_abilita === Constants.PREREQUISITO_F_TERRA_T_SCELTO &&
-                        (
-                            id_ab === Constants.ID_ABILITA_F_TERRA ||
-                            id_ab === Constants.ID_ABILITA_T_SCELTO
+            return el.prerequisito_classe !== null && el.prerequisito_classe === id_cl;
+        },
+
+        abilitaIsPrerequisito: function ( id_ab, lista_ab, ids )
+        {
+            ids = typeof ids === "undefined" ? [] : ids;
+
+            var new_ab     = [],
+                id_cl      = this.pg_info.abilita.civile.concat( this.pg_info.abilita.militare).filter( function( el ){ return el.id_abilita === id_ab; })[0].classi_id_classe,
+                n_sup_base = lista_ab.filter( function( el ){ return el.classi_id_classe === Constants.ID_CLASSE_SUPPORTO_BASE; } ).length,
+                n_control  = lista_ab.filter( function( el ){ return el.nome_abilita.toLowerCase().indexOf("controller") !== -1; } ).length,
+                n_sportivo = lista_ab.filter( function( el ){ return el.classi_id_classe === Constants.ID_CLASSE_SPORTIVO; } ).length;
+
+            for( var a in lista_ab )
+            {
+                var ab = lista_ab[a];
+                if (
+                       ab.prerequisito_abilita === id_ab
+                    || ab.prerequisito_abilita === Constants.PREREQUISITO_TUTTE_ABILITA && id_cl === ab.classi_id_classe
+                    || (
+                           ab.prerequisito_abilita === Constants.PREREQUISITO_F_TERRA_T_SCELTO
+                        && (
+                               id_ab === Constants.ID_ABILITA_F_TERRA
+                            || id_ab === Constants.ID_ABILITA_T_SCELTO
                         )
-                    ) ||
-                    el.prerequisito_abilita === Constants.PREREQUISITO_5_SUPPORTO_BASE && id_cl === Constants.ID_CLASSE_SUPPORTO_BASE && n_sup_base - 1 < 5 ||
-                    el.prerequisito_abilita === Constants.PREREQUISITO_4_SPORTIVO && id_cl === Constants.ID_CLASSE_SPORTIVO && n_sportivo - 1 < 4 ||
-                    el.prerequisito_abilita === Constants.PREREQUISITO_3_CONTROLLER && nome_ab.toLowerCase().indexOf("controller") !== -1 && n_control - 1 < 3
-                );
+                    )
+                    || ab.prerequisito_abilita === Constants.PREREQUISITO_5_SUPPORTO_BASE && n_sup_base - 1 < 5
+                    || ab.prerequisito_abilita === Constants.PREREQUISITO_4_SPORTIVO && n_sportivo - 1 < 4
+                    || ab.prerequisito_abilita === Constants.PREREQUISITO_3_CONTROLLER && n_control - 1 < 3
+                )
+                {
+                    new_ab.push( ab.id_abilita );
+                    Utils.rimuoviElemDaArrayMultidimensione( lista_ab, "id_abilita", ab.id_abilita );
+                }
+            }
+
+            if( new_ab.length > 0 )
+            {
+                for( var na in new_ab )
+                 if( typeof new_ab[na] !== "function" )
+                    ids = this.abilitaIsPrerequisito.call( this, new_ab[na], lista_ab, ids );
+            }
+    
+            return new_ab.concat( ids );
         },
 
         eliminazioneConfermata: function ( cosa, id )
@@ -97,38 +126,44 @@
             });
         },
 
-        eliminaClasse: function ( e )
+        rimuoviClasse: function ( e )
 		{
-            var id_classe  = $(e.currentTarget).attr("data-id"),
-                t_abilita  = this.pg_info.abilita.civile.concat( this.pg_info.abilita.militare ),
-                abilita    = t_abilita.filter(function( el ){ return el.classi_id_classe === id_classe; }),
-                abilita    = abilita.map( function( el ){ return el.nome_abilita; } ),
-                abilita    = abilita.length > 0 ? abilita : ["Nessuna"],
-                lista      = "<ul><li>"+abilita.join("</li><li>")+"</li></ul>";
+            var id_classe   = $(e.currentTarget).attr("data-id"),
+                t_classi    = this.pg_info.classi.civile.concat( this.pg_info.classi.militare ),
+                t_abilita   = this.pg_info.abilita.civile.concat( this.pg_info.abilita.militare ),
+                classi      = t_classi.filter( this.classeIsPrerequisito.bind( this, id_classe ) ),
+                classi_id   = classi.map( function( el ){ return el.id_classe; }).concat([id_classe]),
+                classi_nomi = classi.map( function( el ){ return el.nome_classe; } ),
+                classi_nomi = classi_nomi.length > 0 ? classi_nomi : ["Nessuna"],
+                abilita     = t_abilita.filter( function( el ){ return classi_id.indexOf( el.classi_id_classe ) !== -1; } ),
+                abilita     = abilita.map( function( el ){ return el.nome_abilita; } ),
+                abilita     = abilita.length > 0 ? abilita : ["Nessuna"],
+                lista_cl    = "<ul><li>"+classi_nomi.join("</li><li>")+"</li></ul>",
+                lista_ab    = "<ul><li>"+abilita.join("</li><li>")+"</li></ul>",
+                testo       = "Cancellando questa classe verranno eliminate anche le seguenti classi:" + lista_cl +
+                              "E anche le seguenti abilit&agrave;:" + lista_ab +
+                              "Sicuro di voler procedere?";
 
-            Utils.showConfirm( "Cancellando questa classe anche le seguenti abilit&agrave; verranno eliminate:"+lista+"Sicuro di voler procedere?", this.eliminazioneConfermata.bind(this, "classe", id_classe) );
+            Utils.showConfirm( testo, this.eliminazioneConfermata.bind(this, "classe", id_classe) );
 		},
 
-        eliminaAbilita: function ( e )
+        rimuoviAbilita: function ( e )
 		{
             var id_abilita = $(e.currentTarget).attr("data-id"),
-                t_abilita  = this.pg_info.abilita.civile.concat( this.pg_info.abilita.militare ),
-                dato_ab    = t_abilita.filter( function( el ){ return el.id_abilita === id_abilita; })[0],
-                n_sup_base = t_abilita.filter( function( el ){ return el.classi_id_classe === Constants.ID_CLASSE_SUPPORTO_BASE; } ).length,
-                n_control  = t_abilita.filter( function( el ){ return el.nome_abilita.toLowerCase().indexOf("controller") !== -1; } ).length,
-                n_sportivo = t_abilita.filter( function( el ){ return el.classi_id_classe === Constants.ID_CLASSE_SPORTIVO; } ).length,
-                abilita    = t_abilita.filter( this.abilitaIsPrerequisito.bind( this, id_abilita, dato_ab.classi_id_classe, dato_ab.nome_abilita, n_sup_base, n_control, n_sportivo ) ),
+                t_abilita  = this.pg_info.abilita.civile.concat( this.pg_info.abilita.militare),
+                ids        = this.abilitaIsPrerequisito.call( this, id_abilita, t_abilita.concat() );console.log(ids);var
+                abilita    = t_abilita.filter( function( el ){ return ids.indexOf( el.id_abilita ) !== -1; } ),
                 abilita    = abilita.map( function( el ){ return el.nome_abilita; } ),
                 abilita    = abilita.length > 0 ? abilita : ["Nessuna"],
                 lista      = "<ul><li>"+abilita.join("</li><li>")+"</li></ul>";
 
-            Utils.showConfirm( "Cancellando questa abilit&agrave; anche le seguenti verranno eliminate:"+lista+"Sicuro di voler procedere?", this.eliminazioneConfermata.bind(this, "classe", id_abilita) );
+            Utils.showConfirm( "Cancellando questa abilit&agrave; anche le seguenti verranno eliminate:"+lista+"Sicuro di voler procedere?", this.eliminazioneConfermata.bind(this, "abilita", id_abilita) );
 		},
 
         mostraDati: function ()
 		{
-            var bin_button  = " <button type=\"button\" class=\"btn btn-xs btn-default eliminaClassePG\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Elimina\" data-id=\"{1}\"><span class=\"fa fa-trash-o\"></span></button>",
-                bin_button  = this.user_info.permessi.indexOf("eliminaClassePG_altri") !== -1 || this.user_info.permessi.indexOf("eliminaClassePG_proprio") !== -1 ? bin_button : "",
+            var bin_button  = " <button type=\"button\" class=\"btn btn-xs btn-default rimuoviClassePG\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Elimina\" data-id=\"{1}\"><span class=\"fa fa-trash-o\"></span></button>",
+                bin_button  = this.user_info.permessi.indexOf("rimuoviClassePG_altri") !== -1 || this.user_info.permessi.indexOf("rimuoviClassePG_proprio") !== -1 ? bin_button : "",
                 professioni = this.pg_info.classi.civile.reduce( function( pre, curr ){ return ( pre ? pre + ", " : "" ) + curr.nome_classe + bin_button.replace("{1}", curr.id_classe) }, ""),
                 cl_militari = this.pg_info.classi.militare.reduce( function( pre, curr ){ return ( pre ? pre + ", " : "" ) + curr.nome_classe + bin_button.replace("{1}", curr.id_classe) }, ""),
                 px_percento = parseInt( ( parseInt( this.pg_info.px_risparmiati, 10 ) / this.pg_info.px_personaggio ) * 100, 10 ),
@@ -150,6 +185,12 @@
             $("#pc_tot").html( this.pg_info.pc_personaggio );
             $("#pc_bar").css({"width": pc_percento+"%"});
 
+            if( this.user_info.permessi.indexOf("rimuoviAbilitaPG_altri") === -1 && this.user_info.permessi.indexOf("rimuoviAbilitaPG_proprio") === -1 )
+            {
+                $("#lista_abilita_civili").find("tr > th:last-child").remove();
+                $("#lista_abilita_militari").find("tr > th:last-child").remove();
+            }
+
             $.each( this.pg_info.abilita.civile, function ( i, val )
             {
                 var azioni_abilita = $("<button type=\"button\" class=\"btn btn-xs btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Elimina\" data-id=\"" + val.id_abilita + "\"><span class=\"fa fa-trash-o\"></span></button>"),
@@ -157,10 +198,13 @@
                 tr.append("<td>"+val.nome_abilita+"</td>");
                 tr.append("<td>"+val.nome_classe+"</td>");
                 tr.append("<td>"+val.costo_abilita+"</td>");
-                $("<td></td>").appendTo(tr).append(azioni_abilita);
+
+                if( this.user_info.permessi.indexOf("rimuoviAbilitaPG_altri") !== -1 || this.user_info.permessi.indexOf("rimuoviAbilitaPG_proprio") !== -1 )
+                    $("<td></td>").appendTo(tr).append(azioni_abilita);
+
                 $("#lista_abilita_civili").find("tbody").append(tr);
 
-                azioni_abilita.click( this.eliminaAbilita.bind(this) );
+                azioni_abilita.click( this.rimuoviAbilita.bind(this) );
             }.bind(this));
 
             $.each( this.pg_info.abilita.militare, function ( i, val )
@@ -171,10 +215,13 @@
                 tr.append("<td>"+val.nome_classe+"</td>");
                 tr.append("<td>"+val.costo_abilita+"</td>");
                 tr.append("<td>"+val.distanza_abilita+"</td>");
-                $("<td></td>").appendTo(tr).append(azioni_abilita);
+
+                if( this.user_info.permessi.indexOf("rimuoviAbilitaPG_altri") !== -1 || this.user_info.permessi.indexOf("rimuoviAbilitaPG_proprio") !== -1 )
+                    $("<td></td>").appendTo(tr).append(azioni_abilita);
+
                 $("#lista_abilita_militari").find("tbody").append(tr);
 
-                azioni_abilita.click( this.eliminaAbilita.bind(this) );
+                azioni_abilita.click( this.rimuoviAbilita.bind(this) );
             }.bind(this));
 
             if( this.pg_info.background_personaggio !== null )
@@ -212,7 +259,7 @@
                 }
             }
 
-            $(".eliminaClassePG").click( this.eliminaClasse.bind( this ) );
+            $(".rimuoviClassePG").click( this.rimuoviClasse.bind( this ) );
 
             setTimeout(function ()
             {

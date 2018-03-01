@@ -164,6 +164,18 @@
             return "";
         },
 
+        rimuoviElemDaArrayMultidimensione: function( arr, chiave, valore )
+        {
+            for( var a in arr )
+            {
+                if( arr[a][chiave] === valore )
+                {
+                    arr.splice(a, 1);
+                    break;
+                }
+            }
+        },
+
         isLink: function (str)
         {
             var urlPatt = new RegExp(
