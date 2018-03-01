@@ -33,35 +33,43 @@
 
         classeIsPrerequisito: function ( id_cl, el )
         {
-            return el.prerequisito_classe !== null && el.prerequisito_classe === id_cl;
+            return el.prerequisito_classe !== null && parseInt( el.prerequisito_classe, 10 ) === id_cl;
         },
 
         abilitaIsPrerequisito: function ( id_ab, lista_ab, ids )
         {
-            ids = typeof ids === "undefined" ? [] : ids;
+            id_ab = parseInt( id_ab, 10 );
+            ids   = typeof ids === "undefined" ? [] : ids;
 
             var new_ab     = [],
-                id_cl      = this.pg_info.abilita.civile.concat( this.pg_info.abilita.militare).filter( function( el ){ return el.id_abilita === id_ab; })[0].classi_id_classe,
+                id_cl      = parseInt( this.pg_info.abilita.civile.concat( this.pg_info.abilita.militare).filter( function( el ){ return parseInt( el.id_abilita, 10 ) === id_ab; })[0].classi_id_classe, 10 ),
                 n_sup_base = lista_ab.filter( function( el ){ return el.classi_id_classe === Constants.ID_CLASSE_SUPPORTO_BASE; } ).length,
                 n_control  = lista_ab.filter( function( el ){ return el.nome_abilita.toLowerCase().indexOf("controller") !== -1; } ).length,
-                n_sportivo = lista_ab.filter( function( el ){ return el.classi_id_classe === Constants.ID_CLASSE_SPORTIVO; } ).length;
+                n_sportivo = lista_ab.filter( function( el ){ return el.classi_id_classe === Constants.ID_CLASSE_SPORTIVO; } ).length,
+                vera_lista = lista_ab.filter( function( el ){ return el.prerequisito_abilita !== null; } );
 
-            for( var a in lista_ab )
+            for( var v in vera_lista )
             {
-                var ab = lista_ab[a];
+                if( typeof vera_lista[v].id_abilita === "undefined" )
+                    continue;
+
+                var ab    = vera_lista[v],
+                    pre   = parseInt( ab.prerequisito_abilita, 10),
+                    ab_cl = parseInt( ab.classi_id_classe, 10 );
+
                 if (
-                       ab.prerequisito_abilita === id_ab
-                    || ab.prerequisito_abilita === Constants.PREREQUISITO_TUTTE_ABILITA && id_cl === ab.classi_id_classe
+                       pre === id_ab
+                    || pre === Constants.PREREQUISITO_TUTTE_ABILITA && id_cl === ab_cl
                     || (
-                           ab.prerequisito_abilita === Constants.PREREQUISITO_F_TERRA_T_SCELTO
+                           pre === Constants.PREREQUISITO_F_TERRA_T_SCELTO
                         && (
                                id_ab === Constants.ID_ABILITA_F_TERRA
                             || id_ab === Constants.ID_ABILITA_T_SCELTO
                         )
                     )
-                    || ab.prerequisito_abilita === Constants.PREREQUISITO_5_SUPPORTO_BASE && n_sup_base - 1 < 5
-                    || ab.prerequisito_abilita === Constants.PREREQUISITO_4_SPORTIVO && n_sportivo - 1 < 4
-                    || ab.prerequisito_abilita === Constants.PREREQUISITO_3_CONTROLLER && n_control - 1 < 3
+                    || pre === Constants.PREREQUISITO_5_SUPPORTO_BASE && n_sup_base - 1 < 5
+                    || pre === Constants.PREREQUISITO_4_SPORTIVO && n_sportivo - 1 < 4
+                    || pre === Constants.PREREQUISITO_3_CONTROLLER && n_control - 1 < 3
                 )
                 {
                     new_ab.push( ab.id_abilita );
@@ -72,8 +80,8 @@
             if( new_ab.length > 0 )
             {
                 for( var na in new_ab )
-                 if( typeof new_ab[na] !== "function" )
-                    ids = this.abilitaIsPrerequisito.call( this, new_ab[na], lista_ab, ids );
+                    if( typeof new_ab[na] !== "function" )
+                        ids = this.abilitaIsPrerequisito.call( this, new_ab[na], lista_ab, ids );
             }
     
             return new_ab.concat( ids );
@@ -129,8 +137,8 @@
         rimuoviClasse: function ( e )
 		{
             var id_classe   = $(e.currentTarget).attr("data-id"),
-                t_classi    = this.pg_info.classi.civile.concat( this.pg_info.classi.militare ),
-                t_abilita   = this.pg_info.abilita.civile.concat( this.pg_info.abilita.militare ),
+                t_classi    = $("#info_professioni").find(e.currentTarget).length > 0 ? this.pg_info.classi.civile:  this.pg_info.classi.militare,
+                t_abilita   = $("#lista_abilita_civili").find(e.currentTarget).length > 0 ? this.pg_info.abilita.civile:  this.pg_info.abilita.militare,
                 classi      = t_classi.filter( this.classeIsPrerequisito.bind( this, id_classe ) ),
                 classi_id   = classi.map( function( el ){ return el.id_classe; }).concat([id_classe]),
                 classi_nomi = classi.map( function( el ){ return el.nome_classe; } ),
@@ -150,8 +158,8 @@
         rimuoviAbilita: function ( e )
 		{
             var id_abilita = $(e.currentTarget).attr("data-id"),
-                t_abilita  = this.pg_info.abilita.civile.concat( this.pg_info.abilita.militare),
-                ids        = this.abilitaIsPrerequisito.call( this, id_abilita, t_abilita.concat() );console.log(ids);var
+                t_abilita  = $("#lista_abilita_civili").find(e.currentTarget).length > 0 ? this.pg_info.abilita.civile:  this.pg_info.abilita.militare,
+                ids        = this.abilitaIsPrerequisito.call( this, id_abilita, t_abilita.concat()),
                 abilita    = t_abilita.filter( function( el ){ return ids.indexOf( el.id_abilita ) !== -1; } ),
                 abilita    = abilita.map( function( el ){ return el.nome_abilita; } ),
                 abilita    = abilita.length > 0 ? abilita : ["Nessuna"],
