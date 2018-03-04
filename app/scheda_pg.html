@@ -3,10 +3,6 @@
 {% set section = "schedapg" %}
 {% set titolo_sezione = "Riepilogo Dati Personaggio"  %}
 {% set descrizione_sezione = ""  %}
-{% block styles %}
-{{ super() }}
-<link rel="stylesheet" href="styles/multiselector.css"/>
-{% endblock %}
 {% block mainContent %}
 {{ super() }}
 <!--------------------------
@@ -111,7 +107,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body" style="">
-                <div class="box-body table-responsive no-padding">
+                <div class="box-body table-responsive">
                     <table class="table table-hover" id="lista_abilita_civili">
                         <tbody><tr>
                             <th>Nome</th>
@@ -140,7 +136,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body" style="">
-                <div class="box-body table-responsive no-padding">
+                <div class="box-body table-responsive">
                     <table class="table table-hover" id="lista_abilita_militari">
                         <tbody><tr>
                             <th>Nome</th>

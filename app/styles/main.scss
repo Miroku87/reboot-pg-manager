@@ -15,6 +15,9 @@
   clear:both;
 }
 
+.treeview-menu > li > a {
+  padding-left: 20px;
+}
 
 .login-box, .register-box {
   margin: 3% auto;
@@ -175,11 +178,13 @@ ul.list-select li.selected:hover {
   margin: 10px 0;
 }
 
-.scheda-pg-page textarea {
+.scheda-pg-page textarea,
+.messaggi-page textarea {
   resize: vertical;
 }
 
 .inizialmente-nascosto,
+.nav > li.inizialmente-nascosto,
 .scheda-pg-page #background_form,
 .scheda-pg-page #avviso_bg,
 .scheda-pg-page #mostra_storico {
@@ -192,7 +197,25 @@ ul.list-select li.selected:hover {
   border-top-color: transparent;
 }
 
-/*.scheda-pg-page #lista_abilita_civili tbody > tr > td:last-child,
-.scheda-pg-page #lista_abilita_militari tbody > tr > td:last-child {
-  text-align: center;
-}*/
+.messaggi-page .box .nav-stacked > li > .nav-stacked > li {
+  padding-left: 10px;
+}
+
+.messaggi-page .box .nav-stacked > li > .nav-stacked > li.active {
+  padding-left: 7px;
+  background-color: #3c8dbc;
+}
+
+.messaggi-page .box .nav-stacked > li > a {
+  background-color: white;
+}
+
+.messaggi-page .nav-pills>li.active>a,
+.nav-pills>li.active>a:focus,
+.nav-pills>li.active>a:hover {
+  color: #ccc;
+}
+
+.messaggi-page tr.nonletto {
+  font-weight: bold;
+}

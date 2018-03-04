@@ -80,6 +80,7 @@
                 {
                     if ( data.status === "ok" )
                     {
+                        Utils.clearLocalStorage();
                         window.location.href = Constants.SITE_URL;
                     }
                     else if ( data.status === "error" )

@@ -138,6 +138,11 @@
                 throw new Error("No confirm modal found.");
         },
 
+        clearLocalStorage: function ()
+        {
+            window.localStorage.clear();
+        },
+
         setCookie: function (cname, cvalue, exdays)
         {
             var d = new Date();
@@ -241,7 +246,12 @@
                     }.bind(this),
                     error: function ( jqXHR, textStatus, errorThrown )
                     {
-                        Utils.showError( textStatus+"<br>"+errorThrown );
+                        var real_error = textStatus+"<br>"+errorThrown;
+
+                        if( textStatus === "parsererror")
+                            real_error = jqXHR.responseText.replace(/^([\S\s]*?)\{\"status\"[\S\s]*/i,"$1");
+
+                        Utils.showError( real_error );
                     }
                 }
             );
