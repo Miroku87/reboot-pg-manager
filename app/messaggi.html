@@ -24,17 +24,16 @@
                 <div class="box-body no-padding">
                     <!--<ul class="nav nav-pills nav-stacked">-->
                     <ul class="nav nav-pills nav-stacked">
-                        <li><a href="#"><i class="fa fa-inbox"></i> In Arrivo
-                        </a>
+                        <li><a href="#"><i class="fa fa-sign-out"></i> Fuori Gioco </a>
                             <ul class="nav nav-pills nav-stacked">
-                                <li class="active"><a href="#" id="vaia_inarrivo_fg"><i class="fa fa-sign-out"></i> Fuori Gioco <span id="num_non_lette_fg" class="label label-primary pull-right"></span></a></li>
-                                <li class="inizialmente-nascosto"><a href="#" id="vaia_inarrivo_ig"><i class="fa fa-sign-in"></i> In Gioco <span id="num_non_lette_ig" class="label label-primary pull-right"></span></a></li>
+                                <li class="active"><a href="#" id="vaia_inarrivo_fg"><i class="fa fa-inbox"></i> In Arrivo<span id="num_non_lette_fg" class="label label-primary pull-right"></span></a></li>
+                                <li><a href="#" id="vaia_inviate_fg"><i class="fa fa-envelope-o"></i> Inviate</a></li>
                             </ul>
                         </li>
-                        <li><a href="#" id=""><i class="fa fa-envelope-o"></i> Inviate</a>
+                        <li class="inizialmente-nascosto"><a href="#" id=""><i class="fa fa-sign-in"></i> In Gioco </a>
                             <ul class="nav nav-pills nav-stacked">
-                                <li><a href="#" id="vaia_inviate_fg"><i class="fa fa-sign-out"></i> Fuori Gioco</a></li>
-                                <li class="inizialmente-nascosto"><a href="#" id="vaia_inviate_ig"><i class="fa fa-sign-in"></i> In Gioco</a></li>
+                                <li><a href="#" id="vaia_inarrivo_ig"><i class="fa fa-inbox"></i> In Arrivo<span id="num_non_lette_ig" class="label label-primary pull-right"></span></a></li>
+                                <li><a href="#" id="vaia_inviate_ig"><i class="fa fa-envelope-o"></i> Inviate</a></li>
                             </ul></li>
                     </ul>
                 </div>
@@ -103,19 +102,23 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Leggi Messaggio</h3>
 
-                    <div class="box-tools pull-right">
+                    <!--<div class="box-tools pull-right">
                         <a href="#" class="btn btn-box-tool" data-toggle="tooltip" title=""
                            data-original-title="Previous"><i class="fa fa-chevron-left"></i></a>
                         <a href="#" class="btn btn-box-tool" data-toggle="tooltip" title=""
                            data-original-title="Next"><i class="fa fa-chevron-right"></i></a>
-                    </div>
+                    </div>-->
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="mailbox-read-info">
                         <h3 id="oggetto_messaggio"></h3>
-                        <h5>Da: <span id="mittente_messaggio"></span>
-                            <span id="data_messaggio" class="mailbox-read-time pull-right"></span></h5>
+                        <h5>
+                            Da: <span id="mittente_messaggio"></span><br>
+                            A: <span id="destinatario_messaggio"></span>
+                            <span id="data_messaggio" class="mailbox-read-time pull-right"></span>
+                        </h5>
+
                     </div>
                     <!-- /.mailbox-read-info -->
                     <div id="corpo_messaggio" class="mailbox-read-message">

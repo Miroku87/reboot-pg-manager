@@ -10,25 +10,63 @@ var MessaggingManager = function ()
         {
             this.visibile_ora = $("#lista_inarrivo_fg");
             $.fn.dataTable.ext.errMode = 'none';
-            $.fn.dataTable.ext.buttons.refresh = {
-            text: 'Refresh'
-            , action: function ( e, dt, node, config ) {
-                dt.clear().draw();
-                dt.ajax.reload(null,false);
-            }
-        };
 
             this.setListeners.call( this );
             this.mostraMessaggi.call( this );
         },
 
-        erroreDataTable: function ( e, settings, techNote, message ) {
+        erroreDataTable: function ( e, settings, techNote, message )
+        {
             console.log( 'An error has been reported by DataTables: ', message );
+        },
+
+        liberaSpazioMessaggio: function ( )
+        {
+            $("#oggetto_messaggio").text( "" );
+            $("#mittente_messaggio").text( "" );
+            $("#destinatario_messaggio").text( "" );
+            $("#data_messaggio").text( "" );
+            $("#corpo_messaggio").text( "" );
+        },
+
+        mostraMessaggioSingolo: function ( dati )
+        {
+            $("#oggetto_messaggio").text( dati.oggetto_messaggio );
+            $("#mittente_messaggio").text( dati.nome_mittente );
+            $("#destinatario_messaggio").text( dati.nome_destinatario );
+            $("#data_messaggio").text( dati.data_messaggio );
+            $("#corpo_messaggio").text( dati.testo_messaggio );
+        },
+
+        leggiMessaggio: function ( e )
+        {
+            var target = $(e.target);
+            this.recuperaMessaggio( target.attr("data-id"), target.attr("data-tipo"), target.attr("data-casella") );
+            this.vaiA( $("#leggi_messaggio"), e );
+        },
+
+        formattaNonLetti: function ( data, type, row )
+        {
+            return parseInt( row.letto_messaggio, 10 ) === 0 ? "<b>"+data+"</b>" : data;
         },
 
         formattaOggettoMessaggio: function ( data, type, row )
         {
-            return "<a href='#' data-id='"+row.id_messaggio+"'>"+data+"</a>";
+            return this.formattaNonLetti( "<a href='#' class='link-messaggio' data-id='"+row.id_messaggio+"' data-tipo='"+row.tipo_messaggio+"' data-casella='"+row.casella_messaggio+"'>"+data+"</a>", type, row );
+        },
+
+        tabellaDisegnata: function ( e )
+        {
+            $(".link-messaggio").unbind("click");
+            $(".link-messaggio").click( this.leggiMessaggio.bind(this) );
+        },
+
+        aggiornaDati: function ()
+        {
+            if( this.tab_inarrivo_fg ) this.tab_inarrivo_fg.ajax.reload( null, true );
+            if( this.tab_inviati_fg )  this.tab_inviati_fg.ajax.reload( null, true );
+            if( this.tab_inarrivo_ig ) this.tab_inarrivo_ig.ajax.reload( null, true );
+            if( this.tab_inviati_ig )  this.tab_inviati_ig.ajax.reload( null, true );
         },
 
         mostraMessaggi: function ()
@@ -38,20 +76,15 @@ var MessaggingManager = function ()
             this.pg_info   = this.pg_info ? JSON.parse( this.pg_info ) : null;
 
             if( this.pg_info )
-            {
-                $("#vaia_inarrivo_ig").parent().show();
-                $("#vaia_inviate_ig").parent().show();
-            }
+                $(".messaggi-page").find(".nav > li.inizialmente-nascosto").show();
 
-            var tab_inarrivo_fg = this.creaDataTable.call( this, 'lista_inarrivo_fg_table', Constants.API_GET_MESSAGGI, {tipo: "fg", casella: "inarrivo", id: this.user_info.email_giocatore}),
-                tab_inviati_fg  = this.creaDataTable.call( this, 'lista_inviati_fg_table', Constants.API_GET_MESSAGGI, {tipo: "fg", casella: "inviati", id: this.user_info.email_giocatore}),
-                tab_inarrivo_ig = null,
-                tab_inviati_ig  = null;
+            this.tab_inarrivo_fg = this.creaDataTable.call( this, 'lista_inarrivo_fg_table', Constants.API_GET_MESSAGGI, {tipo: "fg", casella: "inarrivo", id: this.user_info.email_giocatore});
+            this.tab_inviati_fg  = this.creaDataTable.call( this, 'lista_inviati_fg_table', Constants.API_GET_MESSAGGI, {tipo: "fg", casella: "inviati", id: this.user_info.email_giocatore});
 
             if( this.pg_info )
             {
-                tab_inarrivo_ig = this.creaDataTable.call( this, 'lista_inarrivo_ig_table', Constants.API_GET_MESSAGGI, {tipo: "ig", casella: "inarrivo", id: this.pg_info.id_personaggio});
-                tab_inviati_ig  = this.creaDataTable.call( this, 'lista_inviati_ig_table', Constants.API_GET_MESSAGGI, {tipo: "ig", casella: "inviati", id: this.pg_info.id_personaggio});
+                this.tab_inarrivo_ig = this.creaDataTable.call( this, 'lista_inarrivo_ig_table', Constants.API_GET_MESSAGGI, {tipo: "ig", casella: "inarrivo", id: this.pg_info.id_personaggio});
+                this.tab_inviati_ig  = this.creaDataTable.call( this, 'lista_inviati_ig_table', Constants.API_GET_MESSAGGI, {tipo: "ig", casella: "inviati", id: this.pg_info.id_personaggio});
             }
         },
 
@@ -64,6 +97,7 @@ var MessaggingManager = function ()
 
             return $( '#'+id )
                 .on("error.dt", this.erroreDataTable.bind(this) )
+                .on("draw.dt", this.tabellaDisegnata.bind(this) )
                 .DataTable( {
                     processing : true,
                     serverSide : true,
@@ -83,12 +117,18 @@ var MessaggingManager = function ()
                         data : data
                     },
                     columns    : [
-                        { data : prima_colonna },
+                        {
+                            data : prima_colonna,
+                            render : this.formattaNonLetti.bind(this)
+                        },
                         {
                             data   : "oggetto_messaggio",
                             render : this.formattaOggettoMessaggio.bind(this)
                         },
-                        { data : "data_messaggio" }
+                        {
+                            data : "data_messaggio",
+                            render : this.formattaNonLetti.bind(this)
+                        }
                     ],
                     order      : [[2, 'desc']]
                 } );
@@ -112,10 +152,42 @@ var MessaggingManager = function ()
                         this.storico = data.result;
                         this.mostraRicette();
                     }
-                    /*else if ( data.status === "error" )
-                     {
-                     Utils.showError( data.message );
-                     }*/
+                    else if ( data.status === "error" )
+                    {
+                        Utils.showError( data.message );
+                    }
+                }.bind(this),
+                error: function ( jqXHR, textStatus, errorThrown )
+                {
+                    Utils.showError( textStatus+"<br>"+errorThrown );
+                }
+            });
+        },
+
+        recuperaMessaggio: function ( idmex, tipo, casella )
+        {
+            $.ajax({
+                url: Constants.API_GET_MESSAGGIO_SINGOLO,
+                method: "POST",
+                xhrFields: {
+                    withCredentials: true
+                },
+                data: {
+                    mexid   : idmex,
+                    idu     : tipo === "ig" ? this.pg_info.id_personaggio : this.user_info.email_giocatore,
+                    tipo    : tipo,
+                    casella : casella
+                },
+                success: function( data )
+                {
+                    if ( data.status === "ok" )
+                    {
+                        this.mostraMessaggioSingolo( data.result );
+                    }
+                    else if ( data.status === "error" )
+                    {
+                        Utils.showError( data.message );
+                    }
                 }.bind(this),
                 error: function ( jqXHR, textStatus, errorThrown )
                 {
@@ -128,6 +200,11 @@ var MessaggingManager = function ()
         {
             this.visibile_ora = cosa;
             this.visibile_ora.fadeIn( 400 );
+
+            this.aggiornaDati();
+
+            if( !cosa.is( $("#leggi_messaggio") ) )
+                this.liberaSpazioMessaggio();
         },
 
         vaiA: function ( dove, e )

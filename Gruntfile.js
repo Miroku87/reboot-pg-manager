@@ -94,7 +94,7 @@ module.exports = function (grunt) {
           port: 9001,
           open: false,
           logLevel: 'silent',
-          host: 'localhost',
+          host: '0.0.0.0',
           server: {
             baseDir: ['.tmp', './test', config.app],
             routes: {
