@@ -20,6 +20,8 @@ Constants.API_GET_STORICO_PG            = Constants.API_URL + "/charactersmanage
 Constants.API_GET_RICETTE               = Constants.API_URL + "/craftingmanager/recuperaricette";
 Constants.API_GET_MESSAGGI              = Constants.API_URL + "/messagingmanager/recuperamessaggi";
 Constants.API_GET_MESSAGGIO_SINGOLO     = Constants.API_URL + "/messagingmanager/recuperamessaggiosingolo";
+Constants.API_GET_DESTINATARI_FG        = Constants.API_URL + "/messagingmanager/recuperadestinatarifg";
+Constants.API_GET_DESTINATARI_IG        = Constants.API_URL + "/messagingmanager/recuperadestinatariig";
 
 Constants.API_DEL_CLASSE_PG             = Constants.API_URL + "/charactersmanager/rimuoviclassepg";
 Constants.API_DEL_ABILITA_PG            = Constants.API_URL + "/charactersmanager/rimuoviabilitapg";

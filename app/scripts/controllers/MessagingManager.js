@@ -20,6 +20,76 @@ var MessaggingManager = function ()
             console.log( 'An error has been reported by DataTables: ', message );
         },
 
+        risettaMessaggio: function ( )
+        {
+            this.id_destinatario = null;
+            this.messaggio_in_lettura = null;
+            $("#destinatario").val("");
+            $("#destinatario").attr("disabled",false);
+            $("#messaggio").val("");
+            $("#messaggio").attr("disabled",false);
+            $("#oggetto").val("");
+            $("#oggetto").attr("disabled",false);
+
+            $("#invia_messaggio").attr("disabled",true);
+        },
+
+        destinatarioSelezionato: function ( event, ui )
+        {
+            this.id_destinatario = ui.item.real_value;
+            $("#invia_messaggio").attr("disabled",false);
+        },
+
+        scrittoSuDestinatario: function ( e, ui )
+        {
+            if( !ui.item )
+                $("#invia_messaggio").attr("disabled",true);
+        },
+
+        cambiaListaDestinatari: function ( )
+        {
+            if( typeof $("#destinatario").data('ui-autocomplete') !== "undefined" )
+            {
+                this.id_destinatario = null;
+                $("#destinatario").val("");
+                $("#invia_messaggio").attr("disabled",true);
+                $("#destinatario").autocomplete( "option", "source", Constants.API_GET_DESTINATARI_IG );
+            }
+        },
+
+        impostaInterfacciaScrittura: function ( )
+        {
+            if( typeof $("#destinatario").data('ui-autocomplete') === "undefined" )
+            {
+                $("#destinatario").autocomplete({
+                    autoFocus : true,
+                    source : Constants.API_GET_DESTINATARI_FG,
+                    select : this.destinatarioSelezionato.bind(this),
+                    change : this.scrittoSuDestinatario.bind(this)
+                });
+
+                $("#tipo_messaggio").change( this.cambiaListaDestinatari.bind(this) );
+                $("#invia_messaggio").click( this.inviaMessaggio.bind(this) );
+                $("#risetta_messaggio").click( this.risettaMessaggio.bind(this) );
+            }
+
+            if( this.messaggio_in_lettura )
+            {
+                this.id_destinatario = this.messaggio_in_lettura.id_mittente;
+
+                $("#tipo_messaggio").val( this.messaggio_in_lettura.tipo );
+                $("#tipo_messaggio").attr("disabled", true);
+
+                $("#destinatario").val( this.messaggio_in_lettura.mittente );
+                $("#destinatario").attr("disabled", true);
+
+                $("#oggetto").val( "Re: " + this.messaggio_in_lettura.oggetto.replace(/^\s*?re:\s?/i,"") );
+                $("#oggetto").attr("disabled", true);
+
+                $("#invia_messaggio").attr("disabled",false);
+            }
+        },
+
         liberaSpazioMessaggio: function ( )
         {
             $("#oggetto_messaggio").text( "" );
@@ -31,11 +101,24 @@ var MessaggingManager = function ()
 
         mostraMessaggioSingolo: function ( dati )
         {
-            $("#oggetto_messaggio").text( dati.oggetto_messaggio );
+            this.messaggio_in_lettura = {
+                id: dati.id_messaggio,
+                tipo: dati.tipo_messaggio,
+                mittente: dati.nome_mittente,
+                id_mittente: dati.id_mittente,
+                oggetto: dati.oggetto_messaggio
+            };
+
+            $("#oggetto_messaggio").text( decodeURIComponent( dati.oggetto_messaggio ) );
             $("#mittente_messaggio").text( dati.nome_mittente );
             $("#destinatario_messaggio").text( dati.nome_destinatario );
             $("#data_messaggio").text( dati.data_messaggio );
-            $("#corpo_messaggio").text( dati.testo_messaggio );
+            $("#corpo_messaggio").text( decodeURIComponent( dati.testo_messaggio ) );
+
+            if( dati.casella_messaggio === "inviati" )
+                $("#rispondi_messaggio").attr("disabled",true);
+            else
+                $("#rispondi_messaggio").attr("disabled",false);
         },
 
         leggiMessaggio: function ( e )
@@ -77,6 +160,8 @@ var MessaggingManager = function ()
 
             if( this.pg_info )
                 $(".messaggi-page").find(".nav > li.inizialmente-nascosto").show();
+            else
+                $("#tipo_messaggio").find("option[value='ig']").remove();
 
             this.tab_inarrivo_fg = this.creaDataTable.call( this, 'lista_inarrivo_fg_table', Constants.API_GET_MESSAGGI, {tipo: "fg", casella: "inarrivo", id: this.user_info.email_giocatore});
             this.tab_inviati_fg  = this.creaDataTable.call( this, 'lista_inviati_fg_table', Constants.API_GET_MESSAGGI, {tipo: "fg", casella: "inviati", id: this.user_info.email_giocatore});
@@ -136,21 +221,43 @@ var MessaggingManager = function ()
 
         inviaMessaggio: function ()
         {
+            var destinatario = this.id_destinatario,
+                oggetto      = $("#oggetto").val(),
+                testo        = $("#messaggio").val(),
+                data         = {};
+
+            if( !destinatario || !oggetto || !testo )
+            {
+                Utils.showError("Per favore compilare tutti i campi.");
+                return false;
+            }
+
+            data.tipo         = $("#tipo_messaggio").val();
+            data.mittente     = data.tipo === "ig" && this.pg_info ? this.pg_info.id_personaggio : this.user_info.email_giocatore;
+            data.destinatario = destinatario;
+            data.oggetto      = encodeURIComponent( oggetto );
+            data.testo        = encodeURIComponent( testo );
+
+            if( this.messaggio_in_lettura )
+                data.id_risposta = this.messaggio_in_lettura.id;
+
             $.ajax({
                 url: Constants.API_POST_MESSAGGIO,
                 method: "POST",
                 xhrFields: {
                     withCredentials: true
                 },
-                data: {
-                    pgid : Utils.getParameterByName( "i" )
-                },
+                data: data,
                 success: function( data )
                 {
                     if ( data.status === "ok" )
                     {
-                        this.storico = data.result;
-                        this.mostraRicette();
+                        $("#message").unbind("hidden.bs.modal");
+                        $("#message").on("hidden.bs.modal", function ()
+                        {
+                            window.location.reload();
+                        });
+                        Utils.showMessage("Messaggio inviato con successo");
                     }
                     else if ( data.status === "error" )
                     {
@@ -196,15 +303,26 @@ var MessaggingManager = function ()
             });
         },
 
+        nuovoBoxAppare: function ( cosa, e )
+        {
+            this.aggiornaDati();
+
+            if( !cosa.is( $("#leggi_messaggio") ) )
+                this.liberaSpazioMessaggio();
+
+            if( cosa.is( $("#scrivi_messaggio") ) )
+                this.impostaInterfacciaScrittura();
+
+            if( !$(e.target).is( $("#rispondi_messaggio") ) && !cosa.is( $("#leggi_messaggio") ) )
+                this.risettaMessaggio();
+        },
+
         mostra: function ( cosa, e )
         {
             this.visibile_ora = cosa;
             this.visibile_ora.fadeIn( 400 );
 
-            this.aggiornaDati();
-
-            if( !cosa.is( $("#leggi_messaggio") ) )
-                this.liberaSpazioMessaggio();
+            this.nuovoBoxAppare( cosa, e );
         },
 
         vaiA: function ( dove, e )
@@ -218,7 +336,7 @@ var MessaggingManager = function ()
             else
                 target.addClass("active");
 
-            this.visibile_ora.fadeOut( 400, this.mostra.bind(this, dove) );
+            this.visibile_ora.fadeOut( 400, this.mostra.bind(this, dove, e) );
         },
 
         setListeners: function ()
@@ -228,6 +346,7 @@ var MessaggingManager = function ()
             $("#vaia_inviate_fg").click( this.vaiA.bind( this, $("#lista_inviati_fg") ) );
             $("#vaia_inviate_ig").click( this.vaiA.bind( this, $("#lista_inviati_ig") ) );
             $("#vaia_scrivi").click( this.vaiA.bind(this, $("#scrivi_messaggio") ) );
+            $("#rispondi_messaggio").click( this.vaiA.bind(this, $("#scrivi_messaggio") ) );
         }
     }
 }();

@@ -54,7 +54,7 @@
             if($("#message").length > 0)
             {
                 $('.modal').modal('hide');
-                $("#messageText").html("Elemento eliminato con successo.");
+                $("#messageText").html(text);
                 $("#message").modal("show");
             }
             else
