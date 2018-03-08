@@ -44,8 +44,10 @@
             var new_ab     = [],
                 id_cl      = parseInt( this.pg_info.abilita.civile.concat( this.pg_info.abilita.militare).filter( function( el ){ return parseInt( el.id_abilita, 10 ) === id_ab; })[0].classi_id_classe, 10 ),
                 n_sup_base = lista_ab.filter( function( el ){ return el.classi_id_classe === Constants.ID_CLASSE_SUPPORTO_BASE; } ).length,
-                n_control  = lista_ab.filter( function( el ){ return el.nome_abilita.toLowerCase().indexOf("controller") !== -1; } ).length,
                 n_sportivo = lista_ab.filter( function( el ){ return el.classi_id_classe === Constants.ID_CLASSE_SPORTIVO; } ).length,
+                n_ass_base = lista_ab.filter( function( el ){ return el.classi_id_classe === Constants.ID_CLASSE_ASSALTATORE_BASE; } ).length,
+                n_gua_base = lista_ab.filter( function( el ){ return el.classi_id_classe === Constants.ID_CLASSE_GUASTATORE_BASE; } ).length,
+                n_gua_avan = lista_ab.filter( function( el ){ return el.classi_id_classe === Constants.ID_CLASSE_GUASTATORE_AVANZATO; } ).length,
                 vera_lista = lista_ab.filter( function( el ){ return el.prerequisito_abilita !== null; } );
 
             for( var v in vera_lista )
@@ -69,7 +71,9 @@
                     )
                     || pre === Constants.PREREQUISITO_5_SUPPORTO_BASE && n_sup_base - 1 < 5
                     || pre === Constants.PREREQUISITO_4_SPORTIVO && n_sportivo - 1 < 4
-                    || pre === Constants.PREREQUISITO_3_CONTROLLER && n_control - 1 < 3
+                    || pre === Constants.PREREQUISITO_3_ASSALTATA_BASE && n_ass_base - 1 < 3
+                    || pre === Constants.PREREQUISITO_3_GUASTATOR_BASE && n_gua_base - 1 < 3
+                    || pre === Constants.PREREQUISITO_3_GUASTATO_AVAN && n_gua_avan - 1 < 3
                 )
                 {
                     new_ab.push( ab.id_abilita );

@@ -319,11 +319,13 @@
                     }).length === 2;
             else if( parseInt( elem.prerequisito_abilita ) === Constants.PREREQUISITO_5_SUPPORTO_BASE )
                 return da_controllare.filter( function( e ){ return parseInt( e.id_classe ) === Constants.ID_CLASSE_SUPPORTO_BASE; } ).length >= 5;
-            else if( parseInt( elem.prerequisito_abilita ) === Constants.PREREQUISITO_3_CONTROLLER )
-                return da_controllare.filter( function( e ){ return e.nome_abilita.toLowerCase().indexOf( "controller" ) !== -1; } ).length >= 3;
-            else if( parseInt( elem.prerequisito_abilita ) === Constants.PREREQUISITO_4_SPORTIVO ) //TODO: gli elementi selezionati
-                                                                                  // grazie al fatto che un altra era
-                                                                                  // selezionata
+            else if( parseInt( elem.prerequisito_abilita ) === Constants.PREREQUISITO_3_ASSALTATA_BASE )
+                return da_controllare.filter( function( e ){ return parseInt( e.id_classe ) === Constants.ID_CLASSE_ASSALTATORE_BASE; } ).length >= 3;
+            else if( parseInt( elem.prerequisito_abilita ) === Constants.PREREQUISITO_3_GUASTATOR_BASE )
+                return da_controllare.filter( function( e ){ return parseInt( e.id_classe ) === Constants.ID_CLASSE_GUASTATORE_BASE; } ).length >= 3;
+            else if( parseInt( elem.prerequisito_abilita ) === Constants.PREREQUISITO_3_GUASTATO_AVAN )
+                return da_controllare.filter( function( e ){ return parseInt( e.id_classe ) === Constants.ID_CLASSE_GUASTATORE_AVANZATO; } ).length >= 3;
+            else if( parseInt( elem.prerequisito_abilita ) === Constants.PREREQUISITO_4_SPORTIVO )
             {
                 da_controllare = da_controllare.filter(function (el)
                 {
