@@ -5,17 +5,7 @@
         {
             this.recuperaDatiLocali();
             this.creaDataTable();
-            this.setListeners();
         },
-
-        stampaCartellini: function ( e )
-        {
-            var pg_da_stampare = this.pg_grid.rows( { filter : 'applied'} ).data();
-            pg_da_stampare = Array.prototype.slice.call(pg_da_stampare);
-
-            window.localStorage.setItem("da_stampare",JSON.stringify(pg_da_stampare));
-            window.location.href = Constants.PRINT_PAGE;
-		},
 
         loggaPersonaggio: function ( e )
         {
@@ -42,7 +32,7 @@
             return data+" <button type='button' class='btn btn-xs btn-default pull-right pg-login-btn' data-id='"+row.id_personaggio+"' data-toggle='tooltip' data-placement='top' title='Logga PG'><i class='fa fa-sign-in'></i></button>";
 		},
 
-        creaPulsantiAzioniPg: function (data, type, row)
+        creaPulsantiAzioni: function (data, type, row)
         {
             return "azioni";
 		},
@@ -51,31 +41,16 @@
         {
             var columns = [];
 
-            columns.push({data : "id_personaggio"});
-
-            if( this.user_info && this.user_info.permessi.indexOf( "mostraPersonaggi_altri" ) )
-                columns.push({data : "nome_giocatore"});
-            else
-                $( '#pg_info').find("thead th:nth-child(2)").remove();
-
-            columns.push({
-                data   : "nome_personaggio",
-                render : this.formattaNomePg.bind(this)
-            });
-            columns.push({data : "data_creazione_personaggio"});
-            columns.push({data : "classi_civili"});
-            columns.push({data : "classi_militari"});
-            columns.push({data : "px_personaggio"});
-            columns.push({data : "pc_personaggio"});
-            columns.push({
-                render         : this.creaPulsantiAzioniPg.bind(this),
-                orderable      : false,
-                data           : null,
-                defaultContent : ""
-            });
+            columns.push({data : "email_giocatore"});
+            columns.push({data : "nome_completo"});
+            columns.push({data : "data_registrazione_giocatore"});
+            columns.push({data : "nome_ruolo"});
+            columns.push({data : "note_giocatore"});
+            columns.push({data : "note_staff_giocatore"});
+            columns.push({render: this.creaPulsantiAzioni.bind(this) });
 
             $.fn.dataTable.ext.errMode = 'none';
-            this.pg_grid = $( '#pg_grid' )
+            this.player_grid = $( '#groglia_giocatori' )
                 .on("error.dt", this.erroreDataTable.bind(this) )
                 .on("draw.dt", this.setGridListeners.bind(this) )
                 .DataTable( {
@@ -90,26 +65,19 @@
                     }],
                     language   : Constants.DATA_TABLE_LANGUAGE,
                     ajax       : {
-                        url  : Constants.API_GET_PGS,
+                        url  : Constants.API_GET_PLAYERS,
                         xhrFields: {
                             withCredentials: true
                         }
                     },
                     columns    : columns,
-                    order      : [[0, 'desc']]
+                    order      : [[1, 'desc']]
                 } );
         },
 
         recuperaDatiLocali: function()
         {
             this.user_info = JSON.parse( window.localStorage.getItem("user") );
-        },
-
-        setListeners: function()
-        {
-            $("#stampa_btn").click( this.stampaCartellini.bind(this) );
-            //$("#punti_btn").click( this.stampaCartellini.bind(this) );
-            //$("#crea_pg_btn").click( this.stampaCartellini.bind(this) );
         }
     };
 }();

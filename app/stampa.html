@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stampa Cartellini</title>
+    <link rel="stylesheet" href="styles/stampa.css"/>
+    <style media="print">
+        a {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<a href="javascript:window.print();">Stampa</a>
+<div class="a4-page">
+    <div class="sopra">
+        <div class="cartellino-pg">
+            <div class="prima-pagina"></div>
+            <div class="seconda-pagina"></div>
+        </div>
+        <div class="cartellino-pg">
+            <div class="prima-pagina"></div>
+            <div class="seconda-pagina"></div>
+        </div>
+        <div class="cartellino-pg">
+            <div class="prima-pagina"></div>
+            <div class="seconda-pagina"></div>
+        </div>
+        <div class="cartellino-pg">
+            <div class="prima-pagina"></div>
+            <div class="seconda-pagina"></div>
+        </div>
+    </div>
+    <div class="sotto">
+        <div class="cartellino-pg">
+            <div class="prima-pagina"></div>
+            <div class="seconda-pagina"></div>
+        </div>
+        <div class="cartellino-pg">
+            <div class="prima-pagina"></div>
+            <div class="seconda-pagina"></div>
+        </div>
+    </div>
+</div>
+<script src="scripts/controllers/PrintSheetsManager.js"></script>
+</body>
+</html>

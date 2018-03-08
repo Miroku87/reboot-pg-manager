@@ -46,6 +46,12 @@ var MessaggingManager = function ()
                 $("#invia_messaggio").attr("disabled",true);
         },
 
+        inserisciDestinatario: function ( )
+        {
+            if( $("#tipo_messaggio").val() === "ig" )      $("#mittente").val( "Da: " + this.pg_info.nome_personaggio );
+            else if( $("#tipo_messaggio").val() === "fg" ) $("#mittente").val( "Da: " + this.user_info.nome_giocatore );
+        },
+
         cambiaListaDestinatari: function ( )
         {
             if( typeof $("#destinatario").data('ui-autocomplete') !== "undefined" )
@@ -55,6 +61,8 @@ var MessaggingManager = function ()
                 $("#invia_messaggio").attr("disabled",true);
                 $("#destinatario").autocomplete( "option", "source", Constants.API_GET_DESTINATARI_IG );
             }
+
+            this.inserisciDestinatario();
         },
 
         impostaInterfacciaScrittura: function ( )
@@ -88,6 +96,8 @@ var MessaggingManager = function ()
 
                 $("#invia_messaggio").attr("disabled",false);
             }
+
+            this.inserisciDestinatario();
         },
 
         liberaSpazioMessaggio: function ( )

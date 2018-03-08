@@ -1,12 +1,12 @@
 ﻿{% extends "./templates/main_template.html" %}
-{% set body_classes = "hold-transition skin-black fixed sidebar-mini" %}
+{% set body_classes = "hold-transition skin-black fixed sidebar-mini pg-list-page" %}
 {% set section = "listapg" %}
 {% block mainContent %}
 {{ super() }}
 <!--------------------------
   | Your Page Content Here |
   -------------------------->
-<div class="box">
+<!--<div class="box">
     <div class="box-header with-border">
         <h3 class="box-title">Azioni Generiche</h3>
     </div>
@@ -21,7 +21,13 @@
             <i class="fa fa-plus"></i> Crea PG
         </a>
     </div>
-    <!-- /.box-body -->
+    &lt;!&ndash; /.box-body &ndash;&gt;
+</div>-->
+
+<div class="btn-group pull-center out-of-box">
+    <button type="button" class="btn btn-info" id="crea_pg_btn"><i class="fa fa-plus"></i><br>Crea PG</button>
+    <button type="button" class="btn btn-info" id="punti_btn"><i class="fa fa-edit"></i><br>Assegna Punti</button>
+    <button type="button" class="btn btn-info" id="stampa_btn"><i class="fa fa-print"></i><br>Stampa Filtrati</button>
 </div>
 
 <div class="box">
@@ -39,27 +45,19 @@
     </div>
     <div class="box-body">
 
-        <div class="box-body table-responsive no-padding">
-            <table id="pg-grid" class="table table-condensed table-hover table-striped table-bordered responsive">
+        <div class="box-body">
+            <table id="pg_grid" class="table table-condensed table-hover table-striped table-bordered responsive" width="100%">
                 <thead>
                 <tr>
-                    <th data-column-id="id_personaggio" data-type="numeric" data-sortable="true" data-order="asc">ID
-                        PG
-                    </th>
-                    <th data-column-id="nome_giocatore" data-sortable="true">Nome Giocatore</th>
-                    <th data-column-id="nome_personaggio" data-formatter="pgnameFormatter" data-sortable="true">Nome
-                        Personaggio
-                    </th>
-                    <th data-column-id="data_creazione_personaggio" data-sortable="true">Data Creazione</th>
-                    <th data-column-id="lista_classi_civili" data-formatter="civilClassFormatter" data-sortable="false">
-                        Classe Civile
-                    </th>
-                    <th data-column-id="lista_classi_militari" data-formatter="militaryClassesFormatter"
-                        data-sortable="false">Classi Militari
-                    </th>
-                    <th data-column-id="px_personaggio" data-formatter="pxFormatter" data-sortable="true">PX</th>
-                    <th data-column-id="pc_personaggio" data-formatter="pcFormatter" data-sortable="true">PC</th>
-                    <th data-column-id="actions" data-formatter="commandsFormatter" data-sortable="false">Azioni</th>
+                    <th>ID PG</th>
+                    <th>Nome Giocatore</th>
+                    <th>Nome Personaggio</th>
+                    <th>Data Creazione</th>
+                    <th>Classi Civili</th>
+                    <th>Classi Militari</th>
+                    <th>PX</th>
+                    <th>PC</th>
+                    <th>Azioni</th>
                 </tr>
                 </thead>
             </table>

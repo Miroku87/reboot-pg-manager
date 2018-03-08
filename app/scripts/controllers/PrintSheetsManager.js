@@ -1,4 +1,4 @@
-﻿var MainPageManager = function ()
+﻿var PrintSheetsManager = function ()
 {
 	return {
 
@@ -15,5 +15,5 @@
 }();
 
 $(function () {
-	MainPageManager.init();
+    PrintSheetsManager.init();
 });

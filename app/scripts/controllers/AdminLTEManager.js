@@ -61,6 +61,8 @@
                     $("#btn_crafting_programmazione").show();
                 if (this.pg_info.crafting_ingegneria)
                     $("#btn_crafting_ingegneria").show();
+
+                $("#nome_personaggio").find("p").text( this.pg_info.nome_personaggio );
             }
         },
 

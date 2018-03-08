@@ -367,7 +367,7 @@
                     withCredentials: true
                 },
                 data: {
-                    pgid : Utils.getParameterByName( "i" )
+                    pgid : window.localStorage.getItem("pg_da_loggare")
                 },
                 success: function( data )
                 {
@@ -397,7 +397,7 @@
                     withCredentials: true
                 },
                 data: {
-                    pgid : Utils.getParameterByName( "i" )
+                    pgid : window.localStorage.getItem("pg_da_loggare")
                 },
                 success: function( data )
                 {
@@ -427,7 +427,7 @@
                     withCredentials: true
                 },
                 data: {
-                    pgid : Utils.getParameterByName( "i" )
+                    pgid : window.localStorage.getItem("pg_da_loggare")
                 },
                 success: function( data )
                 {

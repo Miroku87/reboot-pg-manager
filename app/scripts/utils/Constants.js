@@ -13,6 +13,7 @@ Constants.API_POST_MESSAGGIO            = Constants.API_URL + "/messagingmanager
 Constants.API_GET_LOGOUT                = Constants.API_URL + "/usersmanager/logout";
 Constants.API_GET_ACESS                 = Constants.API_URL + "/usersmanager/controllaaccesso";
 Constants.API_CHECK_PWD                 = Constants.API_URL + "/usersmanager/controllapwd";
+Constants.API_GET_PLAYERS               = Constants.API_URL + "/usersmanager/recuperalistagiocatori";
 Constants.API_GET_PG_LOGIN              = Constants.API_URL + "/charactersmanager/loginpg";
 Constants.API_GET_INFO                  = Constants.API_URL + "/charactersmanager/recuperainfoclassi";
 Constants.API_GET_PGS                   = Constants.API_URL + "/charactersmanager/mostrapersonaggi";
@@ -29,6 +30,7 @@ Constants.API_DEL_ABILITA_PG            = Constants.API_URL + "/charactersmanage
 Constants.LOGIN_PAGE                    = Constants.SITE_URL + "/";
 Constants.MAIN_PAGE                     = Constants.SITE_URL + "/main.html";
 Constants.PG_PAGE                       = Constants.SITE_URL + "/scheda_pg.html";
+Constants.PRINT_PAGE                    = Constants.SITE_URL + "/stampa.html";
 
 Constants.PX_TOT                        = 100;
 Constants.PC_TOT                        = 18;

@@ -19,6 +19,10 @@
   padding-left: 20px;
 }
 
+.out-of-box {
+  margin-bottom: 20px;
+}
+
 .login-box, .register-box {
   margin: 3% auto;
 }
@@ -30,6 +34,9 @@
 .pg-list-page .container > .container {
   display: block;
   font-size: 0.9rem;
+}
+.pg-list-page button > i {
+  pointer-events: none;
 }
 
 .footer {
@@ -195,6 +202,19 @@ ul.list-select li.selected:hover {
 .scheda-pg-page .table > tbody > tr > th,
 .scheda-pg-page ul > li:first-child {
   border-top-color: transparent;
+}
+
+.scheda-pg-page .action-group {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.scheda-pg-page .action-group > button {
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
+  margin-top: 10px;
 }
 
 .messaggi-page .box .nav-stacked > li > .nav-stacked > li {
