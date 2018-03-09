@@ -1,0 +1,262 @@
+{% extends "./templates/main_template.html" %}
+{% set body_classes = body_classes + " scheda-pg-page" %}
+{% set section = "schedapg" %}
+{% set titolo_sezione = "Riepilogo Dati Personaggio"  %}
+{% set descrizione_sezione = ""  %}
+{% block mainContent %}
+{{ super() }}
+<!--------------------------
+  | Your Page Content Here |
+  -------------------------->
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Dati Base</h3>
+            </div>
+            <div class="box-body">
+                <ul class="list-group list-group-unbordered">
+                    <li class="list-group-item">
+                        <b>Giocatore</b> <a id="info_giocatore" class="pull-right"></a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>ID</b> <a id="info_id" class="pull-right"></a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Nome</b> <a id="info_nome" class="pull-right"></a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Data Creazione</b> <a id="info_data" class="pull-right"></a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Professioni</b> <a id="info_professioni" class="pull-right"></a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Classi Militari</b> <a id="info_militari" class="pull-right"></a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Credito</b> <a id="info_credito" class="pull-right"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="info-box bg-blue" id="px_box">
+            <span class="info-box-icon"><i class="ion ion-ios-briefcase-outline"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">Punti Esperienza Risparmiati</span>
+                <span class="info-box-number" id="px_risparmiati"></span>
+
+                <div class="progress">
+                    <div class="progress-bar" id="px_bar" style="width: 0%"></div>
+                </div>
+              <span class="progress-description">
+                    Su un totale di <span id="px_tot"></span>
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <div class="info-box bg-red" id="pc_box">
+            <span class="info-box-icon"><i class="ion ion-pinpoint"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">Punti Combattimento Risparmiati</span>
+                <span class="info-box-number" id="pc_risparmiati"></span>
+
+                <div class="progress">
+                    <div class="progress-bar" id="pc_bar" style="width: 0%"></div>
+                </div>
+              <span class="progress-description">
+                    Su un totale di <span id="pc_tot"></span>
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+
+        <div class="action-group">
+            <button type="button" class="btn btn-block btn-info" id="acquista_abilita_btn"><i class="fa fa-cart-plus"></i><br>Acquista<br>Abilit&agrave;</button>
+            <button type="button" class="btn btn-block btn-info"><i class="fa fa-money"></i><br>Gestisci<br>Crediti</button>
+            <button type="button" class="btn btn-block btn-info"><i class="fa fa-plus-square"></i><br>Assegna<br>PC/PX</button>
+            <button type="button" class="btn btn-block btn-info"><i class="fa fa-print"></i><br>Stampa<br>Cartellino</button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="box box-primary collapsed-box">
+            <div class="box-header with-border">
+                <h3 class="box-title"><a data-widget="collapse">Abilit&agrave; Professionali</a></h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                    </button>
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body" style="">
+                <div class="box-body table-responsive">
+                    <table class="table table-hover" id="lista_abilita_civili">
+                        <tbody><tr>
+                            <th>Nome</th>
+                            <th>Classe</th>
+                            <th>Costo</th>
+                            <th>Azioni</th>
+                        </tr>
+                        </tbody></table>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="box box-danger collapsed-box">
+            <div class="box-header with-border">
+                <h3 class="box-title"><a data-widget="collapse">Abilit&agrave; Militari</a></h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                    </button>
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body" style="">
+                <div class="box-body table-responsive">
+                    <table class="table table-hover" id="lista_abilita_militari">
+                        <tbody><tr>
+                            <th>Nome</th>
+                            <th>Classe</th>
+                            <th>Costo</th>
+                            <th>Distanza</th>
+                            <th>Azioni</th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="box box-warning collapsed-box">
+            <div class="box-header with-border">
+                <h3 class="box-title"><a data-widget="collapse">Background Personaggio</a></h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                    </button>
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <p id="avviso_bg">Non &egrave; ancora stato aggiunto un background.</p>
+                <p id="background"></p>
+                <p id="aggiungi_bg">Aggiungi o modifica il background <a id="mostra_form_bg">cliccando QUI <i class="fa fa-pencil"></i></a></p>
+                <div class="form-group" id="background_form">
+                    <textarea id="testo_background" class="form-control" rows="5"></textarea>
+                    <button id="invia_bg" class="btn btn-success pull-right">Invia Background</button>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+</div>
+<div class="row inizialmente-nascosto" id="ricettePersonaggio">
+    <div class="col-sm-12">
+        <div class="box box-info collapsed-box">
+            <div class="box-header with-border">
+                <h3 class="box-title"><a data-widget="collapse">Ricette create dal Personaggio</a></h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                    </button>
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table class="table table-hover">
+                    <tbody><tr>
+                        <th>Nome</th>
+                        <th>Data</th>
+                        <th>Tipo</th>
+                        <th>Componenti</th>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+</div>
+<div class="row inizialmente-nascosto" id="recuperaNoteMaster">
+    <div class="col-sm-12">
+        <div class="box box-warning collapsed-box">
+            <div class="box-header with-border">
+                <h3 class="box-title"><a data-widget="collapse">Note dei Master sul Personaggio</a></h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                    </button>
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <p id="avviso_note_master">Non &egrave; ancora stata ancora aggiunta nessuna nota.</p>
+                <p id="note_master"></p>
+                <p id="aggiungi_note_master">Aggiungi o modifica le note <a id="mostra_note_master">cliccando QUI <i class="fa fa-pencil"></i></a></p>
+                <div class="form-group inizialmente-nascosto" id="note_master_form">
+                    <textarea id="testo_note_master" class="form-control" rows="5"></textarea>
+                    <button id="invia_note_master" class="btn btn-success pull-right">Aggiorna Note Master</button>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+</div>
+<div class="row inizialmente-nascosto" id="recuperaStorico">
+    <div class="col-sm-12">
+        <div class="box box-info collapsed-box">
+            <div class="box-header with-border">
+                <h3 class="box-title"><a data-widget="collapse">Storico Azioni sul Personaggio</a></h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                    </button>
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table class="table table-hover">
+                    <tbody><tr>
+                        <th>Esecutore</th>
+                        <th>Data</th>
+                        <th>Tipo</th>
+                        <th>Tabella</th>
+                        <th>Campo</th>
+                        <th>Vecchio Valore</th>
+                        <th>Nuove Valore</th>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block managers %}
+{{ super() }}
+<script src="scripts/controllers/PgViewerManager.js"></script>
+{% endblock %}

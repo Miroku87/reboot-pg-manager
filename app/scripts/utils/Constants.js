@@ -30,6 +30,7 @@ Constants.API_DEL_ABILITA_PG             = Constants.API_URL + "/charactersmanag
 Constants.LOGIN_PAGE                     = Constants.SITE_URL + "/";
 Constants.MAIN_PAGE                      = Constants.SITE_URL + "/main.html";
 Constants.PG_PAGE                        = Constants.SITE_URL + "/scheda_pg.html";
+Constants.ABILITY_SHOP_PAGE              = Constants.SITE_URL + "/negozio_abilita.html";
 Constants.PRINT_PAGE                     = Constants.SITE_URL + "/stampa.html";
 
 Constants.PX_TOT                         = 100;

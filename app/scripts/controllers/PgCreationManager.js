@@ -101,7 +101,7 @@
             {
                 if( e.message === Contatore.ERRORS.VAL_TROPPO_BASSO )
                 {
-                    this.ms_abilita_civili.deselezionaUltimo();
+                    this.ms_abilita_civili.deselezionaUltimo(); //TODO: controllare bene questo!!!
                     Utils.showError("Non hai più punti per comprare altre abilit&agrave;.");
                 }
             }

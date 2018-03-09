@@ -319,6 +319,11 @@
             }
         },
 
+        vaiANegozioAbilita: function ()
+        {
+            window.location.href = Constants.ABILITY_SHOP_PAGE;
+        },
+
         refreshPage: function ()
         {
             window.location.reload();
@@ -468,6 +473,7 @@
         {
             $( "#mostra_form_bg" ).click( this.mostraTextAreaBG.bind(this) );
             $( "#mostra_note_master" ).click( this.mostraTextAreaNoteMaster.bind(this) );
+            $( "#acquista_abilita_btn" ).click( this.vaiANegozioAbilita.bind(this) );
             $( "#message" ).on( "hidden.bs.modal", this.refreshPage.bind(this) );
         }
 	}
