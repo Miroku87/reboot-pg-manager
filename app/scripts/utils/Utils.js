@@ -49,11 +49,18 @@
             });
         },
 
-        showMessage: function(text)
+        showMessage: function( text, onHide )
         {
             if($("#message").length > 0)
             {
                 $('.modal').modal('hide');
+
+                if (typeof onHide === "function")
+                {
+                    $("#message").unbind("hidden.bs.modal");
+                    $("#message").on("hidden.bs.modal", onHide);
+                }
+
                 $("#messageText").html(text);
                 $("#message").modal("show");
             }
@@ -61,18 +68,23 @@
                 throw new Error("No error modal found.");
         },
 
-        showError: function(errorText)
+        showError: function( errorText, onHide )
         {
-            if($("#errorDialog").length > 0)
+            if( $("#errorDialog").length > 0 && !( $("#errorDialog").data('bs.modal') || {isShown: false} ).isShown )
             {
                 $('.modal').modal('hide');
+
+                if (typeof onHide === "function")
+                {
+                    $("#errorDialog").unbind("hidden.bs.modal");
+                    $("#errorDialog").on("hidden.bs.modal", onHide);
+                }
+
                 $("#errorDialog").find('#errorMsg').html(errorText);
                 $("#errorDialog").modal({
                     backdrop: 'static'
                 });
             }
-            else
-                throw new Error("No error modal found.");
         },
 
         showConfirm: function( question, onConfirm )
@@ -85,7 +97,7 @@
                 $("#confirmWithPassword").find("#confirm_button").unbind("click");
                 $("#confirmWithPassword").find("input#confirm_password").val("");
 
-                $("#confirmWithPassword").find("#confirm_button").click(function (e)
+                $("#confirmWithPassword").find("#confirm_button").click(function ( )
                 {
                     if( $("#confirmWithPassword").find("input#confirm_password").val() == "" ||
                         /^\s+$/.test($("#confirmWithPassword").find("input#confirm_password").val()))
@@ -94,31 +106,14 @@
                         return; //function will not keep on executing
                     }
 
-                    $.ajax({
-                        url: Constants.API_CHECK_PWD,
-                        data: {
-                            confirmpassword: $("#confirmWithPassword").find("input#confirm_password").val()
-                        },
-                        method: "POST",
-                        xhrFields: {
-                            withCredentials: true
-                        },
-                        success: function( data )
-                        {
-                            if ( data.status === "ok" )
-                            {
-                                onConfirm();
-                            }
-                            else if ( data.status === "error" )
-                            {
-                                Utils.showError( data.message );
-                            }
-                        }.bind(this),
-                        error: function ( jqXHR, textStatus, errorThrown )
-                        {
-                            Utils.showError( textStatus+"<br>"+errorThrown );
-                        }
-                    });
+                    var dati = { confirmpassword: $("#confirmWithPassword").find("input#confirm_password").val() };
+
+                    Utils.requestData(
+                        Constants.API_CHECK_PWD,
+                        "POST",
+                        dati,
+                        onConfirm
+                    );
                 });
 
                 $("#confirmWithPassword").find("input#confirm_password").keypress(function(event) {
@@ -138,9 +133,58 @@
                 throw new Error("No confirm modal found.");
         },
 
+        requestData: function ( url, method, data, success, failure, onSuccessHide, onFailureHide )
+        {
+            $.ajax({
+                url: url,
+                data: data,
+                method: method,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function( data )
+                {
+                    if ( data.status === "ok" && typeof success === "string")
+                        Utils.showMessage(success,onSuccessHide);
+                    else if ( data.status === "ok" && typeof success === "function")
+                        success(data);
+                    else if ( data.status === "error" && typeof failure === "string" )
+                        Utils.showError( failure, onFailureHide );
+                    else if ( data.status === "error" && typeof failure === "function" )
+                        failure(data);
+                    else if ( data.status === "error" && ( typeof failure === "undefined" || failure === null ) )
+                        Utils.showError( data.message.replace("\n","<br>"), onFailureHide );
+                }.bind(this),
+                error: function ( jqXHR, textStatus, errorThrown )
+                {
+                    var real_error = textStatus+"<br>"+errorThrown;
+
+                    if( textStatus === "parsererror")
+                        real_error = jqXHR.responseText.replace(/^([\S\s]*?)\{"[\S\s]*/i,"$1");
+
+                    real_error = real_error.replace("\n","<br>");
+
+                    if ( data.status === "error" && typeof failure !== "function" )
+                        Utils.showError( real_error, onFailureHide );
+                    else if ( data.status === "error" && typeof failure === "function" )
+                        failure({message:real_error});
+                }
+            });
+        },
+
         clearLocalStorage: function ()
         {
             window.localStorage.clear();
+        },
+
+        redirectTo: function ( url )
+        {
+            window.location.href = url;
+        },
+
+        reloadPage: function ( url )
+        {
+            window.location.reload();
         },
 
         setCookie: function (cname, cvalue, exdays)
@@ -222,37 +266,19 @@
 
         controllaAccessoPagina: function( section )
         {
-            $.ajax(
+            Utils.requestData(
                 Constants.API_GET_ACESS,
+                "POST",
+                "section=" + section + "&" + window.location.search.substr(1),
+                null,
+                function ( data )
                 {
-                    method: "POST",
-                    data: "section=" + section + "&" + window.location.search.substr(1),
-                    cache: false,
-                    //contentType: false,
-                    //processData: false,
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    success: function( data )
+                    $("#errorDialog").unbind("hidden.bs.modal");
+                    $("#errorDialog").on("hidden.bs.modal", function ()
                     {
-                        if ( data.status === "error" )
-                        {
-                            $("#errorDialog").on("hidden.bs.modal", function ()
-                            {
-                                window.location.href = Constants.LOGIN_PAGE;
-                            });
-                            Utils.showError( data.message );
-                        }
-                    }.bind(this),
-                    error: function ( jqXHR, textStatus, errorThrown )
-                    {
-                        var real_error = textStatus+"<br>"+errorThrown;
-
-                        if( textStatus === "parsererror")
-                            real_error = jqXHR.responseText.replace(/^([\S\s]*?)\{\"status\"[\S\s]*/i,"$1");
-
-                        Utils.showError( real_error );
-                    }
+                        window.location.href = Constants.LOGIN_PAGE;
+                    });
+                    Utils.showError( data.message );
                 }
             );
         },

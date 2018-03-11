@@ -73,33 +73,14 @@
 				return false;
 			}
 
-			$.ajax({
-				url: Constants.API_POST_REGISTRA,
-				method: "POST",
-				data: $("#formRegistrazione").find("input, textarea, checkbox").serialize(),
-				cache: false,
-				//contentType: false,
-				//processData: false,
-				xhrFields: {
-					withCredentials: true
-				},
-				success: function( data )
-				{
-					if ( data.status === "ok" )
-					{
-						$("#messageText").html("La registrazione è avvenuta con successo.<br>Riceverai a breve una mail con i dati di accesso.<br>Per favore controlla anche nella cartella <strong>Anti-Spam</strong>");
-						$("#message").modal("show");
-					}
-					else if ( data.status === "error" )
-					{
-						Utils.showError( data.message );
-					}
-				},
-                error: function ( jqXHR, textStatus, errorThrown )
-                {
-                    Utils.showError( textStatus+"<br>"+errorThrown );
-                }
-			});
+            $("#inviaDatiGiocatore").attr("disabled",true);
+
+            Utils.requestData(
+                Constants.API_POST_REGISTRA,
+                "POST",
+                $("#formRegistrazione").find("input, textarea, checkbox").serialize(),
+                "La registrazione è avvenuta con successo.<br>Riceverai a breve una mail con i dati di accesso.<br>Per favore controlla anche nella cartella <strong>Anti-Spam</strong>"
+            );
 		}
 	}
 }();

@@ -8,16 +8,23 @@ var MessaggingManager = function ()
 
         init: function ()
         {
+            this.user_info = JSON.parse( window.localStorage.getItem("user") );
             this.visibile_ora = $("#lista_inarrivo_fg");
             $.fn.dataTable.ext.errMode = 'none';
 
-            this.setListeners.call( this );
-            this.mostraMessaggi.call( this );
+            this.setListeners( );
+            this.controllaStorage( );
+            this.mostraMessaggi( );
         },
 
         erroreDataTable: function ( e, settings, techNote, message )
         {
-            console.log( 'An error has been reported by DataTables: ', message );
+            if( !settings.jqXHR.responseText )
+                return false;
+
+            var real_error = settings.jqXHR.responseText.replace(/^([\S\s]*?)\{"[\S\s]*/i,"$1");
+            real_error = real_error.replace("\n","<br>");
+            Utils.showError(real_error);
         },
 
         risettaMessaggio: function ( )
@@ -31,7 +38,8 @@ var MessaggingManager = function ()
             $("#oggetto").val("");
             $("#oggetto").attr("disabled",false);
 
-            $("#invia_messaggio").attr("disabled",true);
+            $("#tipo_messaggio").attr("disabled", false);
+            $("#invia_messaggio").attr("disabled", true);
         },
 
         destinatarioSelezionato: function ( event, ui )
@@ -52,17 +60,32 @@ var MessaggingManager = function ()
             else if( $("#tipo_messaggio").val() === "fg" ) $("#mittente").val( "Da: " + this.user_info.nome_giocatore );
         },
 
-        cambiaListaDestinatari: function ( )
+        cambiaListaDestinatari: function ( e )
         {
             if( typeof $("#destinatario").data('ui-autocomplete') !== "undefined" )
             {
                 this.id_destinatario = null;
                 $("#destinatario").val("");
                 $("#invia_messaggio").attr("disabled",true);
-                $("#destinatario").autocomplete( "option", "source", Constants.API_GET_DESTINATARI_IG );
+                $("#destinatario").autocomplete( "option", "source", this.recuperaDestinatariAutofill.bind(this,$("#tipo_messaggio").val()) );
             }
 
             this.inserisciDestinatario();
+        },
+
+        recuperaDestinatariAutofill: function ( tipo, req, res )
+        {
+            var url = tipo === "ig" ? Constants.API_GET_DESTINATARI_IG : Constants.API_GET_DESTINATARI_FG;
+
+            Utils.requestData(
+                url,
+                "GET",
+                { term : req.term },
+                function( data )
+                {
+                    res( data.results );
+                }
+            );
         },
 
         impostaInterfacciaScrittura: function ( )
@@ -71,9 +94,9 @@ var MessaggingManager = function ()
             {
                 $("#destinatario").autocomplete({
                     autoFocus : true,
-                    source : Constants.API_GET_DESTINATARI_FG,
                     select : this.destinatarioSelezionato.bind(this),
-                    change : this.scrittoSuDestinatario.bind(this)
+                    change : this.scrittoSuDestinatario.bind(this),
+                    source : this.recuperaDestinatariAutofill.bind(this,"fg")
                 });
 
                 $("#tipo_messaggio").change( this.cambiaListaDestinatari.bind(this) );
@@ -91,8 +114,11 @@ var MessaggingManager = function ()
                 $("#destinatario").val( this.messaggio_in_lettura.mittente );
                 $("#destinatario").attr("disabled", true);
 
-                $("#oggetto").val( "Re: " + this.messaggio_in_lettura.oggetto.replace(/^\s*?re:\s?/i,"") );
-                $("#oggetto").attr("disabled", true);
+                if (this.messaggio_in_lettura.oggetto)
+                {
+                    $("#oggetto").val("Re: " + this.messaggio_in_lettura.oggetto.replace(/^\s*?re:\s?/i, ""));
+                    $("#oggetto").attr("disabled", true);
+                }
 
                 $("#invia_messaggio").attr("disabled",false);
             }
@@ -164,7 +190,6 @@ var MessaggingManager = function ()
 
         mostraMessaggi: function ()
         {
-            this.user_info = JSON.parse( window.localStorage.getItem("user") );
             this.pg_info   = window.localStorage.getItem("logged_pg");
             this.pg_info   = this.pg_info ? JSON.parse( this.pg_info ) : null;
 
@@ -251,66 +276,40 @@ var MessaggingManager = function ()
             if( this.messaggio_in_lettura )
                 data.id_risposta = this.messaggio_in_lettura.id;
 
-            $.ajax({
-                url: Constants.API_POST_MESSAGGIO,
-                method: "POST",
-                xhrFields: {
-                    withCredentials: true
-                },
-                data: data,
-                success: function( data )
+            Utils.requestData(
+                Constants.API_POST_MESSAGGIO,
+                "POST",
+                data,
+                function( )
                 {
-                    if ( data.status === "ok" )
+                    $("#message").unbind("hidden.bs.modal");
+                    $("#message").on("hidden.bs.modal", function ()
                     {
-                        $("#message").unbind("hidden.bs.modal");
-                        $("#message").on("hidden.bs.modal", function ()
-                        {
-                            window.location.reload();
-                        });
-                        Utils.showMessage("Messaggio inviato con successo");
-                    }
-                    else if ( data.status === "error" )
-                    {
-                        Utils.showError( data.message );
-                    }
-                }.bind(this),
-                error: function ( jqXHR, textStatus, errorThrown )
-                {
-                    Utils.showError( textStatus+"<br>"+errorThrown );
-                }
-            });
+                        window.location.reload();
+                    });
+                    Utils.showMessage("Messaggio inviato con successo");
+                }.bind(this)
+            );
         },
 
         recuperaMessaggio: function ( idmex, tipo, casella )
         {
-            $.ajax({
-                url: Constants.API_GET_MESSAGGIO_SINGOLO,
-                method: "POST",
-                xhrFields: {
-                    withCredentials: true
-                },
-                data: {
-                    mexid   : idmex,
-                    idu     : tipo === "ig" ? this.pg_info.id_personaggio : this.user_info.email_giocatore,
-                    tipo    : tipo,
-                    casella : casella
-                },
-                success: function( data )
+            var dati = {
+                mexid   : idmex,
+                idu     : tipo === "ig" ? this.pg_info.id_personaggio : this.user_info.email_giocatore,
+                tipo    : tipo,
+                casella : casella
+            };
+
+            Utils.requestData(
+                Constants.API_GET_MESSAGGIO_SINGOLO,
+                "POST",
+                dati,
+                function( data )
                 {
-                    if ( data.status === "ok" )
-                    {
-                        this.mostraMessaggioSingolo( data.result );
-                    }
-                    else if ( data.status === "error" )
-                    {
-                        Utils.showError( data.message );
-                    }
-                }.bind(this),
-                error: function ( jqXHR, textStatus, errorThrown )
-                {
-                    Utils.showError( textStatus+"<br>"+errorThrown );
-                }
-            });
+                   this.mostraMessaggioSingolo( data.result );
+                }.bind(this)
+            );
         },
 
         nuovoBoxAppare: function ( cosa, e )
@@ -323,7 +322,7 @@ var MessaggingManager = function ()
             if( cosa.is( $("#scrivi_messaggio") ) )
                 this.impostaInterfacciaScrittura();
 
-            if( !$(e.target).is( $("#rispondi_messaggio") ) && !cosa.is( $("#leggi_messaggio") ) )
+            if( e && !$(e.target).is( $("#rispondi_messaggio") ) && !cosa.is( $("#leggi_messaggio") ) )
                 this.risettaMessaggio();
         },
 
@@ -337,16 +336,52 @@ var MessaggingManager = function ()
 
         vaiA: function ( dove, e )
         {
-            var target = $(e.target);
+            var target = e ? $(e.target) : null;
 
             $(".active").removeClass("active");
 
-            if( target.is("a") )
+            if( target && target.is("a") )
                 target.parent().addClass("active");
-            else
+            else if ( target && !target.is("a") )
                 target.addClass("active");
 
             this.visibile_ora.fadeOut( 400, this.mostra.bind(this, dove, e) );
+        },
+
+        controllaStorage: function ()
+        {
+            var scrivi_a = window.localStorage.getItem("scrivi_a");
+
+            if( scrivi_a )
+            {
+                var dati = JSON.parse(scrivi_a),
+                    sp   = dati.id.split("_"),
+                    tipo = sp[0],
+                    id   = sp[1];
+
+                window.localStorage.removeItem("scrivi_a");
+
+                if( tipo === "ig" && !window.localStorage.getItem("logged_pg") )
+                {
+                    Utils.showError("Devi loggarti con un pg prima di mandare messaggi In Gioco.", Utils.redirectTo.bind(this,Constants.MAIN_PAGE));
+                    return;
+                }
+                console.log(this.user_info.pg_propri,id);
+                if(    ( tipo === "ig" && this.user_info && this.user_info.pg_propri.length > 0 && this.user_info.pg_propri.indexOf( id ) !== -1 )
+                    || ( tipo === "fg" && this.user_info.email_giocatore === id ) )
+                {
+                    Utils.showError("Non puoi mandare messaggi a te stesso o ai tuoi personaggi.", Utils.redirectTo.bind(this,Constants.MAIN_PAGE));
+                    return;
+                }
+
+                this.messaggio_in_lettura = {
+                    id_mittente : id,
+                    tipo        : tipo,
+                    mittente    : dati.nome
+                };
+
+                this.vaiA( $("#scrivi_messaggio"), null );
+            }
         },
 
         setListeners: function ()

@@ -113,29 +113,12 @@
                 };
             }
 
-            $.ajax({
-                url: url,
-                data: data,
-                method: "POST",
-                xhrFields: {
-                    withCredentials: true
-                },
-                success: function( data )
-                {
-                    if ( data.status === "ok" )
-                    {
-                        Utils.showMessage("Elemento eliminato con successo.");
-                    }
-                    else if ( data.status === "error" )
-                    {
-                        Utils.showError( data.message );
-                    }
-                }.bind(this),
-                error: function ( jqXHR, textStatus, errorThrown )
-                {
-                    Utils.showError( textStatus+"<br>"+errorThrown );
-                }
-            });
+            Utils.requestData(
+                url,
+                "POST",
+                data,
+                "Elemento eliminato con successo."
+            );
         },
 
         rimuoviClasse: function ( e )
@@ -174,8 +157,12 @@
 
         mostraDati: function ()
 		{
-            var bin_button  = " <button type=\"button\" class=\"btn btn-xs btn-default rimuoviClassePG\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Elimina\" data-id=\"{1}\"><span class=\"fa fa-trash-o\"></span></button>",
-                bin_button  = this.user_info.permessi.indexOf("rimuoviClassePG_altri") !== -1 || this.user_info.permessi.indexOf("rimuoviClassePG_proprio") !== -1 ? bin_button : "",
+            var bin_button  = " <button type=\"button\" " +
+                                        "class=\"btn btn-xs btn-default inizialmente-nascosto rimuoviClassePG\" " +
+                                        "data-toggle=\"tooltip\" " +
+                                        "data-placement=\"top\" " +
+                                        "title=\"Elimina\" " +
+                                        "data-id=\"{1}\"><span class=\"fa fa-trash-o\"></span></button>",
                 professioni = this.pg_info.classi.civile.reduce( function( pre, curr ){ return ( pre ? pre + ", " : "" ) + curr.nome_classe + bin_button.replace("{1}", curr.id_classe) }, ""),
                 cl_militari = this.pg_info.classi.militare.reduce( function( pre, curr ){ return ( pre ? pre + ", " : "" ) + curr.nome_classe + bin_button.replace("{1}", curr.id_classe) }, ""),
                 px_percento = parseInt( ( parseInt( this.pg_info.px_risparmiati, 10 ) / this.pg_info.px_personaggio ) * 100, 10 ),
@@ -205,14 +192,17 @@
 
             $.each( this.pg_info.abilita.civile, function ( i, val )
             {
-                var azioni_abilita = $("<button type=\"button\" class=\"btn btn-xs btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Elimina\" data-id=\"" + val.id_abilita + "\"><span class=\"fa fa-trash-o\"></span></button>"),
+                var azioni_abilita = $("<button type=\"button\" " +
+                                                "class=\"btn btn-xs btn-default inizialmente-nascosto rimuoviAbilitaPG\" " +
+                                                "data-toggle=\"tooltip\" " +
+                                                "data-placement=\"top\" " +
+                                                "title=\"Elimina\" " +
+                                                "data-id=\"" + val.id_abilita + "\"><span class=\"fa fa-trash-o\"></span></button>"),
                     tr = $("<tr></tr>");
                 tr.append("<td>"+val.nome_abilita+"</td>");
                 tr.append("<td>"+val.nome_classe+"</td>");
                 tr.append("<td>"+val.costo_abilita+"</td>");
-
-                if( this.user_info.permessi.indexOf("rimuoviAbilitaPG_altri") !== -1 || this.user_info.permessi.indexOf("rimuoviAbilitaPG_proprio") !== -1 )
-                    $("<td></td>").appendTo(tr).append(azioni_abilita);
+                $("<td class='inizialmente-nascosto rimuoviAbilitaPG'></td>").appendTo(tr).append(azioni_abilita);
 
                 $("#lista_abilita_civili").find("tbody").append(tr);
 
@@ -221,15 +211,19 @@
 
             $.each( this.pg_info.abilita.militare, function ( i, val )
             {
-                var azioni_abilita = $("<button type=\"button\" class=\"btn btn-xs btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Elimina\" data-id=\"" + val.id_abilita + "\"><span class=\"fa fa-trash-o\"></span></button>"),
+                var azioni_abilita = $("<button type=\"button\" " +
+                                               "class=\"btn btn-xs btn-default inizialmente-nascosto rimuoviAbilitaPG\" " +
+                                               "data-toggle=\"tooltip\" " +
+                                               "data-placement=\"top\" " +
+                                               "title=\"Elimina\" " +
+                                               "data-id=\"" + val.id_abilita + "\"><span class=\"fa fa-trash-o\"></span></button>"),
                     tr = $("<tr></tr>");
                 tr.append("<td>"+val.nome_abilita+"</td>");
                 tr.append("<td>"+val.nome_classe+"</td>");
                 tr.append("<td>"+val.costo_abilita+"</td>");
                 tr.append("<td>"+val.distanza_abilita+"</td>");
-
-                if( this.user_info.permessi.indexOf("rimuoviAbilitaPG_altri") !== -1 || this.user_info.permessi.indexOf("rimuoviAbilitaPG_proprio") !== -1 )
-                    $("<td></td>").appendTo(tr).append(azioni_abilita);
+                tr.append("<td>"+val.effetto_abilita+"</td>");
+                $("<td class='inizialmente-nascosto rimuoviAbilitaPG'></td>").appendTo(tr).append(azioni_abilita);
 
                 $("#lista_abilita_militari").find("tbody").append(tr);
 
@@ -253,7 +247,7 @@
                 $("#background").remove();
             }
 
-            if( this.user_info.permessi.indexOf("modificaPG_note_master_personaggio_altri") !== -1 )
+            if( this.user_info.permessi.indexOf("recuperaNoteMaster") !== -1 )
             {
                 $("#recuperaNoteMaster").show();
 
@@ -276,6 +270,7 @@
             setTimeout(function ()
             {
                 $( "[data-toggle='tooltip']" ).tooltip();
+                AdminLTEManager.controllaPermessi();
             }, 100);
 		},
 
@@ -333,147 +328,90 @@
         {
             $(e.target).attr("disabled",true);
 
-            var modifiche = {};
-            modifiche[campo] = encodeURIComponent( elemento.val() );
+            var data = { pgid: this.pg_info.id_personaggio, modifiche : {} };
+            data.modifiche[campo] = encodeURIComponent( elemento.val() );
 
-            $.ajax({
-                url: Constants.API_POST_EDIT_PG,
-                data: {
-                    pg_id: this.pg_info.id_personaggio,
-                    modifiche: modifiche
-                },
-                method: "POST",
-                xhrFields: {
-                    withCredentials: true
-                },
-                success: function( data )
-                {
-                    if ( data.status === "ok" )
-                    {
-                        $("#messageText").html("Il campo &egrave; stato aggiornato con successo.");
-                        $("#message").modal("show");
-                    }
-                    else if ( data.status === "error" )
-                    {
-                        Utils.showError( data.message );
-                    }
-                }.bind(this),
-                error: function ( jqXHR, textStatus, errorThrown )
-                {
-                    Utils.showError( textStatus+"<br>"+errorThrown );
-                }
-            });
+            Utils.requestData(
+                Constants.API_POST_EDIT_PG,
+                "POST",
+                data,
+                "Il campo &egrave; stato aggiornato con successo."
+            );
         },
 
         recuperaRicetteCrafting: function ()
         {
             return false;
+            //TODO
+            var data = { pgid : window.localStorage.getItem("pg_da_loggare") };
 
-            $.ajax({
-                url: Constants.API_GET_RICETTE,
-                method: "GET",
-                xhrFields: {
-                    withCredentials: true
-                },
-                data: {
-                    pgid : window.localStorage.getItem("pg_da_loggare")
-                },
-                success: function( data )
+            Utils.requestData(
+                Constants.API_GET_RICETTE,
+                "GET",
+                data,
+                function( data )
                 {
-                    if ( data.status === "ok" )
-                    {
-                        this.storico = data.result;
-                        this.mostraRicette();
-                    }
-                    /*else if ( data.status === "error" )
-                    {
-                        Utils.showError( data.message );
-                    }*/
-                }.bind(this),
-                error: function ( jqXHR, textStatus, errorThrown )
-                {
-                    Utils.showError( textStatus+"<br>"+errorThrown );
-                }
-            });
+                    this.mostraRicette( data.result );
+                }.bind(this)
+            );
         },
 
         recuperaStoricoAzioni: function ()
         {
-            $.ajax({
-                url: Constants.API_GET_STORICO_PG,
-                method: "GET",
-                xhrFields: {
-                    withCredentials: true
-                },
-                data: {
-                    pgid : window.localStorage.getItem("pg_da_loggare")
-                },
-                success: function( data )
-                {
-                    if ( data.status === "ok" )
+            if( this.user_info.permessi.filter(function( el ) { return el.indexOf("recuperaStorico") !== -1 } ).length > 0 )
+            {
+                var data = {pgid : window.localStorage.getItem("pg_da_loggare")};
+
+                Utils.requestData(
+                    Constants.API_GET_STORICO_PG,
+                    "GET",
+                    data,
+                    function (data)
                     {
                         this.storico = data.result;
                         this.mostraStorico();
-                    }
-                    /*else if ( data.status === "error" )
-                    {
-                        Utils.showError( data.message );
-                    }*/
-                }.bind(this),
-                error: function ( jqXHR, textStatus, errorThrown )
-                {
-                    Utils.showError( textStatus+"<br>"+errorThrown );
-                }
-            });
+                    }.bind(this)
+                );
+            }
         },
 
         faiLoginPG: function ()
         {
-            $.ajax({
-                url: Constants.API_GET_PG_LOGIN,
-                method: "GET",
-                xhrFields: {
-                    withCredentials: true
-                },
-                data: {
-                    pgid : window.localStorage.getItem("pg_da_loggare")
-                },
-                success: function( data )
+            var dati = { pgid : window.localStorage.getItem("pg_da_loggare") };
+
+            Utils.requestData(
+                Constants.API_GET_PG_LOGIN,
+                "GET",
+                dati,
+                function( data )
                 {
-                    if ( data.status === "ok" )
-                    {
-                        this.pg_info = data.result;
+                    this.pg_info = data.result;
 
-                        var pg_no_bg = JSON.parse( JSON.stringify( this.pg_info ) );
-                        delete pg_no_bg.background_personaggio;
+                    var pg_no_bg = JSON.parse( JSON.stringify( this.pg_info ) );
+                    delete pg_no_bg.background_personaggio;
 
-                        window.localStorage.setItem( 'logged_pg', JSON.stringify( pg_no_bg ) );
+                    window.localStorage.setItem( 'logged_pg', JSON.stringify( pg_no_bg ) );
 
-                        this.personalizzaMenu.call( this );
-                        this.mostraDati.call( this );
-                    }
-                    else if ( data.status === "error" )
-                    {
-                        $("#errorDialog").unbind("hidden.bs.modal");
-                        $("#errorDialog").on("hidden.bs.modal", function ()
-                        {
-                            window.history.back();
-                        });
-                        Utils.showError( data.message );
-                    }
+                    this.personalizzaMenu.call( this );
+                    this.mostraDati.call( this );
                 }.bind(this),
-                error: function ( jqXHR, textStatus, errorThrown )
+                function ( data )
                 {
-                    Utils.showError( textStatus+"<br>"+errorThrown );
-                }
-            });
+                    $("#errorDialog").unbind("hidden.bs.modal");
+                    $("#errorDialog").on("hidden.bs.modal", function ()
+                    {
+                        window.history.back();
+                    });
+                    Utils.showError( data.message );
+                }.bind(this)
+            );
         },
 
         setListeners: function ()
         {
             $( "#mostra_form_bg" ).click( this.mostraTextAreaBG.bind(this) );
             $( "#mostra_note_master" ).click( this.mostraTextAreaNoteMaster.bind(this) );
-            $( "#acquista_abilita_btn" ).click( this.vaiANegozioAbilita.bind(this) );
+            $( "#btn_aggiungiAbilitaAlPG" ).click( this.vaiANegozioAbilita.bind(this) );
             $( "#message" ).on( "hidden.bs.modal", this.refreshPage.bind(this) );
         }
 	}

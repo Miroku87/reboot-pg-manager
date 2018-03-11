@@ -77,10 +77,10 @@
         </div>
 
         <div class="action-group">
-            <button type="button" class="btn btn-block btn-info" id="acquista_abilita_btn"><i class="fa fa-cart-plus"></i><br>Acquista<br>Abilit&agrave;</button>
-            <button type="button" class="btn btn-block btn-info"><i class="fa fa-money"></i><br>Gestisci<br>Crediti</button>
-            <button type="button" class="btn btn-block btn-info"><i class="fa fa-plus-square"></i><br>Assegna<br>PC/PX</button>
-            <button type="button" class="btn btn-block btn-info"><i class="fa fa-print"></i><br>Stampa<br>Cartellino</button>
+            <button type="button" class="btn btn-block btn-info aggiungiAbilitaAlPG aggiungiClassiAlPG" id="btn_aggiungiAbilitaAlPG"><i class="fa fa-cart-plus"></i><br>Acquista<br>Abilit&agrave;</button>
+            <!--<button type="button" class="btn btn-block btn-info inizialmente-nascosto" id="btn_modificaPG_credito_personaggio"><i class="fa fa-money"></i><br>Gestisci<br>Crediti</button>-->
+            <!--<button type="button" class="btn btn-block btn-info inizialmente-nascosto modificaPG_pc_personaggio" id="btn_modificaPG_px_personaggio"><i class="fa fa-plus-square"></i><br>Assegna<br>PC/PX</button>-->
+            <!--<button type="button" class="btn btn-block btn-info inizialmente-nascosto" id="btn_stampaCartellini"><i class="fa fa-print"></i><br>Stampa<br>Cartellino</button>-->
         </div>
     </div>
 </div>
@@ -99,14 +99,16 @@
             <!-- /.box-header -->
             <div class="box-body" style="">
                 <div class="box-body table-responsive">
-                    <table class="table table-hover" id="lista_abilita_civili">
-                        <tbody><tr>
+                    <table class="table table-hover table-striped" id="lista_abilita_civili">
+                        <tbody>
+                        <tr>
                             <th>Nome</th>
                             <th>Classe</th>
                             <th>Costo</th>
-                            <th>Azioni</th>
+                            <th class="inizialmente-nascosto rimuoviAbilitaPG">Azioni</th>
                         </tr>
-                        </tbody></table>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <!-- /.box-body -->
@@ -115,7 +117,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <div class="box box-danger collapsed-box">
+        <div class="box box-primary collapsed-box">
             <div class="box-header with-border">
                 <h3 class="box-title"><a data-widget="collapse">Abilit&agrave; Militari</a></h3>
 
@@ -128,13 +130,14 @@
             <!-- /.box-header -->
             <div class="box-body" style="">
                 <div class="box-body table-responsive">
-                    <table class="table table-hover" id="lista_abilita_militari">
+                    <table class="table table-hover table-striped" id="lista_abilita_militari">
                         <tbody><tr>
                             <th>Nome</th>
                             <th>Classe</th>
                             <th>Costo</th>
                             <th>Distanza</th>
-                            <th>Azioni</th>
+                            <th>Effetto</th>
+                            <th class="inizialmente-nascosto rimuoviAbilitaPG">Azioni</th>
                         </tr>
                         </tbody>
                     </table>
@@ -146,7 +149,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <div class="box box-warning collapsed-box">
+        <div class="box box-danger collapsed-box">
             <div class="box-header with-border">
                 <h3 class="box-title"><a data-widget="collapse">Background Personaggio</a></h3>
 
@@ -170,9 +173,9 @@
         </div>
     </div>
 </div>
-<div class="row inizialmente-nascosto" id="ricettePersonaggio">
+<!--<div class="row inizialmente-nascosto recuperaRicettePG" id="ricettePersonaggio">
     <div class="col-sm-12">
-        <div class="box box-info collapsed-box">
+        <div class="box box-warning collapsed-box">
             <div class="box-header with-border">
                 <h3 class="box-title"><a data-widget="collapse">Ricette create dal Personaggio</a></h3>
 
@@ -180,9 +183,9 @@
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
                     </button>
                 </div>
-                <!-- /.box-tools -->
+                &lt;!&ndash; /.box-tools &ndash;&gt;
             </div>
-            <!-- /.box-header -->
+            &lt;!&ndash; /.box-header &ndash;&gt;
             <div class="box-body">
                 <table class="table table-hover">
                     <tbody><tr>
@@ -194,13 +197,13 @@
                     </tbody>
                 </table>
             </div>
-            <!-- /.box-body -->
+            &lt;!&ndash; /.box-body &ndash;&gt;
         </div>
     </div>
-</div>
-<div class="row inizialmente-nascosto" id="recuperaNoteMaster">
+</div>-->
+<div class="row inizialmente-nascosto recuperaNoteMaster" id="recuperaNoteMaster">
     <div class="col-sm-12">
-        <div class="box box-warning collapsed-box">
+        <div class="box box-info collapsed-box">
             <div class="box-header with-border">
                 <h3 class="box-title"><a data-widget="collapse">Note dei Master sul Personaggio</a></h3>
 
@@ -238,7 +241,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-                <table class="table table-hover">
+                <table class="table table-hover table-striped">
                     <tbody><tr>
                         <th>Esecutore</th>
                         <th>Data</th>

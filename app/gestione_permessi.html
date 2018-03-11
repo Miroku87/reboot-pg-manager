@@ -1,0 +1,17 @@
+﻿{% extends "./templates/main_template.html" %}
+{% set body_classes = body_classes + " gestione-permessi-page" %}
+{% set section = "gestionepermessi" %}
+{% set titolo_sezione = "Gestore dei Ruoli e dei Permessi degli Utenti"  %}
+{% set descrizione_sezione = "Qui potrai inserire e modificare ruoli e i permessi associati ad essi."  %}
+{% block mainContent %}
+{{ super() }}
+<!--------------------------
+  | Your Page Content Here |
+  -------------------------->
+
+
+{% endblock %}
+{% block managers %}
+{{ super() }}
+<script src="scripts/controllers/GrantsManager.js"></script>
+{% endblock %}

@@ -138,11 +138,11 @@
 
                                 <p>
                                     <span class="nome_giocatore"></span>
-                                    <small>Member since Nov. 2012</small>
+                                    <!--<small>Member since Nov. 2012</small>-->
                                 </p>
                             </li>
                             <!-- Menu Body -->
-                            <li class="user-body">
+                            <!--<li class="user-body">
                                 <div class="row">
                                     <div class="col-xs-4 text-center">
                                         <a href="#">Followers</a>
@@ -154,8 +154,8 @@
                                         <a href="#">Friends</a>
                                     </div>
                                 </div>
-                                <!-- /.row -->
-                            </li>
+                                &lt;!&ndash; /.row &ndash;&gt;
+                            </li>-->
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <!--<div class="pull-left">
@@ -209,13 +209,13 @@
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">Operazioni</li>
                 <!-- Optionally, you can add icons to the links -->
-                <li {% if section === 'listapg' %}class="active"{% endif %}><a href="main.html"><i class="fa fa-cogs"></i> <span>Gestisci Personaggi</span></a></li>
-                <li id="btn_visualizza_pagina_gestione_giocatori" class="inizialmente-nascosto {% if section === 'gestionegiocatori' %}active{% endif %}"><a href="gestione_giocatori.html"><i class="fa fa-cogs"></i> <span>Gestisci Giocatori</span></a></li>
-                <li id="btn_crafting_chimico" class="inizialmente-nascosto {% if section === 'craftingchimico' %}active{% endif %}"><a href="crafting_chimico.html"><i class="fa fa-flask"></i> <span>Crafting Chimico</span></a></li>
-                <li id="btn_crafting_programmazione" class="inizialmente-nascosto {% if section === 'craftingprog' %}active{% endif %}"><a href="crafting_programmazione.html"><i class="fa fa-flask"></i> <span>Crafting Programmazione</span></a></li>
-                <li id="btn_crafting_ingegneria" class="inizialmente-nascosto {% if section === 'craftinging' %}active{% endif %}"><a href="crafting_ingegneria.html"><i class="fa fa-flask"></i> <span>Crafting Ingegneria</span></a></li>
-                <li id="btn_visualizza_pagina_gestione_eventi" class="inizialmente-nascosto {% if section === 'gestioneventi' %}active{% endif %}"><a href="gestione_eventi.html"><i class="fa fa-rocket"></i> <span>Gestisci Eventi</span></a></li>
                 <li {% if section === 'messaggi' %}class="active"{% endif %}><a href="messaggi.html"><i class="fa fa-envelope-o" ></i> <span>Messaggi</span></a></li>
+                <li {% if section === 'listapg' %}class="active"{% endif %}><a href="main.html"><i class="fa fa-user-secret"></i> <span>Gestisci Personaggi</span></a></li>
+                <li id="btn_visualizza_pagina_gestione_giocatori" class="inizialmente-nascosto {% if section === 'gestionegiocatori' %}active{% endif %}"><a href="gestione_giocatori.html"><i class="fa fa-group"></i> <span>Gestisci Giocatori</span></a></li>
+                <li id="btn_visualizza_pagina_crafting_chimico" class="inizialmente-nascosto {% if section === 'craftingchimico' %}active{% endif %}"><a href="crafting_chimico.html"><i class="fa fa-flask"></i> <span>Crafting Chimico</span></a></li>
+                <li id="btn_visualizza_pagina_crafting_programmazione" class="inizialmente-nascosto {% if section === 'craftingprog' %}active{% endif %}"><a href="crafting_programmazione.html"><i class="fa fa-flask"></i> <span>Crafting Programmazione</span></a></li>
+                <li id="btn_visualizza_pagina_crafting_ingegneria" class="inizialmente-nascosto {% if section === 'craftinging' %}active{% endif %}"><a href="crafting_ingegneria.html"><i class="fa fa-flask"></i> <span>Crafting Ingegneria</span></a></li>
+                <li id="btn_visualizza_pagina_gestione_eventi" class="inizialmente-nascosto {% if section === 'gestioneventi' %}active{% endif %}"><a href="gestione_eventi.html"><i class="fa fa-rocket"></i> <span>Gestisci Eventi</span></a></li>
                 <!--li class="treeview"><a href="#"><i class="fa fa-flask"></i> <span>Crafting</span>
                     <span class="pull-right-container">
                       <i class="fa fa-angle-left pull-right"></i>

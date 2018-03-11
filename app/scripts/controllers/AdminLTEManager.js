@@ -11,7 +11,7 @@
                 Utils.controllaAccessoPagina( SECTION_NAME );
 
             this.setListeners();
-            this.personalizzaMenu();
+            this.controllaPermessi();
         },
 		
         setListeners: function ()
@@ -31,20 +31,42 @@
             $( '#logo_link' ).attr("href", Constants.MAIN_PAGE );
         },
 
-        personalizzaMenu: function ()
+        controllaPermessi: function ()
         {
-            this.user_info = JSON.parse( window.localStorage.getItem('user') );
-            this.pg_info = JSON.parse( window.localStorage.getItem('logged_pg') );
+            this.user_info = this.user_info || JSON.parse( window.localStorage.getItem('user') );
+            this.pg_info = this.pg_info || JSON.parse( window.localStorage.getItem('logged_pg') );
 
             if( this.user_info )
             {
-                var permessi_pagine = this.user_info.permessi.filter( function( el ){ return el.indexOf( "visualizza_pagina" ) !== -1; } );
-                for( var p in permessi_pagine )
+                //var permessi_pagine = this.user_info.permessi.filter( function( el ){ return el.indexOf( "visualizza_pagina" ) !== -1; } );
+                for( var p in this.user_info.permessi )
                 {
-                    var permesso = permessi_pagine[p];
+                    var permesso          = this.user_info.permessi[p],
+                        permesso_generico = permesso.replace(Constants.TIPO_GRANT_PG_ALTRI, "").replace(Constants.TIPO_GRANT_PG_PROPRIO,"");
 
-                    if( typeof permesso === "string" && $("#btn_"+permesso).length > 0 )
-                        $("#btn_"+permesso).show();
+                    if( typeof permesso === "string" && $("#btn_" + permesso).length > 0 )
+                    {
+                        $("#btn_" + permesso).show();
+                        $("#btn_" + permesso).removeClass("inizialmente-nascosto");
+                    }
+
+                    if ( typeof permesso === "string" && $("."+permesso).length > 0 )
+                    {
+                        $("." + permesso).show();
+                        $("." + permesso).removeClass("inizialmente-nascosto");
+                    }
+
+                    if ( typeof permesso === "string" && $("#btn_"+permesso_generico).length > 0 )
+                    {
+                        $("#btn_" + permesso_generico).show();
+                        $("#btn_" + permesso_generico).removeClass("inizialmente-nascosto");
+                    }
+
+                    if ( typeof permesso === "string" && $("."+permesso_generico).length > 0 )
+                    {
+                        $("." + permesso_generico).show();
+                        $("." + permesso_generico).removeClass("inizialmente-nascosto");
+                    }
                 }
 
                 $(".nome_giocatore").each(function( i, el )
@@ -68,33 +90,16 @@
 
         logout: function ()
         {
-            $.ajax({
-                url: Constants.API_GET_LOGOUT,
-                method: "GET",
-                data: "",
-                cache: false,
-                //contentType: false,
-                //processData: false,
-                xhrFields: {
-                    withCredentials: true
-                },
-                success: function( data )
+            Utils.requestData(
+                Constants.API_GET_LOGOUT,
+                "GET",
+                "",
+                function( data )
                 {
-                    if ( data.status === "ok" )
-                    {
-                        Utils.clearLocalStorage();
-                        window.location.href = Constants.SITE_URL;
-                    }
-                    else if ( data.status === "error" )
-                    {
-                        Utils.showError( data.message );
-                    }
-                },
-                error: function ( jqXHR, textStatus, errorThrown )
-                {
-                    Utils.showError( textStatus+"<br>"+errorThrown );
-                }
-            });
+                    Utils.clearLocalStorage();
+                    window.location.href = Constants.SITE_URL;
+                }.bind(this)
+            );
         },
 
         setupMenuSearch: function ()

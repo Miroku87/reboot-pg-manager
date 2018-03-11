@@ -4,6 +4,7 @@ Constants.API_URL                        = "http://localhost/reboot-live-api/api
 Constants.SITE_URL                       = "http://localhost:9000";
 
 Constants.API_POST_REGISTRA              = Constants.API_URL + "/usersmanager/registra";
+Constants.API_POST_RECUPERO_PWD          = Constants.API_URL + "/usersmanager/recuperapassword";
 Constants.API_POST_LOGIN                 = Constants.API_URL + "/usersmanager/login";
 Constants.API_POST_CREAPG                = Constants.API_URL + "/charactersmanager/creapg";
 Constants.API_POST_ACQUISTA              = Constants.API_URL + "/charactersmanager/acquista";
@@ -24,14 +25,18 @@ Constants.API_GET_MESSAGGIO_SINGOLO      = Constants.API_URL + "/messagingmanage
 Constants.API_GET_DESTINATARI_FG         = Constants.API_URL + "/messagingmanager/recuperadestinatarifg";
 Constants.API_GET_DESTINATARI_IG         = Constants.API_URL + "/messagingmanager/recuperadestinatariig";
 
+Constants.API_DEL_GIOCATORE              = Constants.API_URL + "/usersmanager/eliminagiocatore";
 Constants.API_DEL_CLASSE_PG              = Constants.API_URL + "/charactersmanager/rimuoviclassepg";
 Constants.API_DEL_ABILITA_PG             = Constants.API_URL + "/charactersmanager/rimuoviabilitapg";
+Constants.API_DEL_PERSONAGGIO            = Constants.API_URL + "/charactersmanager/eliminapg";
 
 Constants.LOGIN_PAGE                     = Constants.SITE_URL + "/";
 Constants.MAIN_PAGE                      = Constants.SITE_URL + "/main.html";
 Constants.PG_PAGE                        = Constants.SITE_URL + "/scheda_pg.html";
 Constants.ABILITY_SHOP_PAGE              = Constants.SITE_URL + "/negozio_abilita.html";
 Constants.PRINT_PAGE                     = Constants.SITE_URL + "/stampa.html";
+Constants.CREAPG_PAGE                    = Constants.SITE_URL + "/crea_pg.html";
+Constants.MESSAGGI_PAGE                  = Constants.SITE_URL + "/messaggi.html";
 
 Constants.PX_TOT                         = 100;
 Constants.PC_TOT                         = 4;
@@ -55,6 +60,9 @@ Constants.ID_CLASSE_SUPPORTO_BASE        = 12;
 Constants.ID_CLASSE_ASSALTATORE_BASE     = 10;
 Constants.ID_CLASSE_GUASTATORE_BASE      = 14;
 Constants.ID_CLASSE_GUASTATORE_AVANZATO  = 15;
+
+Constants.TIPO_GRANT_PG_PROPRIO          = "_proprio";
+Constants.TIPO_GRANT_PG_ALTRI            = "_altri";
 
 Constants.DATA_TABLE_LANGUAGE            = {
                                             "decimal":        "",

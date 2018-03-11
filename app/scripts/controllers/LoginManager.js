@@ -53,32 +53,17 @@ var LoginManager = function () {
 				else
 					Utils.deleteCookie("usermail");
 
-				$.ajax({
-					url: Constants.API_POST_LOGIN,
-					data: $("input").serialize(),
-					method: "POST",
-					xhrFields: {
-						withCredentials: true
-					},
-					success: function( data )
-					{
-						//console.log(data);
-						//var res = JSON.parse( data );
-						if ( data.status === "ok" )
-						{
-							window.localStorage.setItem( 'user', JSON.stringify( data.user_info ) );
-                            window.location.href = Constants.MAIN_PAGE;
-						}
-						else if ( data.status === "error" )
-						{
-							Utils.showError( data.message );
-						}
-					}.bind(this),
-                    error: function ( jqXHR, textStatus, errorThrown )
+                Utils.requestData(
+                    Constants.API_POST_LOGIN,
+                    "POST",
+                    $("input").serialize(),
+                    function( data )
                     {
-                        Utils.showError( textStatus+"<br>"+errorThrown );
-                    }
-				});
+                        window.localStorage.clear();
+                        window.localStorage.setItem( 'user', JSON.stringify( data.user_info ) );
+                        window.location.href = Constants.MAIN_PAGE;
+                    }.bind(this)
+                );
 			}
 		},
 

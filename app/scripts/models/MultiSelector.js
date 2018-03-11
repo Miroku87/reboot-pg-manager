@@ -368,7 +368,8 @@ var MultiSelector = MultiSelector || (function ()
         {
             elements.popover( {
                 trigger: 'hover',
-                placement: 'top'
+                placement: 'top',
+                html : true
             } );
         }
         else
@@ -451,6 +452,7 @@ var MultiSelector = MultiSelector || (function ()
             elem        = this["elem_"+lista].find("li").eq( indice );
 
         elem.removeClass("selected");
+        _controllaTuttiPrerequisiti.call(this);
     };
 
     MultiSelector.prototype.numeroCarrello = function( )

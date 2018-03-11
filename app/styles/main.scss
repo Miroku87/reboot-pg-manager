@@ -1,4 +1,4 @@
-﻿
+﻿/* GLOBALI */
 .hidden {
   display: none;
 }
@@ -23,67 +23,47 @@
   margin-bottom: 20px;
 }
 
+.footer {
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+button > .fa {
+  pointer-events: none;
+}
+
+a {
+  cursor: pointer;
+}
+
+.sidebar-menu > li {
+  transition: height .5s, opacity .5s;
+  height: auto;
+}
+
+.sidebar-menu > li.inizialmente-nascosto {
+  display: list-item;
+  opacity: 0;
+  height: 0px;
+}
+
+/* PAGINA LOGIN */
 .login-box, .register-box {
   margin: 3% auto;
 }
 
+/* PAGINA REGISTRAZIONE */
 .register-page textarea{
     resize: none;
 }
 
+/* PAGINA LISTA Pg */
 .pg-list-page .container > .container {
   display: block;
   font-size: 0.9rem;
 }
 .pg-list-page button > i {
   pointer-events: none;
-}
-
-.footer {
-  border-top: 1px solid #ddd;
-  padding-top: 10px;
-}
-
-.popover .popover-close-btn {
-  position: absolute;
-  right: 5px;
-  top: 5px;
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
-  font-size: 20px;
-}
-
-ul.list-select {
-  height: 180px;
-  list-style: none;
-  overflow: auto;
-  display: block;
-  width: 100%;
-  padding: 1rem 1.25rem;
-  font-size: 1.5rem;
-  line-height: 1.25;
-  color: #495057;
-  background-color: #fff;
-  background-image: none;
-  background-clip: padding-box;
-  border: 1px solid rgba(0,0,0,0.15);
-  border-radius: 0.25rem;
-  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
-}
-
-ul.list-select li {
-  padding-bottom: 2px;
-}
-
-ul.list-select li:hover {
-  background-color: rgba(0,0,0,0.05);
-}
-
-ul.list-select li.selected,
-ul.list-select li.selected:hover {
-  background-color: #3c8dbc;
-  color: white;
 }
 
 .data-showed, .data-edit {
@@ -218,6 +198,7 @@ ul.list-select li.selected:hover {
   margin-top: 10px;
 }
 
+/* PAGINA MESSAGGI */
 .messaggi-page .box .nav-stacked > li > .nav-stacked > li {
   padding-left: 10px;
 }

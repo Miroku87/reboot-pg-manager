@@ -129,6 +129,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="/bower_components/datatables.net-buttons-bs/js/buttons.bootstrap.js"></script>
 <script src="/bower_components/datatables.net-responsive/js/dataTables.responsive.js"></script>
 <script src="/bower_components/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+<script src="/bower_components/datatables.net-plugins/dataRender/ellipsis.js"></script>
 <script src="/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
 <script src="/bower_components/moment/moment.js"></script>
 <script src="/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
@@ -176,7 +177,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- build:js(.tmp) scripts/common.js -->
 <script src="scripts/utils/Constants.js"></script>
 <script src="scripts/utils/Utils.js"></script>
-<script src="scripts/controllers/AdminLTEManager.js"></script>
 <!-- endbuild -->
 <!-- build:js(.tmp) scripts/{{ section }}-main.js -->
 {% block managers %}
@@ -184,6 +184,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
      Both of these plugins are recommended to enhance the
      user experience. -->
 {% endblock %}
+<script src="scripts/controllers/AdminLTEManager.js"></script>
+<!-- endbuild -->
+<!-- build:js(.tmp) scripts/alm.js -->
+<script src="scripts/controllers/AdminLTEManager.js"></script>
 <!-- endbuild -->
 </body>
 </html>

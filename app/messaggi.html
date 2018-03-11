@@ -78,24 +78,26 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <div class="form-group">
-                        <select class="form-control" id="tipo_messaggio">
-                            <option value="fg">Fuori Gioco</option>
-                            <option value="ig">In Gioco</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control" id="mittente" placeholder="Da:" disabled>
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control" id="destinatario" placeholder="A:">
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control" id="oggetto" placeholder="Oggetto:">
-                    </div>
-                    <div class="form-group">
-                        <textarea rows="10" class="form-control" id="messaggio"></textarea>
-                    </div>
+                    <form autocomplete="off" aria-autocomplete="none">
+                        <div class="form-group">
+                            <select class="form-control" id="tipo_messaggio" autocomplete="off">
+                                <option value="fg">Fuori Gioco</option>
+                                <option value="ig">In Gioco</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" id="mittente" placeholder="Da:" autocomplete="off" disabled>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" id="destinatario" autocomplete="off" placeholder="A:">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" id="oggetto" autocomplete="off" placeholder="Oggetto:">
+                        </div>
+                        <div class="form-group">
+                            <textarea rows="10" class="form-control" autocomplete="off" id="messaggio"></textarea>
+                        </div>
+                    </form>
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">

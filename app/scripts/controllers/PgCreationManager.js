@@ -177,8 +177,8 @@
                 {
                     dato = JSON.parse( JSON.stringify( dato ) );
 
-                    dato.innerHTML = dato.nome_classe + " ( 30 PX )";
-                    dato.costo_classe = 30;
+                    dato.innerHTML = dato.nome_classe + " ( " + Constants.COSTI_PROFESSIONI[0] + " PX )";
+                    dato.costo_classe = Constants.COSTI_PROFESSIONI[0];
                     dato.prerequisito = null;
                     dato.gia_selezionato = false;
 
@@ -439,32 +439,19 @@
 
         getClassesInfo: function ()
         {
-            $.ajax({
-                url: Constants.API_GET_INFO,
-                method: "GET",
-                xhrFields: {
-                    withCredentials: true
-                },
-                success: function( data )
+            Utils.requestData(
+                Constants.API_GET_INFO,
+                "GET",
+                "",
+                function( data )
                 {
-                    if ( data.status === "ok" )
-                    {
-                        this.classInfos = data.info;
-                        this.impostaMSClassiCivili();
-                        this.impostaMSClassiMilitari();
-                        this.impostaMSAbilitaCivili();
-                        this.impostaMSAbilitaMilitari();
-                    }
-                    else if ( data.status === "error" )
-                    {
-                        Utils.showError( data.message );
-                    }
-                }.bind(this),
-                error: function ( jqXHR, textStatus, errorThrown )
-                {
-                    Utils.showError( textStatus+"<br>"+errorThrown );
-                }
-            });
+                    this.classInfos = data.info;
+                    this.impostaMSClassiCivili();
+                    this.impostaMSClassiMilitari();
+                    this.impostaMSAbilitaCivili();
+                    this.impostaMSAbilitaMilitari();
+                }.bind(this)
+            );
         },
 
         submitRedirect: function ()
@@ -524,44 +511,29 @@
                 data      = nome + "&" + classi + abilita,
                 url       = this.pg_info ? Constants.API_POST_ACQUISTA : Constants.API_POST_CREAPG;
 
-            $.ajax(
+            Utils.requestData(
                 url,
+                "POST",
+                data,
+                function( )
                 {
-                    method: "POST",
-                    data: data,
-                    cache: false,
-                    //contentType: false,
-                    //processData: false,
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    success: function( data )
-                    {
-                        if ( data.status === "ok" )
-                        {
-                            var message = "";
+                    var message = "";
 
-                            if( this.pg_info )
-                                message = "Acquisti effettuati con successo.";
-                            else
-                                message = "La creazione è avvenuta con successo.<br>Potrai vedere il tuo nuovo personaggio nella sezione apposita.<br>È consigliato aggiungere un Background.";
+                    if( this.pg_info )
+                        message = "Acquisti effettuati con successo.";
+                    else
+                        message = "La creazione è avvenuta con successo.<br>Potrai vedere il tuo nuovo personaggio nella sezione apposita.<br>È consigliato aggiungere un Background.";
 
-                            $("#messageText").html( message );
-                            $("#message").modal("show");
-                            $("#message").unbind("hidden.bs.modal");
-                            $("#message").on("hidden.bs.modal", this.submitRedirect.bind(this) );
-                        }
-                        else if ( data.status === "error" )
-                        {
-                            Utils.showError( data.message );
-                            return;
-                        }
-                    }.bind(this),
-                    error: function ( jqXHR, textStatus, errorThrown )
-                    {
-                        Utils.showError( textStatus+"<br>"+errorThrown );
-                    }
-                }
+                    $("#message").unbind("hidden.bs.modal");
+                    $("#message").on("hidden.bs.modal", this.submitRedirect.bind(this) );
+                    Utils.showMessage(message);
+                }.bind(this),
+                function( data )
+                {
+                    $( "#inviaDati").attr("disabled",false);
+                    Utils.showMessage(data.message);
+                }.bind(this)
+
             );
         }
     };
