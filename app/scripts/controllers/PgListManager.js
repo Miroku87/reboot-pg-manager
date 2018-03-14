@@ -8,18 +8,22 @@
             this.setListeners();
         },
 
-        eliminaPersonaggio: function ( e )
+        eliminaPersonaggio: function ( id )
         {
-            var target = $(e.target);
-
             Utils.requestData(
                 Constants.API_DEL_PERSONAGGIO,
                 "GET",
-                { id: target.attr("data-id") },
+                { id: id },
                 "Personaggio eliminato con successo.",
                 null,
-                this.pg_grid.ajax.reload
+                this.pg_grid.ajax.reload.bind(this,null,false)
             );
+        },
+
+        confermaEliminaPersonaggio: function ( e )
+        {
+            var target = $(e.target);
+            Utils.showConfirm("Sicuro di voler eliminare questo giocatore?", this.eliminaPersonaggio.bind(this, target.attr("data-id")));
         },
 
         modificaPunti: function ( e )
@@ -68,8 +72,8 @@
                 placement: 'top'
             });
 
-            $("button.eliminaPG").unbind( "click", this.eliminaPersonaggio.bind(this) );
-            $("button.eliminaPG").click( this.eliminaPersonaggio.bind(this) );
+            $("button.eliminaPG").unbind( "click", this.confermaEliminaPersonaggio.bind(this) );
+            $("button.eliminaPG").click( this.confermaEliminaPersonaggio.bind(this) );
 
             $(".scrivi-messaggio").unbind( "click", this.scriviMessaggio.bind(this) );
             $(".scrivi-messaggio").click( this.scriviMessaggio.bind(this) );
@@ -172,7 +176,6 @@
                 defaultContent : ""
             });
 
-            $.fn.dataTable.ext.errMode = 'none';
             this.pg_grid = $( '#pg_grid' )
                 .on("error.dt", this.erroreDataTable.bind(this) )
                 .on("draw.dt", this.setGridListeners.bind(this) )
@@ -180,12 +183,7 @@
                     processing : true,
                     serverSide : true,
                     dom: '<"col-md-1"B><"col-md-2"l><"col-md-4 pull-right"f>tip',
-                    buttons    : [        {
-                        text: '<i class="fa fa-refresh"></i>',
-                        action: function ( e, dt ) {
-                            dt.ajax.reload(null, true);
-                        }
-                    }],
+                    buttons    : ["reload"],
                     language   : Constants.DATA_TABLE_LANGUAGE,
                     ajax       : {
                         url  : Constants.API_GET_PGS,

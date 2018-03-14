@@ -10,7 +10,6 @@ var MessaggingManager = function ()
         {
             this.user_info = JSON.parse( window.localStorage.getItem("user") );
             this.visibile_ora = $("#lista_inarrivo_fg");
-            $.fn.dataTable.ext.errMode = 'none';
 
             this.setListeners( );
             this.controllaStorage( );
@@ -222,12 +221,7 @@ var MessaggingManager = function ()
                     processing : true,
                     serverSide : true,
                     dom: '<"col-md-1"B><"col-md-2"l><"col-md-4 pull-right"f>tip',
-                    buttons    : [        {
-                        text: '<i class="fa fa-refresh"></i>',
-                        action: function ( e, dt ) {
-                            dt.ajax.reload(null, true);
-                        }
-                    }],
+                    buttons    : ["reload"],
                     language   : Constants.DATA_TABLE_LANGUAGE,
                     ajax       : {
                         url  : url,

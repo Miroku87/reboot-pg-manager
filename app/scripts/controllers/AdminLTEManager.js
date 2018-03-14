@@ -13,22 +13,13 @@
             this.setListeners();
             this.controllaPermessi();
         },
-		
-        setListeners: function ()
+
+        onSubmitClicked: function ( e )
         {
-            this.setupMenuSearch();
-
-            $( 'ul.tree' ).tree();
-
-            $( '#sidebar-form' ).on( 'submit', function ( e )
-            {
-                e.preventDefault();
-            } );
-
-            $( '.sidebar-menu li.active' ).data( 'lte.pushmenu.active', true );
-            $( '#logoutBtn' ).click( this.logout.bind(this) );
-
-            $( '#logo_link' ).attr("href", Constants.MAIN_PAGE );
+            console.log(e.target);
+            var target = $(e.currentTarget);
+            target.append("<i class='fa fa-spinner fa-pulse' style='margin-left:5px'></i>");
+            target.attr("disabled",true);
         },
 
         controllaPermessi: function ()
@@ -160,6 +151,24 @@
                     $( this ).find( '.pushmenu-search-found' ).show( 0 );
                 } );
             } );
+        },
+
+        setListeners: function ()
+        {
+            this.setupMenuSearch();
+
+            $( 'ul.tree' ).tree();
+
+            $( '#sidebar-form' ).on( 'submit', function ( e )
+            {
+                e.preventDefault();
+            } );
+
+            $( '.sidebar-menu li.active' ).data( 'lte.pushmenu.active', true );
+            $( '#logoutBtn' ).click( this.logout.bind(this) );
+            $( '#btn_visualizza_pagina_profilo' ).click( Utils.redirectTo.bind(this,Constants.PROFILO_PAGE) );
+            $( '.submit-btn' ).click( this.onSubmitClicked.bind(this) );
+            $( '#logo_link' ).attr("href", Constants.MAIN_PAGE );
         }
 
     }

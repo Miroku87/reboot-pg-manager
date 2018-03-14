@@ -33,6 +33,17 @@
             parent.append( items );
         },
 
+        globalSettings: function (  )
+        {
+            $.fn.dataTable.ext.errMode = 'none';
+            $.fn.dataTable.ext.buttons.reload = {
+                text: '<i class="fa fa-refresh"></i>',
+                action: function ( e, dt ) {
+                    dt.ajax.reload(null, true);
+                }
+            };
+        },
+
         /**
          *
          * @param {Array} arr
@@ -182,7 +193,7 @@
             window.location.href = url;
         },
 
-        reloadPage: function ( url )
+        reloadPage: function ( )
         {
             window.location.reload();
         },
@@ -271,15 +282,9 @@
                 "POST",
                 "section=" + section + "&" + window.location.search.substr(1),
                 null,
-                function ( data )
-                {
-                    $("#errorDialog").unbind("hidden.bs.modal");
-                    $("#errorDialog").on("hidden.bs.modal", function ()
-                    {
-                        window.location.href = Constants.LOGIN_PAGE;
-                    });
-                    Utils.showError( data.message );
-                }
+                null,
+                null,
+                AdminLTEManager.logout
             );
         },
 
@@ -323,3 +328,8 @@
             return Array.prototype.slice.call( obj );
         }
     };
+
+$(function ()
+{
+    Utils.globalSettings();
+});

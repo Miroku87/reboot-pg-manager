@@ -7,15 +7,22 @@
             this.creaDataTable();
         },
 
-        eliminaGiocatore: function ( e )
+        eliminaGiocatore: function ( id )
         {
-            var target = $(e.target);
             Utils.requestData(
                 Constants.API_DEL_GIOCATORE,
                 "GET",
-                { id: target.attr("data-id") },
-                "Giocatore eliminato con successo."
+                { id: id },
+                "Giocatore eliminato con successo.",
+                null,
+                this.player_grid.ajax.reload.bind(this,null,false)
             );
+		},
+
+        confermaEliminaGiocatore: function ( e )
+        {
+            var target = $(e.target);
+            Utils.showConfirm("Sicuro di voler eliminare questo giocatore?", this.eliminaGiocatore.bind(this, target.attr("data-id")));
 		},
 
         scriviMessaggio: function ( e )
@@ -35,8 +42,8 @@
             $(".scrivi-messaggio").unbind( "click", this.scriviMessaggio.bind(this) );
             $(".scrivi-messaggio").click( this.scriviMessaggio.bind(this) );
 
-            $("button.eliminaGiocatore").unbind( "click", this.eliminaGiocatore.bind(this) );
-            $("button.eliminaGiocatore").click( this.eliminaGiocatore.bind(this) );
+            $("button.eliminaGiocatore").unbind( "click", this.confermaEliminaGiocatore.bind(this) );
+            $("button.eliminaGiocatore").click( this.confermaEliminaGiocatore.bind(this) );
 		},
 
         erroreDataTable: function ( e, settings, techNote, message )
@@ -97,7 +104,6 @@
             });
             columns.push({render: this.creaPulsantiAzioni.bind(this) });
 
-            $.fn.dataTable.ext.errMode = 'none';
             this.player_grid = $( '#groglia_giocatori' )
                 .on("error.dt", this.erroreDataTable.bind(this) )
                 .on("draw.dt", this.setGridListeners.bind(this) )
@@ -105,12 +111,7 @@
                     processing : true,
                     serverSide : true,
                     dom: '<"col-md-1"B><"col-md-2"l><"col-md-4 pull-right"f>tip',
-                    buttons    : [        {
-                        text: '<i class="fa fa-refresh"></i>',
-                        action: function ( e, dt ) {
-                            dt.ajax.reload(null, true);
-                        }
-                    }],
+                    buttons    : ["reload"],
                     language   : Constants.DATA_TABLE_LANGUAGE,
                     ajax       : {
                         url  : Constants.API_GET_PLAYERS,

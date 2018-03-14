@@ -47,6 +47,14 @@ a {
   height: 0px;
 }
 
+button.standalone {
+  margin-top: 20px;
+}
+
+textarea.resize-vertical {
+   resize: vertical;
+ }
+
 /* PAGINA LOGIN */
 .login-box, .register-box {
   margin: 3% auto;

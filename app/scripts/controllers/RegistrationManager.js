@@ -57,8 +57,8 @@
 			)
 				errors += "Le password inserite non combaciano.<br>";
 
-			if( !condizioni )
-				errors += "Accettare i termini e le condizioni &egrave; obbligatorio.";
+			//if( !condizioni )
+			//	errors += "Accettare i termini e le condizioni &egrave; obbligatorio.";
 
 			return errors;
 		},
