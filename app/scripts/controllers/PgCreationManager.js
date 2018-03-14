@@ -494,8 +494,6 @@
                 return false;
             }
 
-            $( "#inviaDati").attr("disabled",true);
-
             var classi    = cc_selezionate.concat( cm_selezionate )
                                 .reduce( function( pre, curr )
                                 {

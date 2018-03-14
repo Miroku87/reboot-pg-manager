@@ -193,7 +193,7 @@
             window.location.href = url;
         },
 
-        reloadPage: function ( )
+        reloadPage: function ( url )
         {
             window.location.reload();
         },

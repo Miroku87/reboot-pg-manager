@@ -73,8 +73,6 @@
 				return false;
 			}
 
-            $("#inviaDatiGiocatore").attr("disabled",true);
-
             Utils.requestData(
                 Constants.API_POST_REGISTRA,
                 "POST",

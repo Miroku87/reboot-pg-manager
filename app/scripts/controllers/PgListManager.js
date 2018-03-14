@@ -31,6 +31,11 @@
             //TODO;
 		},
 
+        modificaCrediti: function ( e )
+        {
+            //TODO;
+		},
+
         stampaCartellini: function ( e )
         {
             var pg_da_stampare = this.pg_grid.rows( { filter : 'applied'} ).data();

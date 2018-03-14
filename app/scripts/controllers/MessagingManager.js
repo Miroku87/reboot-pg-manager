@@ -274,15 +274,9 @@ var MessaggingManager = function ()
                 Constants.API_POST_MESSAGGIO,
                 "POST",
                 data,
-                function( )
-                {
-                    $("#message").unbind("hidden.bs.modal");
-                    $("#message").on("hidden.bs.modal", function ()
-                    {
-                        window.location.reload();
-                    });
-                    Utils.showMessage("Messaggio inviato con successo");
-                }.bind(this)
+                "Messaggio inviato con successo",
+                null,
+                Utils.reloadPage
             );
         },
 

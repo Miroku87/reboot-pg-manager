@@ -326,8 +326,6 @@
 
         inviaModifichePG: function ( campo, elemento, e )
         {
-            $(e.target).attr("disabled",true);
-
             var data = { pgid: this.pg_info.id_personaggio, modifiche : {} };
             data.modifiche[campo] = encodeURIComponent( elemento.val() );
 

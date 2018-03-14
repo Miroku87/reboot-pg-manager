@@ -33,9 +33,6 @@
 				Utils.showError( errors );
 				return false;
 			}
-
-            $("#btn_recupero").attr("disabled",true);
-
             Utils.requestData(
                 Constants.API_POST_RECUPERO_PWD,
                 "POST",
