@@ -40,7 +40,7 @@ module.exports = function (grunt) {
       },
       babel: {
         files: ['<%= config.app %>/scripts/{,*/}*.js'],
-        tasks: ['babel:dist']
+        tasks: ['babel:dev']
       },
       babelTest: {
         files: ['test/spec/{,*/}*.js'],
@@ -51,7 +51,7 @@ module.exports = function (grunt) {
       },
       sass: {
         files: ['<%= config.app %>/styles/{,*/}*.{scss,sass}'],
-        tasks: ['sass', 'postcss']
+        tasks: ['sass:dev', 'postcss']
       },
       styles: {
         files: ['<%= config.app %>/styles/{,*/}*.css'],
@@ -118,7 +118,7 @@ module.exports = function (grunt) {
             body_classes: ""
           }
 	  },
-	  render: {
+	  dev: {
 		files: [
 		   {
 			  expand: true,
@@ -171,12 +171,21 @@ module.exports = function (grunt) {
       options: {
         sourceMap: true
       },
-      dist: {
+      dev: {
         files: [{
           expand: true,
           cwd: '<%= config.app %>/scripts',
           src: '{,*/}*.js',
           dest: '.tmp/scripts',
+          ext: '.js'
+        }]
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= config.app %>/scripts',
+          src: '{,*/}*.js',
+          dest: 'dist/scripts',
           ext: '.js'
         }]
       },
@@ -199,12 +208,21 @@ module.exports = function (grunt) {
         sourceMapContents: true,
         includePaths: ['.']
       },
-      dist: {
+      dev: {
         files: [{
           expand: true,
           cwd: '<%= config.app %>/styles',
           src: ['*.{scss,sass}'],
           dest: '.tmp/styles',
+          ext: '.css'
+        }]
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= config.app %>/styles',
+          src: ['*.{scss,sass}'],
+          dest: 'dist/styles',
           ext: '.css'
         }]
       }
@@ -262,7 +280,7 @@ module.exports = function (grunt) {
     filerev: {
       dist: {
         src: [
-          '<%= config.dist %>/scripts/{,*/}*.js',
+          '<%= config.dist %>/scripts/*.js',
           '<%= config.dist %>/styles/{,*/}*.css',
           '<%= config.dist %>/images/{,*/}*.*',
           '<%= config.dist %>/fonts/{,*/}*.*',
@@ -278,7 +296,8 @@ module.exports = function (grunt) {
       options: {
         dest: '<%= config.dist %>'
       },
-      html: '<%= config.app %>/*.html'
+      html: '<%= config.tmp %>/*.html',
+	  js: '<%= config.tmp %>/scripts/*.js'
     },
 
     // Performs rewrites based on rev and the useminPrepare configuration
@@ -287,7 +306,8 @@ module.exports = function (grunt) {
         assetsDirs: [
           '<%= config.dist %>',
           '<%= config.dist %>/images',
-          '<%= config.dist %>/styles'
+          '<%= config.dist %>/styles',
+          '.tmp/scripts'
         ]
       },
       html: ['<%= config.dist %>/{,*/}*.html'],
@@ -300,7 +320,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= config.app %>/images',
-          src: '{,*/}*.{gif,jpeg,jpg,png}',
+          src: '*.{gif,jpeg,jpg,png}',
           dest: '<%= config.dist %>/images'
         }]
       }
@@ -325,6 +345,7 @@ module.exports = function (grunt) {
           conservativeCollapse: true,
           removeAttributeQuotes: true,
           removeCommentsFromCDATA: true,
+		  removeComments: true,
           removeEmptyAttributes: true,
           removeOptionalTags: true,
           // true would impact styles with attribute selectors
@@ -369,18 +390,33 @@ module.exports = function (grunt) {
     // Copies remaining files to places other tasks can use
     copy: {
       dist: {
-        files: [{
+        files: [
+		{
           expand: true,
           dot: true,
           cwd: '<%= config.app %>',
           dest: '<%= config.dist %>',
           src: [
             '*.{ico,png,txt}',
-            'images/{,*/}*.webp',
-            '{,*/}*.html',
+            'images/{,*/}*.{webp,jpg,jpeg,png,gif}',
             'fonts/{,*/}*.*'
           ]
-        }, {
+        },
+		{
+          expand: true,
+          dot: true,
+          cwd: '.tmp',
+          src: '{,*/}*.html',
+          dest: '<%= config.dist %>'
+        },
+		{
+          expand: true,
+          dot: true,
+          cwd: '.tmp/scripts',
+          src: '*.js',
+          dest: '<%= config.dist %>'
+        }, 
+		{
           expand: true,
           dot: true,
           cwd: '.',
@@ -393,15 +429,15 @@ module.exports = function (grunt) {
     // Run some tasks in parallel to speed up build process
     concurrent: {
       server: [
-        'babel:dist',
-        'sass'
+        'babel:dev',
+        'sass:dev'
       ],
       test: [
-        'babel'
+        'babel:test'
       ],
       dist: [
-        'babel',
-        'sass',
+        'babel:dev',
+        'sass:dist',
         'imagemin',
         'svgmin'
       ]
@@ -448,13 +484,14 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'nunjucks',
     'wiredep',
     'useminPrepare',
     'concurrent:dist',
     'postcss',
-    'concat',
-    'cssmin',
-    'uglify',
+    // 'concat',
+    // 'cssmin',
+    // 'uglify',
     'copy:dist',
     'filerev',
     'usemin',
