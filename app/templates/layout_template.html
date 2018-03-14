@@ -174,18 +174,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="/bower_components/admin-lte/dist/js/adminlte.min.js"></script>
 {% endblock %}
 <!-- endbuild -->
-<!-- build:js(.tmp) scripts/common.js -->
+<!-- build:js(.) scripts/common.js -->
 <script src="scripts/utils/Constants.js"></script>
 <script src="scripts/utils/Utils.js"></script>
 <!-- endbuild -->
-<!-- build:js(.tmp) scripts/{{ section }}-main.js -->
+<!-- build:js(.) scripts/{{ section }}-main.js -->
 {% block managers %}
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->
 {% endblock %}
 <!-- endbuild -->
-<!-- build:js(.tmp) scripts/alm.js -->
+<!-- build:js(.) scripts/alm.js -->
 <script src="scripts/controllers/AdminLTEManager.js"></script>
 <!-- endbuild -->
 </body>

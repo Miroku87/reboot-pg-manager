@@ -296,8 +296,7 @@ module.exports = function (grunt) {
       options: {
         dest: '<%= config.dist %>'
       },
-      html: '<%= config.tmp %>/*.html',
-	  js: '<%= config.tmp %>/scripts/*.js'
+      html: '<%= config.tmp %>/*.html'
     },
 
     // Performs rewrites based on rev and the useminPrepare configuration
@@ -306,8 +305,7 @@ module.exports = function (grunt) {
         assetsDirs: [
           '<%= config.dist %>',
           '<%= config.dist %>/images',
-          '<%= config.dist %>/styles',
-          '.tmp/scripts'
+          '<%= config.dist %>/styles'
         ]
       },
       html: ['<%= config.dist %>/{,*/}*.html'],
