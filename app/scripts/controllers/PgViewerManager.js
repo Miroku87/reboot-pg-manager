@@ -163,8 +163,8 @@
                                         "data-placement=\"top\" " +
                                         "title=\"Elimina\" " +
                                         "data-id=\"{1}\"><span class=\"fa fa-trash-o\"></span></button>",
-                professioni = this.pg_info.classi.civile.reduce( function( pre, curr ){ return ( pre ? pre + ", " : "" ) + curr.nome_classe + bin_button.replace("{1}", curr.id_classe) }, ""),
-                cl_militari = this.pg_info.classi.militare.reduce( function( pre, curr ){ return ( pre ? pre + ", " : "" ) + curr.nome_classe + bin_button.replace("{1}", curr.id_classe) }, ""),
+                professioni = this.pg_info.classi.civile.reduce( function( pre, curr ){ return ( pre ? pre + "<br>" : "" ) + curr.nome_classe + bin_button.replace("{1}", curr.id_classe) }, ""),
+                cl_militari = this.pg_info.classi.militare.reduce( function( pre, curr ){ return ( pre ? pre + "<br>" : "" ) + curr.nome_classe + bin_button.replace("{1}", curr.id_classe) }, ""),
                 px_percento = parseInt( ( parseInt( this.pg_info.px_risparmiati, 10 ) / this.pg_info.px_personaggio ) * 100, 10 ),
                 pc_percento = parseInt( ( parseInt( this.pg_info.pc_risparmiati, 10 ) / this.pg_info.pc_personaggio ) * 100, 10 );
 

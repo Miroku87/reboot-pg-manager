@@ -230,6 +230,13 @@ body.register-page {
   margin-top: 10px;
 }
 
+.scheda-pg-page #pg_info_box table tr > td:first-child {
+  font-weight: bold;
+}
+.scheda-pg-page #pg_info_box table tr > td:last-child {
+  text-align: right;
+}
+
 /* PAGINA MESSAGGI */
 .messaggi-page .box .nav-stacked > li > .nav-stacked > li {
   padding-left: 10px;

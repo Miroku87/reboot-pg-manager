@@ -54,6 +54,7 @@
 
         vaiACreaPG: function ( e )
         {
+            window.localStorage.removeItem('logged_pg');
             window.location.href = Constants.CREAPG_PAGE;
 		},
 

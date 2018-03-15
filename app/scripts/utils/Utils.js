@@ -85,16 +85,15 @@
             {
                 $('.modal').modal('hide');
 
-                if (typeof onHide === "function")
+                $("#errorDialog").unbind("hidden.bs.modal");
+                $("#errorDialog").on("hidden.bs.modal", function ()
                 {
-                    $("#errorDialog").unbind("hidden.bs.modal");
-                    $("#errorDialog").on("hidden.bs.modal", onHide);
-                }
+                    $(".submit-btn").attr("disabled",false).find("i").remove();
+                    if (typeof onHide === "function") onHide();
+                });
 
                 $("#errorDialog").find('#errorMsg').html(errorText);
-                $("#errorDialog").modal({
-                    backdrop: 'static'
-                });
+                $("#errorDialog").modal({ backdrop: 'static' });
             }
         },
 

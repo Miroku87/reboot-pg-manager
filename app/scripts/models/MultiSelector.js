@@ -376,6 +376,7 @@ var MultiSelector = MultiSelector || (function ()
         {
             elements.popover( {
                 trigger: 'manual',
+                html : true,
                 placement: function ( popover_elem, li_elem )
                 {
                     if ( $( li_elem ).parent().is( this.elem_carrello ) )
@@ -387,19 +388,20 @@ var MultiSelector = MultiSelector || (function ()
 
             elements.click( function ( event )
             {
-                $( this ).parent().find( '[data-toggle="popover"]' ).popover( "hide" );
-                $( this ).popover( "show" );
+                if( $( this ).is(".selected") )
+                    $( this ).popover( "show" );
             } );
 
             elements.on( 'inserted.bs.popover', function ()
             {
-                var close = $( "<div class='popover-close-btn'><span class='fa fa-times' aria-hidden='true'></span></div>" );
+                var close = $( "<a class='pull-right'><i class='fa fa-times' aria-hidden='true'></i></a>" );
+
+                $( '.popover-title' ).append( close );
                 close.click( function ()
                 {
-                    $( '[data-toggle="popover"]' ).popover( "hide" );
+                    console.log(11);
+                    elements.popover( "hide" );
                 } );
-
-                $( '.popover-body' ).append( close );
             } );
         };
     }

@@ -1,4 +1,4 @@
-﻿    var RegistrationManager = function ()
+﻿var RegistrationManager = function ()
 {
     var CIVILIAN_CLASS_LIST_ID     = "listaClassiCivili",
         CIVILIAN_CLASS_BUCKET_ID   = "listaClassiCiviliAcquistate",
@@ -113,15 +113,21 @@
                 return false;
 
             var indice_costo   = this.ms_classi_civili.numeroCarrello() + selezionati.length,
+                indice_costo_2 = parseInt(indice_costo, 10),
                 id_selezionati = selezionati.map( function( el ){ return el.replace(/\D/g, "")+""; } );
 
             for( var l in lista )
             {
                 var d = lista[l];
 
-                if( d.id_classe && id_selezionati.indexOf( l ) === -1 )
+                if (d.id_classe && id_selezionati.indexOf(l) === -1)
                 {
                     d.costo_classe = Constants.COSTI_PROFESSIONI[indice_costo];
+                    d.innerHTML = d.nome_classe + " ( " + d.costo_classe + " PX )";
+                }
+                else if (d.id_classe && id_selezionati.indexOf(l) !== -1 && indice_costo_2 >= 0)
+                {
+                    d.costo_classe = Constants.COSTI_PROFESSIONI[--indice_costo_2];
                     d.innerHTML = d.nome_classe + " ( " + d.costo_classe + " PX )";
                 }
             }

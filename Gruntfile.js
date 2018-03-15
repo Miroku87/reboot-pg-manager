@@ -25,7 +25,11 @@ module.exports = function (grunt)
     var config = {
         app : 'app',
         dist : 'dist',
-        tmp : '.tmp'
+        tmp : '.tmp',
+        staging_api_url : "http://api.rebootgrv.com/api.php",
+        staging_site_url : "http://dbbeta.rebootgrv.com",
+        prod_api_url : "http://api.rebootgrv.com/api.php",
+        prod_site_url : "http://database.rebootgrv.com"
     };
 
     // Define the configuration for all the tasks
@@ -291,6 +295,27 @@ module.exports = function (grunt)
             }
         },
 
+        // Replacing dev vars with prod ones
+        replace : {
+            staging_urls: {
+                options: {
+                    patterns: [
+                        {
+                            match: /(Constants\.API_URL\s*?=\s*?)"[\S\s]*?";/,
+                            replacement: '$1"<%= config.staging_api_url %>";'
+                        },
+                        {
+                            match: /(Constants\.SITE_URL\s*?=\s*?)"[\S\s]*?";/,
+                            replacement: '$1"<%= config.staging_site_url %>";'
+                        }
+                    ]
+                },
+                files: [
+                    {src: ['.tmp/scripts/utils/Constants.js'], dest: './'}
+                ]
+            }
+        },
+
         // Reads HTML for usemin blocks to enable smart builds that automatically
         // concat, minify and revision files. Creates configurations in memory so
         // additional tasks can operate on them
@@ -441,6 +466,14 @@ module.exports = function (grunt)
                         cwd : '.',
                         src : 'bower_components/bootstrap/fonts/*',
                         dest : '<%= config.dist %>/fonts'
+                    },
+                    {
+                        expand : true,
+                        flatten: true,
+                        dot : true,
+                        cwd : '.',
+                        src : 'bower_components/Ionicons/fonts/*',
+                        dest : '<%= config.dist %>/fonts'
                     }]
             }
         },
@@ -514,6 +547,7 @@ module.exports = function (grunt)
         'useminPrepare',
         'concurrent:dist',
         'postcss',
+        'replace:staging_urls',
         'concat',
         'cssmin',
         'uglify',
