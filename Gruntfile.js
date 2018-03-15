@@ -117,7 +117,8 @@ module.exports = function (grunt)
         nunjucks : {
             options : {
                 data : {
-                    body_classes : ""
+                    body_classes : "",
+                    version : "0.1.0"
                 }
             },
             dev : {
