@@ -7,7 +7,11 @@
 
         init: function ()
         {
-            if( SECTION_NAME !== "" && SECTION_NAME !== "index" && SECTION_NAME !== "registrazione" && SECTION_NAME.indexOf( "test" ) === -1 )
+            if( SECTION_NAME !== ""
+                && SECTION_NAME !== "index"
+                && SECTION_NAME !== "recupera_password"
+                && SECTION_NAME !== "registrazione"
+                && SECTION_NAME.indexOf( "test" ) === -1 )
                 Utils.controllaAccessoPagina( SECTION_NAME );
 
             this.setListeners();
@@ -16,7 +20,6 @@
 
         onSubmitClicked: function ( e )
         {
-            console.log(e.target);
             var target = $(e.currentTarget);
             target.append("<i class='fa fa-spinner fa-pulse' style='margin-left:5px'></i>");
             target.attr("disabled",true);

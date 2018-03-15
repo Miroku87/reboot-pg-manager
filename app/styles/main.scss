@@ -36,6 +36,10 @@ a {
   cursor: pointer;
 }
 
+.main-sidebar {
+  background: url("../images/background_1.jpg") repeat;
+}
+
 .sidebar-menu > li {
   transition: height .5s, opacity .5s;
   height: auto;
@@ -55,14 +59,34 @@ textarea.resize-vertical {
    resize: vertical;
  }
 
+.logo-lg > img {
+  width: 80%;
+}
+
 /* PAGINA LOGIN */
 .login-box, .register-box {
   margin: 3% auto;
 }
 
+body.login-page {
+  background: url("../images/background_1.jpg") repeat;
+}
+
+.login-page .login-logo > img {
+  width: 80%;
+}
+
 /* PAGINA REGISTRAZIONE */
 .register-page textarea{
     resize: none;
+}
+
+body.register-page {
+  background: url("../images/background_1.jpg") repeat;
+}
+
+.register-logo > img {
+  width: 80%;
 }
 
 /* PAGINA LISTA Pg */

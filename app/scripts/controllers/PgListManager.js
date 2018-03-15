@@ -115,7 +115,7 @@
             {
                 pulsanti += "<button type='button' " +
                                     "class='btn btn-xs btn-default scrivi-messaggio' " +
-                                    "data-id='ig_" + row.id_personaggio + "' " +
+                                    "data-id='ig#" + row.id_personaggio + "' " +
                                     "data-nome='" + row.nome_personaggio + "' " +
                                     "data-toggle='tooltip' " +
                                     "data-placement='top' " +

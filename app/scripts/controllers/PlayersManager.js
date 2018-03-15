@@ -71,7 +71,7 @@
             var pulsanti = "";
             pulsanti += "<button type='button' " +
                 "class='btn btn-xs btn-default scrivi-messaggio' " +
-                "data-id='fg_"+row.email_giocatore+"' " +
+                "data-id='fg#"+row.email_giocatore+"' " +
                 "data-nome='"+row.nome_completo+"' " +
                 "data-toggle='tooltip' " +
                 "data-placement='top' " +
@@ -93,7 +93,7 @@
             columns.push({data : "email_giocatore"});
             columns.push({data : "nome_completo"});
             columns.push({data : "data_registrazione_giocatore"});
-            columns.push({data : "nome_ruolo"});
+            columns.push({data : "ruoli_nome_ruolo"});
             columns.push({
                 data : "note_giocatore",
                 render: $.fn.dataTable.render.ellipsis( 20, false, false )

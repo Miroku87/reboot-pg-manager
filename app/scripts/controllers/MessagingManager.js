@@ -165,12 +165,17 @@ var MessaggingManager = function ()
 
         formattaNonLetti: function ( data, type, row )
         {
-            return parseInt( row.letto_messaggio, 10 ) === 0 ? "<b>"+data+"</b>" : data;
+            return parseInt( row.letto_messaggio, 10 ) === 0 ? "<strong>"+data+"</strong>" : data;
         },
 
         formattaOggettoMessaggio: function ( data, type, row )
         {
-            return this.formattaNonLetti( "<a href='#' class='link-messaggio' data-id='"+row.id_messaggio+"' data-tipo='"+row.tipo_messaggio+"' data-casella='"+row.casella_messaggio+"'>"+data+"</a>", type, row );
+            //TODO: qui non si sta evitando l'HTML injection
+            return this.formattaNonLetti( "<a href='#' " +
+                                                "class='link-messaggio' " +
+                                                "data-id='"+row.id_messaggio+"' " +
+                                                "data-tipo='"+row.tipo_messaggio+"' " +
+                                                "data-casella='"+row.casella_messaggio+"'>"+decodeURIComponent(data)+"</a>", type, row );
         },
 
         tabellaDisegnata: function ( e )
@@ -343,7 +348,7 @@ var MessaggingManager = function ()
             if( scrivi_a )
             {
                 var dati = JSON.parse(scrivi_a),
-                    sp   = dati.id.split("_"),
+                    sp   = dati.id.split("#"),
                     tipo = sp[0],
                     id   = sp[1];
 
@@ -354,7 +359,7 @@ var MessaggingManager = function ()
                     Utils.showError("Devi loggarti con un pg prima di mandare messaggi In Gioco.", Utils.redirectTo.bind(this,Constants.MAIN_PAGE));
                     return;
                 }
-                console.log(this.user_info.pg_propri,id);
+
                 if(    ( tipo === "ig" && this.user_info && this.user_info.pg_propri.length > 0 && this.user_info.pg_propri.indexOf( id ) !== -1 )
                     || ( tipo === "fg" && this.user_info.email_giocatore === id ) )
                 {
