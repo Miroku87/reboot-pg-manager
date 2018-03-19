@@ -1,4 +1,5 @@
 ﻿{% extends "./templates/main_template.html" %}
+{% from "./templates/components.html" import modal_assegna_punti, modal_assegna_punti_scripts, modal_modifica_credito, modal_modifica_credito_scripts %}
 {% set body_classes = "hold-transition skin-black fixed sidebar-mini pg-list-page" %}
 {% set section = "listapg" %}
 {% block mainContent %}
@@ -16,12 +17,18 @@
             <button type="button"
                     class="btn btn-info"
                     id="btn_creaPG"><i class="fa fa-plus"></i><br>Crea PG</button>
-            <!--<button type="button"-->
-                    <!--class="btn btn-info inizialmente-nascosto modificaPG_pc_personaggio"-->
-                    <!--id="btn_modificaPG_px_personaggio"-->
-                    <!--data-toggle="tooltip"-->
-                    <!--data-placement="bottom"-->
-                    <!--title="Assegna punti ai pg filtrati nella tabella sotto"><i class="fa fa-edit"></i><br>Assegna Punti</button>-->
+            <button type="button"
+                    class="btn btn-info inizialmente-nascosto modificaPG_pc_personaggio"
+                    id="btn_modificaPG_px_personaggio"
+                    data-toggle="tooltip"
+                    data-placement="bottom"
+                    title="Assegna punti ai pg filtrati nella tabella sotto"><i class="fa fa-edit"></i><br>Assegna Punti</button>
+            <button type="button"
+                    class="btn btn-info inizialmente-nascosto modificaPG_credito_personaggio"
+                    id="btn_modificaPG_credito_personaggio"
+                    data-toggle="tooltip"
+                    data-placement="bottom"
+                    title="Modifica i crediti dei pg filtrati nella tabella sotto"><i class="fa fa-money"></i><br>Modifica Crediti</button>
             <!--<button type="button"-->
                     <!--class="btn btn-info inizialmente-nascosto stampaCartelliniPG"-->
                     <!--id="btn_stampaCartelliniPG"-->
@@ -41,6 +48,8 @@
                 <th>Classi Militari</th>
                 <th>PX</th>
                 <th>PC</th>
+                <th>Credito</th>
+                <th class="inizialmente-nascosto modificaPG_contattabile_personaggio">Contattabile</th>
                 <th class="inizialmente-nascosto modificaPG_px_personaggio modificaPG_pc_personaggio eliminaPG stampaCartelliniPG">Azioni</th>
             </tr>
             </thead>
@@ -55,7 +64,16 @@
 </div>
 
 {% endblock %}
+
+{% block modals %}
+{{ modal_assegna_punti() }}
+{{ modal_modifica_credito() }}
+{{ super() }}
+{% endblock %}
+
 {% block managers %}
 {{ super() }}
+{{ modal_assegna_punti_scripts() }}
+{{ modal_modifica_credito_scripts() }}
 <script src="scripts/controllers/PgListManager.js"></script>
 {% endblock %}

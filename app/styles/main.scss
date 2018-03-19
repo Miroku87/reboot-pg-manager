@@ -63,6 +63,17 @@ textarea.resize-vertical {
   width: 80%;
 }
 
+/* MODAL PUNTI */
+#modal_assegna_punti .nomi_pg,
+#modal_assegna_punti div.row:first-child {
+  font-weight: bold;
+}
+
+/* MODAL CREDITO */
+#modal_modifica_credito .nomi_pg {
+  font-weight: bold;
+}
+
 /* PAGINA LOGIN */
 .login-box, .register-box {
   margin: 3% auto;

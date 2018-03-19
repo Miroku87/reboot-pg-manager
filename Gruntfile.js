@@ -539,7 +539,7 @@ module.exports = function (grunt)
         ]);
     });
 
-    //TODO: fare uno script che cambia i path delle API
+    //TODO: sistemare l'url dell'immagine di icheck
     grunt.registerTask('build', [
         'clean:dist',
         'nunjucks',
@@ -552,7 +552,7 @@ module.exports = function (grunt)
         'cssmin',
         'uglify',
         'copy:dist',
-        //'filerev',
+        'filerev',
         'usemin',
         'htmlmin'
     ]);

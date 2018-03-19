@@ -11,6 +11,7 @@ Constants.API_POST_MOD_PWD               = Constants.API_URL + "/usersmanager/mo
 Constants.API_POST_CREAPG                = Constants.API_URL + "/charactersmanager/creapg";
 Constants.API_POST_ACQUISTA              = Constants.API_URL + "/charactersmanager/acquista";
 Constants.API_POST_EDIT_PG               = Constants.API_URL + "/charactersmanager/modificapg";
+Constants.API_POST_EDIT_MOLTI_PG         = Constants.API_URL + "/charactersmanager/modificamoltipg";
 Constants.API_POST_MESSAGGIO             = Constants.API_URL + "/messagingmanager/inviamessaggio";
 
 Constants.API_GET_LOGOUT                 = Constants.API_URL + "/usersmanager/logout";

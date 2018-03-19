@@ -228,12 +228,14 @@ var MessaggingManager = function ()
                     dom: '<"col-md-1"B><"col-md-2"l><"col-md-4 pull-right"f>tip',
                     buttons    : ["reload"],
                     language   : Constants.DATA_TABLE_LANGUAGE,
-                    ajax       : {
-                        url  : url,
-                        xhrFields: {
-                            withCredentials: true
-                        },
-                        data : data
+                    ajax       : function (data, callback)
+                    {
+                        Utils.requestData(
+                            url,
+                            "GET",
+                            data,
+                            callback
+                        );
                     },
                     columns    : [
                         {

@@ -7,15 +7,18 @@
 
         init: function ()
         {
+            this.setListeners();
+            this.controllaPermessi();
+        },
+
+        controllaAccesso: function ()
+        {
             if( SECTION_NAME !== ""
                 && SECTION_NAME !== "index"
                 && SECTION_NAME !== "recupera_password"
                 && SECTION_NAME !== "registrazione"
                 && SECTION_NAME.indexOf( "test" ) === -1 )
                 Utils.controllaAccessoPagina( SECTION_NAME );
-
-            this.setListeners();
-            this.controllaPermessi();
         },
 
         onSubmitClicked: function ( e )
@@ -32,7 +35,8 @@
 
             if( this.user_info )
             {
-                //var permessi_pagine = this.user_info.permessi.filter( function( el ){ return el.indexOf( "visualizza_pagina" ) !== -1; } );
+                //var permessi_pagine = this.user_info.permessi.filter( function( el ){ return el.indexOf(
+                // "visualizza_pagina" ) !== -1; } );
                 for( var p in this.user_info.permessi )
                 {
                     var permesso          = this.user_info.permessi[p],
@@ -176,6 +180,8 @@
 
     }
 }();
+
+AdminLTEManager.controllaAccesso();
 
 $( document ).ready( function ( e )
 {

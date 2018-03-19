@@ -314,14 +314,22 @@
             }
         },
 
-        vaiANegozioAbilita: function ()
+        modificaPuntiPG: function ( )
         {
-            window.location.href = Constants.ABILITY_SHOP_PAGE;
+            PointsManager.impostaModal({
+                pg_ids          : [ this.pg_info.id_personaggio ],
+                nome_personaggi : [ this.pg_info.nome_personaggio ],
+                onSuccess       : Utils.reloadPage
+            });
         },
 
-        refreshPage: function ()
+        modificaCreditoPG: function ( )
         {
-            window.location.reload();
+            CreditManager.impostaModal({
+                pg_ids          : [ this.pg_info.id_personaggio ],
+                nome_personaggi : [ this.pg_info.nome_personaggio ],
+                onSuccess       : Utils.reloadPage
+            });
         },
 
         inviaModifichePG: function ( campo, elemento, e )
@@ -393,15 +401,9 @@
                     this.personalizzaMenu.call( this );
                     this.mostraDati.call( this );
                 }.bind(this),
-                function ( data )
-                {
-                    $("#errorDialog").unbind("hidden.bs.modal");
-                    $("#errorDialog").on("hidden.bs.modal", function ()
-                    {
-                        window.history.back();
-                    });
-                    Utils.showError( data.message );
-                }.bind(this)
+                null,
+                null,
+                window.history.back
             );
         },
 
@@ -409,8 +411,10 @@
         {
             $( "#mostra_form_bg" ).click( this.mostraTextAreaBG.bind(this) );
             $( "#mostra_note_master" ).click( this.mostraTextAreaNoteMaster.bind(this) );
-            $( "#btn_aggiungiAbilitaAlPG" ).click( this.vaiANegozioAbilita.bind(this) );
-            $( "#message" ).on( "hidden.bs.modal", this.refreshPage.bind(this) );
+            $( "#btn_aggiungiAbilitaAlPG" ).click( Utils.redirectTo.bind(this,Constants.ABILITY_SHOP_PAGE) );
+            $( "#btn_modificaPG_px_personaggio" ).click( this.modificaPuntiPG.bind(this) );
+            $( "#btn_modificaPG_credito_personaggio" ).click( this.modificaCreditoPG.bind(this) );
+            $( "#message" ).on( "hidden.bs.modal", Utils.reloadPage );
         }
 	}
 }();

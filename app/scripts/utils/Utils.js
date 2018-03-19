@@ -42,6 +42,7 @@
                     dt.ajax.reload(null, true);
                 }
             };
+            $(document).ajaxStart(function() { Pace.restart(); });
         },
 
         /**
@@ -158,6 +159,8 @@
                         Utils.showMessage(success,onSuccessHide);
                     else if ( data.status === "ok" && typeof success === "function")
                         success(data);
+                    else if ( data.status === "error" && ( data.type === "loginError" || data.type === "grantsError" ) )
+                        Utils.showError( data.message, AdminLTEManager.logout );
                     else if ( data.status === "error" && typeof failure === "string" )
                         Utils.showError( failure, onFailureHide );
                     else if ( data.status === "error" && typeof failure === "function" )
@@ -174,10 +177,12 @@
 
                     real_error = real_error.replace("\n","<br>");
 
-                    if ( data.status === "error" && typeof failure !== "function" )
+                    if ( data.status === "error" && ( data.type === "loginError" || data.type === "grantsError" ) )
+                        Utils.showError( failure, AdminLTEManager.logout );
+                    else if ( data.status === "error" && typeof failure !== "function" )
                         Utils.showError( real_error, onFailureHide );
                     else if ( data.status === "error" && typeof failure === "function" )
-                        failure({message:real_error});
+                        failure({message:real_error,type:"genericError"});
                 }
             });
         },
