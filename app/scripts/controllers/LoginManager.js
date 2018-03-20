@@ -8,6 +8,7 @@ var LoginManager = function () {
 		init: function ()
 		{
 			this.setListeners();
+            this.rilevaRedirect();
 		},
 
 		setListeners: function ()
@@ -61,10 +62,23 @@ var LoginManager = function () {
                     {
                         window.localStorage.clear();
                         window.localStorage.setItem( 'user', JSON.stringify( data.user_info ) );
-                        window.location.href = Constants.MAIN_PAGE;
+
+                        if ( this.redirect_to && this.pgid )
+                        {
+                            window.localStorage.setItem("pg_da_loggare",this.pgid);
+                            Utils.redirectTo(Constants.SITE_URL + "/" + this.redirect_to + ".html");
+                        }
+                        else
+                            Utils.redirectTo(Constants.MAIN_PAGE);
                     }.bind(this)
                 );
 			}
+		},
+
+        rilevaRedirect: function ()
+		{
+			this.redirect_to = Utils.getParameterByName("r");
+            this.pgid        = Utils.getParameterByName("i");
 		},
 
 		checkCookie: function ()

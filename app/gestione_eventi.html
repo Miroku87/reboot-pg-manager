@@ -11,6 +11,14 @@
         <h3 class="box-title">Informazioni sul prossimo evento</h3>
     </div>
     <div class="box-body">
+        <div class="btn-group pull-center out-of-box">
+            <button type="button"
+                    class="btn btn-info inizialmente-nascosto visualizza_pagina_crea_evento"
+                    id="btn_visualizza_pagina_crea_evento"><i class="fa fa-plus"></i><br>Crea Evento</button>
+            <button type="button"
+                    class="btn btn-info inizialmente-nascosto visualizza_pagina_crea_evento"
+                    id="btn_modifica_evento"><i class="fa fa-edit"></i><br>Modifica Evento</button>
+        </div>
     <!-- Countdown evento -->
     <!-- Google Maps -->
     </div>
@@ -26,20 +34,14 @@
     <div class="box-body table-responsive">
         <div class="btn-group pull-center out-of-box">
             <button type="button"
-                    class="btn btn-info inizialmente-nascosto modificaPG_pc_personaggio"
-                    id="btn_modificaPG_px_personaggio"
-                    data-toggle="tooltip"
-                    data-placement="bottom"
-                    title="Assegna punti ai pg iscritti all'ultimo evento"><i class="fa fa-edit"></i><br>Assegna Punti</button>
-            <!--<button type="button"-->
-                <!--class="btn btn-info inizialmente-nascosto stampaCartelliniPG"-->
-                <!--id="btn_stampaCartelliniPG"-->
-                <!--data-toggle="tooltip"-->
-                <!--data-placement="bottom"-->
-                <!--title="Stampa cartellini dei pg filtrati nella tabella sotto"><i class="fa fa-print"></i><br>Stampa Cartellini</button>-->
+                class="btn btn-info inizialmente-nascosto stampaCartelliniPG"
+                id="btn_stampaCartelliniPG"
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="Stampa cartellini dei pg filtrati nella tabella sotto"><i class="fa fa-print"></i><br>Stampa Cartellini</button>
         </div>
         <form autocomplete="off" aria-autocomplete="none">
-            <table id="tabella_partecipanti" class="table table-condensed table-hover table-striped table-bordered" width="100%">
+            <table id="partecipanti" class="table table-condensed table-hover table-striped table-bordered" width="100%">
                 <thead>
                 <tr>
                     <th>ID PG</th>
@@ -58,6 +60,82 @@
     </div>
 </div>
 
+<div class="box box-primary inizialmente-nascosto modificaPG_pc_personaggio modificaPG_px_personaggio" id="partecipanti_vecchio_evento">
+    <div class="box-header with-border">
+        <h3 class="box-title">Partecipanti al prossimo evento</h3>
+    </div>
+    <div class="box-body table-responsive">
+        <div class="btn-group pull-center out-of-box">
+            <button type="button"
+                    class="btn btn-info inizialmente-nascosto modificaPG_pc_personaggio"
+                    id="btn_modificaPG_px_personaggio"
+                    data-toggle="tooltip"
+                    data-placement="bottom"
+                    title="Assegna punti ai pg iscritti all'ultimo evento"><i class="fa fa-edit"></i><br>Assegna Punti</button>
+        </div>
+        <form autocomplete="off" aria-autocomplete="none">
+            <table id="vecchi_partecipanti" class="table table-condensed table-hover table-striped table-bordered" width="100%">
+                <thead>
+                <tr>
+                    <th>ID PG</th>
+                    <th>Nome Personaggio</th>
+                    <th>Classi Civili</th>
+                    <th>Classi Militari</th>
+                    <th>Pagato</th>
+                    <th>Tipo Pagamento</th>
+                    <th>Note</th>
+                    <th>Azioni</th>
+                </tr>
+                </thead>
+            </table>
+        </form>
+    </div>
+</div>
+
+{% block modals %}
+<div id="modal_iscrivi_pg" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header dialog-header-primary">
+                <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Chiudi</span></button>
+                <h4 class="modal-title text-primary">Iscrivi Personaggio</h4>
+            </div>
+            <div class="modal-body">
+                <form autocomplete="off" aria-autocomplete="none">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Personaggio</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="personaggio" placeholder="Seleziona Personaggio"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Metodo di Pagamento Usato</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="metodo_pagamento" placeholder="Seleziona Metodo di Pagamento">
+                                <option value="Manuale">Manuale</option>
+                                <option value="PayPal">PayPal</option>
+                                <option value="PostePay">PostePay</option>
+                                <option value="Bonifico">Bonifico</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Note</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control resize-vertical" id="note" name="note" placeholder="In caso di pagamento Manuale indica a chi è stato dato il saldo. Scrivici anche se ci raggiungi la sera prima dell'inizio dell'evento." rows="5"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success submit-btn" data-dismiss="modal" id="btn_iscrivi">Iscrivi</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{ super() }}
+{% endblock %}
 
 {% endblock %}
 {% block managers %}

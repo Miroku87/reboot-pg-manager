@@ -1,0 +1,146 @@
+{% extends "./templates/main_template.html" %}
+{% set body_classes = body_classes + " crea-evento-page" %}
+{% set section = "profilo" %}
+{% set titolo_sezione = "Crea Evento"  %}
+{% set descrizione_sezione = "Qui puoi inserire tutti i dati relativi ad un evento"  %}
+{% block mainContent %}
+{{ super() }}
+<!--------------------------
+  | Your Page Content Here |
+  -------------------------->
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Informazioni Evento</h3>
+    </div>
+    <div class="box-body">
+        <form autocomplete="off" aria-autocomplete="none" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Titolo Evento</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="titolo" name="titolo_evento" placeholder="Titolo Evento">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Data Inizio</label>
+                <div class="col-sm-10">
+                    <div class="input-group date">
+                        <input type="text"
+                               class="form-control"
+                               id="data_inizio"
+                               name="data_inizio"
+                               placeholder="Data Inizio"
+                               data-provide="datepicker"
+                               data-date-orientation="bottom"
+                               data-date-start-date="today">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Orario Inizio</label>
+                <div class="col-sm-10">
+                    <div class="input-group bootstrap-timepicker timepicker">
+                        <input id="ora_inizio"
+                               name="ora_inizio"
+                               class="form-control"
+                               data-provide="timepicker"
+                               data-minute-step="30"
+                               data-default-time="14:00"
+                               data-modal-backdrop="true"
+                               data-show-meridian="false"
+                               data-show-inputs="false"
+                               value="14:00"
+                               type="text"/>
+                        <label class="input-group-addon btn" for="ora_inizio">
+                            <span class="fa fa-clock-o"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Data Fine</label>
+                <div class="col-sm-10">
+                    <div class="input-group date">
+                        <input type="text"
+                               class="form-control"
+                               id="data_fine"
+                               name="data_fine"
+                               placeholder="Data Fine"
+                               data-provide="datepicker"
+                               data-date-orientation="bottom"
+                               data-date-start-date="today">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Orario Fine</label>
+                <div class="col-sm-10">
+                    <div class="input-group bootstrap-timepicker timepicker">
+                        <input id="ora_fine"
+                               name="ora_fine"
+                               class="form-control"
+                               data-provide="timepicker"
+                               data-minute-step="30"
+                               data-default-time="16:00"
+                               data-modal-backdrop="true"
+                               data-show-meridian="false"
+                               data-show-inputs="false"
+                               value="16:00"
+                               type="text"/>
+                        <label class="input-group-addon btn" for="ora_fine">
+                            <span class="fa fa-clock-o"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Luogo</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="luogo" name="luogo" placeholder="Luogo">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Costo</label>
+                <div class="col-sm-10">
+                    <input type="number" step="5" class="form-control" id="costo" name="costo" placeholder="Costo" value="0">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Costo maggiorato</label>
+                <div class="col-sm-10">
+                    <input type="number" step="5" class="form-control" id="costo_maggiorato" name="costo_maggiorato" placeholder="Costo Maggiorato" value="0">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Note</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control resize-vertical" id="note" name="note" placeholder="Note" rows="5"></textarea>
+                </div>
+            </div>
+        </form>
+        <div class="callout callout-info">
+            <h4>NOTA BENE</h4>
+            <p>Una volta creato l'evento questo non sar&agrave; ancora visibile ai giocatori. Bisogner&agrave; pubblicarlo nella pagina di visualizzazione.</p>
+        </div>
+    </div>
+    <div class="box-footer">
+        <button id="invia_nuova_password" class="btn btn-success pull-right submit-btn">Crea Evento</button>
+    </div>
+</div>
+
+{% endblock %}
+{% block managers %}
+{{ super() }}
+<script src="scripts/controllers/EventCreateManager.js"></script>
+{% endblock %}
+
+{% block externalScripts %}
+{{ super() }}
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAIhCdsCkAXbJnK2FUpFMFRYb5JXrP7Dug&libraries=places&callback=EventCreateManager.initAutocomplete" async defer></script>
+{% endblock %}

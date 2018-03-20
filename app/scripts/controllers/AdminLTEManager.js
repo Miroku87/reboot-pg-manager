@@ -1,7 +1,8 @@
 ﻿var AdminLTEManager = function ()
 {
     var SERVER       = window.location.protocol + "//" + window.location.host + "/",
-        SECTION_NAME = window.location.href.replace( SERVER, "" ).split( "/").shift().split(".").shift();
+        SECTION_NAME = window.location.href.replace( SERVER, "" ).replace( window.location.search, "" ).split( "/").shift().split(".").shift(),
+        NO_CONTROLLO = ["index","recupera_password","registrazione"];
 
     return {
 
@@ -13,10 +14,8 @@
 
         controllaAccesso: function ()
         {
-            if( SECTION_NAME !== ""
-                && SECTION_NAME !== "index"
-                && SECTION_NAME !== "recupera_password"
-                && SECTION_NAME !== "registrazione"
+            if(    SECTION_NAME !== ""
+                && NO_CONTROLLO.indexOf( SECTION_NAME ) === -1
                 && SECTION_NAME.indexOf( "test" ) === -1 )
                 Utils.controllaAccessoPagina( SECTION_NAME );
         },
@@ -35,8 +34,6 @@
 
             if( this.user_info )
             {
-                //var permessi_pagine = this.user_info.permessi.filter( function( el ){ return el.indexOf(
-                // "visualizza_pagina" ) !== -1; } );
                 for( var p in this.user_info.permessi )
                 {
                     var permesso          = this.user_info.permessi[p],

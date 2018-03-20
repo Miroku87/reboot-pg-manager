@@ -236,10 +236,10 @@
             var columns = [];
 
             columns.push({data : "id_personaggio"});
-
-            if( this.user_info && this.user_info.permessi.indexOf( "mostraPersonaggi_altri" ) !== -1 )
-                columns.push({data : "nome_giocatore"});
-
+            columns.push({
+                data           : "nome_giocatore",
+                className      : 'inizialmente-nascosto mostraPersonaggi_altri'
+            });
             columns.push({
                 data   : "nome_personaggio",
                 render : this.formattaNomePg.bind(this)

@@ -14,6 +14,7 @@
     return {
         init: function ()
         {
+            //TODO: sviluppare selezione di cose tipo "arma selezionata"
             this.getClassesInfo();
             this.getPGInfo();
             $("#inviaDati").click( this.inviaDati.bind(this) );

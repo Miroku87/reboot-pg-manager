@@ -26,8 +26,9 @@ module.exports = function (grunt)
         app : 'app',
         dist : 'dist',
         tmp : '.tmp',
-        staging_api_url : "http://api.rebootgrv.com/api.php",
-        staging_site_url : "http://dbbeta.rebootgrv.com",
+        version: '0.2.0',
+        staging_api_url : "http://api-beta.rebootgrv.com/api.php",
+        staging_site_url : "http://db-beta.rebootgrv.com",
         prod_api_url : "http://api.rebootgrv.com/api.php",
         prod_site_url : "http://database.rebootgrv.com"
     };
@@ -122,7 +123,7 @@ module.exports = function (grunt)
             options : {
                 data : {
                     body_classes : "",
-                    version : "0.1.0"
+                    version : "<%= config.version %>"
                 }
             },
             dev : {
@@ -307,6 +308,23 @@ module.exports = function (grunt)
                         {
                             match: /(Constants\.SITE_URL\s*?=\s*?)"[\S\s]*?";/,
                             replacement: '$1"<%= config.staging_site_url %>";'
+                        }
+                    ]
+                },
+                files: [
+                    {src: ['.tmp/scripts/utils/Constants.js'], dest: './'}
+                ]
+            },
+            prod_urls: {
+                options: {
+                    patterns: [
+                        {
+                            match: /(Constants\.API_URL\s*?=\s*?)"[\S\s]*?";/,
+                            replacement: '$1"<%= config.prod_api_url %>";'
+                        },
+                        {
+                            match: /(Constants\.SITE_URL\s*?=\s*?)"[\S\s]*?";/,
+                            replacement: '$1"<%= config.prod_site_url %>";'
                         }
                     ]
                 },
@@ -540,7 +558,7 @@ module.exports = function (grunt)
     });
 
     //TODO: sistemare l'url dell'immagine di icheck
-    grunt.registerTask('build', [
+    grunt.registerTask('preprod', [
         'clean:dist',
         'nunjucks',
         //'wiredep',
@@ -548,6 +566,23 @@ module.exports = function (grunt)
         'concurrent:dist',
         'postcss',
         'replace:staging_urls',
+        'concat',
+        'cssmin',
+        'uglify',
+        'copy:dist',
+        'filerev',
+        'usemin',
+        'htmlmin'
+    ]);
+
+    grunt.registerTask('prod', [
+        'clean:dist',
+        'nunjucks',
+        //'wiredep',
+        'useminPrepare',
+        'concurrent:dist',
+        'postcss',
+        'replace:prod_urls',
         'concat',
         'cssmin',
         'uglify',

@@ -40,6 +40,7 @@ Constants.PG_PAGE                        = Constants.SITE_URL + "/scheda_pg.html
 Constants.ABILITY_SHOP_PAGE              = Constants.SITE_URL + "/negozio_abilita.html";
 Constants.PRINT_PAGE                     = Constants.SITE_URL + "/stampa.html";
 Constants.CREAPG_PAGE                    = Constants.SITE_URL + "/crea_pg.html";
+Constants.CREA_EVENTO_PAGE               = Constants.SITE_URL + "/crea_evento.html";
 Constants.MESSAGGI_PAGE                  = Constants.SITE_URL + "/messaggi.html";
 Constants.PROFILO_PAGE                   = Constants.SITE_URL + "/profilo.html";
 
