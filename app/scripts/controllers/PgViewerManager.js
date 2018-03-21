@@ -46,6 +46,7 @@
                 n_sup_base = lista_ab.filter( function( el ){ return el.classi_id_classe === Constants.ID_CLASSE_SUPPORTO_BASE; } ).length,
                 n_sportivo = lista_ab.filter( function( el ){ return el.classi_id_classe === Constants.ID_CLASSE_SPORTIVO; } ).length,
                 n_ass_base = lista_ab.filter( function( el ){ return el.classi_id_classe === Constants.ID_CLASSE_ASSALTATORE_BASE; } ).length,
+                n_ass_avan = lista_ab.filter( function( el ){ return el.classi_id_classe === Constants.ID_CLASSE_ASSALTATORE_AVANZATO; } ).length,
                 n_gua_base = lista_ab.filter( function( el ){ return el.classi_id_classe === Constants.ID_CLASSE_GUASTATORE_BASE; } ).length,
                 n_gua_avan = lista_ab.filter( function( el ){ return el.classi_id_classe === Constants.ID_CLASSE_GUASTATORE_AVANZATO; } ).length,
                 vera_lista = lista_ab.filter( function( el ){ return el.prerequisito_abilita !== null; } );
@@ -72,6 +73,7 @@
                     || pre === Constants.PREREQUISITO_5_SUPPORTO_BASE && n_sup_base - 1 < 5
                     || pre === Constants.PREREQUISITO_4_SPORTIVO && n_sportivo - 1 < 4
                     || pre === Constants.PREREQUISITO_3_ASSALTATA_BASE && n_ass_base - 1 < 3
+                    || pre === Constants.PREREQUISITO_3_ASSALTATA_AVAN && n_ass_avan - 1 < 3
                     || pre === Constants.PREREQUISITO_3_GUASTATOR_BASE && n_gua_base - 1 < 3
                     || pre === Constants.PREREQUISITO_3_GUASTATO_AVAN && n_gua_avan - 1 < 3
                 )
@@ -230,10 +232,21 @@
                 azioni_abilita.click( this.rimuoviAbilita.bind(this) );
             }.bind(this));
 
+            for( var o in this.pg_info.opzioni )
+            {
+                var val = this.pg_info.opzioni[o],
+                    tr = $("<tr></tr>");
+
+                tr.append("<td>"+val.nome_abilita+"</td>");
+                tr.append("<td>"+val.opzione+"</td>");
+
+                $("#lista_opzioni_abilita").find("tbody").append(tr);
+            }
+
             if( this.pg_info.background_personaggio !== null )
             {
                 $("#avviso_bg").remove();
-                $("#background").text( decodeURIComponent(this.pg_info.background_personaggio) );
+                $("#background").text( decodeURIComponent(this.pg_info.background_personaggio).substr(0,30)+"..." );
                 $("#testo_background").val( decodeURIComponent(this.pg_info.background_personaggio) );
 
                 if( this.user_info.permessi.indexOf("modificaPG_background_personaggio_altri") !== -1 )

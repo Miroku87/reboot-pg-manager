@@ -21,6 +21,7 @@ Constants.API_GET_PLAYERS                = Constants.API_URL + "/usersmanager/re
 Constants.API_GET_NOTE_GIOCATORE         = Constants.API_URL + "/usersmanager/recuperanoteutente";
 Constants.API_GET_PG_LOGIN               = Constants.API_URL + "/charactersmanager/loginpg";
 Constants.API_GET_INFO                   = Constants.API_URL + "/charactersmanager/recuperainfoclassi";
+Constants.API_GET_OPZIONI_ABILITA        = Constants.API_URL + "/charactersmanager/recuperaopzioniabilita";
 Constants.API_GET_PGS                    = Constants.API_URL + "/charactersmanager/mostrapersonaggi";
 Constants.API_GET_STORICO_PG             = Constants.API_URL + "/charactersmanager/recuperastorico";
 Constants.API_GET_RICETTE                = Constants.API_URL + "/craftingmanager/recuperaricette";
@@ -56,14 +57,17 @@ Constants.PREREQUISITO_3_GUASTATOR_BASE  = -4;
 Constants.PREREQUISITO_4_SPORTIVO        = -5;
 Constants.PREREQUISITO_3_ASSALTATA_BASE  = -6;
 Constants.PREREQUISITO_3_GUASTATO_AVAN   = -7;
+Constants.PREREQUISITO_3_ASSALTATA_AVAN  = -8;
 
 Constants.ID_ABILITA_F_TERRA             = 135;
 Constants.ID_ABILITA_T_SCELTO            = 130;
 Constants.ID_ABILITA_IDOLO               = 12;
+Constants.ID_ABILITA_ARMA_SEL            = 140;
 
 Constants.ID_CLASSE_SPORTIVO             = 1;
 Constants.ID_CLASSE_SUPPORTO_BASE        = 12;
 Constants.ID_CLASSE_ASSALTATORE_BASE     = 10;
+Constants.ID_CLASSE_ASSALTATORE_AVANZATO = 11;
 Constants.ID_CLASSE_GUASTATORE_BASE      = 14;
 Constants.ID_CLASSE_GUASTATORE_AVANZATO  = 15;
 

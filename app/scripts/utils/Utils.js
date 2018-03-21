@@ -89,7 +89,8 @@
                 $("#errorDialog").unbind("hidden.bs.modal");
                 $("#errorDialog").on("hidden.bs.modal", function ()
                 {
-                    $(".submit-btn").attr("disabled",false).find("i").remove();
+                    $(".submit-btn").attr("disabled",false);
+                    $(".submit-btn").find("i").remove();
                     if (typeof onHide === "function") onHide();
                 });
 

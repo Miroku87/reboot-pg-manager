@@ -63,7 +63,11 @@ textarea.resize-vertical {
   width: 80%;
 }
 
-/* MODAL PUNTI */
+.dataTables_wrapper .row {
+  margin: 0;
+}
+
+  /* MODAL PUNTI */
 #modal_assegna_punti .nomi_pg,
 #modal_assegna_punti div.row:first-child {
   font-weight: bold;

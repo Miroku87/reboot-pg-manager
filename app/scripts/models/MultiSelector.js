@@ -421,7 +421,7 @@ var MultiSelector = MultiSelector || (function ()
                 this._dati_lista.splice( d, 1 );
         }
 
-        _aggiornaListe.call(this);
+        _aggiornaListe.call(this, false);
     };
 
     MultiSelector.prototype.spostaDaCarrello = function( chiave_primaria, valore )
@@ -439,14 +439,26 @@ var MultiSelector = MultiSelector || (function ()
 
     MultiSelector.prototype.deselezionaTutti = function( )
     {
+        for( var s in this._selezionati )
+        {
+            var selezionato = this._selezionati[s],
+                splittato   = selezionato.split("_"),
+                lista       = splittato[0],
+                indice      = splittato[1],
+                elem        = this["elem_"+lista].find("li").eq( indice );
+
+            if (typeof this._settings.elemDeselezionato === "function")
+                _eventoAsincrono.call( this, this._settings.elemDeselezionato, lista, this["_dati_"+lista][elem.attr("data-index")], this["_dati_"+lista], elem, [] );
+        }
+
         this._selezionati = [];
         this.elem_lista.find("li").removeClass("selected");
         this.elem_carrello.find("li").removeClass("selected");
+        _controllaTuttiPrerequisiti.call(this);
     };
 
     MultiSelector.prototype.deselezionaUltimo = function( )
     {
-        console.log(this._selezionati);
         var selezionato = this._selezionati.pop(),
             splittato   = selezionato.split("_"),
             lista       = splittato[0],

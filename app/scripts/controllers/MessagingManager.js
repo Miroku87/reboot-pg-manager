@@ -225,7 +225,9 @@ var MessaggingManager = function ()
                 .DataTable( {
                     processing : true,
                     serverSide : true,
-                    dom: '<"col-md-1"B><"col-md-2"l><"col-md-4 pull-right"f>tip',
+                    dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+                    "<'row'<'col-sm-12 table-responsive'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                     buttons    : ["reload"],
                     language   : Constants.DATA_TABLE_LANGUAGE,
                     ajax       : function (data, callback)
