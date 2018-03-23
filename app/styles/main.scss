@@ -67,6 +67,11 @@ textarea.resize-vertical {
   margin: 0;
 }
 
+.dataTables_wrapper .dataTables_length {
+  float: left;
+  margin-right: 10px;
+}
+
   /* MODAL PUNTI */
 #modal_assegna_punti .nomi_pg,
 #modal_assegna_punti div.row:first-child {
@@ -274,4 +279,19 @@ body.register-page {
 
 .messaggi-page tr.nonletto {
   font-weight: bold;
+}
+
+/* PAGINA INFO EVENTI */
+.gestione-eventi-page #info_base table tr > td:first-child {
+  font-weight: bold;
+}
+.gestione-eventi-page #info_base table tr > td:last-child {
+  text-align: right;
+}
+.gestione-eventi-page h1#titolo_evento {
+  text-align: center;
+}
+.gestione-eventi-page .mappa-evento {
+  width: 100%;
+  height: 193px;
 }

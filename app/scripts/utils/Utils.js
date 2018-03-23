@@ -61,6 +61,12 @@
             });
         },
 
+        resetSubmitBtn: function ()
+        {
+            $(".submit-btn").attr("disabled",false);
+            $(".submit-btn").find("i").remove();
+        },
+
         showMessage: function( text, onHide )
         {
             if($("#message").length > 0)
@@ -89,8 +95,7 @@
                 $("#errorDialog").unbind("hidden.bs.modal");
                 $("#errorDialog").on("hidden.bs.modal", function ()
                 {
-                    $(".submit-btn").attr("disabled",false);
-                    $(".submit-btn").find("i").remove();
+                    Utils.resetSubmitBtn();
                     if (typeof onHide === "function") onHide();
                 });
 
@@ -99,33 +104,44 @@
             }
         },
 
-        showConfirm: function( question, onConfirm )
+        showConfirm: function( question, onConfirm, askPwd )
         {
+            askPwd = typeof askPwd === "undefined" ? true : askPwd;
+
             if($("#confirmWithPassword").length > 0)
             {
                 $('.modal').modal('hide');
+                Utils.resetSubmitBtn();
                 $("#confirmWithPassword").find("#confirm_text").html(question);
                 $("#confirmWithPassword").find("#confirm_password").unbind("keypress");
                 $("#confirmWithPassword").find("#confirm_button").unbind("click");
                 $("#confirmWithPassword").find("input#confirm_password").val("");
 
+                if( !askPwd )
+                    $("#confirmWithPassword").find(".form-group").parent().hide();
+
                 $("#confirmWithPassword").find("#confirm_button").click(function ( )
                 {
-                    if( $("#confirmWithPassword").find("input#confirm_password").val() == "" ||
+                    if( askPwd && $("#confirmWithPassword").find("input#confirm_password").val() == "" ||
                         /^\s+$/.test($("#confirmWithPassword").find("input#confirm_password").val()))
                     {
                         Utils.showError( "Non &egrave; stata inserita nessuna password." );
                         return; //function will not keep on executing
                     }
 
-                    var dati = { confirmpassword: $("#confirmWithPassword").find("input#confirm_password").val() };
+                    if (askPwd)
+                    {
+                        var dati = {confirmpassword : $("#confirmWithPassword").find("input#confirm_password").val()};
 
-                    Utils.requestData(
-                        Constants.API_CHECK_PWD,
-                        "POST",
-                        dati,
-                        onConfirm
-                    );
+                        Utils.requestData(
+                            Constants.API_CHECK_PWD,
+                            "POST",
+                            dati,
+                            onConfirm
+                        );
+                    }
+                    else
+                        onConfirm();
                 });
 
                 $("#confirmWithPassword").find("input#confirm_password").keypress(function(event) {

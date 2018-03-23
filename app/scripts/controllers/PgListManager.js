@@ -127,7 +127,8 @@
             $( "td [data-toggle='popover']" ).popover("destroy");
             $( "td [data-toggle='popover']" ).popover({
                 trigger: Utils.isDeviceMobile() ? 'click' : 'hover',
-                placement: 'top'
+                placement: 'top',
+                container: '#lista_pg'
             });
 
             $( 'input[type="checkbox"]' ).iCheck("destroy");
@@ -276,7 +277,7 @@
                 .DataTable( {
                     processing : true,
                     serverSide : true,
-                    dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+                    dom: "<'row'<'col-sm-6'lB><'col-sm-6'f>>" +
                     "<'row'<'col-sm-12 table-responsive'tr>>" +
                     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                     buttons    : ["reload"],

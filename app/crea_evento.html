@@ -1,6 +1,6 @@
 {% extends "./templates/main_template.html" %}
 {% set body_classes = body_classes + " crea-evento-page" %}
-{% set section = "profilo" %}
+{% set section = "creaevento" %}
 {% set titolo_sezione = "Crea Evento"  %}
 {% set descrizione_sezione = "Qui puoi inserire tutti i dati relativi ad un evento"  %}
 {% block mainContent %}
@@ -32,7 +32,9 @@
                                placeholder="Data Inizio"
                                data-provide="datepicker"
                                data-date-orientation="bottom"
-                               data-date-start-date="today">
+                               data-date-autoclose="true"
+                               data-date-start-date="today"
+                               data-date-format="dd/mm/yyyy">
                         <div class="input-group-addon">
                             <span class="glyphicon glyphicon-th"></span>
                         </div>
@@ -70,8 +72,10 @@
                                name="data_fine"
                                placeholder="Data Fine"
                                data-provide="datepicker"
+                               data-date-autoclose="true"
                                data-date-orientation="bottom"
-                               data-date-start-date="today">
+                               data-date-start-date="today"
+                               data-date-format="dd/mm/yyyy">
                         <div class="input-group-addon">
                             <span class="glyphicon glyphicon-th"></span>
                         </div>
@@ -108,19 +112,19 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">Costo</label>
                 <div class="col-sm-10">
-                    <input type="number" step="5" class="form-control" id="costo" name="costo" placeholder="Costo" value="0">
+                    <input type="number" step="5.00" class="form-control" id="costo" name="costo" placeholder="Costo" value="0">
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">Costo maggiorato</label>
                 <div class="col-sm-10">
-                    <input type="number" step="5" class="form-control" id="costo_maggiorato" name="costo_maggiorato" placeholder="Costo Maggiorato" value="0">
+                    <input type="number" step="5.00" class="form-control" id="costo_maggiorato" name="costo_maggiorato" placeholder="Costo Maggiorato" value="0">
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">Note</label>
+                <label class="col-sm-2 control-label">Dettagli</label>
                 <div class="col-sm-10">
-                    <textarea class="form-control resize-vertical" id="note" name="note" placeholder="Note" rows="5"></textarea>
+                    <textarea class="form-control resize-vertical" id="note" name="note" placeholder="Dettagli evento..." rows="5"></textarea>
                 </div>
             </div>
         </form>
@@ -130,7 +134,7 @@
         </div>
     </div>
     <div class="box-footer">
-        <button id="invia_nuova_password" class="btn btn-success pull-right submit-btn">Crea Evento</button>
+        <button id="invia_evento" class="btn btn-success pull-right submit-btn">Crea Evento</button>
     </div>
 </div>
 
