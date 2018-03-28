@@ -28,10 +28,11 @@ var MultiSelector = MultiSelector || (function ()
     {
         Object.call(this);
 
-        this._settings      = {};
-        this._dati_lista    = [];
-        this._dati_carrello = [];
-        this._selezionati   = [];
+        this._settings        = {};
+        this._dati_lista      = [];
+        this._dati_carrello   = [];
+        this._selezionati     = [];
+        this._gia_selezionati = [];
 
         for( var d in DEFAULT_PARAMS )
         {
@@ -212,7 +213,10 @@ var MultiSelector = MultiSelector || (function ()
                         elem.attr( "class", "" );
                 }
                 if ( dato.gia_selezionato && this._selezionati.indexOf("lista_" + d) === -1 )
+                {
                     this._selezionati.push("lista_" + d);
+                    this._gia_selezionati.push("lista_" + d);
+                }
 
                 if( typeof this._settings.elemRenderizzato === 'function' )
                     _eventoAsincrono.call( this, this._settings.elemRenderizzato, dato, dati, parseInt( d ), elem );
@@ -439,7 +443,7 @@ var MultiSelector = MultiSelector || (function ()
 
     MultiSelector.prototype.deselezionaTutti = function( )
     {
-        for( var s in this._selezionati )
+        for( var s = this._selezionati.length - 1; s >= 0; s-- )
         {
             var selezionato = this._selezionati[s],
                 splittato   = selezionato.split("_"),
@@ -447,11 +451,14 @@ var MultiSelector = MultiSelector || (function ()
                 indice      = splittato[1],
                 elem        = this["elem_"+lista].find("li").eq( indice );
 
-            if (typeof this._settings.elemDeselezionato === "function")
-                _eventoAsincrono.call( this, this._settings.elemDeselezionato, lista, this["_dati_"+lista][elem.attr("data-index")], this["_dati_"+lista], elem, [] );
+            if( this._gia_selezionati.indexOf( selezionato ) === -1 )
+            {
+                this._selezionati.splice( s, 1 );
+                if (typeof this._settings.elemDeselezionato === "function")
+                    _eventoAsincrono.call(this, this._settings.elemDeselezionato, lista, this["_dati_" + lista][elem.attr("data-index")], this["_dati_" + lista], elem, []);
+            }
         }
 
-        this._selezionati = [];
         this.elem_lista.find("li").removeClass("selected");
         this.elem_carrello.find("li").removeClass("selected");
         _controllaTuttiPrerequisiti.call(this);

@@ -174,8 +174,12 @@
             $("#info_id").html( this.pg_info.id_personaggio );
             $("#info_nome").html( this.pg_info.nome_personaggio );
             $("#info_data").html( this.pg_info.data_creazione_personaggio );
+            $("#info_nascita").html( this.pg_info.anno_nascita_personaggio );
             $("#info_professioni").html( professioni );
             $("#info_militari").html( cl_militari );
+            $("#info_pf").html( this.pg_info.pf_personaggio );
+            $("#info_dm").html( this.pg_info.mente_personaggio );
+            $("#info_ps").html( this.pg_info.shield_personaggio );
             $("#info_credito").html( this.pg_info.credito_personaggio );
 
             $("#px_risparmiati").html( this.pg_info.px_risparmiati );

@@ -204,6 +204,24 @@
             });
         },
 
+        controllaPermessi: function ( user_info, permessi, tutti )
+        {
+            tutti = typeof tutti === "undefined" ? true : tutti;
+
+            for( var p in permessi )
+            {
+                if( tutti && user_info.permessi.indexOf( permessi[p] ) === -1 )
+                    return false;
+                else if ( !tutti && user_info.permessi.indexOf( permessi[p] ) !== -1 )
+                    return true;
+            }
+
+            if( tutti )
+                return true;
+            else
+                return false;
+        },
+
         clearLocalStorage: function ()
         {
             window.localStorage.clear();
@@ -214,7 +232,7 @@
             window.location.href = url;
         },
 
-        reloadPage: function ( url )
+        reloadPage: function ( )
         {
             window.location.reload();
         },

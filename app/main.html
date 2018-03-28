@@ -44,10 +44,14 @@
                 <th class="inizialmente-nascosto mostraPersonaggi_altri">Nome Giocatore</th>
                 <th>Nome Personaggio</th>
                 <th>Data Creazione</th>
+                <th>Anno Nascita</th>
                 <th>Classi Civili</th>
                 <th>Classi Militari</th>
                 <th>PX</th>
                 <th>PC</th>
+                <th>PF</th>
+                <th>Mente</th>
+                <th>PS</th>
                 <th>Credito</th>
                 <th class="inizialmente-nascosto modificaPG_contattabile_personaggio">Contattabile</th>
                 <th class="inizialmente-nascosto modificaPG_px_personaggio modificaPG_pc_personaggio eliminaPG stampaCartelliniPG">Azioni</th>
@@ -68,6 +72,29 @@
 {% block modals %}
 {{ modal_assegna_punti() }}
 {{ modal_modifica_credito() }}
+
+<div id="modal_aggiungi_eta" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header dialog-header-primary">
+                <h4 class="modal-title text-primary">Aggiorna Et&agrave; Personaggi</h4>
+            </div>
+            <div class="modal-body">
+                <p>Prima di continuare la tua navigazione ci servirebbe un'informazione in più sui personaggi da te creati.</p>
+                <p>Che et&agrave; hanno?</p>
+                <div id="personaggi">
+                    <form autocomplete="off" aria-autocomplete="none" class="form-horizontal">
+
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success submit-btn" data-dismiss="modal" id="btn_invia_eta">Invia Et&agrave;</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {{ super() }}
 {% endblock %}
 

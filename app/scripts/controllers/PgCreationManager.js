@@ -192,10 +192,11 @@
             this.punti_comb.aumentaConteggio( dato.costo_abilita );
 
             if( this.opzioni_abilita[dato.id_abilita] )
-                $("opzioni_"+dato.id_abilita).hide(400);
-
-            if( $("#opzioni_abilita .form-group:visible").length === 0 )
-                $("#opzioni_abilita").hide(400);
+                $("#opzioni_"+dato.id_abilita).hide(400, function ()
+                {
+                    if( $("#opzioni_abilita .form-group:visible").length === 0 )
+                        $("#opzioni_abilita").hide(400);
+                });
         },
 
         impostaMSClassiCivili: function ()
@@ -549,6 +550,8 @@
             {
                 if (!$("#nomePG").val() || ( $("#nomePG").val() && vuoto.test($("#nomePG").val()) ))
                     errori += "<li>Il campo nome utente non pu&ograve; essere vuoto.</li>";
+                if (!$("#etaPG").val() || ( $("#etaPG").val() && ( vuoto.test( $("#etaPG").val() ) || !/^\d+$/.test( $("#etaPG").val() ) || $("#etaPG").val() === "0" ) ) )
+                    errori += "<li>Il campo et&agrave; non pu&ograve; essere vuoto o 0.</li>";
                 if (cc_selezionate.length === 0)
                     errori += "<li>Devi acquistare almeno una professione.</li>";
                 if (cm_selezionate.length === 0)
@@ -583,9 +586,10 @@
                                 {
                                     return pre + "abilita[]=" + curr.id_abilita + "&";
                                 }, "") || "abilita=&",
-                opzioni   = $("#opzioni_abilita").find(".form-group:visible select:not([disabled])").serialize() || "opzioni=",
+                opzioni   = $("#opzioni_abilita").find(".form-group:visible select:not([disabled])").serialize(),
                 nome      = !this.pg_info ? "nome=" + encodeURIComponent( $( "#nomePG").val() ) : "id_utente="+this.pg_info.id_personaggio,
-                data      = nome + "&" + classi + abilita + opzioni,
+                eta       = "eta="+$("#etaPG").val(),
+                data      = nome + "&" + eta + "&" + classi + abilita + opzioni,
                 url       = this.pg_info ? Constants.API_POST_ACQUISTA : Constants.API_POST_CREAPG;
 
             Utils.requestData(

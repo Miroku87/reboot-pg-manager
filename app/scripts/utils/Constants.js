@@ -11,11 +11,18 @@ Constants.API_POST_MOD_PWD               = Constants.API_URL + "/usersmanager/mo
 Constants.API_POST_CREAPG                = Constants.API_URL + "/charactersmanager/creapg";
 Constants.API_POST_ACQUISTA              = Constants.API_URL + "/charactersmanager/acquista";
 Constants.API_POST_EDIT_PG               = Constants.API_URL + "/charactersmanager/modificapg";
+Constants.API_POST_EDIT_ETA_PG           = Constants.API_URL + "/charactersmanager/modificaetapg";
 Constants.API_POST_EDIT_MOLTI_PG         = Constants.API_URL + "/charactersmanager/modificamoltipg";
 Constants.API_POST_MESSAGGIO             = Constants.API_URL + "/messagingmanager/inviamessaggio";
 Constants.API_POST_EVENTO                = Constants.API_URL + "/eventsmanager/creaevento";
 Constants.API_POST_MOD_EVENTO            = Constants.API_URL + "/eventsmanager/modificaevento";
 Constants.API_POST_ISCRIZIONE            = Constants.API_URL + "/eventsmanager/iscrivipg";
+Constants.API_POST_DISISCRIZIONE         = Constants.API_URL + "/eventsmanager/disiscrivipg";
+Constants.API_POST_PUBBLICA_EVENTO       = Constants.API_URL + "/eventsmanager/pubblicaevento";
+Constants.API_POST_RITIRA_EVENTO         = Constants.API_URL + "/eventsmanager/ritiraevento";
+Constants.API_POST_DEL_EVENTO            = Constants.API_URL + "/eventsmanager/eliminaevento";
+Constants.API_POST_EDIT_ISCRIZIONE       = Constants.API_URL + "/eventsmanager/modificaiscrizionepg";
+Constants.API_POST_PUNTI_EVENTO          = Constants.API_URL + "/eventsmanager/impostapuntiassegnatievento";
 
 Constants.API_GET_LOGOUT                 = Constants.API_URL + "/usersmanager/logout";
 Constants.API_GET_ACESS                  = Constants.API_URL + "/usersmanager/controllaaccesso";
@@ -34,6 +41,10 @@ Constants.API_GET_MESSAGGIO_SINGOLO      = Constants.API_URL + "/messagingmanage
 Constants.API_GET_DESTINATARI_FG         = Constants.API_URL + "/messagingmanager/recuperadestinatarifg";
 Constants.API_GET_DESTINATARI_IG         = Constants.API_URL + "/messagingmanager/recuperadestinatariig";
 Constants.API_GET_EVENTO                 = Constants.API_URL + "/eventsmanager/recuperaevento";
+Constants.API_GET_LISTA_EVENTI           = Constants.API_URL + "/eventsmanager/recuperalistaeventi";
+Constants.API_GET_INFO_ISCRITTI_AVANZATE = Constants.API_URL + "/eventsmanager/recuperalistaiscrittiavanzato";
+Constants.API_GET_INFO_ISCRITTI_BASE     = Constants.API_URL + "/eventsmanager/recuperalistaiscrittibase";
+Constants.API_GET_NOTE_ISCRITTO          = Constants.API_URL + "/eventsmanager/recuperanotepgiscritto";
 
 Constants.API_DEL_GIOCATORE              = Constants.API_URL + "/usersmanager/eliminagiocatore";
 Constants.API_DEL_CLASSE_PG              = Constants.API_URL + "/charactersmanager/rimuoviclassepg";
@@ -53,6 +64,7 @@ Constants.PROFILO_PAGE                   = Constants.SITE_URL + "/profilo.html";
 
 Constants.PX_TOT                         = 100;
 Constants.PC_TOT                         = 4;
+Constants.ANNO_PRIMO_LIVE                = 271;
 
 Constants.COSTI_PROFESSIONI              = [0,20,40,60,80,100,120];
 

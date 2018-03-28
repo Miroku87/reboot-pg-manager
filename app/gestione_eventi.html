@@ -1,85 +1,24 @@
 ﻿{% extends "./templates/main_template.html" %}
+{% from "./templates/components.html" import layout_evento, modal_assegna_punti, modal_assegna_punti_scripts %}
 {% set body_classes = body_classes + " gestione-eventi-page" %}
 {% set section = "gestioneventi" %}
 {% set titolo_sezione = "Eventi Live"  %}
 {% set descrizione_sezione = "Qui troverai tutte le informazioni sul prossimo evento."  %}
 {% block mainContent %}
 {{ super() }}
-<div class="row inizialmente-nascosto visualizza_pagina_crea_evento">
-    <div class="btn-group pull-center">
-    <button type="button"
-            class="btn btn-info inizialmente-nascosto visualizza_pagina_crea_evento"
-            id="btn_visualizza_pagina_crea_evento"><i class="fa fa-plus"></i><br>Crea Evento</button>
-    <button type="button"
-            class="btn btn-info inizialmente-nascosto visualizza_pagina_crea_evento"
-            id="btn_modifica_evento"><i class="fa fa-edit"></i><br>Modifica Evento</button>
-    </div>
-</div>
-<h1 id="titolo_evento"></h1>
-<div class="row">
-    <div class="col-sm-6">
-        <div class="box box-primary" id="info_base">
-            <div class="box-header with-border">
-                <h3 class="box-title">Informazioni Base</h3>
-            </div>
-            <div class="box-body">
-                <table class="table table-hover table-striped">
-                    <tbody>
-                    <tr>
-                        <td>Data Inizio</td>
-                        <td><a id="data_inizio_evento"></a></td>
-                    </tr>
-                    <tr>
-                        <td>Orario Inizio</td>
-                        <td><a id="ora_inizio_evento"></a></td>
-                    </tr>
-                    <tr>
-                        <td>Data Fine</td>
-                        <td><a id="data_fine_evento"></a></td>
-                    </tr>
-                    <tr>
-                        <td>Orario Inizio</td>
-                        <td><a id="ora_fine_evento"></a></td>
-                    </tr>
-                    <tr>
-                        <td>Costo Regolare</td>
-                        <td><a id="costo_evento"></a></td>
-                    </tr>
-                    <tr>
-                        <td>Costo Ritardatari</td>
-                        <td><a id="costo_maggiorato_evento"></a></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6">
-        <div class="box box-primary" id="event_info_box">
-            <div class="box-header with-border">
-                <h3 class="box-title">Luogo</h3>
-            </div>
-            <div class="box-body">
-                <p id="luogo_evento"></p>
-                <div id="map" class="mappa-evento"></div>
-            </div>
-        </div>
-    </div>
+<!--<div class="callout callout-warning inizialmente-nascosto">
+    <h4>ATTENZIONE</h4>
+    <p>L'evento mostrato qui sotto non &egrave; ancora pubblico.</p>
+    <button id="btn_pubblica" class="btn btn-default">Pubblica Evento</button>
+</div>-->
+
+<div class="callout callout-info inizialmente-nascosto" id="no_evento">
+    <p>Non &egrave; ancora stato pubblicato nessun evento.</p>
 </div>
 
-<div class="box box-primary" id="dettagli_evento">
-    <div class="box-header with-border">
-        <h3 class="box-title">Dettagli evento</h3>
-    </div>
-    <div class="box-body table-responsive">
-        <p id="note_evento"></p>
-    </div>
-    <div class="box-footer">
-        <button id="iscrivi_pg" class="btn btn-success">Iscrivi un tuo personaggio</button>
-    </div>
-</div>
+{{layout_evento('','inizialmente-nascosto')}}
 
-<div class="box box-primary collapsed-box" id="partecipanti_evento">
+<div class="box box-primary collapsed-box inizialmente-nascosto" id="partecipanti_evento">
     <div class="box-header with-border">
         <h3 class="box-title"><a data-widget="collapse">Partecipanti al prossimo evento</a></h3>
         <div class="box-tools pull-right">
@@ -87,7 +26,7 @@
             </button>
         </div>
     </div>
-    <div class="box-body table-responsive">
+    <div class="box-body">
         <div class="btn-group pull-center out-of-box">
             <button type="button"
                 class="btn btn-info inizialmente-nascosto stampaCartelliniPG"
@@ -97,21 +36,7 @@
                 title="Stampa cartellini dei pg filtrati nella tabella sotto"><i class="fa fa-print"></i><br>Stampa Cartellini</button>
         </div>
         <form autocomplete="off" aria-autocomplete="none">
-            <table id="partecipanti" class="table table-condensed table-hover table-striped table-bordered" width="100%">
-                <thead>
-                <tr>
-                    <th>ID PG</th>
-                    <th class="inizialmente-nascosto mostraPersonaggi_altri">Nome Giocatore</th>
-                    <th>Nome Personaggio</th>
-                    <th>Classi Civili</th>
-                    <th>Classi Militari</th>
-                    <th class="inizialmente-nascosto recupera_pagato_iscrizione">Pagato</th>
-                    <th class="inizialmente-nascosto recupera_tipo_pagamento_iscrizione">Tipo Pagamento</th>
-                    <th class="inizialmente-nascosto recupera_note_pagamento_iscrizione">Note</th>
-                    <th class="inizialmente-nascosto stampaCartelliniPG">Azioni</th>
-                </tr>
-                </thead>
-            </table>
+            <table id="pg_prossimo" class="table table-condensed table-hover table-striped table-bordered" width="100%"></table>
         </form>
     </div>
 </div>
@@ -124,7 +49,7 @@
             </button>
         </div>
     </div>
-    <div class="box-body table-responsive">
+    <div class="box-body">
         <div class="btn-group pull-center out-of-box">
             <button type="button"
                     class="btn btn-info inizialmente-nascosto modificaPG_pc_personaggio"
@@ -134,16 +59,40 @@
                     title="Assegna punti ai pg iscritti all'ultimo evento"><i class="fa fa-edit"></i><br>Assegna Punti</button>
         </div>
         <form autocomplete="off" aria-autocomplete="none">
-            <table id="vecchi_partecipanti" class="table table-condensed table-hover table-striped table-bordered" width="100%">
+            <table id="pg_precedente" class="table table-condensed table-hover table-striped table-bordered" width="100%"></table>
+        </form>
+    </div>
+</div>
+
+<div class="box box-primary collapsed-box inizialmente-nascosto recuperaListaEventi" id="lista_eventi">
+    <div class="box-header with-border">
+        <h3 class="box-title"><a data-widget="collapse">Lista Eventi Creati</a></h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body table-responsive">
+        <div class="btn-group pull-center out-of-box visualizza_pagina_crea_evento">
+            <button type="button"
+                    class="btn btn-info inizialmente-nascosto visualizza_pagina_crea_evento"
+                    id="btn_visualizza_pagina_crea_evento"><i class="fa fa-plus"></i><br>Crea Evento</button>
+        </div>
+        <form autocomplete="off" aria-autocomplete="none">
+            <table id="eventi" class="table table-condensed table-hover table-striped table-bordered" width="100%">
                 <thead>
                 <tr>
-                    <th>ID PG</th>
-                    <th>Nome Personaggio</th>
-                    <th>Classi Civili</th>
-                    <th>Classi Militari</th>
-                    <th>Pagato</th>
-                    <th>Tipo Pagamento</th>
-                    <th>Note</th>
+                    <th>Creatore</th>
+                    <th>Pubblico</th>
+                    <th>Titolo</th>
+                    <th>Data Inizio</th>
+                    <th>Ora Inizio</th>
+                    <th>Data Fine</th>
+                    <th>Ora Fine</th>
+                    <th>Luogo</th>
+                    <th>Costo</th>
+                    <th>Costo+</th>
+                    <th>Dettagli</th>
                     <th>Azioni</th>
                 </tr>
                 </thead>
@@ -151,8 +100,10 @@
         </form>
     </div>
 </div>
+{% endblock %}
 
 {% block modals %}
+{{super()}}
 <div id="modal_iscrivi_pg" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -172,7 +123,7 @@
                         <label class="col-sm-3 control-label">Pagato</label>
                         <div class="col-sm-9">
                             <div class='checkbox icheck'>
-                            <input type='checkbox' id="pagato"></div>
+                                <input type='checkbox' id="pagato"></div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -205,16 +156,56 @@
         </div>
     </div>
 </div>
-{{ super() }}
+
+<div id="modal_anteprima_evento" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header dialog-header-primary">
+                <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Chiudi</span></button>
+                <h4 class="modal-title text-primary">Anteprima Evento</h4>
+            </div>
+            <div class="modal-body">
+                {{layout_evento('anteprima')}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning submit-btn inizialmente-nascosto" data-dismiss="modal" id="btn_ritira">Ritira</button>
+                <button type="button" class="btn btn-success submit-btn" data-dismiss="modal" id="btn_pubblica">Pubblica</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal_note_iscrizione" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header dialog-header-primary">
+                <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Chiudi</span></button>
+                <h4 class="modal-title text-primary">Note Iscrizione</h4>
+            </div>
+            <div class="modal-body">
+                <p>Stai modificando le note di iscrizione per il personaggio <strong><span id="nome_pg"></span></strong> di <strong><span id="nome_giocatore"></span></strong>.</p>
+                <textarea class="form-control resize-vertical" id="note_iscrizione" rows="5"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success submit-btn" data-dismiss="modal" id="btn_invia_mods">Invia Modifiche</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ modal_assegna_punti() }}
 {% endblock %}
 
-{% endblock %}
 {% block managers %}
 {{ super() }}
+{{ modal_assegna_punti_scripts() }}
 <script src="scripts/controllers/LiveEventsManager.js"></script>
 {% endblock %}
 
 {% block externalScripts %}
 {{ super() }}
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIhCdsCkAXbJnK2FUpFMFRYb5JXrP7Dug&callback=LiveEventsManager.impostaMappa" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIhCdsCkAXbJnK2FUpFMFRYb5JXrP7Dug" async defer></script>
+<!--&callback=LiveEventsManager.impostaMappa-->
 {% endblock %}

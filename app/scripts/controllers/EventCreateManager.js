@@ -170,6 +170,7 @@ var EventCreateManager = function ()
             $('[data-provide="timepicker"]').focus(this.mostraTimePicker);
 
             $("#invia_evento").click(this.controllaDatiEvento.bind(this));
+            $("#indietro").click(Utils.redirectTo.bind(this,Constants.EVENTI_PAGE));
         }
     };
 }();

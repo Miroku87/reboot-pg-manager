@@ -4,6 +4,7 @@
         init: function ()
         {
             this.recuperaDatiLocali();
+            this.recuperaPropriPg();
             this.creaDataTable();
             this.setListeners();
         },
@@ -232,6 +233,72 @@
             return pulsanti;
 		},
 
+        //TODO: temporanea
+        etaInserite: function( num_input )
+        {
+            if( ++this.inserimenti_eta === num_input )
+                Utils.showMessage("Dati inseriti con successo. Grazie!",Utils.reloadPage);
+        },
+
+        //TODO: temporanea
+        inviaEta: function( e )
+        {
+            var inputs = $("#modal_aggiungi_eta").find("#personaggi").find("input");
+
+            this.inserimenti_eta = 0;
+
+            inputs.each(function (i, item)
+            {
+                if( $(item).val() === "0" )
+                {
+                    Utils.showError("Non possono esserci et&agrave; uguali a 0.",Utils.reloadPage);
+                    throw new Error("Non possono esserci eta' uguali a 0.");
+                }
+            });
+
+            inputs.each(function (i, item)
+            {
+                var el = $(item);
+
+                Utils.requestData(
+                    Constants.API_POST_EDIT_ETA_PG,
+                    "POST",
+                    { pgid: el.attr("data-id"), eta: el.val() },
+                    this.etaInserite.bind(this,inputs.length)
+                );
+            }.bind(this));
+        },
+
+        //TODO: temporanea
+        mostraModalEta: function( _data )
+        {
+            var data      = _data.result,
+                append_to = $("#modal_aggiungi_eta").find("#personaggi").find("form");
+
+            for( var d in data )
+            {
+                if( data[d].anno_nascita_personaggio === Constants.ANNO_PRIMO_LIVE+"" )
+                    $(  '<div class="form-group">'+
+                            '<label class="col-sm-2 control-label">'+data[d].nome_personaggio+'</label>'+
+                            '<div class="col-sm-10">'+
+                                '<input type="number" ' +
+                                        'class="form-control" ' +
+                                        'min="0" ' +
+                                        'data-id="'+data[d].id_personaggio+'" ' +
+                                        'name="eta_pg['+data[d].id_personaggio+']" ' +
+                                        'placeholder="Et&agrave personaggio" value="0" />'+
+                            '</div>'+
+                        '</div>'
+                    ).appendTo(append_to);
+            }
+
+            if( append_to.find("input").length > 0 )
+            {
+                $("#modal_aggiungi_eta").find("#btn_invia_eta").click(this.inviaEta.bind(this));
+                $("#modal_aggiungi_eta").modal({drop:"static",backdrop:"static",keyboard:false});
+            }
+        },
+
         creaDataTable: function (  )
         {
             var columns = [];
@@ -246,6 +313,7 @@
                 render : this.formattaNomePg.bind(this)
             });
             columns.push({data : "data_creazione_personaggio"});
+            columns.push({data : "anno_nascita_personaggio"});
             columns.push({
                 data : "classi_civili",
                 render: $.fn.dataTable.render.ellipsis( 20, true, false )
@@ -256,6 +324,9 @@
             });
             columns.push({data : "px_personaggio"});
             columns.push({data : "pc_personaggio"});
+            columns.push({data : "pf_personaggio"});
+            columns.push({data : "mente_personaggio"});
+            columns.push({data : "shield_personaggio"});
             columns.push({data : "credito_personaggio"});
             columns.push({
                 data           : "contattabile_personaggio",
@@ -294,6 +365,16 @@
                     columns    : columns,
                     order      : [[0, 'desc']]
                 } );
+        },
+
+        recuperaPropriPg: function()
+        {
+            Utils.requestData(
+                Constants.API_GET_PGS_PROPRI,
+                "GET",
+                {},
+                this.mostraModalEta.bind(this)
+            );
         },
 
         recuperaDatiLocali: function()

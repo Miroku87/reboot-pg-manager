@@ -59,3 +59,74 @@
 {% macro modal_modifica_credito_scripts() %}
 <script src="scripts/models/CreditManager.js"></script>
 {% endmacro %}
+
+{% macro layout_evento(suffisso_id='',extra_classes='') %}
+{% if suffisso_id != '' %}
+{% set suf = "_"+suffisso_id %}
+{% endif %}
+<div id="info_prossimo_evento" class="{{extra_classes}}">
+    <h1 id="titolo_evento{{suf}}" class="titolo_evento"></h1>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="box box-primary info_base" id="info_base{{suf}}">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Informazioni Base</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-hover table-striped">
+                        <tbody>
+                        <tr>
+                            <td>Data Inizio</td>
+                            <td><a id="data_inizio_evento{{suf}}"></a></td>
+                        </tr>
+                        <tr>
+                            <td>Orario Inizio</td>
+                            <td><a id="ora_inizio_evento{{suf}}"></a></td>
+                        </tr>
+                        <tr>
+                            <td>Data Fine</td>
+                            <td><a id="data_fine_evento{{suf}}"></a></td>
+                        </tr>
+                        <tr>
+                            <td>Orario Inizio</td>
+                            <td><a id="ora_fine_evento{{suf}}"></a></td>
+                        </tr>
+                        <tr>
+                            <td>Costo Regolare</td>
+                            <td><a id="costo_evento{{suf}}"></a></td>
+                        </tr>
+                        <tr>
+                            <td>Costo Ritardatari</td>
+                            <td><a id="costo_maggiorato_evento{{suf}}"></a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="box box-primary" id="event_info_box{{suf}}">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Luogo</h3>
+                </div>
+                <div class="box-body">
+                    <p id="luogo_evento{{suf}}"></p>
+                    <div id="map{{suf}}" class="mappa-evento"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="box box-primary" id="dettagli_evento{{suf}}">
+        <div class="box-header with-border">
+            <h3 class="box-title">Dettagli evento</h3>
+        </div>
+        <div class="box-body table-responsive">
+            <p id="note_evento{{suf}}"></p>
+        </div>
+        <div class="box-footer">
+            <button id="iscrivi_pg" class="btn btn-success">Iscrivi un tuo personaggio</button>
+        </div>
+    </div>
+</div>
+{% endmacro %}

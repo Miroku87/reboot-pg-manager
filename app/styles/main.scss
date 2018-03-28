@@ -72,7 +72,11 @@ textarea.resize-vertical {
   margin-right: 10px;
 }
 
-  /* MODAL PUNTI */
+button.pull-right {
+  margin-left: 5px;
+}
+
+/* MODAL PUNTI */
 #modal_assegna_punti .nomi_pg,
 #modal_assegna_punti div.row:first-child {
   font-weight: bold;
@@ -282,16 +286,20 @@ body.register-page {
 }
 
 /* PAGINA INFO EVENTI */
-.gestione-eventi-page #info_base table tr > td:first-child {
+.gestione-eventi-page .info_base table tr > td:first-child {
   font-weight: bold;
 }
-.gestione-eventi-page #info_base table tr > td:last-child {
+.gestione-eventi-page .info_base table tr > td:last-child {
   text-align: right;
 }
-.gestione-eventi-page h1#titolo_evento {
+.gestione-eventi-page h1.titolo_evento {
   text-align: center;
 }
 .gestione-eventi-page .mappa-evento {
   width: 100%;
   height: 193px;
+}
+
+.gestione-eventi-page .visualizza_pagina_crea_evento + .callout {
+  margin-top: 20px;
 }

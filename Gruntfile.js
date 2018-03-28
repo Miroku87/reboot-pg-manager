@@ -26,7 +26,7 @@ module.exports = function (grunt)
         app : 'app',
         dist : 'dist',
         tmp : '.tmp',
-        version: '0.2.0',
+        version: '0.5.2',
         staging_api_url : "http://api-beta.rebootgrv.com/api.php",
         staging_site_url : "http://db-beta.rebootgrv.com",
         prod_api_url : "http://api.rebootgrv.com/api.php",
@@ -331,6 +331,19 @@ module.exports = function (grunt)
                 files: [
                     {src: ['.tmp/scripts/utils/Constants.js'], dest: './'}
                 ]
+            },
+            icheck_images: {
+                options: {
+                    patterns: [
+                        {
+                            match: /url\((blue\S*?)\)/g,
+                            replacement: 'url(../images/$1)'
+                        }
+                    ]
+                },
+                files: [
+                    {src: ['<%= config.dist %>/styles/vendor.*.css'], dest: './'}
+                ]
             }
         },
 
@@ -370,6 +383,7 @@ module.exports = function (grunt)
                     '<%= config.dist %>/scripts'
                 ]
             },
+
             html : ['<%= config.dist %>/{,*/}*.html'],
             css : ['<%= config.dist %>/styles/{,*/}*.css']
         },
@@ -377,12 +391,20 @@ module.exports = function (grunt)
         // The following *-min tasks produce minified files in the dist folder
         imagemin : {
             dist : {
-                files : [{
-                    expand : true,
-                    cwd : '<%= config.app %>/images',
-                    src : '*.{gif,jpeg,jpg,png}',
-                    dest : '<%= config.dist %>/images'
-                }]
+                files : [
+                    {
+                        expand : true,
+                        cwd : '<%= config.app %>/images',
+                        src : '*.{gif,jpeg,jpg,png}',
+                        dest : '<%= config.dist %>/images'
+                    },
+                    {
+                        expand : true,
+                        cwd: './bower_components/iCheck/skins/square/',
+                        src : ['blue.png','blue@2x.png'],
+                        dest : '<%= config.dist %>/images'
+                    }
+                ]
             }
         },
 
@@ -474,23 +496,7 @@ module.exports = function (grunt)
                         flatten: true,
                         dot : true,
                         cwd : '.',
-                        src : 'bower_components/font-awesome/fonts/*',
-                        dest : '<%= config.dist %>/fonts'
-                    },
-                    {
-                        expand : true,
-                        flatten: true,
-                        dot : true,
-                        cwd : '.',
-                        src : 'bower_components/bootstrap/fonts/*',
-                        dest : '<%= config.dist %>/fonts'
-                    },
-                    {
-                        expand : true,
-                        flatten: true,
-                        dot : true,
-                        cwd : '.',
-                        src : 'bower_components/Ionicons/fonts/*',
+                        src : ['bower_components/font-awesome/fonts/*','bower_components/bootstrap/fonts/*','bower_components/Ionicons/fonts/*'],
                         dest : '<%= config.dist %>/fonts'
                     }]
             }
@@ -572,7 +578,8 @@ module.exports = function (grunt)
         'copy:dist',
         'filerev',
         'usemin',
-        'htmlmin'
+        'htmlmin',
+        'replace:icheck_images'
     ]);
 
     grunt.registerTask('prod', [
@@ -589,12 +596,11 @@ module.exports = function (grunt)
         'copy:dist',
         'filerev',
         'usemin',
-        'htmlmin'
+        'htmlmin',
+        'replace:icheck_images'
     ]);
 
     grunt.registerTask('default', [
-        'newer:eslint',
-        'test',
-        'build'
+        'serve'
     ]);
 };
