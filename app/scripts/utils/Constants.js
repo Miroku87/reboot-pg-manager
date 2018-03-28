@@ -40,6 +40,7 @@ Constants.API_GET_MESSAGGI               = Constants.API_URL + "/messagingmanage
 Constants.API_GET_MESSAGGIO_SINGOLO      = Constants.API_URL + "/messagingmanager/recuperamessaggiosingolo";
 Constants.API_GET_DESTINATARI_FG         = Constants.API_URL + "/messagingmanager/recuperadestinatarifg";
 Constants.API_GET_DESTINATARI_IG         = Constants.API_URL + "/messagingmanager/recuperadestinatariig";
+Constants.API_GET_MESSAGGI_NUOVI         = Constants.API_URL + "/messagingmanager/recuperanonletti";
 Constants.API_GET_EVENTO                 = Constants.API_URL + "/eventsmanager/recuperaevento";
 Constants.API_GET_LISTA_EVENTI           = Constants.API_URL + "/eventsmanager/recuperalistaeventi";
 Constants.API_GET_INFO_ISCRITTI_AVANZATE = Constants.API_URL + "/eventsmanager/recuperalistaiscrittiavanzato";
@@ -91,6 +92,7 @@ Constants.ID_CLASSE_GUASTATORE_AVANZATO  = 15;
 
 Constants.TIPO_GRANT_PG_PROPRIO          = "_proprio";
 Constants.TIPO_GRANT_PG_ALTRI            = "_altri";
+Constants.INTERVALLO_CONTROLLO_MEX       = 60000;
 
 Constants.DATA_TABLE_LANGUAGE            = {
                                             "decimal":        "",

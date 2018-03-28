@@ -417,6 +417,8 @@
 
                     this.personalizzaMenu.call( this );
                     this.mostraDati.call( this );
+
+                    AdminLTEManager.controllaMessaggi();
                 }.bind(this),
                 null,
                 null,

@@ -157,11 +157,33 @@
             } );
         },
 
+        aggiornaBadgeMessaggi: function ( data )
+        {
+            $("#num_mex_fg").text( data.result.fg );
+
+            if( typeof data.result.ig !== "undefined" )
+            {
+                $("#num_mex_ig").text( data.result.ig );
+                $("#num_mex_ig").show();
+            }
+        },
+
+        controllaMessaggi: function ()
+        {
+            Utils.requestData(
+                Constants.API_GET_MESSAGGI_NUOVI,
+                "GET",
+                {},
+                this.aggiornaBadgeMessaggi.bind(this)
+            );
+        },
+
         setListeners: function ()
         {
             this.setupMenuSearch();
 
             $( 'ul.tree' ).tree();
+            $( '[data-toggle="tooltip"]' ).tooltip();
 
             $( '#sidebar-form' ).on( 'submit', function ( e )
             {
@@ -173,6 +195,14 @@
             $( '#btn_visualizza_pagina_profilo' ).click( Utils.redirectTo.bind(this,Constants.PROFILO_PAGE) );
             $( '.submit-btn' ).click( this.onSubmitClicked.bind(this) );
             $( '#logo_link' ).attr("href", Constants.MAIN_PAGE );
+
+            if (    SECTION_NAME !== ""
+                && NO_CONTROLLO.indexOf( SECTION_NAME ) === -1
+                && SECTION_NAME.indexOf( "test" ) === -1 )
+            {
+                this.controllaMessaggi();
+                setInterval(this.controllaMessaggi.bind(this), Constants.INTERVALLO_CONTROLLO_MEX);
+            }
         }
 
     }

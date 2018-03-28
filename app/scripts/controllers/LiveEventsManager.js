@@ -370,7 +370,7 @@ var LiveEventsManager = function ()
             Utils.requestData(
                 Constants.API_GET_EVENTO,
                 "GET",
-                {id: $(e.target).attr("data-id")},
+                { id: $(e.target).attr("data-id") },
                 this.mostraAnteprima.bind(this)
             );
 
@@ -378,6 +378,7 @@ var LiveEventsManager = function ()
             {
                 $("#modal_anteprima_evento").find("#btn_pubblica").hide();
                 $("#modal_anteprima_evento").find("#btn_ritira").show();
+                $("#modal_anteprima_evento").find("#btn_ritira").attr("data-id",$(e.target).attr("data-id"));
             }
 
             $("#modal_anteprima_evento").find("#btn_pubblica").attr("data-id",$(e.target).attr("data-id"));
@@ -619,7 +620,7 @@ var LiveEventsManager = function ()
 
         confermaRitiraEvento: function( e )
         {
-            Utils.showConfirm( "Sicuro di voler ritirare questo evento?", this.ritiraEvento.bind(this,$(e.target).attr("data-id")) );
+            Utils.showConfirm( "Sicuro di voler ritirare questo evento?", this.ritiraEvento.bind( this, $(e.target).attr("data-id") ) );
         },
 
         recuperaInfoUtente: function()

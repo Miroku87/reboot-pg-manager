@@ -209,10 +209,20 @@
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">Operazioni</li>
                 <!-- Optionally, you can add icons to the links -->
-                <li {% if section === 'listapg' %}class="active"{% endif %}><a href="main.html"><i class="fa fa-user-secret"></i> <span>Gestisci Personaggi</span></a></li>
-                <li {% if section === 'messaggi' %}class="active"{% endif %}><a href="messaggi.html"><i class="fa fa-envelope-o" ></i> <span>Messaggi</span></a></li>
-                <li id="btn_visualizza_pagina_gestione_eventi" class="{% if section === 'gestioneventi' %}active{% endif %}"><a href="gestione_eventi.html"><i class="fa fa-rocket"></i> <span>Eventi Live</span></a></li>
-                <li id="btn_visualizza_pagina_gestione_giocatori" class="inizialmente-nascosto {% if section === 'gestionegiocatori' %}active{% endif %}"><a href="gestione_giocatori.html"><i class="fa fa-group"></i> <span>Gestisci Giocatori</span></a></li>
+                <li {% if section === 'listapg' %}class="active"{% endif %}>
+                    <a href="main.html"><i class="fa fa-user-secret"></i> <span>Gestisci Personaggi</span></a></li>
+                <li {% if section === 'messaggi' %}class="active"{% endif %}>
+                    <a href="messaggi.html"><i class="fa fa-envelope-o" ></i> <span>Messaggi</span>
+                        <span class="pull-right-container">
+                            <small class="label pull-right bg-blue" id="num_mex_fg" data-toggle="tooltip" data-title="F.G.">0</small>
+                            <small class="label pull-right bg-green inizialmente-nascosto" id="num_mex_ig" data-toggle="tooltip" data-title="I.G.">0</small>
+                        </span>
+                    </a>
+                </li>
+                <li id="btn_visualizza_pagina_gestione_eventi" class="{% if section === 'gestioneventi' %}active{% endif %}">
+                    <a href="gestione_eventi.html"><i class="fa fa-rocket"></i> <span>Eventi Live</span></a></li>
+                <li id="btn_visualizza_pagina_gestione_giocatori" class="inizialmente-nascosto {% if section === 'gestionegiocatori' %}active{% endif %}">
+                    <a href="gestione_giocatori.html"><i class="fa fa-group"></i> <span>Gestisci Giocatori</span></a></li>
                 <!--<li id="btn_visualizza_pagina_crafting_chimico" class="inizialmente-nascosto {% if section === 'craftingchimico' %}active{% endif %}"><a href="crafting_chimico.html"><i class="fa fa-flask"></i> <span>Crafting Chimico</span></a></li>-->
                 <!--<li id="btn_visualizza_pagina_crafting_programmazione" class="inizialmente-nascosto {% if section === 'craftingprog' %}active{% endif %}"><a href="crafting_programmazione.html"><i class="fa fa-flask"></i> <span>Crafting Programmazione</span></a></li>-->
                 <!--<li id="btn_visualizza_pagina_crafting_ingegneria" class="inizialmente-nascosto {% if section === 'craftinging' %}active{% endif %}"><a href="crafting_ingegneria.html"><i class="fa fa-flask"></i> <span>Crafting Ingegneria</span></a></li>-->
