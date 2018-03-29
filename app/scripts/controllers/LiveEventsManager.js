@@ -227,7 +227,8 @@ var LiveEventsManager = function ()
             $( '#pg_'+quando ).find( "td [data-toggle='popover']" ).popover({
                 trigger: Utils.isDeviceMobile() ? 'click' : 'hover',
                 placement: 'top',
-                container: 'body'
+                container: 'body',
+                html: true
             });
 
             $( '#pg_'+quando ).find( 'input[type="checkbox"]' ).iCheck("destroy");
@@ -440,7 +441,8 @@ var LiveEventsManager = function ()
             $( "td [data-toggle='popover']" ).popover({
                 trigger: Utils.isDeviceMobile() ? 'click' : 'hover',
                 placement: 'top',
-                container: '#lista_eventi'
+                container: '#lista_eventi',
+                html: true
             });
 
             $("td > a.btn_anteprima_evento").unbind( "click", this.mostraAnteprimaMessaggio.bind(this) );
