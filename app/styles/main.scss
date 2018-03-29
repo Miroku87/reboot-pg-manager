@@ -76,9 +76,12 @@ button.pull-right {
   margin-left: 5px;
 }
 
+.under-element {
+  margin-top: 20px;
+}
+
 /* MODAL PUNTI */
-#modal_assegna_punti .nomi_pg,
-#modal_assegna_punti div.row:first-child {
+#modal_assegna_punti .nomi_pg {
   font-weight: bold;
 }
 

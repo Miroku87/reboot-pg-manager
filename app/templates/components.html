@@ -10,12 +10,26 @@
                 <p>Assegna o rimuovi punti esperienza e/o punti combattimento ai seguenti personaggi:<br><span class="nomi_pg" id="nome_personaggi"></span></p>
                 <form autocomplete="off" aria-autocomplete="none">
                     <div class="row">
-                        <div class="col-md-6">Punti Esperienza</div>
-                        <div class="col-md-6">Punti Combattimento</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6"><input type="number" step="1" id="offset_px" name="offset_px" class="form-control" value="0"></div>
-                        <div class="col-md-6"><input type="number" step="1" id="offset_pc" name="offset_pc" class="form-control" value="0"></div>
+                        <div class="col-md-6">
+                            <h4>Punti Esperienza</h4>
+                            <input type="number" step="1" id="offset_px" name="offset_px" class="form-control" value="0">
+                            <div class="btn-group pull-center under-element out-of-box pulsantiera-mobile inizialmente-nascosto" id="pulsanti_px">
+                                <button type="button" class="btn btn-info meno10">-10</button>
+                                <button type="button" class="btn btn-info meno1">-1</button>
+                                <button type="button" class="btn btn-info piu1">+1</button>
+                                <button type="button" class="btn btn-info piu10">+10</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Punti Combattimento</h4>
+                            <input type="number" step="1" id="offset_pc" name="offset_pc" class="form-control" value="0">
+                            <div class="btn-group pull-center under-element out-of-box pulsantiera-mobile inizialmente-nascosto" id="pulsanti_pc">
+                                <button type="button" class="btn btn-info meno10">-10</button>
+                                <button type="button" class="btn btn-info meno1">-1</button>
+                                <button type="button" class="btn btn-info piu1">+1</button>
+                                <button type="button" class="btn btn-info piu10">+10</button>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -28,6 +42,7 @@
 </div>
 {% endmacro %}
 {% macro modal_assegna_punti_scripts() %}
+<script src="scripts/models/PulsantieraNumerica.js"></script>
 <script src="scripts/models/PointsManager.js"></script>
 {% endmacro %}
 {% macro modal_modifica_credito(extra_classes='') %}
@@ -43,7 +58,15 @@
                 <form autocomplete="off" aria-autocomplete="none">
                     <div class="row">
                         <div class="col-md-4"></div>
-                        <div class="col-md-4"><input type="number" step="1" id="offset_crediti" name="offset_crediti" class="form-control" value="0"></div>
+                        <div class="col-md-4">
+                            <input type="number" step="1" id="offset_crediti" name="offset_crediti" class="form-control" value="0">
+                            <div class="btn-group pull-center under-element out-of-box pulsantiera-mobile inizialmente-nascosto" id="pulsanti_credito">
+                                <button type="button" class="btn btn-info meno10">-10</button>
+                                <button type="button" class="btn btn-info meno1">-1</button>
+                                <button type="button" class="btn btn-info piu1">+1</button>
+                                <button type="button" class="btn btn-info piu10">+10</button>
+                            </div>
+                        </div>
                         <div class="col-md-4"></div>
                     </div>
                 </form>
@@ -57,6 +80,7 @@
 </div>
 {% endmacro %}
 {% macro modal_modifica_credito_scripts() %}
+<script src="scripts/models/PulsantieraNumerica.js"></script>
 <script src="scripts/models/CreditManager.js"></script>
 {% endmacro %}
 

@@ -23,6 +23,9 @@ Constants.API_POST_RITIRA_EVENTO         = Constants.API_URL + "/eventsmanager/r
 Constants.API_POST_DEL_EVENTO            = Constants.API_URL + "/eventsmanager/eliminaevento";
 Constants.API_POST_EDIT_ISCRIZIONE       = Constants.API_URL + "/eventsmanager/modificaiscrizionepg";
 Constants.API_POST_PUNTI_EVENTO          = Constants.API_URL + "/eventsmanager/impostapuntiassegnatievento";
+Constants.API_POST_CREA_RUOLO            = Constants.API_URL + "/grantsmanager/crearuolo";
+Constants.API_POST_DEL_RUOLO             = Constants.API_URL + "/grantsmanager/eliminaruolo";
+Constants.API_POST_ASSOCIA_PERMESSI      = Constants.API_URL + "/grantsmanager/associapermessi";
 
 Constants.API_GET_LOGOUT                 = Constants.API_URL + "/usersmanager/logout";
 Constants.API_GET_ACESS                  = Constants.API_URL + "/usersmanager/controllaaccesso";
@@ -46,6 +49,9 @@ Constants.API_GET_LISTA_EVENTI           = Constants.API_URL + "/eventsmanager/r
 Constants.API_GET_INFO_ISCRITTI_AVANZATE = Constants.API_URL + "/eventsmanager/recuperalistaiscrittiavanzato";
 Constants.API_GET_INFO_ISCRITTI_BASE     = Constants.API_URL + "/eventsmanager/recuperalistaiscrittibase";
 Constants.API_GET_NOTE_ISCRITTO          = Constants.API_URL + "/eventsmanager/recuperanotepgiscritto";
+Constants.API_GET_RUOLI                  = Constants.API_URL + "/grantsmanager/recuperaruoli";
+Constants.API_GET_PERMESSI               = Constants.API_URL + "/grantsmanager/recuperalistapermessi";
+Constants.API_GET_PERMESSI_DEI_RUOLI     = Constants.API_URL + "/grantsmanager/recuperapermessideiruoli";
 
 Constants.API_DEL_GIOCATORE              = Constants.API_URL + "/usersmanager/eliminagiocatore";
 Constants.API_DEL_CLASSE_PG              = Constants.API_URL + "/charactersmanager/rimuoviclassepg";
@@ -92,6 +98,7 @@ Constants.ID_CLASSE_GUASTATORE_AVANZATO  = 15;
 
 Constants.TIPO_GRANT_PG_PROPRIO          = "_proprio";
 Constants.TIPO_GRANT_PG_ALTRI            = "_altri";
+Constants.RUOLO_ADMIN                    = "admin";
 Constants.INTERVALLO_CONTROLLO_MEX       = 60000;
 
 Constants.DATA_TABLE_LANGUAGE            = {

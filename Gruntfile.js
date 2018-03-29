@@ -26,7 +26,7 @@ module.exports = function (grunt)
         app : 'app',
         dist : 'dist',
         tmp : '.tmp',
-        version: '0.6.0',
+        version: '0.7.0',
         staging_api_url : "http://api-beta.rebootgrv.com/api.php",
         staging_site_url : "http://db-beta.rebootgrv.com",
         prod_api_url : "http://api.rebootgrv.com/api.php",

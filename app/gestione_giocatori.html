@@ -30,8 +30,81 @@
         </form>
     </div>
 </div>
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Lista di Ruoli</h3>
+    </div>
+    <div class="box-body">
+        <table class="table table-striped" id="tabella_ruoli">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Ruolo</th>
+                    <th>Numero Permessi</th>
+                    <th>Azioni</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="box-footer">
+    </div>
+</div>
 {% endblock %}
+
+{% block modals %}
+{{super()}}
+<div id="modal_scegli_permessi" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header dialog-header-primary">
+                <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Chiudi</span></button>
+                <h4 class="modal-title text-primary">Scelta Permessi</h4>
+            </div>
+            <div class="modal-body">
+                <p>Scegli i permessi da associare al ruolo <strong><span id="ruolo_ass"></span></strong>?</p>
+                <table class="table table-striped" id="tabella_associazioni">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Ruolo</th>
+                        <th>Descrizione</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success submit-btn" id="invia_associazioni">Invia Associazioni</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal_nuovo_ruolo" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header dialog-header-primary">
+                <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Chiudi</span></button>
+                <h4 class="modal-title text-primary">Ruoli Utenti</h4>
+            </div>
+            <div class="modal-body">
+                <p>Quale ruolo vuoi assegnare agli utenti che perderanno il ruolo <strong><span id="ruolo_del"></span></strong>?</p>
+                <select class="form-control" id="nuovo_ruolo"></select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success submit-btn" id="scegli_ruolo">Procedi con l'Eliminazione</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
 {% block managers %}
 {{ super() }}
 <script src="scripts/controllers/PlayersManager.js"></script>
+<script src="scripts/controllers/GrantsManager.js"></script>
 {% endblock %}

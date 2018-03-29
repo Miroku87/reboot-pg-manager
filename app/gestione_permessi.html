@@ -5,15 +5,44 @@
 {% set descrizione_sezione = "Qui potrai inserire e modificare ruoli e i permessi associati ad essi."  %}
 {% block mainContent %}
 {{ super() }}
-
-<div class="box box-primary">
-  <div class="box-header with-border">
-    <h3 class="box-title">Lista di Ruoli</h3>
-  </div>
-  <div class="box-body">
+<div class="row">
+    <div class="col-sm-2">
     </div>
-  <div class="box-footer">
-  </div>
+    <div class="col-sm-8">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Lista di Ruoli</h3>
+            </div>
+            <div class="box-body">
+                <table class="table table-striped">
+                    <tbody><tr>
+                        <th>Task</th>
+                        <th>Progress</th>
+                    </tr>
+                    <tr>
+                        <td>1.</td>
+                        <td>Update software</td>
+                    </tr>
+                    <tr>
+                        <td>2.</td>
+                        <td>Clean database</td>
+                    </tr>
+                    <tr>
+                        <td>3.</td>
+                        <td>Cron job running</td>
+                    </tr>
+                    <tr>
+                        <td>4.</td>
+                        <td>Fix and squish bugs</td>
+                    </tr>
+                    </tbody></table>
+            </div>
+            <div class="box-footer">
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-2">
+    </div>
 </div>
 
 

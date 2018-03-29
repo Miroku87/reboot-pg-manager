@@ -32,18 +32,20 @@ var EventCreateManager = function ()
             $("#luogo").val( data.luogo_evento );
             $("#costo").val( data.costo_evento );
             $("#costo_maggiorato").val( data.costo_maggiorato_evento );
-            $("#note").val( data.note_evento );
+            $("#note").val( data.note_evento.replace(/<br>/g,"\r").replace(/<br \/>/g,"\r") );
         },
 
         inviaDatiEvento: function()
         {
             var data  = {},
-                url   = Constants.API_POST_EVENTO;
+                url   = Constants.API_POST_EVENTO,
+                mex   = "Evento inserito correttamente.<br>Ricordati che non è ancora pubblico e che pu&ograve; essere modificato.";
 
             if( this.evento_mod_id )
             {
                 window.localStorage.removeItem("azione_evento");
                 url = Constants.API_POST_MOD_EVENTO;
+                mex   = "Evento modificato correttamente.<br>Ricordati che non è ancora pubblico e che pu&ograve; essere modificato."
                 data.id = this.evento_mod_id;
             }
 
@@ -58,10 +60,10 @@ var EventCreateManager = function ()
             data.note        = $("#note").val();
 
             Utils.requestData(
-                Constants.API_POST_EVENTO,
+                url,
                 "POST",
                 data,
-                "Evento inserito correttamente.<br>Ricordati che non è ancora pubblico e che pu&ograve; essere modificato.",
+                mex,
                 null,
                 Utils.redirectTo.bind(this,Constants.EVENTI_PAGE)
             );
@@ -102,7 +104,7 @@ var EventCreateManager = function ()
             }
             if( !ora_fine || Utils.soloSpazi(ora_fine) )
                 error += "<li>Il campo Ora Fine non pu&ograve; essere lasciato vuoto.</li>";
-            if( costo && !Utils.soloSpazi(costo) && !/^\d+$/.test(costo) )
+            if( costo && !Utils.soloSpazi(costo) && !/^\d+(\.\d+)?$/.test(costo) )
                 error += "<li>Il campo Costo pu&ograve; contenere solo numeri.</li>";
             if( costo_magg && Utils.soloSpazi(costo_magg) && !/^\d+$/.test(costo_magg) )
                 error += "<li>Il campo Costo Maggiorato pu&ograve; contenere solo numeri.</li>";

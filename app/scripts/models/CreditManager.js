@@ -4,6 +4,7 @@
 
 		init: function ( )
 		{
+            //TODO: mettere pulsanti per aumentare e diminure il valore a causa di cel che non fanno inserire numeri negativi
             this.modal_selector = "#modal_modifica_credito";
             this.setListeners();
 		},
@@ -50,6 +51,15 @@
 		{
             $(this.modal_selector).find("#btn_modifica").unbind("click",this.inviaRichiestaAssegna.bind(this));
             $(this.modal_selector).find("#btn_modifica").click(this.inviaRichiestaAssegna.bind(this));
+
+            if ( Utils.isDeviceMobile() )
+            {
+                $("#modal_modifica_credito").find(".pulsantiera-mobile").removeClass("inizialmente-nascosto");
+                new PulsantieraNumerica({
+                    target : $("#modal_modifica_credito").find("#offset_crediti"),
+                    pulsantiera : $("#modal_modifica_credito").find("#pulsanti_credito")
+                });
+            }
 		}
 	}
 }();

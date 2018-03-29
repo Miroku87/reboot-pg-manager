@@ -4,6 +4,7 @@
 
 		init: function ( )
 		{
+            //TODO: mettere pulsanti per aumentare e diminure il valore a causa di cel che non fanno inserire numeri negativi
             this.setListeners();
 		},
 
@@ -52,6 +53,19 @@
 		{
             $("#modal_assegna_punti").find("#btn_assegna").unbind("click",this.inviaRichiestaAssegna.bind(this));
             $("#modal_assegna_punti").find("#btn_assegna").click(this.inviaRichiestaAssegna.bind(this));
+
+            if( Utils.isDeviceMobile() )
+            {
+                $("#modal_assegna_punti").find(".pulsantiera-mobile").removeClass("inizialmente-nascosto");
+                var ppc = new PulsantieraNumerica({
+                        target: $("#modal_assegna_punti").find("#offset_pc"),
+                        pulsantiera: $("#modal_assegna_punti").find("#pulsanti_pc")
+                    }),
+                    ppx = new PulsantieraNumerica({
+                        target: $("#modal_assegna_punti").find("#offset_px"),
+                        pulsantiera: $("#modal_assegna_punti").find("#pulsanti_px")
+                    });
+            }
 		}
 	}
 }();

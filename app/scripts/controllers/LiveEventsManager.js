@@ -6,6 +6,7 @@ var LiveEventsManager = function ()
     return {
         init: function ()
         {
+            window.localStorage.removeItem("evento_mod_id");
             this.setListeners();
             this.recuperaInfoUtente();
             this.recuperaUltimoEvento();
@@ -381,6 +382,7 @@ var LiveEventsManager = function ()
                 $("#modal_anteprima_evento").find("#btn_ritira").attr("data-id",$(e.target).attr("data-id"));
             }
 
+            $("#modal_anteprima_evento").find("#btn_modifica").attr("data-evid",$(e.target).attr("data-id"));
             $("#modal_anteprima_evento").find("#btn_pubblica").attr("data-id",$(e.target).attr("data-id"));
             $("#modal_anteprima_evento").find("#iscrivi_pg").attr("disabled",true);
             $("#modal_anteprima_evento").modal({drop:"static"});
@@ -409,6 +411,13 @@ var LiveEventsManager = function ()
                     "data-placement='top' " +
                     "title='Ritira Evento'><i class='fa fa-remove'></i></button>";
             }
+
+            pulsanti += "<button type='button' " +
+                "class='btn btn-xs btn-default inizialmente-nascosto modificaEvento' " +
+                "data-evid='"+row.id_evento+"' " +
+                "data-toggle='tooltip' " +
+                "data-placement='top' " +
+                "title='Modifica Evento'><i class='fa fa-pencil'></i></button>";
 
             pulsanti += "<button type='button' " +
                 "class='btn btn-xs btn-default inizialmente-nascosto eliminaEvento' " +
@@ -442,6 +451,9 @@ var LiveEventsManager = function ()
 
             $("td > button.ritiraEvento").unbind( "click", this.confermaRitiraEvento.bind(this) );
             $("td > button.ritiraEvento").click( this.confermaRitiraEvento.bind(this) );
+
+            $("td > button.modificaEvento").unbind( "click", this.vaiAModificaEvento.bind(this) );
+            $("td > button.modificaEvento").click( this.vaiAModificaEvento.bind(this) );
         },
 
         erroreDataTable: function ( e, settings, techNote, message )
@@ -582,9 +594,10 @@ var LiveEventsManager = function ()
             );
         },
 
-        vaiAModificaEvento: function()
+        vaiAModificaEvento: function( e )
         {
-            window.localStorage.setItem("azione_evento","modifica");
+            var t = $(e.target);
+            window.localStorage.setItem("evento_mod_id", t.attr("data-evid"));
             Utils.redirectTo( Constants.CREA_EVENTO_PAGE );
         },
 
@@ -658,8 +671,8 @@ var LiveEventsManager = function ()
             $( "[data-toggle='tooltip']" ).tooltip();
 
             $("#btn_visualizza_pagina_crea_evento").click( Utils.redirectTo.bind(this, Constants.CREA_EVENTO_PAGE) );
-            $("#btn_modifica_evento").click( this.vaiAModificaEvento.bind(this) );
             $("#btn_pubblica").click( this.confermaPubblicaEvento.bind(this) );
+            $("#btn_modifica").click( this.vaiAModificaEvento.bind(this) );
             $("#btn_ritira").click( this.confermaRitiraEvento.bind(this) );
             $("#iscrivi_pg").click( this.mostraModalIscrizione.bind(this) );
             $("#btn_modificaPG_px_personaggio").click( this.modificaPuntiAiFiltrati.bind(this) );
