@@ -72,6 +72,8 @@ Constants.PROFILO_PAGE                   = Constants.SITE_URL + "/profilo.html";
 Constants.PX_TOT                         = 100;
 Constants.PC_TOT                         = 4;
 Constants.ANNO_PRIMO_LIVE                = 271;
+Constants.ANNO_INIZIO_OLOCAUSTO          = 239;
+Constants.ANNO_FINE_OLOCAUSTO            = 244;
 
 Constants.COSTI_PROFESSIONI              = [0,20,40,60,80,100,120];
 

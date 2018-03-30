@@ -20,13 +20,6 @@
                 Utils.controllaAccessoPagina( SECTION_NAME );
         },
 
-        onSubmitClicked: function ( e )
-        {
-            var target = $(e.currentTarget);
-            target.append("<i class='fa fa-spinner fa-pulse' style='margin-left:5px'></i>");
-            target.attr("disabled",true);
-        },
-
         controllaPermessi: function ()
         {
             this.user_info = this.user_info || JSON.parse( window.localStorage.getItem('user') );
@@ -193,8 +186,8 @@
             $( '.sidebar-menu li.active' ).data( 'lte.pushmenu.active', true );
             $( '#logoutBtn' ).click( this.logout.bind(this) );
             $( '#btn_visualizza_pagina_profilo' ).click( Utils.redirectTo.bind(this,Constants.PROFILO_PAGE) );
-            $( '.submit-btn' ).click( this.onSubmitClicked.bind(this) );
             $( '#logo_link' ).attr("href", Constants.MAIN_PAGE );
+            Utils.setSubmitBtn();
 
             if (    SECTION_NAME !== ""
                 && NO_CONTROLLO.indexOf( SECTION_NAME ) === -1

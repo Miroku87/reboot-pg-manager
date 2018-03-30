@@ -61,6 +61,29 @@
             });
         },
 
+        stripHMTLTag: function ( str )
+        {
+            return str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        },
+
+        unStripHMTLTag: function ( str )
+        {
+            return str.replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+        },
+
+        onSubmitBtnClicked: function ( e )
+        {
+            var target = $(e.currentTarget);
+            target.append("<i class='fa fa-spinner fa-pulse' style='margin-left:5px'></i>");
+            target.attr("disabled",true);
+        },
+
+        setSubmitBtn: function ()
+        {
+            $( '.submit-btn' ).unbind( "click",Utils.onSubmitBtnClicked.bind(this) );
+            $( '.submit-btn' ).click( Utils.onSubmitBtnClicked.bind(this) );
+        },
+
         resetSubmitBtn: function ()
         {
             $(".submit-btn").attr("disabled",false);

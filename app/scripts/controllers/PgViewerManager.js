@@ -18,7 +18,11 @@
             $( "#aggiungi_bg" ).hide();
             $( "#background" ).hide();
             $( "#background_form" ).show();
+            $( "#invia_bg" ).unbind( "click" );
             $( "#invia_bg" ).click( this.inviaModifichePG.bind( this, "background_personaggio", $("#testo_background") ) );
+            $( "#annulla_bg" ).unbind( "click" );
+            $( "#annulla_bg" ).click( this.impostaBoxBackground.bind( this ));
+            Utils.setSubmitBtn();
 		},
 
 
@@ -28,7 +32,11 @@
             $( "#aggiungi_note_master" ).hide();
             $( "#note_master" ).hide();
             $( "#note_master_form" ).show();
+            $( "#invia_note_master" ).unbind("click");
             $( "#invia_note_master" ).click( this.inviaModifichePG.bind( this, "note_master_personaggio", $("#testo_note_master") ) );
+            $( "#annulla_note_master" ).unbind("click");
+            $( "#annulla_note_master" ).click( this.impostaBoxNoteMaster.bind( this ) );
+            Utils.setSubmitBtn();
 		},
 
         classeIsPrerequisito: function ( id_cl, el )
@@ -157,6 +165,55 @@
             Utils.showConfirm( "Cancellando questa abilit&agrave; anche le seguenti verranno eliminate:"+lista+"Sicuro di voler procedere?", this.eliminazioneConfermata.bind(this, "abilita", id_abilita) );
 		},
 
+        impostaBoxBackground: function ( )
+		{
+            $("#background_form").hide();
+            $("#background").show();
+            if( this.pg_info.background_personaggio !== null )
+            {
+                $("#avviso_bg").remove();
+                $("#background").html( decodeURIComponent(this.pg_info.background_personaggio) );
+                $("#testo_background").val( Utils.unStripHMTLTag( decodeURIComponent(this.pg_info.background_personaggio) ).replace("<br>","\r") );
+
+                if( Utils.controllaPermessi( this.user_info, ["modificaPG_background_personaggio_altri"] )
+                    || ( this.pg_nato_in_olocausto && !this.pg_info.motivazioni ) )
+                    $( "#aggiungi_bg").show();
+                else
+                    $( "#aggiungi_bg").hide();
+            }
+            else
+            {
+                $( "#aggiungi_bg").show();
+                $("#avviso_bg").show();
+                $("#background").remove();
+            }
+		},
+
+        impostaBoxNoteMaster: function ( )
+		{
+            if( Utils.controllaPermessi( this.user_info, ["recuperaNoteMaster_altri", "recuperaNoteMaster_proprio"] ) )
+            {
+                $( "#recuperaNoteMaster" ).show();
+                $( "#avviso_note_master" ).show();
+                $( "#aggiungi_note_master" ).show();
+                $( "#note_master" ).show();
+                $( "#note_master_form" ).hide();
+
+                if ( this.pg_info.note_master_personaggio !== null)
+                {
+                    $("#avviso_note_master").remove();
+                    $("#note_master").html(decodeURIComponent(this.pg_info.note_master_personaggio));
+                    $("#testo_note_master").val( Utils.unStripHMTLTag( decodeURIComponent(this.pg_info.note_master_personaggio) ).replace("<br>","\r") );
+                    $("#aggiungi_note_master").show();
+                }
+                else
+                {
+                    $("#avviso_note_master").show();
+                    $("#note_master").remove();
+                }
+            }
+		},
+
         mostraDati: function ()
 		{
             var bin_button  = " <button type=\"button\" " +
@@ -247,46 +304,15 @@
                 $("#lista_opzioni_abilita").find("tbody").append(tr);
             }
 
-            if( this.pg_info.background_personaggio !== null )
-            {
-                $("#avviso_bg").remove();
-                $("#background").text( decodeURIComponent(this.pg_info.background_personaggio).substr(0,30)+"..." );
-                $("#testo_background").val( decodeURIComponent(this.pg_info.background_personaggio) );
-
-                if( this.user_info.permessi.indexOf("modificaPG_background_personaggio_altri") !== -1 )
-                    $( "#aggiungi_bg").show();
-                else
-                    $( "#aggiungi_bg").hide();
-            }
-            else
-            {
-                $("#avviso_bg").show();
-                $("#background").remove();
-            }
-
-            if( this.user_info.permessi.indexOf("recuperaNoteMaster") !== -1 )
-            {
-                $("#recuperaNoteMaster").show();
-
-                if ( this.pg_info.note_master_personaggio !== null)
-                {
-                    $("#avviso_note_master").remove();
-                    $("#note_master").text(decodeURIComponent(this.pg_info.note_master_personaggio));
-                    $("#testo_note_master").val(decodeURIComponent(this.pg_info.note_master_personaggio));
-                    $("#aggiungi_note_master").show();
-                }
-                else
-                {
-                    $("#avviso_note_master").show();
-                    $("#note_master").remove();
-                }
-            }
+            this.impostaBoxBackground();
+            this.impostaBoxNoteMaster();
 
             $(".rimuoviClassePG").click( this.rimuoviClasse.bind( this ) );
 
             setTimeout(function ()
             {
                 $( "[data-toggle='tooltip']" ).tooltip();
+                Utils.setSubmitBtn();
                 AdminLTEManager.controllaPermessi();
             }, 100);
 		},
@@ -352,13 +378,18 @@
         inviaModifichePG: function ( campo, elemento, e )
         {
             var data = { pgid: this.pg_info.id_personaggio, modifiche : {} };
-            data.modifiche[campo] = encodeURIComponent( elemento.val() );
+            data.modifiche[campo] = encodeURIComponent( Utils.stripHMTLTag( elemento.val() ).replace(/\n/g,"<br>") );
+
+            if( campo === "background_personaggio" && this.pg_nato_in_olocausto && !this.pg_info.motivazioni )
+                data.modifiche.motivazioni_olocausto_inserite_personaggio = 1;
 
             Utils.requestData(
                 Constants.API_POST_EDIT_PG,
                 "POST",
                 data,
-                "Il campo &egrave; stato aggiornato con successo."
+                "Il campo &egrave; stato aggiornato con successo.",
+                null,
+                Utils.reloadPage
             );
         },
 
@@ -398,6 +429,21 @@
             }
         },
 
+        controllaMotivazioniOlocausto: function ()
+        {
+            this.pg_info.anno_nascita_personaggio = parseInt(this.pg_info.anno_nascita_personaggio,10);
+            this.pg_info.motivazioni              = this.pg_info.motivazioni === "1" ? true : false;
+            this.pg_nato_in_olocausto             = this.pg_info.anno_nascita_personaggio >= Constants.ANNO_INIZIO_OLOCAUSTO
+                                                    && this.pg_info.anno_nascita_personaggio <= Constants.ANNO_FINE_OLOCAUSTO;
+
+            if( this.pg_nato_in_olocausto && !this.pg_info.motivazioni )
+                Utils.showMessage("Caro Giocatore,<br>" +
+                    "ci siamo accorti che il personaggio che stai visualizzando &egrave; nato durante l'<strong>Olocausto dell'Innocenza</strong>.<br>" +
+                    "Ci servirebbe che aggiungessi nel Background come lui/lei ha fatto a sopravvivere alla disgrazia.<br>" +
+                    "Vai nell'apposita sezione e clicca il pulsante 'Modifica Background'.<br>" +
+                    "Grazie, lo Staff!");
+        },
+
         faiLoginPG: function ()
         {
             var dati = { pgid : window.localStorage.getItem("pg_da_loggare") };
@@ -415,8 +461,9 @@
 
                     window.localStorage.setItem( 'logged_pg', JSON.stringify( pg_no_bg ) );
 
-                    this.personalizzaMenu.call( this );
-                    this.mostraDati.call( this );
+                    this.controllaMotivazioniOlocausto( );
+                    this.personalizzaMenu(  );
+                    this.mostraDati(  );
 
                     AdminLTEManager.controllaMessaggi();
                 }.bind(this),
@@ -433,7 +480,7 @@
             $( "#btn_aggiungiAbilitaAlPG" ).click( Utils.redirectTo.bind(this,Constants.ABILITY_SHOP_PAGE) );
             $( "#btn_modificaPG_px_personaggio" ).click( this.modificaPuntiPG.bind(this) );
             $( "#btn_modificaPG_credito_personaggio" ).click( this.modificaCreditoPG.bind(this) );
-            $( "#message" ).on( "hidden.bs.modal", Utils.reloadPage );
+            //$( "#message" ).on( "hidden.bs.modal", Utils.reloadPage );
         }
 	}
 }();
