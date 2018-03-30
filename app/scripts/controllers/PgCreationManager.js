@@ -588,7 +588,7 @@
                                 }, "") || "abilita=&",
                 opzioni   = $("#opzioni_abilita").find(".form-group:visible select:not([disabled])").serialize(),
                 nome      = !this.pg_info ? "nome=" + encodeURIComponent( $( "#nomePG").val() ) : "id_utente="+this.pg_info.id_personaggio,
-                eta       = !this.pg_info ? "eta="+$("#etaPG").val() : "",
+                eta       = !this.pg_info ? "eta="+$("#etaPG").val()+"&" : "",
                 data      = nome + "&" + eta + classi + abilita + opzioni,
                 url       = this.pg_info ? Constants.API_POST_ACQUISTA : Constants.API_POST_CREAPG;
 
