@@ -227,7 +227,7 @@
                 px_percento = parseInt( ( parseInt( this.pg_info.px_risparmiati, 10 ) / this.pg_info.px_personaggio ) * 100, 10 ),
                 pc_percento = parseInt( ( parseInt( this.pg_info.pc_risparmiati, 10 ) / this.pg_info.pc_personaggio ) * 100, 10 );
 
-            $("#info_giocatore").html( this.pg_info.nome_giocatore );
+            $("#info_giocatore").html( this.pg_info.nome_giocatore_completo );
             $("#info_id").html( this.pg_info.id_personaggio );
             $("#info_nome").html( this.pg_info.nome_personaggio );
             $("#info_data").html( this.pg_info.data_creazione_personaggio );

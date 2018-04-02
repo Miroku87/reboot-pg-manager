@@ -373,7 +373,8 @@ var MultiSelector = MultiSelector || (function ()
             elements.popover( {
                 trigger: 'hover',
                 placement: 'top',
-                html : true
+                html : true,
+                container: "body"
             } );
         }
         else
@@ -381,6 +382,7 @@ var MultiSelector = MultiSelector || (function ()
             elements.popover( {
                 trigger: 'manual',
                 html : true,
+                container: "body",
                 placement: function ( popover_elem, li_elem )
                 {
                     if ( $( li_elem ).parent().is( this.elem_carrello ) )

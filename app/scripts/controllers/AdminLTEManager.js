@@ -175,8 +175,8 @@
         {
             this.setupMenuSearch();
 
-            $( 'ul.tree' ).tree();
-            $( '[data-toggle="tooltip"]' ).tooltip();
+            if( jQuery().tree ) $( 'ul.tree' ).tree();
+            if( jQuery().tooltip ) $( '[data-toggle="tooltip"]' ).tooltip();
 
             $( '#sidebar-form' ).on( 'submit', function ( e )
             {

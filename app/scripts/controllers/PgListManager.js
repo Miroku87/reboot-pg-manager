@@ -56,7 +56,7 @@
             var pg_da_stampare = Array.prototype.slice.call( this.pg_grid.columns( { filter : 'applied'} ).data() );
 
             window.localStorage.setItem("da_stampare",JSON.stringify(pg_da_stampare[0]));
-            Utils.redirectTo( Constants.PRINT_PAGE );
+            window.open( Constants.STAMPA_CARTELLINI_PAGE, "Stampa Cartellini" );
 		},
 
         loggaPersonaggio: function ( e )

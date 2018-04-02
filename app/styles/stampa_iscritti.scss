@@ -1,0 +1,31 @@
+html, body {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  height: auto;
+  font-size: 14pt;
+}
+
+td, th {
+  vertical-align: middle;
+  border: 1px black solid;
+}
+
+td {
+  padding: 5px;
+  height: 40px;
+}
+
+tbody > tr > td:nth-child(2),
+tbody > tr > td:nth-child(4) {
+  text-align: center;
+}
+
+@media print {
+  @page {
+    size: landscape
+  }
+  .links {
+    display: none;
+  }
+}

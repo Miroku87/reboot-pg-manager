@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stampa Cartellini</title>
+    <!-- build:css(dist) styles/stampatabellaiscritti.css -->
+    <link rel="stylesheet" href="styles/stampa_iscritti.css"/>
+    <!-- endbuild -->
+</head>
+<body>
+
+<div class="links">
+    <a href="javascript:window.print();">Stampa</a><br>
+    <a href="javascript:window.close();">Chiudi</a>
+</div>
+
+<table colspan="0" cellspacing="0" width="100%" id="info_iscritti">
+    <thead>
+    <tr>
+        <th width="20%">Giocatore</th>
+        <th width="5%">PG ID</th>
+        <th width="20%">Nome PG</th>
+        <th width="5%">Pagato</th>
+        <th width="20%">Metodo Pagamento</th>
+        <th width="30%">Note</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+<!-- build:js scripts/jquery.js -->
+<script src="/bower_components/jquery/dist/jquery.js"></script>
+<!-- endbuild -->
+<!-- build:js(.tmp) scripts/common.js -->
+<script src="scripts/utils/Constants.js"></script>
+<script src="scripts/utils/Utils.js"></script>
+<script src="scripts/controllers/AdminLTEManager.js"></script>
+<!-- endbuild -->
+<!-- build:js(.tmp) scripts/stampatabellaiscritti.js -->
+<script src="scripts/controllers/PrintSignedTable.js"></script>
+<!-- endbuild -->
+</body>
+</html>

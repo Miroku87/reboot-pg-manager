@@ -35,14 +35,20 @@
 
         globalSettings: function (  )
         {
-            $.fn.dataTable.ext.errMode = 'none';
-            $.fn.dataTable.ext.buttons.reload = {
-                text: '<i class="fa fa-refresh"></i>',
-                action: function ( e, dt ) {
-                    dt.ajax.reload(null, true);
-                }
-            };
-            $(document).ajaxStart(function() { Pace.restart(); });
+            if( typeof $.fn.dataTable !== "undefined" )
+            {
+                $.fn.dataTable.ext.errMode = 'none';
+                $.fn.dataTable.ext.buttons.reload = {
+                    text : '<i class="fa fa-refresh"></i>',
+                    action : function (e, dt)
+                    {
+                        dt.ajax.reload(null, true);
+                    }
+                };
+            }
+
+            if( typeof window.Pace !== "undefined" )
+                $(document).ajaxStart(function() { Pace.restart(); });
         },
 
         /**
@@ -127,6 +133,24 @@
             }
         },
 
+        showLoading: function( text, onHide )
+        {
+            if( $("#modal_loading").length > 0 )
+            {
+                $('.modal').modal('hide');
+
+                $("#modal_loading").unbind("hidden.bs.modal");
+                $("#modal_loading").on("hidden.bs.modal", function ()
+                {
+                    Utils.resetSubmitBtn();
+                    if (typeof onHide === "function") onHide();
+                });
+
+                $("#modal_loading").find('#loadingText').html(text);
+                $("#modal_loading").modal({ drop: 'static', backdrop: 'static', keyboard: false });
+            }
+        },
+
         showConfirm: function( question, onConfirm, askPwd )
         {
             askPwd = typeof askPwd === "undefined" ? true : askPwd;
@@ -199,7 +223,7 @@
                         Utils.showMessage(success,onSuccessHide);
                     else if ( data.status === "ok" && typeof success === "function")
                         success(data);
-                    else if ( data.status === "error" && ( data.type === "loginError" || data.type === "grantsError" ) )
+                    else if ( data.status === "error" && ( data.type === "loginError" || data.type === "grantsError" ) && typeof window.AdminLTEManager !== "undefined" )
                         Utils.showError( data.message, AdminLTEManager.logout );
                     else if ( data.status === "error" && typeof failure === "string" )
                         Utils.showError( failure, onFailureHide );
@@ -243,6 +267,14 @@
                 return true;
             else
                 return false;
+        },
+
+        pad: function (num, size)
+        {
+            var num = parseInt(num,10),
+                minus = num < 0 ? "-" : "",
+                s = "000" + Math.abs(num);
+            return minus + s.substr(s.length-size);
         },
 
         clearLocalStorage: function ()

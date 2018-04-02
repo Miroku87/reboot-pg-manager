@@ -30,7 +30,7 @@
         </form>
     </div>
 </div>
-<!--<div class="box box-primary">
+<div class="box box-primary">
     <div class="box-header with-border">
         <h3 class="box-title">Lista di Ruoli</h3>
     </div>
@@ -47,34 +47,97 @@
             <tbody>
             </tbody>
         </table>
+        <br>
+        <form autocomplete="off" aria-autocomplete="none">
+            <div class="inizialmente-nascosto form-group creaRuolo row">
+                <div class="col-sm-9"><input type="text" class="form-control" id="nome_nuovo_ruolo" placeholder="Nome Nuovo Ruolo"></div>
+                <div class="col-sm-3"><button class="btn btn-success submit-btn" id="btn_nome_nuovo_ruolo"> Crea Nuovo Ruolo </button></div>
+            </div>
+        </form>
     </div>
-    <div class="box-footer">
-    </div>
-</div>-->
+</div>
 {% endblock %}
 
 {% block modals %}
 {{super()}}
-<!--<div id="modal_scegli_permessi" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
-    <div class="modal-dialog modal-md">
+<div id="modal_modifica_giocatore" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header dialog-header-primary">
+                <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Chiudi</span></button>
+                <h4 class="modal-title text-primary">Modifica Dati Giocatore</h4>
+            </div>
+            <div class="modal-body">
+                <p>Modifica qui i dati per il giocatore <strong><span id="giocatore_mod"></span></strong></p>
+                <form autocomplete="off" aria-autocomplete="none" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Email Giocatore</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="email_giocatore" name="email_giocatore" placeholder="Email Giocatore">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Nome Giocatore</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="nome_giocatore" name="nome_giocatore" placeholder="Nome Giocatore">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Cognome Giocatore</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="cognome_giocatore" name="cognome_giocatore" placeholder="Cognome Giocatore">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Ruolo Giocatore</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" id="ruolo_giocatore">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Note Master Giocatore</label>
+                        <div class="col-sm-9">
+                            <textarea type="text" class="form-control resize-vertical" rows="5" id="note_master_giocatore" name="note_master_giocatore" placeholder="Scrivi qui i tuoi appunti su questo giocatore..."></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success submit-btn" id="btn_invia_modifiche_giocatore">Invia Modifiche</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal_scegli_permessi" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header dialog-header-primary">
                 <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Chiudi</span></button>
                 <h4 class="modal-title text-primary">Scelta Permessi</h4>
             </div>
             <div class="modal-body">
-                <p>Scegli i permessi da associare al ruolo <strong><span id="ruolo_ass"></span></strong>?</p>
-                <table class="table table-striped" id="tabella_associazioni">
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th>Ruolo</th>
-                        <th>Descrizione</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+                <p>Scegli i permessi da associare al ruolo <strong><span id="ruolo_ass"></span></strong></p>
+                <p>Puoi anche copiare i persmessi associati a un altro ruolo per poi modificarli.</p>
+                <div class="form-group">
+                    <select class="form-control" id="lista_ruoli_copia">
+                        <option value="-1">Scegli ruolo da copiare...</option>
+                    </select>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped" id="tabella_associazioni">
+                        <thead>
+                        <tr>
+                            <th>Assegna</th>
+                            <th>Ruolo</th>
+                            <th>Descrizione</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success submit-btn" id="invia_associazioni">Invia Associazioni</button>
@@ -92,7 +155,9 @@
             </div>
             <div class="modal-body">
                 <p>Quale ruolo vuoi assegnare agli utenti che perderanno il ruolo <strong><span id="ruolo_del"></span></strong>?</p>
-                <select class="form-control" id="nuovo_ruolo"></select>
+                <select class="form-control" id="nuovo_ruolo">
+                    <option value="-1">Scegli ruolo...</option>
+                </select>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success submit-btn" id="scegli_ruolo">Procedi con l'Eliminazione</button>
@@ -100,12 +165,11 @@
             </div>
         </div>
     </div>
-</div>-->
+</div>
 {% endblock %}
 
 {% block managers %}
 {{ super() }}
 <script src="scripts/controllers/PlayersManager.js"></script>
+<script src="scripts/controllers/GrantsManager.js"></script>
 {% endblock %}
-
-<!--<script src="scripts/controllers/GrantsManager.js"></script>-->

@@ -667,6 +667,35 @@ var LiveEventsManager = function ()
             });
         },
 
+        vaiAPaginaStampaCartellini: function ( data )
+        {
+            $(".modal").modal("hide");
+
+            var pg_da_stampare = data.data.map( function( el ){ return el.personaggi_id_personaggio; } );
+
+            window.localStorage.setItem("da_stampare",JSON.stringify( pg_da_stampare ));
+            window.open( Constants.STAMPA_CARTELLINI_PAGE, "Stampa Cartellini" );
+        },
+
+        stampaCartellini: function ( )
+        {
+            Utils.showLoading("Scarico gli id dei personaggi iscritti...");
+            Utils.requestData(
+                Constants.API_GET_INFO_ISCRITTI_BASE,
+                "GET",
+                "draw=1&columns=&order=&start=0&length=999&search=&quando=prossimo",
+                this.vaiAPaginaStampaCartellini.bind(this)
+            );
+        },
+
+        vaiAPaginaStampaIscrizioni: function ( e )
+        {
+            var t = $(e.target);
+
+            window.localStorage.setItem("da_stampare", t.attr("data-evid"));
+            window.open( Constants.STAMPA_ISCRITTI_PAGE, "Stampa Lista Iscritti" );
+        },
+
         setListeners: function()
         {
             $( "[data-toggle='tooltip']" ).tooltip("destroy");
@@ -678,6 +707,8 @@ var LiveEventsManager = function ()
             $("#btn_ritira").click( this.confermaRitiraEvento.bind(this) );
             $("#iscrivi_pg").click( this.mostraModalIscrizione.bind(this) );
             $("#btn_modificaPG_px_personaggio").click( this.modificaPuntiAiFiltrati.bind(this) );
+            $("#btn_stampaCartelliniPG").click( this.stampaCartellini.bind(this) );
+            $("#btn_stampaIscrizioniPg").click( this.vaiAPaginaStampaIscrizioni.bind(this) );
         }
     };
 }();

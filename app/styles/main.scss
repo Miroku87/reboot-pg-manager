@@ -80,6 +80,10 @@ button.pull-right {
   margin-top: 20px;
 }
 
+.ellipsis > .fa-plus-circle {
+  cursor: pointer;
+}
+
 /* MODAL PUNTI */
 #modal_assegna_punti .nomi_pg {
   font-weight: bold;

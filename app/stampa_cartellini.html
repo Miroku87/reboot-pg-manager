@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stampa Cartellini</title>
+    <!-- build:css(dist) styles/stampacartellini.css -->
+    <link rel="stylesheet" href="fonts/ubuntumono-regular-webfont.css"/>
+    <link rel="stylesheet" href="styles/stampa_cartellini.css"/>
+    <!-- endbuild -->
+</head>
+<body>
+<div class="a4-page" id="page_template">
+</div>
+<div class="cartellino-pg" id="cartellino_template">
+    <div class="prima-pagina">
+        <table colspan="0" cellspacing="0" cellpadding="0" width="100%">
+            <tr>
+                <td width="33%">PROFESSIONI:</td>
+                <td class="lista-classi-civili"></td>
+            </tr>
+            <tr>
+                <td>CLASSI MILITARI:</td>
+                <td class="lista-classi-militari"></td>
+            </tr>
+            <tr>
+                <td>ABILIT&Agrave; CIVILI:</td>
+                <td class="lista-abilita-civili"></td>
+            </tr>
+            <tr>
+                <td>ABILIT&Agrave; MILITARI:</td>
+                <td class="lista-abilita-militari"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="seconda-pagina">
+        <table colspan="0" cellspacing="0" cellpadding="0" width="100%">
+            <tr>
+                <td class="qr-code" width="33%"></td>
+                <td class="info-base">
+                    GIOCATORE:<br>
+                    &nbsp;&nbsp;<span class="giocatore"></span><br>
+                    ID PG:<br>
+                    &nbsp;&nbsp;<span class="pg-id"></span><br>
+                    NOME PG:<br>
+                    &nbsp;&nbsp;<span class="pg-nome"></span><br>
+                    ANNO DI NASCITA:<br>
+                    &nbsp;&nbsp;<span class="pg-anno"></span>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <table colspan="0" cellspacing="0" cellpadding="0" width="100%" class="pg-adv-data">
+            <tr>
+                <td width="25%">
+                    PF:<br><br>
+                    PS MAX:<br><br>
+                    DIF. MENTALE:<br><br>
+                </td>
+                <td width="25%">
+                    <span class="pg-pf"></span><br><br>
+                    <span class="pg-ps"></span><br><br>
+                    <span class="pg-mente"></span>
+                </td>
+                <td width="25%">
+                    PX:<br><br>
+                    PC:<br><br>
+                </td>
+                <td id="px_pc" width="25%">
+                    <span class="pg-px"></span><br><br>
+                    <span class="pg-pc"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="links">
+    <a href="javascript:window.print();">Stampa</a><br>
+    <a href="javascript:window.close();">Chiudi</a>
+</div>
+<div id="container" class="page-container">
+
+</div>
+<!-- build:js scripts/jquery.js -->
+<script src="/bower_components/jquery/dist/jquery.js"></script>
+<!-- endbuild -->
+<!-- build:js(.tmp) scripts/common.js -->
+<script src="scripts/utils/Constants.js"></script>
+<script src="scripts/utils/Utils.js"></script>
+<script src="scripts/controllers/AdminLTEManager.js"></script>
+<!-- endbuild -->
+<!-- build:js(.tmp) scripts/stampacartellini.js -->
+<script src="../node_modules/qrcodejs/qrcode.min.js"></script>
+<script src="scripts/controllers/PrintSheetsManager.js"></script>
+<!-- endbuild -->
+</body>
+</html>

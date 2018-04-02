@@ -26,7 +26,7 @@ module.exports = function (grunt)
         app : 'app',
         dist : 'dist',
         tmp : '.tmp',
-        version: '0.7.0',
+        version: '0.9.3',
         staging_api_url : "http://api-beta.rebootgrv.com/api.php",
         staging_site_url : "http://db-beta.rebootgrv.com",
         prod_api_url : "http://api.rebootgrv.com/api.php",
@@ -91,7 +91,8 @@ module.exports = function (grunt)
                     server : {
                         baseDir : ['.tmp', config.app],
                         routes : {
-                            '/bower_components' : './bower_components'
+                            '/bower_components' : './bower_components',
+                            '/node_modules' : './node_modules'
                         }
                     }
                 }
@@ -105,7 +106,8 @@ module.exports = function (grunt)
                     server : {
                         baseDir : ['.tmp', './test', config.app],
                         routes : {
-                            '/bower_components' : './bower_components'
+                            '/bower_components' : './bower_components',
+                            '/node_modules' : './node_modules'
                         }
                     }
                 }
@@ -395,7 +397,7 @@ module.exports = function (grunt)
                     {
                         expand : true,
                         cwd : '<%= config.app %>/images',
-                        src : '*.{gif,jpeg,jpg,png}',
+                        src : '*.{gif,jpeg,jpg,png,ico}',
                         dest : '<%= config.dist %>/images'
                     },
                     {
