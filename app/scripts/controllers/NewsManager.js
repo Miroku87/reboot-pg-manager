@@ -1,38 +1,60 @@
 ﻿var NewsManager = function ()
 {
-  return {
+    return {
 
-    init: function ()
-    {
-      this.setListeners();
-      this.setTextEditor();
-    },
+        init : function ()
+        {
+            this.setListeners();
+            this.setTextEditor();
+        },
 
-    setListeners: function ()
-    {
-      $('#nuova_notizia').wysihtml5({
-        toolbar: {
-          "font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
-          "emphasis": true, //Italics, bold, etc. Default true
-          "lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
-          "html": false, //Button which allows you to edit the generated HTML. Default false
-          "link": true, //Button to insert a link. Default true
-          "image": false, //Button to insert an image. Default true,
-          "color": true, //Button to change color of font
-          "blockquote": true //Blockquote
+        setTextEditor : function ()
+        {
+            CKEDITOR.replace('nuova_notizia', {
+                width : "100%",
+                language : "it",
+                toolbar : [
+                    {name : 'document', items : ['Source']},
+                    {name : 'clipboard', items : ['Cut', 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo'] },
+                    { name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },
+                    { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ] },
+                    { name: 'styles', items : [ 'Styles','Format','Font','FontSize' ] },
+                    { name: 'colors', items : [ 'TextColor','BGColor' ] }
+                ]/*,
+                toolbarGroups : [
+                    {name : 'document', groups : ['mode', 'document', 'doctools']},
+                    {name : 'clipboard', groups : ['clipboard', 'undo']},
+                    {"name" : "basicstyles", "groups" : ["basicstyles"]},
+                    {"name" : "paragraph", "groups" : ["list", "blocks", "indent", "align"]},
+                    {"name" : "document", "groups" : ["mode"]},
+                    {"name" : "insert", "groups" : ["insert"]},
+                    {"name" : "styles", "groups" : ["styles"]},
+                    {"name" : "colors"}
+                ],*/
+                // Remove the redundant buttons from toolbar groups defined above.
+                //removeButtons : 'Link,Unlink,Image,About,Subscript,Superscript,Anchor,Styles,Specialchar'
+            });
+        },
+
+        mostraModalNuovoArticolo : function ()
+        {
+            $("#modal_nuovo_articolo").modal({drop:"static"});
+        },
+
+        setListeners : function ()
+        {
+            $("#btn_creaNotizia").click(this.mostraModalNuovoArticolo.bind(this));
+
+            $( 'input[type="checkbox"]' ).iCheck("destroy");
+            $( 'input[type="checkbox"]' ).iCheck( {
+                checkboxClass : 'icheckbox_square-blue'
+            } );
         }
-      });
-    },
-
-    setListeners: function ()
-    {
-
     }
-  }
 }();
 
 $(function ()
 {
-  NewsManager.init();
+    NewsManager.init();
 });
 

@@ -3,22 +3,107 @@
 {% set section = "news" %}
 {% set titolo_sezione = "RAVNet News"  %}
 {% set descrizione_sezione = ""  %}
+
 {% block mainContent %}
 {{ super() }}
-<div class="box box-primary">
-  <div class="box-header with-border">
-    <h3 class="box-title">Nuova Notizia</h3>
-  </div>
-  <div class="box-body">
-    <textarea id="nuova_notizia" class="resize-vertical" rows="10"></textarea>
-  </div>
-  <div class="box-footer">
-    <button id="invia_nuova_password" class="btn btn-success pull-right submit-btn">Aggiorna Password</button>
-  </div>
+<div class="btn-group pull-center out-of-box">
+    <button type="button"
+            class="btn btn-info inizialmente-nascosto"
+            id="btn_creaNotizia"><i class="fa fa-plus"></i><br>Crea Notizia</button>
+</div>
+{% endblock %}
+
+{% block modals %}
+<div id="modal_nuovo_articolo" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header dialog-header-primary">
+                <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Chiudi</span></button>
+                <h4 class="modal-title text-primary">Scrivi Nuovo Articolo</h4>
+            </div>
+            <div class="modal-body">
+                <form autocomplete="off" aria-autocomplete="none" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Titolo Articolo</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="titolo" name="titolo_articolo" placeholder="Titolo Articolo">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Autore Articolo</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="autore" name="autore_articolo" placeholder="Autore Articolo">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Data In Gioco Articolo</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="data_ig" name="data_id_articolo" placeholder="Data In Gioco dell'Articolo">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Pubblica Manualmente</label>
+                        <div class="col-sm-10">
+                            <div class='checkbox icheck'>
+                                <input type='checkbox' id="pagato"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Data Pubblicazione</label>
+                        <div class="col-sm-10">
+                            <div class="input-group date">
+                                <input type="text"
+                                       class="form-control"
+                                       id="data_pubblicazione"
+                                       name="data_pubblicazione"
+                                       placeholder="Data Pubblicazione"
+                                       data-provide="datepicker"
+                                       data-date-orientation="bottom"
+                                       data-date-autoclose="true"
+                                       data-date-start-date="today"
+                                       data-date-format="dd/mm/yyyy">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Orario Pubblicazione</label>
+                        <div class="col-sm-10">
+                            <div class="input-group bootstrap-timepicker timepicker">
+                                <input id="ora_pubblicazione"
+                                       name="ora_pubblicazione"
+                                       class="form-control"
+                                       data-provide="timepicker"
+                                       data-minute-step="1"
+                                       data-default-time="now"
+                                       data-modal-backdrop="true"
+                                       data-show-meridian="false"
+                                       data-show-inputs="false"
+                                       value="14:00"
+                                       type="text"/>
+                                <label class="input-group-addon btn" for="ora_pubblicazione">
+                                    <span class="fa fa-clock-o"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <textarea id="nuova_notizia" class="resize-vertical" rows="10" style="width: 100%;"></textarea>
+                </form>
+            </div>
+            <div class="box-footer" style="">
+                Footer
+            </div>
+        </div>
+    </div>
 </div>
 
+{{ super() }}
 {% endblock %}
+
 {% block managers %}
 {{ super() }}
+<script src="/bower_components/ckeditor/ckeditor.js"></script>
 <script src="scripts/controllers/NewsManager.js"></script>
 {% endblock %}
