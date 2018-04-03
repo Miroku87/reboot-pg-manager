@@ -1,0 +1,24 @@
+{% extends "./templates/main_template.html" %}
+{% set body_classes = body_classes + " news-page" %}
+{% set section = "news" %}
+{% set titolo_sezione = "RAVNet News"  %}
+{% set descrizione_sezione = ""  %}
+{% block mainContent %}
+{{ super() }}
+<div class="box box-primary">
+  <div class="box-header with-border">
+    <h3 class="box-title">Nuova Notizia</h3>
+  </div>
+  <div class="box-body">
+    <textarea id="nuova_notizia" class="resize-vertical" rows="10"></textarea>
+  </div>
+  <div class="box-footer">
+    <button id="invia_nuova_password" class="btn btn-success pull-right submit-btn">Aggiorna Password</button>
+  </div>
+</div>
+
+{% endblock %}
+{% block managers %}
+{{ super() }}
+<script src="scripts/controllers/NewsManager.js"></script>
+{% endblock %}
