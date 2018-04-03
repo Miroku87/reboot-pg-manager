@@ -33,7 +33,7 @@
 
         onDatiGiocatoreInviati: function ( id_gioc )
         {
-            if( id_gioc === this.user_info.email_giocatore )
+            if( id_gioc !== this.user_info.email_giocatore )
             {
                 Utils.showMessage("Dal momento che la tua mail è cambiata verrai disconnesso.",AdminLTEManager.logout);
                 return;

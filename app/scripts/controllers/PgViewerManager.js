@@ -391,6 +391,8 @@
           vecchio_td.text(vecchio_val.substr(0,50)+"...");
           vecchio_td.append(plus);
         }
+        else
+          vecchio_td.text(vecchio_val);
 
         if( nuovo_val.length > 50 )
         {
@@ -405,6 +407,8 @@
           nuovo_td.text(nuovo_val.substr(0,50)+"...");
           nuovo_td.append(plus);
         }
+        else
+          nuovo_td.text(nuovo_val);
 
         tr.append("<td>" + this.nome_giocatore + "</td>");
         tr.append("<td>" + this.data_azione + "</td>");
