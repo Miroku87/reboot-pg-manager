@@ -373,16 +373,46 @@
       $.each(this.storico, function ()
       {
         var tr = $("<tr></tr>"),
-          vecchio_val = $("<td></td>").text(decodeURIComponent(this.valore_vecchio_azione)),
-          nuovo_val = $("<td></td>").text(decodeURIComponent(this.valore_nuovo_azione));
+          vecchio_val = decodeURIComponent(this.valore_vecchio_azione),
+          nuovo_val = decodeURIComponent(this.valore_nuovo_azione),
+          vecchio_td = $("<td></td>"),
+          nuovo_td = $("<td></td>");
+
+        if( vecchio_val.length > 50 )
+        {
+          var plus = $("<i class='fa fa-plus-circle'></i>");
+          plus.popover({
+            container: "body",
+            placement: "left",
+            trigger: Utils.isDeviceMobile() ? "click" : "hover",
+            content: vecchio_val
+          });
+
+          vecchio_td.text(vecchio_val.substr(0,50)+"...");
+          vecchio_td.append(plus);
+        }
+
+        if( nuovo_val.length > 50 )
+        {
+          var plus = $("<i class='fa fa-plus-circle'></i>");
+          plus.popover({
+            container: "body",
+            placement: "left",
+            trigger: Utils.isDeviceMobile() ? "click" : "hover",
+            content: nuovo_val
+          });
+
+          nuovo_td.text(nuovo_val.substr(0,50)+"...");
+          nuovo_td.append(plus);
+        }
 
         tr.append("<td>" + this.nome_giocatore + "</td>");
         tr.append("<td>" + this.data_azione + "</td>");
         tr.append("<td>" + this.tipo_azione + "</td>");
         tr.append("<td>" + this.tabella_azione + "</td>");
         tr.append("<td>" + this.campo_azione + "</td>");
-        tr.append(vecchio_val);
-        tr.append(nuovo_val);
+        tr.append(vecchio_td);
+        tr.append(nuovo_td);
         $("#recuperaStorico").find("tbody").append(tr);
       });
       $("#recuperaStorico").show();
