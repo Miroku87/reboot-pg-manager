@@ -26,7 +26,7 @@ module.exports = function (grunt)
         app : 'app',
         dist : 'dist',
         tmp : '.tmp',
-        version: '0.9.3',
+        version: '0.9.4',
         staging_api_url : "http://api-beta.rebootgrv.com/api.php",
         staging_site_url : "http://db-beta.rebootgrv.com",
         prod_api_url : "http://api.rebootgrv.com/api.php",
@@ -349,6 +349,20 @@ module.exports = function (grunt)
             }
         },
 
+        eol: {
+          dist: {
+            options: {
+              eol: 'lf',
+              replace: true
+            },
+            files: [
+              {
+                src: ['<%= config.tmp %>/*.html']
+              }
+            ]
+          }
+        },
+
         // Reads HTML for usemin blocks to enable smart builds that automatically
         // concat, minify and revision files. Creates configurations in memory so
         // additional tasks can operate on them
@@ -569,6 +583,7 @@ module.exports = function (grunt)
     grunt.registerTask('preprod', [
         'clean:dist',
         'nunjucks',
+        'eol',
         //'wiredep',
         'useminPrepare',
         'concurrent:dist',
@@ -587,6 +602,7 @@ module.exports = function (grunt)
     grunt.registerTask('prod', [
         'clean:dist',
         'nunjucks',
+        'eol',
         //'wiredep',
         'useminPrepare',
         'concurrent:dist',
