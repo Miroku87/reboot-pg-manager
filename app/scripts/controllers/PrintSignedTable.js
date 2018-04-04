@@ -8,9 +8,25 @@
             this.recuperaInfoIscritti();
 		},
 
+        ordinaDati: function(a, b)
+        {
+            var A = a.nome_completo.toUpperCase(),
+                B = b.nome_completo.toUpperCase();
+
+            if (A < B)
+                return -1;
+
+            if (A > B)
+                return 1;
+
+            return 0;
+        },
+
         riempiTabella: function ( data )
 		{
             var pgs = data.data;
+
+            pgs = pgs.sort(this.ordinaDati);
 
             for( var i in pgs )
             {
@@ -23,7 +39,8 @@
                     tr.append( $("<td></td>").text( pgs[i].nome_personaggio ) );
                     tr.append( $("<td></td>").html( pgs[i].pagato_iscrizione === "1" ? "&#9745;" : "&#9744;" ) );
                     tr.append( $("<td></td>").text( pgs[i].tipo_pagamento_iscrizione ) );
-                    tr.append( $("<td></td>").text( pgs[i].note_iscrizione ) );
+                    tr.append( $("<td></td>").html( !pgs[i].note_iscrizione ? "" : pgs[i].note_iscrizione ) );
+                    tr.append( $("<td></td>").html( !pgs[i].note_giocatore ? "" : pgs[i].note_giocatore ) );
 
                     $("#info_iscritti").find("tbody").append(tr);
                 }

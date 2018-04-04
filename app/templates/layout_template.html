@@ -165,6 +165,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="scripts/utils/Utils.js"></script>
 <script src="scripts/controllers/AdminLTEManager.js"></script>
 <!-- endbuild -->
+
+{% block externalScripts %}
+{% endblock %}
+
 <!-- build:js(.tmp) scripts/{{ section }}-main.js -->
 {% block managers %}
 {% endblock %}
@@ -172,8 +176,5 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- build:js(.tmp) scripts/ckgrnts.js -->
 <script src="scripts/utils/CheckGrants.js"></script>
 <!-- endbuild -->
-
-{% block externalScripts %}
-{% endblock %}
 </body>
 </html>

@@ -6,10 +6,18 @@
 
 {% block mainContent %}
 {{ super() }}
-<div class="btn-group pull-center out-of-box">
-    <button type="button"
-            class="btn btn-info inizialmente-nascosto"
-            id="btn_creaNotizia"><i class="fa fa-plus"></i><br>Crea Notizia</button>
+<div class="box box-primary inizialmente-nascosto creaNotizia modificaNotizia pubblicaNotiza">
+    <div class="box-header with-border">
+        <h3 class="box-title"><a data-widget="collapse">Articoli Creati</a></h3>
+    </div>
+    <div class="box-body">
+        <div class="btn-group pull-center out-of-box">
+            <button type="button"
+                    class="btn btn-info inizialmente-nascosto"
+                    id="btn_creaNotizia"><i class="fa fa-plus"></i><br>Crea Notizia</button>
+        </div>
+        <table id="articoli_creati" class="table table-condensed table-hover table-striped table-bordered" width="100%"></table>
+    </div>
 </div>
 {% endblock %}
 
@@ -23,6 +31,19 @@
             </div>
             <div class="modal-body">
                 <form autocomplete="off" aria-autocomplete="none" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Pagina Articolo</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="tipo" name="tipo_articolo" placeholder="Tipo Articolo">
+                                <option value="-1">Seleziona il tipo dell'articolo...</option>
+                                <option value="Informazioni Commerciali">Informazioni Commerciali</option>
+                                <option value="Contatti nell'Ago">Contatti nell'Ago</option>
+                                <option value="Contatti tra gli Sbirri">Contatti tra gli Sbirri</option>
+                                <option value="Contatti nella Malavita">Contatti nella Malavita</option>
+                                <option value="Contatti nella Famiglia">Contatti nella Famiglia</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Titolo Articolo</label>
                         <div class="col-sm-10">
@@ -45,7 +66,7 @@
                         <label class="col-sm-2 control-label">Pubblica Manualmente</label>
                         <div class="col-sm-10">
                             <div class='checkbox icheck'>
-                                <input type='checkbox' id="pagato"></div>
+                                <input type='checkbox' id="pub_manuale"></div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -61,6 +82,7 @@
                                        data-date-orientation="bottom"
                                        data-date-autoclose="true"
                                        data-date-start-date="today"
+                                       data-modal-backdrop="true"
                                        data-date-format="dd/mm/yyyy">
                                 <div class="input-group-addon">
                                     <span class="glyphicon glyphicon-th"></span>
@@ -77,11 +99,10 @@
                                        class="form-control"
                                        data-provide="timepicker"
                                        data-minute-step="1"
-                                       data-default-time="now"
+                                       data-default-time="current"
                                        data-modal-backdrop="true"
                                        data-show-meridian="false"
                                        data-show-inputs="false"
-                                       value="14:00"
                                        type="text"/>
                                 <label class="input-group-addon btn" for="ora_pubblicazione">
                                     <span class="fa fa-clock-o"></span>
@@ -92,20 +113,20 @@
                     <textarea id="nuova_notizia" class="resize-vertical" rows="10" style="width: 100%;"></textarea>
                 </form>
             </div>
-            <div class="box-footer" style="">
-                Footer
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success submit-btn" id="btn_invia_articolo">Invia Dati</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
             </div>
         </div>
     </div>
 </div>
-
 {{ super() }}
 {% endblock %}
-<!--<script src="../bower_components/ckeditor/ckeditor.js"></script>
-<script src="../bower_components/ckeditor/lang/it.js"></script>
-<script src="../bower_components/ckeditor/plugins/colorbutton/plugin.js"></script>
-<script src="../bower_components/ckeditor/plugins/colorbutton/lang/it.js"></script>
-<script src="../bower_components/ckeditor/config.js"></script>-->
+
+{% block externalScripts %}
+<script src="/bower_components/ckeditor/ckeditor.js"></script>
+{% endblock %}
+
 {% block managers %}
 {{ super() }}
 <script src="scripts/controllers/NewsManager.js"></script>

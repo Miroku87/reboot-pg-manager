@@ -26,6 +26,9 @@ Constants.API_POST_PUNTI_EVENTO          = Constants.API_URL + "/eventsmanager/i
 Constants.API_POST_CREA_RUOLO            = Constants.API_URL + "/grantsmanager/crearuolo";
 Constants.API_POST_DEL_RUOLO             = Constants.API_URL + "/grantsmanager/eliminaruolo";
 Constants.API_POST_ASSOCIA_PERMESSI      = Constants.API_URL + "/grantsmanager/associapermessi";
+Constants.API_POST_CREA_ARTICOLO         = Constants.API_URL + "/newsmanager/creanotizia";
+Constants.API_POST_EDIT_ARTICOLO         = Constants.API_URL + "/newsmanager/modificanotizia";
+Constants.API_POST_PUBBLICA_ARTICOLO     = Constants.API_URL + "/newsmanager/pubblicanotizia";
 
 Constants.API_GET_LOGOUT                 = Constants.API_URL + "/usersmanager/logout";
 Constants.API_GET_ACESS                  = Constants.API_URL + "/usersmanager/controllaaccesso";
@@ -53,6 +56,8 @@ Constants.API_GET_NOTE_ISCRITTO          = Constants.API_URL + "/eventsmanager/r
 Constants.API_GET_RUOLI                  = Constants.API_URL + "/grantsmanager/recuperaruoli";
 Constants.API_GET_PERMESSI               = Constants.API_URL + "/grantsmanager/recuperalistapermessi";
 Constants.API_GET_PERMESSI_DEI_RUOLI     = Constants.API_URL + "/grantsmanager/recuperapermessideiruoli";
+Constants.API_GET_ARTICOLI_PUBBLICATI    = Constants.API_URL + "/newsmanager/recuperanotiziepubbliche";
+Constants.API_GET_TUTTI_ARTICOLI         = Constants.API_URL + "/newsmanager/recuperanotizie";
 
 Constants.API_DEL_GIOCATORE              = Constants.API_URL + "/usersmanager/eliminagiocatore";
 Constants.API_DEL_CLASSE_PG              = Constants.API_URL + "/charactersmanager/rimuoviclassepg";

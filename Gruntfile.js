@@ -346,6 +346,19 @@ module.exports = function (grunt)
                 files: [
                     {src: ['<%= config.dist %>/styles/vendor.*.css'], dest: './'}
                 ]
+            },
+            ckedit: {
+                options: {
+                    patterns: [
+                        {
+                            match: /<script.*?src=.*?ckeditor\.js.*?<\/script>/g,
+                            replacement: '<script src="scripts/ckeditor/ckeditor.js"></script>'
+                        }
+                    ]
+                },
+                files: [
+                    {src: ['<%= config.tmp %>/*.html'], dest: './'}
+                ]
             }
         },
 
@@ -515,6 +528,26 @@ module.exports = function (grunt)
                         src : ['bower_components/font-awesome/fonts/*','bower_components/bootstrap/fonts/*','bower_components/Ionicons/fonts/*'],
                         dest : '<%= config.dist %>/fonts'
                     }]
+            },
+            ckedit : {
+                files: [
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd : 'bower_components/ckeditor/',
+                        dest : '<%= config.dist %>/scripts/ckeditor',
+                        src : [
+                            'ckeditor.js',
+                            'config.js',
+                            'styles.js',
+                            'lang/it.js',
+                            'plugins/colorButton/icons/*',
+                            'plugins/colorButton/lang/it.js',
+                            'plugins/colorButton/plugin.js',
+                            'plugins/skins/moono-lista/*',
+                        ]
+                    }
+                ]
             }
         },
 
@@ -583,6 +616,7 @@ module.exports = function (grunt)
     grunt.registerTask('preprod', [
         'clean:dist',
         'nunjucks',
+        'replace:ckedit',
         'eol',
         //'wiredep',
         'useminPrepare',
@@ -593,6 +627,7 @@ module.exports = function (grunt)
         'cssmin',
         'uglify',
         'copy:dist',
+        'copy:ckedit',
         'filerev',
         'usemin',
         'htmlmin',
@@ -602,6 +637,7 @@ module.exports = function (grunt)
     grunt.registerTask('prod', [
         'clean:dist',
         'nunjucks',
+        'replace:ckedit',
         'eol',
         //'wiredep',
         'useminPrepare',
@@ -612,6 +648,7 @@ module.exports = function (grunt)
         'cssmin',
         'uglify',
         'copy:dist',
+        'copy:ckedit',
         'filerev',
         'usemin',
         'htmlmin',
