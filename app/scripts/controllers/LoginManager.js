@@ -60,13 +60,22 @@ var LoginManager = function () {
                     $("input").serialize(),
                     function( data )
                     {
+                        this.pg_info = data;
+                        delete this.pg_info.status;
+                        delete this.pg_info.pg_da_loggare;
+
                         window.localStorage.clear();
-                        window.localStorage.setItem( 'user', JSON.stringify( data.user_info ) );
+                        window.localStorage.setItem( 'user', JSON.stringify( this.pg_info ) );
 
                         if ( this.redirect_to && this.pgid )
                         {
                             window.localStorage.setItem("pg_da_loggare",this.pgid);
                             Utils.redirectTo(Constants.SITE_URL + "/" + this.redirect_to + ".html");
+                        }
+                        else if( typeof data.pg_da_loggare !== "undefined" )
+                        {
+                            window.localStorage.setItem("pg_da_loggare",data.pg_da_loggare);
+                            Utils.redirectTo( Constants.PG_PAGE );
                         }
                         else
                             Utils.redirectTo(Constants.MAIN_PAGE);

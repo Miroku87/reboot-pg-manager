@@ -20,41 +20,46 @@
                 Utils.controllaAccessoPagina( SECTION_NAME );
         },
 
+        mostraElementiNascosti: function ( permesso )
+        {
+            var permesso_generico = permesso.replace(Constants.TIPO_GRANT_PG_ALTRI, "").replace(Constants.TIPO_GRANT_PG_PROPRIO,"");
+
+            if( typeof permesso === "string" && $("#btn_" + permesso).length > 0 )
+            {
+                $("#btn_" + permesso).show();
+                $("#btn_" + permesso).removeClass("inizialmente-nascosto");
+            }
+
+            if ( typeof permesso === "string" && $("."+permesso).length > 0 )
+            {
+                $("." + permesso).show();
+                $("." + permesso).removeClass("inizialmente-nascosto");
+            }
+
+            if ( typeof permesso === "string" && $("#btn_"+permesso_generico).length > 0 )
+            {
+                $("#btn_" + permesso_generico).show();
+                $("#btn_" + permesso_generico).removeClass("inizialmente-nascosto");
+            }
+
+            if ( typeof permesso === "string" && $("."+permesso_generico).length > 0 )
+            {
+                $("." + permesso_generico).show();
+                $("." + permesso_generico).removeClass("inizialmente-nascosto");
+            }
+        },
+
         controllaPermessi: function ()
         {
             this.user_info = this.user_info || JSON.parse( window.localStorage.getItem('user') );
-            this.pg_info = this.pg_info || JSON.parse( window.localStorage.getItem('logged_pg') );
+            this.pg_info   = this.pg_info || JSON.parse( window.localStorage.getItem('logged_pg') );
 
             if( this.user_info )
             {
                 for( var p in this.user_info.permessi )
                 {
-                    var permesso          = this.user_info.permessi[p],
-                        permesso_generico = permesso.replace(Constants.TIPO_GRANT_PG_ALTRI, "").replace(Constants.TIPO_GRANT_PG_PROPRIO,"");
-
-                    if( typeof permesso === "string" && $("#btn_" + permesso).length > 0 )
-                    {
-                        $("#btn_" + permesso).show();
-                        $("#btn_" + permesso).removeClass("inizialmente-nascosto");
-                    }
-
-                    if ( typeof permesso === "string" && $("."+permesso).length > 0 )
-                    {
-                        $("." + permesso).show();
-                        $("." + permesso).removeClass("inizialmente-nascosto");
-                    }
-
-                    if ( typeof permesso === "string" && $("#btn_"+permesso_generico).length > 0 )
-                    {
-                        $("#btn_" + permesso_generico).show();
-                        $("#btn_" + permesso_generico).removeClass("inizialmente-nascosto");
-                    }
-
-                    if ( typeof permesso === "string" && $("."+permesso_generico).length > 0 )
-                    {
-                        $("." + permesso_generico).show();
-                        $("." + permesso_generico).removeClass("inizialmente-nascosto");
-                    }
+                    var permesso = this.user_info.permessi[p];
+                    this.mostraElementiNascosti( permesso );
                 }
 
                 $(".nome_giocatore").each(function( i, el )
@@ -65,12 +70,11 @@
 
             if( this.pg_info )
             {
-                if (this.pg_info.crafting_chimico)
-                    $("#btn_crafting_chimico").show();
-                if (this.pg_info.crafting_programmazione)
-                    $("#btn_crafting_programmazione").show();
-                if (this.pg_info.crafting_ingegneria)
-                    $("#btn_crafting_ingegneria").show();
+                for( var p in this.pg_info.permessi )
+                {
+                    var permesso = this.pg_info.permessi[p];
+                    this.mostraElementiNascosti( permesso );
+                }
 
                 $("#nome_personaggio").find("p").text( this.pg_info.nome_personaggio );
             }

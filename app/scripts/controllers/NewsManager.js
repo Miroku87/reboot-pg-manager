@@ -1,5 +1,13 @@
 ﻿var NewsManager = function ()
 {
+    var COLORE_PAGINE = {
+        "Informazioni Commerciali" : "box-info",
+        "Contatti nell'Ago" : "box-primary",
+        "Contatti tra gli Sbirri" : "box-success",
+        "Contatti nella Malavita" : "box-danger",
+        "Contatti nella Famiglia" : "box-warning"
+    };
+
     return {
 
         init : function ()
@@ -31,9 +39,30 @@
             });
         },
 
-        mostraArticoliPubblicati : function ()
+        mostraArticoliPubblicati : function ( data )
         {
+            var articoli = data.result,
+                counter  = 0;
 
+            for( var a in articoli )
+            {
+                var art = articoli[a],
+                    collapse = $("#collapse_template").clone();
+
+                collapse.removeClass("inizialmente-nascosto");
+                collapse.removeClass("box-primary");
+                collapse.addClass(COLORE_PAGINE[art.tipo_notizia]);
+
+                collapse.attr("id",null);
+                collapse.find(".panel-collapse").attr("id","collapse_"+(++counter));
+                collapse.find(".box-title > a").attr( "href", "#collapse_"+counter );
+                collapse.find(".box-title > a").text( "["+ art.tipo_notizia +"] "+art.titolo_notizia );
+                collapse.find(".box-body > h1").text( art.titolo_notizia );
+                collapse.find(".data-autore").html( art.data_ig_notizia +"<br>"+art.autore_notizia );
+                collapse.find(".testo").html( art.testo_notizia );
+
+                $("#accordion").append(collapse);
+            }
         },
 
         recuperaArticoliPubblicati : function ()

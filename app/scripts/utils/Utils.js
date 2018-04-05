@@ -224,7 +224,15 @@
                     else if ( data.status === "ok" && typeof success === "function")
                         success(data);
                     else if ( data.status === "error" && ( data.type === "loginError" || data.type === "grantsError" ) && typeof window.AdminLTEManager !== "undefined" )
-                        Utils.showError( data.message, AdminLTEManager.logout );
+                    {
+                        Utils.showError(data.message, AdminLTEManager.logout);
+                        throw new Error(data.message);
+                    }
+                    else if ( data.status === "error" && data.type === "pgLoginError" )
+                    {
+                        Utils.showError( data.message, Utils.redirectTo.bind(this, Constants.MAIN_PAGE) );
+                        throw new Error(data.message);
+                    }
                     else if ( data.status === "error" && typeof failure === "string" )
                         Utils.showError( failure, onFailureHide );
                     else if ( data.status === "error" && typeof failure === "function" )
