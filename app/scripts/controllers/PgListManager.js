@@ -380,6 +380,13 @@
         recuperaDatiLocali: function()
         {
             this.user_info = JSON.parse( window.localStorage.getItem("user") );
+
+            if( typeof this.pg_info.pg_da_loggare !== "undefined" )
+            {
+                window.localStorage.setItem("pg_da_loggare",this.pg_info.pg_da_loggare);
+                Utils.redirectTo( Constants.PG_PAGE );
+                throw new Error("Non è possibile rimanere su questa pagina.");
+            }
         },
 
         setListeners: function()

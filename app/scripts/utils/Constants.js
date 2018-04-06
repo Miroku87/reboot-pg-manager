@@ -29,6 +29,7 @@ Constants.API_POST_ASSOCIA_PERMESSI      = Constants.API_URL + "/grantsmanager/a
 Constants.API_POST_CREA_ARTICOLO         = Constants.API_URL + "/newsmanager/creanotizia";
 Constants.API_POST_EDIT_ARTICOLO         = Constants.API_URL + "/newsmanager/modificanotizia";
 Constants.API_POST_PUBBLICA_ARTICOLO     = Constants.API_URL + "/newsmanager/pubblicanotizia";
+Constants.API_POST_RITIRA_ARTICOLO       = Constants.API_URL + "/newsmanager/ritiranotizia";
 
 Constants.API_GET_LOGOUT                 = Constants.API_URL + "/usersmanager/logout";
 Constants.API_GET_ACESS                  = Constants.API_URL + "/usersmanager/controllaaccesso";

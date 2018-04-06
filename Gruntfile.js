@@ -540,11 +540,17 @@ module.exports = function (grunt)
                             'ckeditor.js',
                             'config.js',
                             'styles.js',
+                            'contents.css',
                             'lang/it.js',
-                            'plugins/colorButton/icons/*',
-                            'plugins/colorButton/lang/it.js',
-                            'plugins/colorButton/plugin.js',
-                            'plugins/skins/moono-lista/*',
+                            'skins/moono-lisa/**',
+                            'plugins/*.png',
+                            'plugins/colorbutton/icons/**',
+                            'plugins/colorbutton/lang/it.js',
+                            'plugins/colorbutton/plugin.js',
+                            'plugins/panelbutton/**',
+                            'plugins/scayt/**',
+                            'plugins/tableselection/**',
+                            'plugins/wsc/**'
                         ]
                     }
                 ]

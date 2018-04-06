@@ -62,7 +62,6 @@ var LoginManager = function () {
                     {
                         this.pg_info = data;
                         delete this.pg_info.status;
-                        delete this.pg_info.pg_da_loggare;
 
                         window.localStorage.clear();
                         window.localStorage.setItem( 'user', JSON.stringify( this.pg_info ) );

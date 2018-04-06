@@ -38,6 +38,27 @@
 {% endblock %}
 
 {% block modals %}
+<div id="modal_anteprima_articolo" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header dialog-header-primary">
+                <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Chiudi</span></button>
+                <h4 class="modal-title text-primary">Anteprima Articolo</h4>
+            </div>
+            <div class="modal-body">
+                <h1></h1>
+                <p class="data-autore"></p>
+                <p class="testo"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger submit-btn" id="btn_elimina_articolo">Elimina Articolo</button>
+                <button type="button" class="btn btn-warning submit-btn inizialmente-nascosto" id="btn_ritira_articolo">Ritira Articolo</button>
+                <button type="button" class="btn btn-success submit-btn inizialmente-nascosto" id="btn_pubblica_articolo">Pubblica Articolo</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="modal_nuovo_articolo" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -97,7 +118,6 @@
                                        data-provide="datepicker"
                                        data-date-orientation="bottom"
                                        data-date-autoclose="true"
-                                       data-date-start-date="today"
                                        data-modal-backdrop="true"
                                        data-date-format="dd/mm/yyyy">
                                 <div class="input-group-addon">

@@ -15,6 +15,192 @@
             this.setListeners();
             this.setTextEditor();
             this.recuperaArticoliPubblicati();
+            this.impostaTabellaArticoli();
+        },
+
+        pubblicaArticolo : function ( id )
+        {
+            Utils.requestData(
+                Constants.API_POST_PUBBLICA_ARTICOLO,
+                "POST",
+                {id:id},
+                "Articolo pubblicato correttamente.",
+                null,
+                Utils.reloadPage
+            );
+        },
+
+        confermaPubblicaArticolo : function ( id, titolo )
+        {
+            Utils.showConfirm("Sicuro di voler pubblicare l'articolo \"<strong>"+titolo+"</strong>\"?", this.pubblicaArticolo.bind(this, id));
+        },
+
+        ritiraArticolo : function ( id )
+        {
+            Utils.requestData(
+                Constants.API_POST_RITIRA_ARTICOLO,
+                "POST",
+                {id:id},
+                "Articolo ritirato correttamente.",
+                null,
+                Utils.reloadPage
+            );
+        },
+
+        confermaRitiraArticolo : function ( id, titolo )
+        {
+            Utils.showConfirm("Sicuro di voler ritirare l'articolo \"<strong>"+titolo+"</strong>\"?", this.ritiraArticolo.bind(this, id));
+        },
+
+        mostraAnteprimaArticolo : function ( e )
+        {
+            var t = $(e.target),
+                dati = this.tab_articoli.row( t.parents('tr') ).data();
+
+            $("#modal_anteprima_articolo").find(".modal-body > h1").text( dati.titolo_notizia );
+            $("#modal_anteprima_articolo").find(".data-autore").html( dati.data_ig_notizia +"<br>"+dati.autore_notizia );
+            $("#modal_anteprima_articolo").find(".testo").html( dati.testo_notizia );
+
+            $("#modal_anteprima_articolo").find("#btn_ritira_articolo").unbind("click");
+            $("#modal_anteprima_articolo").find("#btn_ritira_articolo").unbind("click");
+
+            if( dati.pubblica_notizia === "S&igrave;" )
+            {
+                $("#modal_anteprima_articolo").find("#btn_ritira_articolo").show();
+                $("#modal_anteprima_articolo").find("#btn_ritira_articolo").click(this.confermaRitiraArticolo.bind(this,dati.id_notizia,dati.titolo_notizia));
+            }
+            else
+            {
+                $("#modal_anteprima_articolo").find("#btn_pubblica_articolo").show();
+                $("#modal_anteprima_articolo").find("#btn_pubblica_articolo").click(this.confermaPubblicaArticolo.bind(this,dati.id_notizia,dati.titolo_notizia));
+            }
+
+            $("#modal_anteprima_articolo").modal({drop:"static"});
+        },
+
+        mostraModificaArticolo : function ( e )
+        {
+            var t           = $(e.target),
+                dati        = this.tab_articoli.row( t.parents('tr') ).data(),
+                pub_manuale = dati.data_pubblicazione_notizia === "Manuale",
+                data_pub    = pub_manuale ? null : dati.data_pubblicazione_notizia.split(" ").shift(),
+                ora_pub     = pub_manuale ? null : dati.data_pubblicazione_notizia.split(" ").pop().replace(/:00$/,"");
+
+            $("#modal_nuovo_articolo").find("#tipo").val( dati.tipo_notizia );
+            $("#modal_nuovo_articolo").find("#titolo").val( dati.titolo_notizia );
+            $("#modal_nuovo_articolo").find("#autore").val( dati.autore_notizia );
+            $("#modal_nuovo_articolo").find("#data_ig").val( dati.data_ig_notizia );
+            $("#modal_nuovo_articolo").find("#pub_manuale").iCheck( pub_manuale ? "Check" : "Uncheck" );
+            $("#modal_nuovo_articolo").find("#data_pubblicazione").val( data_pub );
+            $("#modal_nuovo_articolo").find("#ora_pubblicazione").val( ora_pub );
+            CKEDITOR.instances.nuova_notizia.setData( dati.testo_notizia );
+
+            if( pub_manuale )
+            {
+                $("#modal_nuovo_articolo").find("#data_pubblicazione").hide();
+                $("#modal_nuovo_articolo").find("#ora_pubblicazione").hide();
+            }
+
+            Utils.resetSubmitBtn();
+            $("#modal_nuovo_articolo").find("#btn_invia_articolo").attr("data-id",dati.id_notizia);
+            $("#modal_nuovo_articolo").find("#btn_invia_articolo").text("Invia Modifiche");
+            $("#modal_nuovo_articolo").modal({drop:"static"});
+        },
+
+        renderPulsantiAzioni : function ( data, type )
+        {
+            var pulsanti = "";
+
+            pulsanti += "<button type='button' " +
+                "class='btn btn-xs btn-default anteprima-articolo' " +
+                "data-toggle='tooltip' " +
+                "data-placement='top' " +
+                "title='Anteprima Articolo'><i class='fa fa-eye'></i></button>";
+
+            pulsanti += "<button type='button' " +
+                "class='btn btn-xs btn-default modifica-articolo' " +
+                "data-toggle='tooltip' " +
+                "data-placement='top' " +
+                "title='Modifica Articolo'><i class='fa fa-edit'></i></button>";
+
+            return pulsanti;
+        },
+
+        tabArticoliDraw : function ()
+        {
+            $("[data-toggle='tooltip']").tooltip("destroy");
+            $("[data-toggle='tooltip']").tooltip();
+
+            $("td > button.anteprima-articolo").unbind("click");
+            $("td > button.anteprima-articolo").click(this.mostraAnteprimaArticolo.bind(this));
+
+            $("td > button.modifica-articolo").unbind("click");
+            $("td > button.modifica-articolo").click(this.mostraModificaArticolo.bind(this));
+        },
+
+        impostaTabellaArticoli: function()
+        {
+            var columns       = [];
+
+            columns.push({
+                title: "ID",
+                data: "id_notizia"
+            });
+            columns.push({
+                title: "Creazione",
+                data   : "data_creazione_notizia"
+            });
+            columns.push({
+                title: "Tipo",
+                data   : "tipo_notizia"
+            });
+            columns.push({
+                title: "Titolo",
+                data   : "titolo_notizia"
+            });
+            columns.push({
+                title: "Autore",
+                data   : "autore_notizia"
+            });
+            columns.push({
+                title: "Data In Gioco",
+                data: "data_ig_notizia"
+            });
+            columns.push({
+                title: "Data Pubblicazione",
+                data: "data_pubblicazione_notizia"
+            });
+            columns.push({
+                title: "Pubblica",
+                data: "pubblica_notizia"
+            });
+            columns.push({
+                title: "Azioni",
+                render: this.renderPulsantiAzioni.bind(this)
+            });
+
+            this.tab_articoli = $("#articoli_creati")
+                .on("draw.dt", this.tabArticoliDraw.bind(this))
+                .DataTable({
+                    processing : true,
+                    serverSide : true,
+                    dom : "<'row'<'col-sm-6'lB><'col-sm-6'f>>" +
+                    "<'row'<'col-sm-12 table-responsive'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                    buttons : ["reload"],
+                    language : Constants.DATA_TABLE_LANGUAGE,
+                    ajax : function (data, callback)
+                    {
+                        Utils.requestData(
+                            Constants.API_GET_TUTTI_ARTICOLI,
+                            "GET",
+                            data,
+                            callback
+                        );
+                    }.bind(this),
+                    columns : columns,
+                    order : [[0, 'desc']]
+                });
         },
 
         mostraTimePicker: function()
@@ -75,12 +261,12 @@
             );
         },
 
-        inviaNuovoArticolo : function ()
+        inviaNuovoArticolo : function ( e )
         {
-            Utils.requestData(
-                Constants.API_POST_CREA_ARTICOLO,
-                "POST",
-                {
+            var t    = $(e.target),
+                id   = t.attr("data-id"),
+                url  = !id ? Constants.API_POST_CREA_ARTICOLO : Constants.API_POST_EDIT_ARTICOLO,
+                data = {
                     tipo     : $("#tipo").val(),
                     titolo   : $("#titolo").val(),
                     autore   : $("#autore").val(),
@@ -90,7 +276,21 @@
                     ora_pub  : $("#ora_pubblicazione").val(),
                     testo    : CKEDITOR.instances.nuova_notizia.getData()
                 },
-                "Articolo inserito correttamente. &Egrave; possibile pubblicarlo dalla tabella riassuntiva."
+                mex  = "Articolo inserito correttamente. &Egrave; possibile pubblicarlo dalla tabella riassuntiva.";
+
+            if( id )
+            {
+                data.id = id;
+                mex = "Articolo modificato correttamente.";
+            }
+
+            Utils.requestData(
+                url,
+                "POST",
+                data,
+                mex,
+                null,
+                Utils.reloadPage
             );
         },
 
@@ -100,6 +300,11 @@
             $("#modal_nuovo_articolo").find("select").val(-1);
             $("#modal_nuovo_articolo").find("input[type='checkbox']").iCheck("Uncheck");
             CKEDITOR.instances.nuova_notizia.setData("");
+
+            Utils.resetSubmitBtn();
+
+            $("#modal_nuovo_articolo").find("#btn_invia_articolo").attr("data-id",null);
+            $("#modal_nuovo_articolo").find("#btn_invia_articolo").text("Invia Dati");
             $("#modal_nuovo_articolo").modal({drop:"static"});
         },
 
