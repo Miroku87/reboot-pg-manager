@@ -224,8 +224,8 @@
                     .val(Utils.unStripHMTLTag(decodeURIComponent(this.pg_info.background_personaggio))
                               .replace("<br>", "\r"));
 
-                if (Utils.controllaPermessi(this.user_info, ["modificaPG_background_personaggio_altri"])
-                    || ( this.pg_nato_in_olocausto && !this.pg_info.motivazioni ))
+                if ( Utils.controllaPermessiUtente( this.user_info, ["modificaPG_background_personaggio_altri"] )
+                    || ( this.pg_nato_in_olocausto && !this.pg_info.motivazioni ) )
                     $("#aggiungi_bg").show();
                 else
                     $("#aggiungi_bg").hide();
@@ -240,7 +240,7 @@
 
         impostaBoxNoteMaster : function ()
         {
-            if (Utils.controllaPermessi(this.user_info, ["recuperaNoteMaster_altri", "recuperaNoteMaster_proprio"]))
+            if (Utils.controllaPermessiUtente(this.user_info, ["recuperaNoteMaster_altri", "recuperaNoteMaster_proprio"]))
             {
                 $("#recuperaNoteMaster").show();
                 $("#avviso_note_master").show();
@@ -375,7 +375,8 @@
                 $("[data-toggle='tooltip']").tooltip();
                 Utils.setSubmitBtn();
                 AdminLTEManager.controllaPermessi();
-            }, 100);
+                AdminLTEManager.controllaPermessi(".sidebar-menu", true);
+            }.bind(this), 100);
         },
 
         mostraStorico : function ()
@@ -554,9 +555,10 @@
                 {
                     this.pg_info = data.result;
 
-                    var pg_no_bg = JSON.parse(JSON.stringify(this.pg_info));
+                    var pg_no_bg = JSON.parse( JSON.stringify(this.pg_info) );
                     delete pg_no_bg.background_personaggio;
 
+                    window.localStorage.removeItem('logged_pg');
                     window.localStorage.setItem('logged_pg', JSON.stringify(pg_no_bg));
 
                     this.controllaMotivazioniOlocausto();

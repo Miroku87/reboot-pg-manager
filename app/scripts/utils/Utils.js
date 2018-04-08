@@ -259,7 +259,7 @@
             });
         },
 
-        controllaPermessi: function ( user_info, permessi, tutti )
+        controllaPermessiUtente: function ( user_info, permessi, tutti )
         {
             tutti = typeof tutti === "undefined" ? true : tutti;
 
@@ -275,6 +275,36 @@
                 return true;
             else
                 return false;
+        },
+
+        controllaPermessiPg: function ( pg_info, permessi, tutti )
+        {
+            tutti = typeof tutti === "undefined" ? true : tutti;
+
+            for( var p in permessi )
+            {
+                if( tutti && pg_info.permessi.indexOf( permessi[p] ) === -1 )
+                    return false;
+                else if ( !tutti && pg_info.permessi.indexOf( permessi[p] ) !== -1 )
+                    return true;
+            }
+
+            if( tutti )
+                return true;
+            else
+                return false;
+        },
+
+        rimuoviPermessi: function( info, permessi )
+        {
+            var rimuovi_da = info.permessi;
+
+            for( var p in permessi )
+            {
+                var i = rimuovi_da.indexOf( permessi[p] );
+                if( i !== -1 )
+                    rimuovi_da.splice(i,1);
+            }
         },
 
         pad: function (num, size)

@@ -27,6 +27,8 @@ module.exports = function (grunt)
         dist : 'dist',
         tmp : '.tmp',
         version: '0.9.4',
+        local_api_url : "/reboot_api_local/api.php",
+        local_site_url : "/reboot_database_local",
         staging_api_url : "http://api-beta.rebootgrv.com/api.php",
         staging_site_url : "http://db-beta.rebootgrv.com",
         prod_api_url : "http://api.rebootgrv.com/api.php",
@@ -300,6 +302,23 @@ module.exports = function (grunt)
 
         // Replacing dev vars with prod ones
         replace : {
+            local_urls: {
+                options: {
+                    patterns: [
+                        {
+                            match: /(Constants\.API_URL\s*?=\s*?)"[\S\s]*?";/,
+                            replacement: '$1"<%= config.local_api_url %>";'
+                        },
+                        {
+                            match: /(Constants\.SITE_URL\s*?=\s*?)"[\S\s]*?";/,
+                            replacement: '$1"<%= config.local_site_url %>";'
+                        }
+                    ]
+                },
+                files: [
+                    {src: ['.tmp/scripts/utils/Constants.js'], dest: './'}
+                ]
+            },
             staging_urls: {
                 options: {
                     patterns: [
@@ -618,7 +637,60 @@ module.exports = function (grunt)
         ]);
     });
 
-    //TODO: sistemare l'url dell'immagine di icheck
+    grunt.registerTask('get-local-ip', 'Get IP Address for LAN.', function()
+    {
+        var os              = require('os'),
+            ifaces          = os.networkInterfaces(),
+            lookupIpAddress = null,
+            devices         = ["enl","en0","WiFi", "Ethernet"];
+
+        for (var dev in ifaces)
+        {
+            if(devices.indexOf(dev) === -1)
+                continue;
+
+            ifaces[dev].some(function(details)
+            {
+                if (details.family=='IPv4')
+                {
+                    lookupIpAddress = details.address;
+                    return true;
+                }
+            });
+        }
+
+        grunt.log.writeln("Local IP Address found: "+lookupIpAddress);
+        var old_config = grunt.config.get("config"),
+            new_config = JSON.parse(JSON.stringify(old_config));
+
+        new_config.local_api_url = "http://" + lookupIpAddress + old_config.local_api_url;
+        new_config.local_site_url = "http://" + lookupIpAddress + old_config.local_site_url;
+
+        grunt.config.set('config', new_config);
+    });
+
+    grunt.registerTask('local', [
+        'clean:dist',
+        'nunjucks',
+        'replace:ckedit',
+        'eol',
+        //'wiredep',
+        'useminPrepare',
+        'concurrent:dist',
+        'postcss',
+        'get-local-ip',
+        'replace:local_urls',
+        'concat',
+        'cssmin',
+        'uglify',
+        'copy:dist',
+        'copy:ckedit',
+        'filerev',
+        'usemin',
+        'htmlmin',
+        'replace:icheck_images'
+    ]);
+
     grunt.registerTask('preprod', [
         'clean:dist',
         'nunjucks',

@@ -60,6 +60,7 @@
     }
   },
   "dependencies": {
+    "jquery.terminal": "^1.14.0",
     "popper.js": "^1.12.5",
     "qrcodejs": "^1.0.0",
     "uglify-js": "^3.2.0"

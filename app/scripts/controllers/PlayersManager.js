@@ -190,7 +190,7 @@
                 "data-placement='top' " +
                 "title='Scrivi Messaggio'><i class='fa fa-envelope-o'></i></button>";
 
-            if( Utils.controllaPermessi( this.user_info, permessi_modifica, true ) )
+            if( Utils.controllaPermessiUtente( this.user_info, permessi_modifica, true ) )
                 pulsanti += "<button type='button' " +
                     "class='btn btn-xs btn-default modificaGiocatore' " +
                     "data-id='"+row.email_giocatore+"' " +

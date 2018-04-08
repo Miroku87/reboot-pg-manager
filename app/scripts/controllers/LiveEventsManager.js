@@ -183,7 +183,7 @@ var LiveEventsManager = function ()
                         ""+checked+">" +
                     "</div>",
                 pagato = data === "1" ? "S&igrave;" : "No",
-                output = Utils.controllaPermessi( this.user_info, ["modificaIscrizionePG_pagato_iscrizione_proprio","modificaIscrizionePG_pagato_iscrizione_altri"]) ? checkbox : pagato;
+                output = Utils.controllaPermessiUtente( this.user_info, ["modificaIscrizionePG_pagato_iscrizione_proprio","modificaIscrizionePG_pagato_iscrizione_altri"]) ? checkbox : pagato;
 
             return output;
         },
@@ -249,7 +249,7 @@ var LiveEventsManager = function ()
         impostaTabellaPgIscritti: function( quando )
         {
             var columns       = [],
-                permessi_avan = Utils.controllaPermessi( this.user_info, [ "recuperaListaIscrittiAvanzato" ]),
+                permessi_avan = Utils.controllaPermessiUtente( this.user_info, [ "recuperaListaIscrittiAvanzato" ]),
                 url           = permessi_avan ? Constants.API_GET_INFO_ISCRITTI_AVANZATE : Constants.API_GET_INFO_ISCRITTI_BASE;
 
             if( !permessi_avan && quando === "precedente" )
@@ -285,7 +285,7 @@ var LiveEventsManager = function ()
                     render : this.creaCheckBoxPagato.bind(this)
                 });
 
-            if( Utils.controllaPermessi( this.user_info, ["modificaIscrizionePG_pagato_iscrizione_proprio","modificaIscrizionePG_pagato_iscrizione_altri"]) )
+            if( Utils.controllaPermessiUtente( this.user_info, ["modificaIscrizionePG_pagato_iscrizione_proprio","modificaIscrizionePG_pagato_iscrizione_altri"]) )
                 columns.push({
                     title : "Tipo Pagamento",
                     data : "tipo_pagamento_iscrizione"
@@ -298,7 +298,7 @@ var LiveEventsManager = function ()
                     render : $.fn.dataTable.render.ellipsis(20, true, false)
                 });
 
-            if (Utils.controllaPermessi( this.user_info, ["disiscriviPG_altri","disiscriviPG_proprio", "modificaIscrizionePG_note_iscrizione_proprio","modificaIscrizionePG_note_iscrizione_altri"], false ))
+            if (Utils.controllaPermessiUtente( this.user_info, ["disiscriviPG_altri","disiscriviPG_proprio", "modificaIscrizionePG_note_iscrizione_proprio","modificaIscrizionePG_note_iscrizione_altri"], false ))
             {
                 columns.push({
                     title : "Azioni",
@@ -473,7 +473,7 @@ var LiveEventsManager = function ()
 
         impostaTabellaEventiPreparati: function( d )
         {
-            if( !Utils.controllaPermessi(this.user_info, ["recuperaListaEventi"]) )
+            if( !Utils.controllaPermessiUtente(this.user_info, ["recuperaListaEventi"]) )
                 return false;
 
             var columns = [];

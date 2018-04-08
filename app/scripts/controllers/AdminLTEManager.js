@@ -1,7 +1,6 @@
 ﻿var AdminLTEManager = function ()
 {
-    var SERVER       = window.location.protocol + "//" + window.location.host + "/",
-        SECTION_NAME = window.location.href.replace( SERVER, "" ).replace( window.location.search, "" ).split( "/").shift().split(".").shift(),
+    var SECTION_NAME = window.location.href.replace( Constants.SITE_URL+"/", "" ).replace( window.location.search, "" ).replace(/\.\w+$/,""),
         NO_CONTROLLO = ["index","recupera_password","registrazione"];
 
     return {
@@ -9,7 +8,7 @@
         init: function ()
         {
             this.setListeners();
-            this.controllaPermessi();
+            this.controllaPermessi(".sidebar-menu", true);
         },
 
         controllaAccesso: function ()
@@ -20,46 +19,52 @@
                 Utils.controllaAccessoPagina( SECTION_NAME );
         },
 
-        mostraElementiNascosti: function ( permesso )
+        mostraElementiNascosti: function ( in_selector, animate, permesso )
         {
-            var permesso_generico = permesso.replace(Constants.TIPO_GRANT_PG_ALTRI, "").replace(Constants.TIPO_GRANT_PG_PROPRIO,"");
+            var permesso_generico = permesso.replace(Constants.TIPO_GRANT_PG_ALTRI, "").replace(Constants.TIPO_GRANT_PG_PROPRIO,""),
+                animation = animate ? "fadeIn" : null;
 
             if( typeof permesso === "string" && $("#btn_" + permesso).length > 0 )
             {
-                $("#btn_" + permesso).show();
-                $("#btn_" + permesso).removeClass("inizialmente-nascosto");
+                $(in_selector).find("#btn_" + permesso).show(animation);
+                //$("#btn_" + permesso).removeClass("inizialmente-nascosto");
             }
 
             if ( typeof permesso === "string" && $("."+permesso).length > 0 )
             {
-                $("." + permesso).show();
-                $("." + permesso).removeClass("inizialmente-nascosto");
+                $(in_selector).find("." + permesso).show(animation);
+                //$("." + permesso).removeClass("inizialmente-nascosto");
             }
 
             if ( typeof permesso === "string" && $("#btn_"+permesso_generico).length > 0 )
             {
-                $("#btn_" + permesso_generico).show();
-                $("#btn_" + permesso_generico).removeClass("inizialmente-nascosto");
+                $(in_selector).find("#btn_" + permesso_generico).show(animation);
+                //$("#btn_" + permesso_generico).removeClass("inizialmente-nascosto");
             }
 
             if ( typeof permesso === "string" && $("."+permesso_generico).length > 0 )
             {
-                $("." + permesso_generico).show();
-                $("." + permesso_generico).removeClass("inizialmente-nascosto");
+                $(in_selector).find("." + permesso_generico).show(animation);
+                //$("." + permesso_generico).removeClass("inizialmente-nascosto");
             }
         },
 
-        controllaPermessi: function ()
+        controllaPermessi: function ( in_selector, animate )
         {
-            this.user_info = this.user_info || JSON.parse( window.localStorage.getItem('user') );
-            this.pg_info   = this.pg_info || JSON.parse( window.localStorage.getItem('logged_pg') );
+            in_selector = typeof in_selector === "undefined" ? ".content-wrapper > .content" : in_selector;
+            animate     = typeof animate === "undefined" ? false : animate;
+
+            this.user_info = JSON.parse( window.localStorage.getItem('user') );
+            this.pg_info   = JSON.parse( window.localStorage.getItem('logged_pg') );
+
+            $(in_selector).find(".inizialmente-nascosto").hide();
 
             if( this.user_info )
             {
                 for( var p in this.user_info.permessi )
                 {
                     var permesso = this.user_info.permessi[p];
-                    this.mostraElementiNascosti( permesso );
+                    this.mostraElementiNascosti( in_selector, animate, permesso );
                 }
 
                 $(".nome_giocatore").each(function( i, el )
@@ -73,7 +78,7 @@
                 for( var p in this.pg_info.permessi )
                 {
                     var permesso = this.pg_info.permessi[p];
-                    this.mostraElementiNascosti( permesso );
+                    this.mostraElementiNascosti( in_selector, animate, permesso );
                 }
 
                 $("#nome_personaggio").find("p").text( this.pg_info.nome_personaggio );
