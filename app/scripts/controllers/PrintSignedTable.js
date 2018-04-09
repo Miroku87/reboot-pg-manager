@@ -45,6 +45,21 @@
                     $("#info_iscritti").find("tbody").append(tr);
                 }
             }
+
+            for( var j = 0; j < 5; j++ )
+            {
+                var tr = $("<tr></tr>");
+
+                tr.append( $("<td></td>").html("&nbsp;") );
+                tr.append( $("<td></td>").html("&nbsp;") );
+                tr.append( $("<td></td>").html("&nbsp;") );
+                tr.append( $("<td></td>").html( "&#9744;" ) );
+                tr.append( $("<td></td>").html("&nbsp;") );
+                tr.append( $("<td></td>").html("&nbsp;") );
+                tr.append( $("<td></td>").html("&nbsp;") );
+
+                $("#info_iscritti").find("tbody").append(tr);
+            }
 		},
 
         recuperaInfoIscritti: function ()

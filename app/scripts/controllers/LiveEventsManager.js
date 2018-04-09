@@ -561,11 +561,17 @@ var LiveEventsManager = function ()
 
                 this.riempiCampiEvento( data );
 
+                $("#info_prossimo_evento").removeClass("inizialmente-nascosto");
                 $("#info_prossimo_evento").show();
+
+                $("#partecipanti_evento").removeClass("inizialmente-nascosto");
                 $("#partecipanti_evento").show();
             }
             else
-                $("#no_evento").show(400)
+            {
+                $("#no_evento").removeClass("inizialmente-nascosto");
+                $("#no_evento").show(400);
+            }
         },
 
         creaListaPG: function( d )
