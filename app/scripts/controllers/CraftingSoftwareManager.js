@@ -171,10 +171,10 @@ var CraftingSoftwareManager = function ()
             setTimeout(function ()
             {
                 clearInterval(this.terminal_timer);
-                var frame = spinner.frames[i % spinner.frames.length];
+                var frame = spinner.frames[0];
                 term.set_prompt(this.terminal_prompt).echo(frame);
                 term.find('.cursor').show();
-            }, 0);
+            }.bind(this), 0);
         },
     
         showFinalMessage : function ()
@@ -206,20 +206,31 @@ var CraftingSoftwareManager = function ()
                 50 + TECHNO_BABBLE[i].delay);
         },
 
-        inviaDatiCrafting : function ( dati )
+        craftinInviato : function (  )
         {
-            //TODO: fai partire finta compilazione
-            //this.start( this.terminal, SPINNERS.line );
-            this.terminal.cols();
+            this.stop(this.terminal,SPINNERS.line);
             this.progress(this.terminal, 0);
             this.showTechnoBabble();
         },
 
+        inviaDatiCrafting : function ( programmi )
+        {
+            this.start(this.terminal,SPINNERS.line);
+            Utils.requestData(
+                Constants.API_POST_CRAFTING_PROGRAMMA,
+                "POST",
+                { pg: this.pg_info.id_personaggio, programmi: programmi },
+                this.craftinInviato.bind(this)
+            );
+        },
+
         ask_questions : function (step)
         {
-            var question = QUESTIONS[step];
+            var question = this.domande[step];
             if (question)
             {
+                var ai = this.answers.length - 1;
+
                 if (question.text)
                     this.terminal.echo('[[b;#fff;]' + question.text + ']');
 
@@ -238,7 +249,7 @@ var CraftingSoftwareManager = function ()
                             }
                             if (typeof value != 'undefined')
                             {
-                                this.answers[question.name] = value;
+                                this.answers[ai][question.name] = value;
                                 this.terminal.pop();
                                 this.ask_questions(step + 1);
                             }
@@ -247,7 +258,7 @@ var CraftingSoftwareManager = function ()
                         {
                             if( typeof question.validation === "function" && question.validation(command) === true || typeof question.validation !== "function" )
                             {
-                                this.answers[question.name] = command;
+                                this.answers[ai][question.name] = command;
                                 this.terminal.pop();
                                 this.ask_questions(step + 1);
                             }
@@ -260,15 +271,15 @@ var CraftingSoftwareManager = function ()
                     }
                 );
                 
-                if (typeof this.answers[question.name] != 'undefined')
+                if (typeof this.answers[ai][question.name] != 'undefined')
                 {
-                    if (typeof this.answers[question.name] == 'boolean')
+                    if (typeof this.answers[ai][question.name] == 'boolean')
                     {
-                        this.terminal.set_command(this.answers[question.name] ? 's' : 'n');
+                        this.terminal.set_command(this.answers[ai][question.name] ? 's' : 'n');
                     }
                     else
                     {
-                        this.terminal.set_command(this.answers[question.name]);
+                        this.terminal.set_command(this.answers[ai][question.name]);
                     }
                 }
             }
@@ -278,41 +289,77 @@ var CraftingSoftwareManager = function ()
             }
         },
 
+        chiediConferma: function ( domanda, seSi, seNo )
+        {
+            this.terminal.push(function (command)
+                {
+                    if ( command.match(/^s$/i) && typeof seSi === "function" )
+                        seSi();
+                    else if ( command.match(/^n$/i) && typeof seNo === "function" )
+                        seNo();
+                }.bind(this),
+                {
+                    prompt : domanda + ' '
+                });
+        },
+
+        terminaDomande: function ()
+        {
+            this.inviaDatiCrafting(this.answers);
+        },
+
+        mostraDomande: function ( cancella_precedenti )
+        {
+            cancella_precedenti = typeof cancella_precedenti === "undefined" ? true : cancella_precedenti;
+
+            if( cancella_precedenti )
+                this.answers.pop();
+
+            this.answers.push({});
+            this.terminal.pop();
+            this.ask_questions(0);
+        },
+
+        aggiungiProgrammi: function ()
+        {
+            this.terminal.pop();
+            if( this.max_programmi > 1 && ++this.num_programmi < this.max_programmi )
+            {
+                this.domande = this.domande.filter(function(el){ return el.name !== "nome_programma"; });
+                this.chiediConferma(
+                    "In base ai dati sulle tue capacit&agrave puoi aggiungere un nuovo programma al precedente.\nProcedere? (s|n)",
+                    this.mostraDomande.bind(this, false),
+                    this.terminaDomande.bind(this)
+                );
+            }
+            else
+                this.terminaDomande( );
+        },
+
         finish : function ()
         {
             this.terminal.echo('\nSono stati inseriti i seguenti valori:');
-            var str = Object.keys(this.answers).map(function (key)
+            var ai = this.answers.length - 1,
+                str = Object.keys(this.answers[ai]).map(function (key)
                 {
-                    var value = this.answers[key];
+                    var value = this.answers[ai][key];
                     return '[[b;#fff;]' + key + ']: ' + value;
                 }.bind(this)).join('\n');
             this.terminal.echo(str);
-            this.terminal.push(function (command)
-                {
-                    if (command.match(/^s$/i))
-                    {
-                        //TODO: se l'utente ha l'abilità prog avanz o prog tot chiedere se vuole aggiungere applicazioni
-                        //this.terminal.echo("\nVuoi unire un altro applicativo a quello appena compilato?");
-                        //this.terminal.set_prompt("(s|n): "),
-                        this.inviaDatiCrafting(this.answers);
-                        this.terminal.pop().history().enable();
-                    }
-                    else if (command.match(/^n$/i))
-                    {
-                        this.terminal.pop();
-                        this.ask_questions(0);
-                    }
-                }.bind(this),
-                {
-                    prompt : '\nConfermare (s|n): '
-                });
+
+            this.chiediConferma(
+                "Confermare programma (s|n)",
+                this.aggiungiProgrammi.bind(this),
+                this.mostraDomande.bind(this, true)
+            );
         },
 
         impostaTerminale: function ()
         {
             var utente = this.pg_info.nome_personaggio.toLowerCase().replace(/[^A-zÀ-ú]/g,"-");
 
-            this.answers = {};
+            this.domande = QUESTIONS.concat();
+            this.answers = [{}];
             this.default_prompt = utente+'@SGC> ';
             $('#terminal').height( $(".content-wrapper").height() - 51 );
             this.terminal = $('#terminal').terminal(
@@ -348,6 +395,9 @@ var CraftingSoftwareManager = function ()
                 Utils.showError("Non puoi accedere a questa sezione.", Utils.redirectTo.bind(this,Constants.MAIN_PAGE));
                 throw new Error("Non puoi accedere a questa sezione.");
             }
+
+            this.num_programmi = 0;
+            this.max_programmi = this.pg_info.max_programmi_netrunner;
         },
 
         setListeners : function ()

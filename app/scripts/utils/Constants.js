@@ -30,6 +30,10 @@ Constants.API_POST_CREA_ARTICOLO         = Constants.API_URL + "/newsmanager/cre
 Constants.API_POST_EDIT_ARTICOLO         = Constants.API_URL + "/newsmanager/modificanotizia";
 Constants.API_POST_PUBBLICA_ARTICOLO     = Constants.API_URL + "/newsmanager/pubblicanotizia";
 Constants.API_POST_RITIRA_ARTICOLO       = Constants.API_URL + "/newsmanager/ritiranotizia";
+Constants.API_POST_CRAFTING_PROGRAMMA    = Constants.API_URL + "/craftingmanager/inserisciricettanetrunner";
+Constants.API_POST_CRAFTING_TECNICO      = Constants.API_URL + "/craftingmanager/inserisciricettatecnico";
+Constants.API_POST_CRAFTING_CHIMICO      = Constants.API_URL + "/craftingmanager/inserisciricettachimico";
+Constants.API_EDIT_RICETTA               = Constants.API_URL + "/craftingmanager/modificaricetta";
 
 Constants.API_GET_LOGOUT                 = Constants.API_URL + "/usersmanager/logout";
 Constants.API_GET_ACESS                  = Constants.API_URL + "/usersmanager/controllaaccesso";
@@ -59,6 +63,7 @@ Constants.API_GET_PERMESSI               = Constants.API_URL + "/grantsmanager/r
 Constants.API_GET_PERMESSI_DEI_RUOLI     = Constants.API_URL + "/grantsmanager/recuperapermessideiruoli";
 Constants.API_GET_ARTICOLI_PUBBLICATI    = Constants.API_URL + "/newsmanager/recuperanotiziepubbliche";
 Constants.API_GET_TUTTI_ARTICOLI         = Constants.API_URL + "/newsmanager/recuperanotizie";
+Constants.API_GET_RICETTE                = Constants.API_URL + "/craftingmanager/recuperaricette";
 
 Constants.API_DEL_GIOCATORE              = Constants.API_URL + "/usersmanager/eliminagiocatore";
 Constants.API_DEL_CLASSE_PG              = Constants.API_URL + "/charactersmanager/rimuoviclassepg";

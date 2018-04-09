@@ -7,6 +7,12 @@
 
         init: function ()
         {
+            this.user_info = this.user_info || JSON.parse( window.localStorage.getItem('user') );
+            this.pg_info   = this.pg_info || JSON.parse( window.localStorage.getItem('logged_pg') );
+
+            if( this.pg_info && typeof this.user_info.pg_da_loggare !== "undefined" )
+                $(".visualizza_pagina_main").attr( "href", Constants.PG_PAGE );
+
             this.setListeners();
             this.controllaPermessi(".sidebar-menu", true);
         },
@@ -54,8 +60,8 @@
             in_selector = typeof in_selector === "undefined" ? ".content-wrapper > .content" : in_selector;
             animate     = typeof animate === "undefined" ? false : animate;
 
-            this.user_info = JSON.parse( window.localStorage.getItem('user') );
-            this.pg_info   = JSON.parse( window.localStorage.getItem('logged_pg') );
+            this.user_info = this.user_info || JSON.parse( window.localStorage.getItem('user') );
+            this.pg_info   = this.pg_info || JSON.parse( window.localStorage.getItem('logged_pg') );
 
             $(in_selector).find(".inizialmente-nascosto").hide();
 

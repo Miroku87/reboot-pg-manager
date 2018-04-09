@@ -1,0 +1,68 @@
+﻿{% extends "./templates/main_template.html" %}
+{% set body_classes = body_classes + " gestione-ricette-page" %}
+{% set section = "gestionericette" %}
+{% set titolo_sezione = "Gestione Ricette"  %}
+{% set descrizione_sezione = ""  %}
+{% block mainContent %}
+{{ super() }}
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title">Lista Ricette</h3>
+    </div>
+    <div class="box-body table-responsive">
+        <form autocomplete="off" aria-autocomplete="none">
+            <table id="griglia_ricette" class="table table-condensed table-hover table-striped table-bordered" width="100%"></table>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block modals %}
+{{super()}}
+<div id="modal_modifica_ricetta" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header dialog-header-primary">
+                <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Chiudi</span></button>
+                <h4 class="modal-title text-primary">Modifica Dati Giocatore</h4>
+            </div>
+            <div class="modal-body">
+                <p>Modifica qui i dati per la ricetta <strong><span id="nome_ricetta"></span></strong></p>
+                <p>Qui di seguito gli input:<ul id="lista_componenti"></ul></p>
+                <p>Questo il risultato: <strong id="risultato"></strong></p>
+                <form autocomplete="off" aria-autocomplete="none" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Approvata</label>
+                        <div class="col-sm-9">
+                            <div class='checkbox icheck'>
+                                <input type='checkbox' id="approvata"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Extra Info Cartellino</label>
+                        <div class="col-sm-9">
+                            <textarea type="text" class="form-control resize-vertical" rows="5" id="extra_cartellino" name="extra_cartellino" placeholder="Scrivi qui le informazioni aggiuntive che potrebbero servire al giocatore..."></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Note Ricetta</label>
+                        <div class="col-sm-9">
+                            <textarea type="text" class="form-control resize-vertical" rows="5" id="note_ricetta" name="note_ricetta" placeholder="Scrivi qui i tuoi appunti privati su questa ricetta..."></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success submit-btn" id="btn_approva_ricetta">Approva Ricetta</button>
+                <button type="button" class="btn btn-success submit-btn" id="btn_invia_modifiche_ricetta">Salva Note</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block managers %}
+{{ super() }}
+<script src="scripts/controllers/RecipesManager.js"></script>
+{% endblock %}
