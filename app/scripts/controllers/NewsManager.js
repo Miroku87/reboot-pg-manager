@@ -230,10 +230,18 @@
             var articoli = data.result,
                 counter  = 0;
 
+            if( articoli.length === 0 )
+            {
+                $("#no_news").removeClass("inizialmente-nascosto");
+                $("#no_news").show();
+                return false;
+            }
+
+
             for( var a in articoli )
             {
                 var art = articoli[a],
-                    collapse = $("#collapse_template").clone();
+                    collapse = $("#collapse_template").clone(true);
 
                 collapse.removeClass("inizialmente-nascosto");
                 collapse.removeClass("box-primary");
@@ -248,6 +256,7 @@
                 collapse.find(".testo").html( art.testo_notizia );
 
                 $("#accordion").append(collapse);
+                collapse.show();
             }
         },
 

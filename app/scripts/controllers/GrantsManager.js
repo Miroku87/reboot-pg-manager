@@ -239,7 +239,7 @@ var GrantsManager = function ()
                 this.ruoli.push(res[r].nome_ruolo);
 
                 var tr = $("<tr></tr>"),
-                    nome = Utils.controllaPermessiUte(this.user_info, ["associaPermessi","recuperaPermessiDeiRuoli"], false) ?
+                    nome = Utils.controllaPermessiUtente(this.user_info, ["associaPermessi","recuperaPermessiDeiRuoli"], false) ?
                                     "<a class='nome-ruolo' data-nome='"+res[r].nome_ruolo+"'>"+res[r].nome_ruolo+"</a>" : res[r].nome_ruolo,
                     azioni = $("<td></td>");
 

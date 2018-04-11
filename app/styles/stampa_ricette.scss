@@ -1,0 +1,174 @@
+@font-face {
+  font-family: 'ubuntu_monoregular';
+  src: url('../fonts/ubuntumono-regular-webfont.woff2') format('woff2'),
+  url('../fonts/ubuntumono-regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+html, body {
+  padding: 0;
+  margin: 0;
+  background-color: rgba(0,0,0,.2);
+  box-sizing: border-box;
+  height: auto;
+}
+
+td {
+  vertical-align: top;
+}
+
+.links {
+  position: fixed;
+}
+
+#page_template {
+  display: none;
+}
+
+#cartellino_template{
+  display: none;
+}
+
+.a4-page {
+  /* 21 cm x 29.7 cm */
+  background-color: white;
+  /*width: 100vw;*/
+  /*height: 141vw;*/
+  /*width: 70.7vh;*/
+  /*height: 100vh;*/
+  width: 210mm;
+  height: 297mm;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5mm;
+  font-family: 'ubuntu_monoregular';
+  font-size: 9pt;
+  box-sizing: border-box;
+  margin-bottom: 10mm;
+}
+
+.cartellino-pg {
+  /* 16cm x 5cm */
+  box-sizing: border-box;
+  /*border: 1px solid black;*/
+}
+
+.cartellino-pg > .prima-pagina,
+.cartellino-pg > .seconda-pagina {
+  box-sizing: border-box;
+  float: left;
+}
+
+.sopra, .sotto {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cartellino-pg {
+  /* 16cm x 5cm */
+  /*width: 54vh;*/
+  /*height: 17vh;*/
+  width: 160mm;
+  height: 50mm;
+  transform-origin: left top;
+  position: absolute;
+  border: 1px solid rgba(0,0,0,.1);
+}
+
+.cartellino-pg > .prima-pagina,
+.cartellino-pg > .seconda-pagina {
+  width: 50%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 5mm;
+  box-sizing: border-box;
+}
+
+.cartellino-pg > .prima-pagina {
+  background-image: url("../images/sfondo_cartellino_fronte.jpg");
+}
+
+.cartellino-pg > .seconda-pagina {
+  background-image: url("../images/sfondo_cartellino_retro.jpg");
+}
+
+.cartellino-pg:nth-of-type(1) {
+  transform: translate(0,160mm) rotate(-90deg);
+}
+.cartellino-pg:nth-of-type(2) {
+  transform: translate(50mm,160mm) rotate(-90deg);
+}
+.cartellino-pg:nth-of-type(3) {
+  transform: translate(100mm,160mm) rotate(-90deg);
+}
+.cartellino-pg:nth-of-type(4) {
+  transform: translate(150mm,160mm) rotate(-90deg);
+}
+.cartellino-pg:nth-of-type(5) {
+  transform: translate(0,160mm);
+}
+.cartellino-pg:nth-of-type(6) {
+  transform: translate(0,210mm);
+}
+
+.pg-adv-data td:nth-of-type(2),
+.pg-adv-data td:nth-of-type(4) {
+  text-align: center;
+}
+
+.page-break {
+  page-break-after: always;
+}
+
+.cartellino-pg .extra_cartellino_ricetta {
+  vertical-align: bottom;
+}
+
+.cartellino-pg .nome_ricetta {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.cartellino-pg .icona {
+  font-size: 8em;
+  text-align: center;
+  vertical-align: middle;
+}
+
+@media print {
+  a {
+    display: none;
+  }
+
+  .a4-page {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    position: static;
+    left: 0;
+    top: 0;
+    transform: none;
+    width: 100%;
+  }
+
+  /*.a4-page > .cartellino-pg:nth-child(6){
+    page-break-after: always;
+  }*/
+
+  .cartellino-pg > .prima-pagina {
+    background-image: url("../images/sfondo_cartellino_fronte.jpg") !important;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .cartellino-pg > .seconda-pagina {
+    background-image: url("../images/sfondo_cartellino_retro.jpg") !important;
+    -webkit-print-color-adjust: exact;
+  }
+}

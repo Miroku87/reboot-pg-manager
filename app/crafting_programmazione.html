@@ -6,7 +6,7 @@
 {% set descrizione_sezione = ""  %}
 
 {% block styles %}
-<link rel="stylesheet" href="/node_modules/jquery.terminal/css/jquery.terminal.css"/>
+<link rel="stylesheet" href="../node_modules/jquery.terminal/css/jquery.terminal.css"/>
 <link rel="stylesheet" href="styles/crafting_netrunner.css"/>
 {% endblock %}
 1
@@ -19,6 +19,7 @@
 {% block managers %}
 {{ super() }}
 <script src="scripts/utils/keyboard.js"></script>
-<script src="/node_modules/jquery.terminal/js/jquery.terminal.js"></script>
+<script src="../node_modules/jquery.terminal/js/jquery.terminal.js"></script>
+<script src="scripts/utils/Testi.js"></script>
 <script src="scripts/controllers/CraftingSoftwareManager.js"></script>
 {% endblock %}

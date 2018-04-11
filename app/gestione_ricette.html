@@ -3,13 +3,23 @@
 {% set section = "gestionericette" %}
 {% set titolo_sezione = "Gestione Ricette"  %}
 {% set descrizione_sezione = ""  %}
+
 {% block mainContent %}
 {{ super() }}
 <div class="box">
     <div class="box-header with-border">
         <h3 class="box-title">Lista Ricette</h3>
     </div>
-    <div class="box-body table-responsive">
+    <div class="box-body">
+        <div class="btn-group pull-center out-of-box">
+            <button type="button"
+                    class="btn btn-info"
+                    id="btn_stampaRicette"
+                    data-toggle="tooltip"
+                    data-placement="bottom"
+                    data-container="body"
+                    title="Stampa cartellini delle ricette selezionate"><i class="fa fa-print"></i><br>Stampa Cartellini</button>
+        </div>
         <form autocomplete="off" aria-autocomplete="none">
             <table id="griglia_ricette" class="table table-condensed table-hover table-striped table-bordered" width="100%"></table>
         </form>
@@ -29,13 +39,16 @@
             <div class="modal-body">
                 <p>Modifica qui i dati per la ricetta <strong><span id="nome_ricetta"></span></strong></p>
                 <p>Qui di seguito gli input:<ul id="lista_componenti"></ul></p>
-                <p>Questo il risultato: <strong id="risultato"></strong></p>
+                <p>Questo il risultato: <ul id="risultato"></ul></p>
                 <form autocomplete="off" aria-autocomplete="none" class="form-horizontal">
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">Approvata</label>
+                        <label class="col-sm-3 control-label">Stato Approvazione</label>
                         <div class="col-sm-9">
-                            <div class='checkbox icheck'>
-                                <input type='checkbox' id="approvata"></div>
+                            <select class="form-control" id="approvata">
+                                <option value="0">In elaborazione...</option>
+                                <option value="-1">Rifiutato</option>
+                                <option value="1">Approvato</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -53,8 +66,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success submit-btn" id="btn_approva_ricetta">Approva Ricetta</button>
-                <button type="button" class="btn btn-success submit-btn" id="btn_invia_modifiche_ricetta">Salva Note</button>
+                <!--<button type="button" class="btn btn-primary submit-btn" id="btn_stampa">Stampa Cartellino</button>-->
+                <button type="button" class="btn btn-success submit-btn" id="btn_invia_modifiche_ricetta">Invia Modifiche</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
             </div>
         </div>

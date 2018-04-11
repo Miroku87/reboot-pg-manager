@@ -64,6 +64,7 @@ Constants.API_GET_PERMESSI_DEI_RUOLI     = Constants.API_URL + "/grantsmanager/r
 Constants.API_GET_ARTICOLI_PUBBLICATI    = Constants.API_URL + "/newsmanager/recuperanotiziepubbliche";
 Constants.API_GET_TUTTI_ARTICOLI         = Constants.API_URL + "/newsmanager/recuperanotizie";
 Constants.API_GET_RICETTE                = Constants.API_URL + "/craftingmanager/recuperaricette";
+Constants.API_GET_RICETTE_CON_ID         = Constants.API_URL + "/craftingmanager/recuperaricetteconid";
 
 Constants.API_DEL_GIOCATORE              = Constants.API_URL + "/usersmanager/eliminagiocatore";
 Constants.API_DEL_CLASSE_PG              = Constants.API_URL + "/charactersmanager/rimuoviclassepg";
@@ -76,6 +77,7 @@ Constants.PG_PAGE                        = Constants.SITE_URL + "/scheda_pg.html
 Constants.ABILITY_SHOP_PAGE              = Constants.SITE_URL + "/negozio_abilita.html";
 Constants.STAMPA_CARTELLINI_PAGE         = Constants.SITE_URL + "/stampa_cartellini.html";
 Constants.STAMPA_ISCRITTI_PAGE           = Constants.SITE_URL + "/stampa_tabella_iscritti.html";
+Constants.STAMPA_RICETTE                 = Constants.SITE_URL + "/stampa_ricetta.html";
 Constants.CREAPG_PAGE                    = Constants.SITE_URL + "/crea_pg.html";
 Constants.EVENTI_PAGE                    = Constants.SITE_URL + "/gestione_eventi.html";
 Constants.CREA_EVENTO_PAGE               = Constants.SITE_URL + "/crea_evento.html";

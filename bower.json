@@ -12,6 +12,8 @@
     "datatables.net-bs": "^2.1.1",
     "datatables.net-buttons-bs": "^1.4.2",
     "datatables.net-responsive-bs": "^2.2.0",
-    "datatables.net-plugins": "latest"
+    "datatables.net-plugins": "latest",
+    "datatables.net-select": "^1.2.3",
+    "datatables.net-select-bs": "^1.2.3"
   }
 }

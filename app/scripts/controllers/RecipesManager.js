@@ -1,24 +1,45 @@
-﻿var PgListManager = function ()
+﻿var RecipesManager = function ()
 {
     return {
         init: function ()
         {
             this.recuperaDatiLocali();
+            this.setListeners();
             this.creaDataTable();
+        },
+
+        stampaCartellini: function ( e )
+        {
+            var t = $(e.target),
+                ricette = [];
+
+            if( t.is("#btn_stampaRicette") )
+                ricette = this.ricette_selezionate;
+            else if ( t.is("td > button.btn-xs") )
+                ricette = [this.recipes_grid.row( t.parents("tr")).data().id_ricetta];
+
+            if( ricette.length === 0 )
+            {
+                Utils.showError("Devi selezionare almeno una ricetta.");
+                return;
+            }
+
+            window.localStorage.setItem("ricette_da_stampare", JSON.stringify(ricette));
+            window.open( Constants.STAMPA_RICETTE, "Stampa Oggetti" );
         },
 
         inviaModificheRicetta: function ( id_ricetta )
         {
-            var approv = $("#modal_modifica_ricetta").find("#approvazione").is(":checked") ? 1 : 0,
+            var approv = $("#modal_modifica_ricetta").find("#approvata").val(),
                 extra  = encodeURIComponent( Utils.stripHMTLTag( $("#modal_modifica_ricetta").find("#extra_cartellino").val()).replace(/\n/g,"<br>") ),
                 note   = encodeURIComponent( Utils.stripHMTLTag( $("#modal_modifica_ricetta").find("#note_ricetta").val()).replace(/\n/g,"<br>") ),
                 dati   = {
+                    id : id_ricetta,
                     modifiche: {
                         note_ricetta: note,
                         extra_cartellino_ricetta: extra,
                         approvata_ricetta: approv
-                    },
-                    id : id_ricetta
+                    }
                 };
 
             Utils.requestData(
@@ -38,13 +59,14 @@
                 extra = Utils.unStripHMTLTag( decodeURIComponent( dati.extra_cartellino_ricetta )).replace(/<br>/g,"\r"),
                 extra = extra === "null" ? "" : extra,
                 note  = Utils.unStripHMTLTag( decodeURIComponent( dati.note_ricetta )).replace(/<br>/g,"\r"),
-                note  = note === "null" ? "" : note;
+                note  = note === "null" ? "" : note,
+                comps = "<li>"+dati.componenti_ricetta.split("@@").join("</li><li>")+"</li>",
+                resul = "<li>"+dati.risultato_ricetta.split("@@").join("</li><li>")+"</li>";
 
-            //TODO
             $("#modal_modifica_ricetta").find("#nome_ricetta").text(dati.nome_ricetta);
-            $("#modal_modifica_ricetta").find("#lista_componenti").text(dati.componenti_ricetta.replace("@@@","<br>"));
-            $("#modal_modifica_ricetta").find("#risultato").text(dati.risultato_ricetta.replace("@@@","<br>"));
-            $("#modal_modifica_ricetta").find("#approvata").iCheck( dati.approvata_ricetta == "0" ? "Uncheck" : "Check" );
+            $("#modal_modifica_ricetta").find("#lista_componenti").html(comps);
+            $("#modal_modifica_ricetta").find("#risultato").html(resul);
+            $("#modal_modifica_ricetta").find("#approvata").val( dati.approvata_ricetta );
             $("#modal_modifica_ricetta").find("#extra_cartellino").val(extra);
             $("#modal_modifica_ricetta").find("#note_ricetta").val(note);
 
@@ -53,24 +75,43 @@
             $("#modal_modifica_ricetta").modal({drop:"static"});
 		},
 
-        rifiutaRicetta: function ( id )
+        ricettaSelezionata: function ( e )
+        {
+            var t    = $(e.target),
+                dati = this.recipes_grid.row(t.parents("tr")).data();
+
+            if( t.is(":checked") )
+                this.ricette_selezionate.push( dati.id_ricetta );
+            else if ( !t.is(":checked") && this.ricette_selezionate.indexOf( dati.id_ricetta ) !== -1 )
+                this.ricette_selezionate.splice( this.ricette_selezionate.indexOf( dati.id_ricetta ), 1 );
+		},
+
+        selezionaRicette: function ( e )
+        {
+            $("input[type='checkbox']").iCheck("Uncheck");
+
+            for( var r in this.ricette_selezionate )
+                $("#ck_"+this.ricette_selezionate[r]).iCheck("Check");
+		},
+
+        rifiutaRicetta: function ( dati )
         {
             Utils.requestData(
                 Constants.API_EDIT_RICETTA,
                 "POST",
-                { id: id, modifiche: { "approvata_ricetta" : 0 } },
+                { id: dati.id_ricetta, modifiche: { "approvata_ricetta" : -1 } },
                 "Ricetta rifiutata con successo.",
                 null,
                 this.recipes_grid.ajax.reload.bind(this,null,false)
             );
 		},
 
-        approvaRicetta: function ( id )
+        approvaRicetta: function ( dati )
         {
             Utils.requestData(
                 Constants.API_EDIT_RICETTA,
                 "POST",
-                { id: id, modifiche: { "approvata_ricetta" : 1 } },
+                { id: dati.id_ricetta, modifiche: { "approvata_ricetta" : 1 } },
                 "Ricetta approvata con successo.",
                 null,
                 this.recipes_grid.ajax.reload.bind(this,null,false)
@@ -100,7 +141,10 @@
             $( "td [data-toggle='popover']" ).popover("destroy");
             $( "td [data-toggle='popover']" ).popover();
 
-            $( "[data-toggle='tooltip']" ).removeData('tooltip').unbind().next('div.tooltip').remove();
+            $( 'input[type="checkbox"]' ).iCheck("destroy");
+            $( 'input[type="checkbox"]' ).iCheck( { checkboxClass : 'icheckbox_square-blue' } );
+            $( 'input[type="checkbox"]' ).on( "ifChanged", this.ricettaSelezionata.bind(this) );
+
             $( "[data-toggle='tooltip']" ).tooltip();
 
             $("button.modifica-note").unbind( "click", this.mostraModalRicetta.bind(this) );
@@ -111,6 +155,11 @@
 
             $("button.approva-ricetta").unbind( "click", this.confermaApprovaRicetta.bind(this) );
             $("button.approva-ricetta").click( this.confermaApprovaRicetta.bind(this) );
+
+            $("button.stampa-cartellino").unbind( "click", this.stampaCartellini.bind(this) );
+            $("button.stampa-cartellino").click( this.stampaCartellini.bind(this) );
+
+            this.selezionaRicette();
 		},
 
         erroreDataTable: function ( e, settings )
@@ -123,30 +172,65 @@
             Utils.showError(real_error);
         },
 
+        renderCompsERisultati: function ( data, type, row )
+        {
+            var ret = data.split("@@").join("<br>");
+
+            return $.fn.dataTable.render.ellipsis( 20, true, false )(ret, type, row);
+        },
+
+        renderNote: function ( data, type, row )
+        {
+            var denc_data = Utils.unStripHMTLTag( decodeURIComponent(data) );
+            denc_data = denc_data === "null" ? "" : denc_data;
+
+            return $.fn.dataTable.render.ellipsis( 20, false, true, true )(denc_data, type, row);
+        },
+
+        renderApprovato: function ( data, type, row )
+        {
+            var ret = "In elaborazione...",
+                data = parseInt(data);
+
+            if( data === -1 )
+                ret = "Rifiutato";
+            else if ( data === 1 )
+                ret = "Approvato";
+
+            return ret;
+        },
+
+        renderCheckStampa: function ( data, type, row )
+        {
+            return  "<div class='checkbox icheck'>" +
+                        "<input type='checkbox' id='ck_"+row.id_ricetta+"'>" +
+                    "</div>";
+        },
+
         creaPulsantiAzioni: function (data, type, row)
         {
             var pulsanti = "";
 
             pulsanti += "<button type='button' " +
-                "class='btn btn-xs btn-default modifica-note' " +
+                "class='btn btn-xs btn-default modifica-note modificaRicetta ' " +
                 "data-toggle='tooltip' " +
                 "data-placement='top' " +
                 "title='Modifica Note'><i class='fa fa-pencil'></i></button>";
 
             pulsanti += "<button type='button' " +
-                "class='btn btn-xs btn-default inizialmente-nascosto rifiuta-ricetta' " +
+                "class='btn btn-xs btn-default inizialmente-nascosto modificaRicetta rifiuta-ricetta' " +
                 "data-toggle='tooltip' " +
                 "data-placement='top' " +
                 "title='Rifiuta Ricetta'><i class='fa fa-remove'></i></button>";
 
             pulsanti += "<button type='button' " +
-                "class='btn btn-xs btn-default inizialmente-nascosto approva-ricetta' " +
+                "class='btn btn-xs btn-default inizialmente-nascosto modificaRicetta  approva-ricetta' " +
                 "data-toggle='tooltip' " +
                 "data-placement='top' " +
-                "title='Approva Ricetta'><i class='fa fa-tick'></i></button>";
+                "title='Approva Ricetta'><i class='fa fa-check'></i></button>";
 
             pulsanti += "<button type='button' " +
-                "class='btn btn-xs btn-default inizialmente-nascosto stampa-cartellino' " +
+                "class='btn btn-xs btn-default stampa-cartellino' " +
                 "data-toggle='tooltip' " +
                 "data-placement='top' " +
                 "title='Stampa Cartellino'><i class='fa fa-print'></i></button>";
@@ -158,6 +242,10 @@
         {
             var columns = [];
 
+            columns.push({
+                title: "Stampa",
+                render : this.renderCheckStampa.bind(this)
+            });
             columns.push({
                 title: "ID",
                 data : "id_ricetta"
@@ -172,7 +260,7 @@
             });
             columns.push({
                 title: "Data Creazione",
-                data : "data_inserimento_ricetta"
+                data : "data_inserimento_it"
             });
             columns.push({
                 title: "Nome Ricetta",
@@ -188,23 +276,24 @@
                 render: this.renderCompsERisultati.bind(this)
             });
             columns.push({
-                title: "Risultato",
-                data : "risultati_ricetta",
+                title: "Risultato&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+                data : "risultato_ricetta",
                 render: this.renderCompsERisultati.bind(this)
             });
             columns.push({
                 title: "Approvata",
-                data : "approvata_ricetta"
+                data : "approvata_ricetta",
+                render: this.renderApprovato.bind(this)
             });
             columns.push({
                 title: "Note Private",
                 data : "note_ricetta",
-                render: $.fn.dataTable.render.ellipsis( 20, true, false )
+                render: this.renderNote.bind(this)
             });
             columns.push({
                 title: "Note per Cartellino",
                 data : "extra_cartellino_ricetta",
-                render: $.fn.dataTable.render.ellipsis( 20, true, false )
+                render: this.renderNote.bind(this)
             });
             columns.push({
                 title: "Azioni",
@@ -232,17 +321,31 @@
                         );
                     },
                     columns    : columns,
-                    order      : [[0, 'desc']]
+                    //lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
+                    order      : [[1, 'desc']]
                 } );
+
+            this.ricette_selezionate = [];
         },
 
         recuperaDatiLocali: function()
         {
             this.user_info = JSON.parse( window.localStorage.getItem("user") );
+        },
+
+        setListeners: function ()
+        {
+            $( 'input[type="checkbox"]' ).iCheck("destroy");
+            $( 'input[type="checkbox"]' ).iCheck( {
+                checkboxClass : 'icheckbox_square-blue'
+            } );
+            $( "[data-toggle='tooltip']" ).tooltip();
+
+            $("#btn_stampaRicette").click(this.stampaCartellini.bind(this));
         }
     };
 }();
 
 $(function () {
-    PgListManager.init();
+    RecipesManager.init();
 });

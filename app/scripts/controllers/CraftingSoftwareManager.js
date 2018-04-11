@@ -73,58 +73,7 @@ var CraftingSoftwareManager = function ()
                     "   "
                 ]
             }
-        },
-        TECHNO_BABBLE = [
-            { delay: 0, text: "File in preparazione per la compilazione dell'applicativo..." },
-            { delay: 0, text: "Compilatore inizializzato..." },
-            { delay: 100, text: "Connessione con block-chain SGC..." },
-            { delay: 0, text: "Parametri di accesso accettati." },
-            { delay: 50, text: "Ambiente di sviluppo in fase di caricamento..." },
-            { delay: 0, text: "Ambiente di sviluppo caricato." },
-            { delay: 100, text: "Analisi sintassi codice..." },
-            { delay: 100, text: "Ricerca falle di sicurezza del codice..." },
-            { delay: 100, text: "Scarico parametri di compressione..." },
-            { delay: 0, text: "[D423#34C@SGC]: //SGC//Struttura//223//CDN//grv-compression.ez3 >> //Local//Storage//Compression//grv-compression.ez3" },
-            { delay: 0, text: "[D423#34C@SGC]: //SGC//Struttura//223//CDN//grv-concat.ez3 >> //Local//Storage//Compression//grv-concat.ez3" },
-            { delay: 0, text: "[D423#34C@SGC]: //SGC//Struttura//223//CDN//grv-compiling.ez3 >> //Local//Storage//Compression//grv-compiling.ez3" },
-            { delay: 0, text: "[D423#34C@SGC]: //SGC//Struttura//223//CDN//grv-application.ez3 >> //Local//Storage//Compression//grv-application.ez3" },
-            { delay: 0, text: "[D423#34C@SGC]: //SGC//Struttura//223//CDN//grv-interpreter.ez3 >> //Local//Storage//Compression//grv-interpreter.ez3" },
-            { delay: 0, text: "Parametri di compressione scaricati." },
-            { delay: 0, text: "Collegamento con sinapsi T.A.R.D.I.S. per potenza di calcolo." },
-            { delay: 0, text: "Compressione in corso..." },
-            { delay: 300, text: "Analisi variabili iterative per connessioni meccaniche..." },
-            { delay: 0, text: "[M361#27F@SGC]: //SGC//Struttura//43//CDN//rpg-movement.kjw" },
-            { delay: 0, text: "[M361#27F@SGC]: //SGC//Struttura//43//CDN//rpg-bonus-tracking.kjw" },
-            { delay: 0, text: "[M361#27F@SGC]: //SGC//Struttura//43//CDN//rpg-status-modification.kjw" },
-            { delay: 0, text: "[M361#27F@SGC]: //SGC//Struttura//43//CDN//rpg-attack-range.kjw" },
-            { delay: 0, text: "[M361#27F@SGC]: //SGC//Struttura//43//CDN//rpg-power-cell.kjw" },
-            { delay: 0, text: "[M361#27F@SGC]: //SGC//Struttura//43//CDN//rpg-fire-velocity.kjw" },
-            { delay: 0, text: "[M361#27F@SGC]: //SGC//Struttura//43//CDN//rpg-firing-power.kjw" },
-            { delay: 0, text: "[M361#27F@SGC]: //SGC//Struttura//43//CDN//rpg-hacking-security.kjw" },
-            { delay: 300, text: "Analisi variabili iterative per connessioni neurali..." },
-            { delay: 0, text: "[N098#41G@SGC]: //SGC//Struttura//421//CDN//chr-neural-security.kjw" },
-            { delay: 0, text: "[N098#41G@SGC]: //SGC//Struttura//421//CDN//chr-system-coordination.kjw" },
-            { delay: 0, text: "[N098#41G@SGC]: //SGC//Struttura//421//CDN//chr-.kjw" },
-            { delay: 300, text: "Analisi variabili iterative per connessioni temporali..." },
-            { delay: 0, text: "[T490#56Y@SGC]: //SGC//Struttura//33//CDN//tmp-millscnd.ts" },
-            { delay: 0, text: "[T490#56Y@SGC]: //SGC//Struttura//33//CDN//tmp-jump.ts" },
-            { delay: 0, text: "[T490#56Y@SGC]: //SGC//Struttura//33//CDN//tmp-attack-cooldown.ts" },
-            { delay: 0, text: "[T490#56Y@SGC]: //SGC//Struttura//33//CDN//tmp-defense-bonus.ts" },
-            { delay: 0, text: "[T490#56Y@SGC]: //SGC//Struttura//33//CDN//tmp-agility-boost.ts" },
-            { delay: 0, text: "[T490#56Y@SGC]: //SGC//Struttura//33//CDN//tmp-time-frame-reduction.ts" },
-            { delay: 0, text: "[T490#56Y@SGC]: //SGC//Struttura//33//CDN//tmp-core-blocks.ts" },
-            { delay: 300, text: "Ottimizzazione flusso di dati..." },
-            { delay: 0, text: "[D967#82H@SGC]: //SGC//Struttura//33//CDN//dt-data-transfer.dts" },
-            { delay: 0, text: "[D967#82H@SGC]: //SGC//Struttura//33//CDN//dt-data-typing.dts" },
-            { delay: 0, text: "[D967#82H@SGC]: //SGC//Struttura//33//CDN//dt-type-conversion-rate.dts" },
-            { delay: 0, text: "[D967#82H@SGC]: //SGC//Struttura//33//CDN//dt-range-length.dts" },
-            { delay: 0, text: "[D967#82H@SGC]: //SGC//Struttura//33//CDN//dt-visualization-sys.dts" },
-            { delay: 0, text: "Finalizzazione applicazione..." },
-            { delay: 1000, text: "[[b;#0f0;]OK]" },
-            { delay: 0, text: "Applicativo compilato e inviato ai server SGC." },
-            { delay: 0, text: "Il personale si occuper&agrave; di scaricare il software su dispositivo fisico e consegnartelo." },
-            { delay: 0, text: "Nel frattempo potrai vedere il tuo progetto nella sezione utente del terminale sotto [[b;#fff;]Ricette]." }
-        ];
+        };
 
     return {
         init : function ()
@@ -189,13 +138,16 @@ var CraftingSoftwareManager = function ()
         showTechnoBabble : function ( i )
         {
             i = typeof i === "undefined" ? 0 : i;
+            var texts = Testi.TECHNO_BUBBLING,
+                delay = parseInt(Math.random() * 1000) / 4;
+
             setTimeout(function ()
                 {
-                    this.terminal.echo(TECHNO_BABBLE[i].text);
-                    this.progress(this.terminal, parseInt( ( i / TECHNO_BABBLE.length ) * 100 ) );
+                    this.terminal.echo(texts[i].text);
+                    this.progress(this.terminal, parseInt( ( i / texts.length ) * 100 ) );
                     this.terminal.scroll_to_bottom();
 
-                    if( typeof TECHNO_BABBLE[i+1] !== "undefined" )
+                    if( typeof texts[i+1] !== "undefined" )
                         this.showTechnoBabble(i+1);
                     else
                     {
@@ -203,7 +155,7 @@ var CraftingSoftwareManager = function ()
                         this.showFinalMessage();
                     }
                 }.bind(this),
-                50 + TECHNO_BABBLE[i].delay);
+                50 + delay);
         },
 
         craftinInviato : function (  )
@@ -216,6 +168,11 @@ var CraftingSoftwareManager = function ()
         inviaDatiCrafting : function ( programmi )
         {
             this.start(this.terminal,SPINNERS.line);
+            this.terminal.freeze(true);
+
+            //this.craftinInviato();
+            //return;
+
             Utils.requestData(
                 Constants.API_POST_CRAFTING_PROGRAMMA,
                 "POST",
