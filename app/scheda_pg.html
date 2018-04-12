@@ -224,34 +224,23 @@
         </div>
     </div>
 </div>
-<!--<div class="row inizialmente-nascosto recuperaRicettePG" id="ricettePersonaggio">
+<div class="row inizialmente-nascosto">
     <div class="col-sm-12">
         <div class="box box-warning collapsed-box">
             <div class="box-header with-border">
-                <h3 class="box-title"><a data-widget="collapse">Ricette create dal Personaggio</a></h3>
+                <h3 class="box-title"><a data-widget="collapse">Ricette Craftate</a></h3>
 
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
                     </button>
                 </div>
-                &lt;!&ndash; /.box-tools &ndash;&gt;
             </div>
-            &lt;!&ndash; /.box-header &ndash;&gt;
             <div class="box-body">
-                <table class="table table-hover">
-                    <tbody><tr>
-                        <th>Nome</th>
-                        <th>Data</th>
-                        <th>Tipo</th>
-                        <th>Componenti</th>
-                    </tr>
-                    </tbody>
-                </table>
+                <table class="table table-condensed table-hover table-striped table-bordered" id="griglia_ricette" width="100%"></table>
             </div>
-            &lt;!&ndash; /.box-body &ndash;&gt;
         </div>
     </div>
-</div>-->
+</div>
 <div class="row inizialmente-nascosto recuperaNoteMaster" id="recuperaNoteMaster">
     <div class="col-sm-12">
         <div class="box box-info collapsed-box">
@@ -275,6 +264,35 @@
                     <textarea id="testo_note_master" class="form-control" rows="5"></textarea>
                     <button id="invia_note_master" class="btn btn-success submit-btn">Aggiorna Note Master</button>
                     <button id="annulla_note_master" class="btn btn-default">Annulla</button>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+</div>
+<div class="row inizialmente-nascosto recuperaNoteCartellino" id="recuperaNoteCartellino">
+    <div class="col-sm-12">
+        <div class="box box-info collapsed-box">
+            <div class="box-header with-border">
+                <h3 class="box-title"><a data-widget="collapse">Note Aggiuntive per il Cartellino PG</a></h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                    </button>
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <p id="avviso_note_cartellino">Non &egrave; ancora stata ancora aggiunta nessuna nota.</p>
+                <p id="note_cartellino"></p>
+                <div id="aggiungi_note_cartellino">
+                    <button id="mostra_note_cartellino" class="btn btn-success"><i class="fa fa-pencil"></i> Modifica Note Cartellino</button>
+                </div>
+                <div class="form-group inizialmente-nascosto" id="note_cartellino_form">
+                    <textarea id="testo_note_cartellino" class="form-control" rows="5"></textarea>
+                    <button id="invia_note_cartellino" class="btn btn-success submit-btn">Aggiorna Note Cartellino</button>
+                    <button id="annulla_note_cartellino" class="btn btn-default">Annulla</button>
                 </div>
             </div>
             <!-- /.box-body -->
@@ -317,6 +335,39 @@
 {% block modals %}
 {{ modal_assegna_punti() }}
 {{ modal_modifica_credito() }}
+
+<div id="modal_modifica_ricetta" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header dialog-header-primary">
+                <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Chiudi</span></button>
+                <h4 class="modal-title text-primary">Modifica Dati Giocatore</h4>
+            </div>
+            <div class="modal-body">
+                <p>Modifica qui i dati per la ricetta <strong><span id="nome_ricetta"></span></strong></p>
+                <p>Qui di seguito gli input:<ul id="lista_componenti"></ul></p>
+                <form autocomplete="off" aria-autocomplete="none" class="form-horizontal">
+                    <div class="form-group inizialmente-nascosto">
+                        <label class="col-sm-3 control-label">Nome Ricetta</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control resize-vertical" rows="5" id="new_nome_ricetta" name="nome_ricetta" placeholder="Nome ricetta">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Note Ricetta</label>
+                        <div class="col-sm-9">
+                            <textarea type="text" class="form-control resize-vertical" rows="5" id="note_pg_ricetta" name="note_pg_ricetta" placeholder="Scrivi qui i tuoi appunti su questa ricetta..."></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success submit-btn" id="btn_invia_modifiche_ricetta">Invia Modifiche</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 {{ super() }}
 {% endblock %}

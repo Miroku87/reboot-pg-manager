@@ -7,12 +7,14 @@ var CraftingSoftwareManager = function ()
             {
                 name : "nome_programma",
                 text : "Inserire il nome del nuovo applicativo.",
-                prompt : "Nome: "
+                prompt : "Nome: ",
+                sommabile : false
             },
             {
                 name : "x_val",
                 text : "\nInserire il parametro X del nuovo applicativo.",
                 prompt : "X: ",
+                sommabile : true,
                 validation: function (cmd)
                 {
                     if( /^\s*\d\s*$/i.test(cmd) )
@@ -25,6 +27,7 @@ var CraftingSoftwareManager = function ()
                 name : "y_val",
                 text : "\nInserire il parametro Y del nuovo applicativo.",
                 prompt : "Y: ",
+                sommabile : true,
                 validation: function (cmd)
                 {
                     if( /^\s*\d\s*$/i.test(cmd) )
@@ -37,6 +40,7 @@ var CraftingSoftwareManager = function ()
                 name : "z_val",
                 text : "\nInserire il parametro Z del nuovo applicativo.",
                 prompt : "Z: ",
+                sommabile : true,
                 validation: function (cmd)
                 {
                     if( /^\s*\d\s*$/i.test(cmd) )
@@ -181,69 +185,78 @@ var CraftingSoftwareManager = function ()
             );
         },
 
-        ask_questions : function (step)
+        sommaStringhe : function ( a, b )
         {
+            var somma = ( parseInt( a, 10 ) + parseInt( b, 10 ) ) + "";
+            return parseInt( somma.substr( somma.length-1, 1 ), 10 );
+        },
+
+        ask_questions : function (step, chiedi_somma)
+        {
+            chiedi_somma = typeof chiedi_somma === "undefined" ? true : chiedi_somma;
+
+            this.terminal.set_command("");
+
             var question = this.domande[step];
             if (question)
             {
-                var ai = this.answers.length - 1;
+                var ai = this.answers.length - 1,
+                    old = this.answers[ai][question.name] || 0;
 
                 if (question.text)
                     this.terminal.echo('[[b;#fff;]' + question.text + ']');
 
                 this.terminal.push(function (command)
                     {
-                        if (question.boolean)
+                        if( typeof question.validation === "function" && question.validation(command) === true || typeof question.validation !== "function" )
                         {
-                            var value;
-                            if (command.match(/^S(i)?/i))
-                            {
-                                value = true;
-                            }
-                            else if (command.match(/^N(o)?/i))
-                            {
-                                value = false;
-                            }
-                            if (typeof value != 'undefined')
-                            {
-                                this.answers[ai][question.name] = value;
-                                this.terminal.pop();
-                                this.ask_questions(step + 1);
-                            }
+                            this.answers[ai][question.name] = question.sommabile ? this.sommaStringhe( old, command ) : command;
+
+                            this.terminal.pop();
+                            if( chiedi_somma && question.sommabile )
+                                this.chiediConferma(
+                                    "Sommare una nuova stringa al parametro? (s|n)",
+                                    this.ask_questions.bind(this,step,chiedi_somma),
+                                    this.ask_questions.bind(this,step + 1,chiedi_somma)
+                                );
+                            else
+                                this.ask_questions(step + 1,chiedi_somma);
                         }
                         else
-                        {
-                            if( typeof question.validation === "function" && question.validation(command) === true || typeof question.validation !== "function" )
-                            {
-                                this.answers[ai][question.name] = command;
-                                this.terminal.pop();
-                                this.ask_questions(step + 1);
-                            }
-                            else
-                                this.terminal.echo('[[b;#f00;]Valore inserito errato. Riprovare.]');
-                        }
+                            this.terminal.echo('[[b;#f00;]Valore inserito errato. Riprovare.]');
                     }.bind(this),
                     {
                         prompt : question.prompt || question.name + ": "
                     }
                 );
                 
-                if (typeof this.answers[ai][question.name] != 'undefined')
-                {
-                    if (typeof this.answers[ai][question.name] == 'boolean')
-                    {
-                        this.terminal.set_command(this.answers[ai][question.name] ? 's' : 'n');
-                    }
-                    else
-                    {
-                        this.terminal.set_command(this.answers[ai][question.name]);
-                    }
-                }
+                //if (typeof this.answers[ai][question.name] != 'undefined')
+                //    this.terminal.set_command(this.answers[ai][question.name]);
             }
             else
             {
-                this.finish();
+                this.finish( !chiedi_somma );
             }
+        },
+
+        mostraOpzioni: function ( domanda, opzioni )
+        {
+            this.terminal.push(function (command)
+                {
+                    var opz = opzioni.filter(function(el){ return el.opzione === command; });
+
+                    if( opz.length === 0 )
+                    {
+                        this.terminal.echo('[[b;#f00;]L\'opzione inserita non &egrave; contemplata.]');
+                        this.terminal.pop();
+                        this.mostraOpzioni(domanda,opzioni);
+                    }
+
+                    opz[0].reazione();
+                }.bind(this),
+                {
+                    prompt : domanda + ' '
+                });
         },
 
         chiediConferma: function ( domanda, seSi, seNo )
@@ -265,7 +278,7 @@ var CraftingSoftwareManager = function ()
             this.inviaDatiCrafting(this.answers);
         },
 
-        mostraDomande: function ( cancella_precedenti )
+        mostraDomande: function ( cancella_precedenti, chiedi_somma )
         {
             cancella_precedenti = typeof cancella_precedenti === "undefined" ? true : cancella_precedenti;
 
@@ -274,18 +287,19 @@ var CraftingSoftwareManager = function ()
 
             this.answers.push({});
             this.terminal.pop();
-            this.ask_questions(0);
+            this.ask_questions(0,chiedi_somma);
         },
 
-        aggiungiProgrammi: function ()
+        aggiungiProgrammi: function ( combinare_programmi )
         {
             this.terminal.pop();
-            if( this.max_programmi > 1 && ++this.num_programmi < this.max_programmi )
+            combinare_programmi = typeof combinare_programmi === "undefined" ? false : combinare_programmi;
+            if( combinare_programmi && this.max_programmi > 1 && ++this.num_programmi < this.max_programmi )
             {
                 this.domande = this.domande.filter(function(el){ return el.name !== "nome_programma"; });
                 this.chiediConferma(
-                    "In base ai dati sulle tue capacit&agrave puoi aggiungere un nuovo programma al precedente.\nProcedere? (s|n)",
-                    this.mostraDomande.bind(this, false),
+                    "Procedere all'inserimento del programma successivo? (s|n)",
+                    this.mostraDomande.bind(this, false, false),
                     this.terminaDomande.bind(this)
                 );
             }
@@ -293,7 +307,7 @@ var CraftingSoftwareManager = function ()
                 this.terminaDomande( );
         },
 
-        finish : function ()
+        finish : function ( combinare_programmi )
         {
             this.terminal.echo('\nSono stati inseriti i seguenti valori:');
             var ai = this.answers.length - 1,
@@ -306,7 +320,7 @@ var CraftingSoftwareManager = function ()
 
             this.chiediConferma(
                 "Confermare programma (s|n)",
-                this.aggiungiProgrammi.bind(this),
+                this.aggiungiProgrammi.bind(this, combinare_programmi),
                 this.mostraDomande.bind(this, true)
             );
         },
@@ -334,7 +348,17 @@ var CraftingSoftwareManager = function ()
             );
 
             this.terminal.history().disable();
-            this.ask_questions(0);
+            
+            if( this.max_programmi > 1 )
+            {
+                this.chiediConferma(
+                    "Combinare insieme pi&ugrave; programmi conosciuti? (s|n)",
+                    this.ask_questions.bind(this,0,false),
+                    this.ask_questions.bind(this,0)
+                );
+            }
+            else
+                this.ask_questions(0);
         },
 
         recuperaDatiLocali : function ()

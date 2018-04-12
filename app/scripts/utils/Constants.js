@@ -47,7 +47,7 @@ Constants.API_GET_OPZIONI_ABILITA        = Constants.API_URL + "/charactersmanag
 Constants.API_GET_PGS                    = Constants.API_URL + "/charactersmanager/mostrapersonaggi";
 Constants.API_GET_PGS_CON_ID             = Constants.API_URL + "/charactersmanager/mostrapersonaggiconid";
 Constants.API_GET_STORICO_PG             = Constants.API_URL + "/charactersmanager/recuperastorico";
-Constants.API_GET_RICETTE                = Constants.API_URL + "/craftingmanager/recuperaricette";
+Constants.API_GET_NOTE_CARTELLINO_PG     = Constants.API_URL + "/charactersmanager/recuperaNoteCartellino";
 Constants.API_GET_MESSAGGI               = Constants.API_URL + "/messagingmanager/recuperamessaggi";
 Constants.API_GET_MESSAGGIO_SINGOLO      = Constants.API_URL + "/messagingmanager/recuperamessaggiosingolo";
 Constants.API_GET_DESTINATARI_FG         = Constants.API_URL + "/messagingmanager/recuperadestinatarifg";
@@ -117,6 +117,7 @@ Constants.TIPO_GRANT_PG_PROPRIO          = "_proprio";
 Constants.TIPO_GRANT_PG_ALTRI            = "_altri";
 Constants.RUOLO_ADMIN                    = "admin";
 Constants.INTERVALLO_CONTROLLO_MEX       = 60000;
+Constants.ID_RICETTA_PAG                 = 4;
 
 Constants.DATA_TABLE_LANGUAGE            = {
                                             "decimal":        "",

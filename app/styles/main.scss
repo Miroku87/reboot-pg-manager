@@ -84,6 +84,11 @@ button.pull-right {
   cursor: pointer;
 }
 
+.box-header h3.box-title,
+.box-title > a[data-widget="collapse"] {
+  display: block;
+}
+
 /* MODAL PUNTI */
 #modal_assegna_punti .nomi_pg {
   font-weight: bold;
@@ -222,6 +227,8 @@ body.register-page {
 .scheda-pg-page #invia_bg,
 .scheda-pg-page #annulla_bg,
 .scheda-pg-page #annulla_note_master,
+.scheda-pg-page #annulla_note_cartellino,
+.scheda-pg-page #invia_note_cartellino,
 .scheda-pg-page #invia_note_master {
   margin-top: 20px;
 }

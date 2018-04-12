@@ -8,7 +8,6 @@
 
             this.faiLoginPG();
             this.recuperaStoricoAzioni();
-            this.recuperaRicetteCrafting();
             this.setListeners();
         },
 
@@ -36,6 +35,20 @@
                 .click(this.inviaModifichePG.bind(this, "note_master_personaggio", $("#testo_note_master")));
             $("#annulla_note_master").unbind("click");
             $("#annulla_note_master").click(this.impostaBoxNoteMaster.bind(this));
+            Utils.setSubmitBtn();
+        },
+    
+        mostraTextAreaNoteCartellino : function ()
+        {
+            $("#avviso_note_cartellino").hide();
+            $("#aggiungi_note_cartellino").hide();
+            $("#note_cartellino").hide();
+            $("#note_cartellino_form").show();
+            $("#invia_note_cartellino").unbind("click");
+            $("#invia_note_cartellino")
+                .click(this.inviaModifichePG.bind(this, "note_cartellino_personaggio", $("#testo_note_cartellino")));
+            $("#annulla_note_cartellino").unbind("click");
+            $("#annulla_note_cartellino").click(this.impostaNoteCartellino.bind(this));
             Utils.setSubmitBtn();
         },
 
@@ -222,7 +235,7 @@
                 $("#background").html(decodeURIComponent(this.pg_info.background_personaggio));
                 $("#testo_background")
                     .val(Utils.unStripHMTLTag(decodeURIComponent(this.pg_info.background_personaggio))
-                              .replace("<br>", "\r"));
+                              .replace(/<br>/g, "\r"));
 
                 if ( Utils.controllaPermessiUtente( this.user_info, ["modificaPG_background_personaggio_altri"] )
                     || ( this.pg_nato_in_olocausto && !this.pg_info.motivazioni ) )
@@ -254,7 +267,7 @@
                     $("#note_master").html(decodeURIComponent(this.pg_info.note_master_personaggio));
                     $("#testo_note_master")
                         .val(Utils.unStripHMTLTag(decodeURIComponent(this.pg_info.note_master_personaggio))
-                                  .replace("<br>", "\r"));
+                                  .replace(/<br>/g, "\r"));
                     $("#aggiungi_note_master").show();
                 }
                 else
@@ -262,6 +275,33 @@
                     $("#avviso_note_master").show();
                     $("#note_master").remove();
                 }
+            }
+        },
+    
+        impostaNoteCartellino : function (data)
+        {
+            if ( typeof data.result !== "undefined" )
+                this.note_cartellino = data.result || null;
+
+            $("#recuperaNoteCartellino").show();
+            $("#avviso_note_cartellino").show();
+            $("#aggiungi_note_cartellino").show();
+            $("#note_cartellino").show();
+            $("#note_cartellino_form").hide();
+
+            if (this.note_cartellino !== null)
+            {
+                $("#avviso_note_cartellino").remove();
+                $("#note_cartellino").html(decodeURIComponent(this.note_cartellino));
+                $("#testo_note_cartellino")
+                    .val(Utils.unStripHMTLTag(decodeURIComponent(this.note_cartellino))
+                              .replace(/<br>/g, "\r"));
+                $("#aggiungi_note_cartellino").show();
+            }
+            else
+            {
+                $("#avviso_note_cartellino").show();
+                $("#note_cartellino").remove();
             }
         },
 
@@ -430,27 +470,8 @@
                 tr.append(nuovo_td);
                 $("#recuperaStorico").find("tbody").append(tr);
             });
+            $("#recuperaStorico").removeClass("inizialmente-nascosto");
             $("#recuperaStorico").show();
-        },
-
-        mostraRicette : function ()
-        {
-            $("#ricettePersonaggio").show();
-        },
-
-        personalizzaMenu : function ()
-        {
-            if (this.pg_info)
-            {
-                if (this.pg_info.crafting_chimico)
-                    $("#btn_crafting_chimico").show();
-                if (this.pg_info.crafting_programmazione)
-                    $("#btn_crafting_programmazione").show();
-                if (this.pg_info.crafting_ingegneria)
-                    $("#btn_crafting_ingegneria").show();
-
-                $("#nome_personaggio").text(this.pg_info.nome_personaggio);
-            }
         },
 
         modificaPuntiPG : function ()
@@ -489,21 +510,195 @@
             );
         },
 
-        recuperaRicetteCrafting : function ()
+        inviaModificheRicetta: function ( id_ricetta )
         {
-            return false;
-            //TODO
-            var data = {pgid : window.localStorage.getItem("pg_da_loggare")};
+            var note   = encodeURIComponent( Utils.stripHMTLTag( $("#modal_modifica_ricetta").find("#note_pg_ricetta").val()).replace(/\n/g,"<br>") ),
+                dati   = {
+                    id : id_ricetta,
+                    modifiche: {
+                        note_pg_ricetta: note
+                    }
+                };
+
+            if($("#new_nome_ricetta").is(":visible") && $("#new_nome_ricetta").val() !== "")
+                dati.modifiche.nome_ricetta = $("#new_nome_ricetta").val();
 
             Utils.requestData(
-                Constants.API_GET_RICETTE,
-                "GET",
-                data,
-                function (data)
-                {
-                    this.mostraRicette(data.result);
-                }.bind(this)
+                Constants.API_EDIT_RICETTA,
+                "POST",
+                dati,
+                "Modifiche apportate con successo",
+                null,
+                this.recipes_grid.ajax.reload.bind(this,null,false)
             );
+        },
+
+        mostraModalRicetta: function ( e )
+        {
+            var t     = $(e.target),
+                dati  = this.recipes_grid.row( t.parents('tr') ).data(),
+                note  = Utils.unStripHMTLTag( decodeURIComponent( dati.note_pg_ricetta )).replace(/<br>/g,"\r"),
+                note  = note === "null" ? "" : note,
+                comps = "<li>"+dati.componenti_ricetta.split("@@").join("</li><li>")+"</li>";
+
+            if( dati.tipo_ricetta === "Programmazione" )
+                $("#modal_modifica_ricetta").find("#new_nome_ricetta").parents(".form-group").removeClass("inizialmente-nascosto");
+
+            $("#modal_modifica_ricetta").find("#nome_ricetta").text(dati.nome_ricetta);
+            $("#modal_modifica_ricetta").find("#new_nome_ricetta").val(dati.nome_ricetta);
+            $("#modal_modifica_ricetta").find("#lista_componenti").html(comps);
+            $("#modal_modifica_ricetta").find("#note_ricetta").val(note);
+
+            $("#modal_modifica_ricetta").find("#btn_invia_modifiche_ricetta").unbind("click");
+            $("#modal_modifica_ricetta").find("#btn_invia_modifiche_ricetta").click(this.inviaModificheRicetta.bind(this,dati.id_ricetta));
+            $("#modal_modifica_ricetta").modal({drop:"static"});
+        },
+
+        setGridListeners: function ()
+        {
+            AdminLTEManager.controllaPermessi();
+
+            $( "td [data-toggle='popover']" ).popover("destroy");
+            $( "td [data-toggle='popover']" ).popover();
+
+            $( "[data-toggle='tooltip']" ).tooltip();
+
+            $("button.modifica-note").unbind( "click", this.mostraModalRicetta.bind(this) );
+            $("button.modifica-note").click( this.mostraModalRicetta.bind(this) );
+        },
+
+        erroreDataTable: function ( e, settings )
+        {
+            if( !settings.jqXHR.responseText )
+                return false;
+
+            var real_error = settings.jqXHR.responseText.replace(/^([\S\s]*?)\{"[\S\s]*/i,"$1");
+            real_error = real_error.replace("\n","<br>");
+            Utils.showError(real_error);
+        },
+
+        renderComps: function ( data, type, row )
+        {
+            var ret = data.split("@@").join("<br>");
+
+            return $.fn.dataTable.render.ellipsis( 20, true, false )(ret, type, row);
+        },
+
+        renderNote: function ( data, type, row )
+        {
+            var denc_data = Utils.unStripHMTLTag( decodeURIComponent(data) );
+            denc_data = denc_data === "null" ? "" : denc_data;
+
+            return $.fn.dataTable.render.ellipsis( 20, false, true, true )(denc_data, type, row);
+        },
+
+        renderApprovato: function ( data, type, row )
+        {
+            var ret = "In elaborazione...",
+                data = parseInt(data);
+
+            if( data === -1 )
+                ret = "Rifiutato";
+            else if ( data === 1 )
+                ret = "Approvato";
+
+            return ret;
+        },
+
+        creaPulsantiAzioni: function (data, type, row)
+        {
+            var pulsanti = "";
+
+            pulsanti += "<button type='button' " +
+                "class='btn btn-xs btn-default modifica-note ' " +
+                "data-toggle='tooltip' " +
+                "data-placement='top' " +
+                "title='Modifica Note'><i class='fa fa-pencil'></i></button>";
+
+            return pulsanti;
+        },
+
+        recuperaRicetteCrafting : function ()
+        {
+            if( this.pg_info.num_ricette === 0 )
+                return false;
+
+            var columns = [];
+
+            columns.push({
+                title: "Data Creazione",
+                data : "data_inserimento_it"
+            });
+            columns.push({
+                title: "Nome Ricetta",
+                data : "nome_ricetta"
+            });
+            columns.push({
+                title: "Tipo",
+                data : "tipo_ricetta"
+            });
+            columns.push({
+                title: "Componenti",
+                data : "componenti_ricetta",
+                render: this.renderComps.bind(this)
+            });
+            columns.push({
+                title: "Approvata",
+                data : "approvata_ricetta",
+                render: this.renderApprovato.bind(this)
+            });
+            columns.push({
+                title: "Note",
+                data : "note_pg_ricetta",
+                render: this.renderNote.bind(this)
+            });
+            columns.push({
+                title: "Azioni",
+                render: this.creaPulsantiAzioni.bind(this)
+            });
+
+            this.recipes_grid = $( '#griglia_ricette' )
+                .on("error.dt", this.erroreDataTable.bind(this) )
+                .on("draw.dt", this.setGridListeners.bind(this) )
+                .DataTable( {
+                    processing : true,
+                    serverSide : true,
+                    dom: "<'row'<'col-sm-6'lB><'col-sm-6'f>>" +
+                    "<'row'<'col-sm-12 table-responsive'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                    buttons    : ["reload"],
+                    language   : Constants.DATA_TABLE_LANGUAGE,
+                    ajax       : function (data, callback)
+                    {
+                        Utils.requestData(
+                            Constants.API_GET_RICETTE,
+                            "GET",
+                            $.extend( data, { pgid: window.localStorage.getItem("pg_da_loggare") } ),
+                            callback
+                        );
+                    },
+                    columns    : columns,
+                    //lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
+                    order      : [[0, 'desc']]
+                } );
+
+            $("#griglia_ricette").parents(".row").removeClass("inizialmente-nascosto");
+            $("#griglia_ricette").parents(".row").show();
+        },
+
+        recuperaNoteCartellino : function ()
+        {
+            if ( Utils.controllaPermessiUtente( this.user_info, ["recuperaNoteCartellino_altri","recuperaNoteCartellino_proprio"], false ) )
+            {
+                var data = { pgid : this.pg_info.id_personaggio };
+
+                Utils.requestData(
+                    Constants.API_GET_NOTE_CARTELLINO_PG,
+                    "GET",
+                    data,
+                    this.impostaNoteCartellino.bind(this)
+                );
+            }
         },
 
         recuperaStoricoAzioni : function ()
@@ -562,8 +757,9 @@
                     window.localStorage.setItem('logged_pg', JSON.stringify(pg_no_bg));
 
                     this.controllaMotivazioniOlocausto();
-                    this.personalizzaMenu();
                     this.mostraDati();
+                    this.recuperaRicetteCrafting();
+                    this.recuperaNoteCartellino();
 
                     AdminLTEManager.controllaMessaggi();
                 }.bind(this),
@@ -577,6 +773,7 @@
         {
             $("#mostra_form_bg").click(this.mostraTextAreaBG.bind(this));
             $("#mostra_note_master").click(this.mostraTextAreaNoteMaster.bind(this));
+            $("#mostra_note_cartellino").click(this.mostraTextAreaNoteCartellino.bind(this));
             $("#btn_aggiungiAbilitaAlPG").click(Utils.redirectTo.bind(this, Constants.ABILITY_SHOP_PAGE));
             $("#btn_modificaPG_px_personaggio").click(this.modificaPuntiPG.bind(this));
             $("#btn_modificaPG_credito_personaggio").click(this.modificaCreditoPG.bind(this));

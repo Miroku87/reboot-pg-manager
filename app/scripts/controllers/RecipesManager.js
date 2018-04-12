@@ -172,7 +172,17 @@
             Utils.showError(real_error);
         },
 
-        renderCompsERisultati: function ( data, type, row )
+        renderRisultati: function ( data, type, row )
+        {
+            var ret = data.split("@@").join("<br>");
+
+            if( row.id_unico_risultato != "null" )
+                ret = row.tipo_ricetta.substr(0,1).toUpperCase() + Utils.pad( row.id_unico_risultato, Constants.ID_RICETTA_PAG ) + "<br>" + ret;
+
+            return $.fn.dataTable.render.ellipsis( 20, true, false )(ret, type, row);
+        },
+
+        renderComps: function ( data, type, row )
         {
             var ret = data.split("@@").join("<br>");
 
@@ -273,12 +283,12 @@
             columns.push({
                 title: "Componenti",
                 data : "componenti_ricetta",
-                render: this.renderCompsERisultati.bind(this)
+                render: this.renderComps.bind(this)
             });
             columns.push({
                 title: "Risultato&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
                 data : "risultato_ricetta",
-                render: this.renderCompsERisultati.bind(this)
+                render: this.renderRisultati.bind(this)
             });
             columns.push({
                 title: "Approvata",

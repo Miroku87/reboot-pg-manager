@@ -31,13 +31,21 @@
 
                     if( ricette[i] )
                     {
-                        var cartellino = $("#cartellino_template").clone();
+                        var cartellino = $("#cartellino_template").clone(),
+                            unico_ricetta = ricette[i].id_unico_risultato ? ricette[i].tipo_ricetta.substr(0,1).toUpperCase() + Utils.pad( ricette[i].id_unico_risultato, Constants.ID_RICETTA_PAG ) : "";
+
                         cartellino.attr("id",null);
 
+                        cartellino.find( ".unico_ricetta" ).text(unico_ricetta);
                         cartellino.find( ".icona" ).html("<i class='fa "+ICONE[ricette[i].tipo_ricetta]+"'></i>");
 
                         for( var r in ricette[i] )
-                            cartellino.find( "." + r).html(  cartellino.find( "." + r).html() + Utils.unStripHMTLTag( decodeURIComponent(ricette[i][r]) ) );
+                        {
+                            var text = Utils.unStripHMTLTag(decodeURIComponent(ricette[i][r])),
+                                text = text === "null" ? "" : text;
+                            cartellino.find("." + r)
+                                      .html( cartellino.find("." + r).html() + text );
+                        }
 
                         pagina.append(cartellino);
                     }

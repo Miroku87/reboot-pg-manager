@@ -26,7 +26,8 @@
 
                     if( pgs[i] )
                     {
-                        var cartellino = $("#cartellino_template").clone();
+                        var cartellino = $("#cartellino_template").clone(),
+                            note_cartellino = "NOTE: "+decodeURIComponent( pgs[i].note_cartellino_personaggio).replace(/<br>/g," ");
 
                         cartellino.find(".giocatore").text( pgs[i].nome_giocatore );
                         cartellino.find(".pg-id").text( Utils.pad( pgs[i].id_personaggio ) );
@@ -37,6 +38,7 @@
                         cartellino.find(".pg-mente").text( Utils.pad( pgs[i].mente_personaggio, 4 ) );
                         cartellino.find(".pg-pc").text( Utils.pad( pgs[i].pc_risparmiati, 4 ) + "/" + Utils.pad( pgs[i].pc_personaggio, 4 ) );
                         cartellino.find(".pg-px").text( Utils.pad( pgs[i].px_risparmiati, 4 ) + "/" + Utils.pad( pgs[i].px_personaggio, 4 ) );
+                        cartellino.find(".note-pg").html( note_cartellino );
                         cartellino.find(".lista-classi-civili").text( pgs[i].classi_civili || "" );
                         cartellino.find(".lista-classi-militari").text( pgs[i].classi_militari || "" );
                         cartellino.find(".lista-abilita-civili").text( pgs[i].abilita_civili || "" );
