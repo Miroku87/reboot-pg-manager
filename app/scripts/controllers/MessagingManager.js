@@ -66,7 +66,8 @@ var MessaggingManager = function ()
 
         inserisciDestinatario: function ( )
         {
-            if( $("#tipo_messaggio").val() === "ig" )      $("#mittente").val( "Da: " + this.pg_info.nome_personaggio );
+
+            if( $("#tipo_messaggio").val() === "ig" ) $("#mittente").val( "Da: " + this.pg_info.nome_personaggio );
             else if( $("#tipo_messaggio").val() === "fg" ) $("#mittente").val( "Da: " + this.user_info.nome_giocatore );
         },
 
@@ -78,6 +79,15 @@ var MessaggingManager = function ()
                 $("#destinatario").val("");
                 $("#invia_messaggio").attr("disabled",true);
                 $("#destinatario").autocomplete( "option", "source", this.recuperaDestinatariAutofill.bind(this,$("#tipo_messaggio").val()) );
+
+                $("#destinatario").popover("destroy");
+
+                if( $("#tipo_messaggio").val() === "ig" )
+                    $("#destinatario").popover({
+                        content: "In caso di ID inserire sempre # prima del numero.",
+                        trigger: Utils.isDeviceMobile() ? "click" : "hover",
+                        placement: "top"
+                    });
             }
 
             this.inserisciDestinatario();
