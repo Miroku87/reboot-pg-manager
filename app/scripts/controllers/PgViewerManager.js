@@ -752,16 +752,18 @@
 
                     var pg_no_bg = JSON.parse( JSON.stringify(this.pg_info) );
                     delete pg_no_bg.background_personaggio;
+                    delete pg_no_bg.note_master_personaggio;
 
                     window.localStorage.removeItem('logged_pg');
                     window.localStorage.setItem('logged_pg', JSON.stringify(pg_no_bg));
+
+                    AdminLTEManager.mostraNomePersonaggio( this.pg_info.nome_personaggio );
+                    AdminLTEManager.controllaMessaggi();
 
                     this.controllaMotivazioniOlocausto();
                     this.mostraDati();
                     this.recuperaRicetteCrafting();
                     this.recuperaNoteCartellino();
-
-                    AdminLTEManager.controllaMessaggi();
                 }.bind(this),
                 null,
                 null,

@@ -49,7 +49,18 @@ var MessaggingManager = function ()
 
         scrittoSuDestinatario: function ( e, ui )
         {
-            if( !ui.item )
+            if( $("#tipo_messaggio").val() === "ig" && $(e.target).val().substr(0,1) === "#" )
+            {
+                this.id_destinatario = $(e.target).val().substr(1);
+                $("#invia_messaggio").attr("disabled", false);
+            }
+            else if ( $("#tipo_messaggio").val() === "ig" && $(e.target).val().substr(0,1) !== "#" )
+                $("#invia_messaggio").attr("disabled",true);
+        },
+
+        selezionatoDestinatario: function ( e, ui )
+        {
+            if( !ui.item && $("#tipo_messaggio").val() !== "ig" && $(e.target).val().substr(0,1) !== "#" )
                 $("#invia_messaggio").attr("disabled",true);
         },
 
@@ -94,7 +105,8 @@ var MessaggingManager = function ()
                 $("#destinatario").autocomplete({
                     autoFocus : true,
                     select : this.destinatarioSelezionato.bind(this),
-                    change : this.scrittoSuDestinatario.bind(this),
+                    search : this.scrittoSuDestinatario.bind(this),
+                    change : this.selezionatoDestinatario.bind(this),
                     source : this.recuperaDestinatariAutofill.bind(this,"fg")
                 });
 

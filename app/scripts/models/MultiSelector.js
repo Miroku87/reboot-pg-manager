@@ -423,18 +423,18 @@ var MultiSelector = MultiSelector || (function ()
     {
         for( var d = this._dati_lista.length - 1; d >= 0; d-- )
         {
-            if( this._dati_lista[d][ chiave_primaria ] && this._dati_lista[d][ chiave_primaria ] === valore )
+            if( this._dati_lista[d][ chiave_primaria ] && this._dati_lista[d][ chiave_primaria ] == valore )
                 this._dati_lista.splice( d, 1 );
         }
 
-        _aggiornaListe.call(this, false);
+        _aggiornaListe.call(this,true);
     };
 
     MultiSelector.prototype.spostaDaCarrello = function( chiave_primaria, valore )
     {
         for( var d = this._dati_carrello.length - 1; d >= 0; d-- )
         {
-            if( this._dati_carrello[d][ chiave_primaria ] && this._dati_carrello[d][ chiave_primaria ] === valore )
+            if( this._dati_carrello[d][ chiave_primaria ] && this._dati_carrello[d][ chiave_primaria ] == valore )
                 this._dati_lista.push( this._dati_carrello.splice( d, 1 )[0] );
         }
 
