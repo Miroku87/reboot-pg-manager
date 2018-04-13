@@ -1,6 +1,6 @@
 # Reboot Live PG Manager - Modifiche
 
-# App #
+## App ##
 
 * Add live_index.html
 * Add live_mercato.html
@@ -10,24 +10,24 @@
 * Add live_netrunner.html
 
 
-# Templates #
+## Templates ##
 * Add live_main_template.html
 * Add live_template.html
 
-# Csv #
+## Csv ##
 * Add folder app/csv
 * Add componenti.csv
 
-# Style#
+## Style ##
 * Add overrideStyle.scss
 
-# Controller #
+## Controller ##
 * AdminLTEManager.js -> modificata funzione mostraNomePersonaggio
 * Add LiveTecnico.js
 * Add LiveMessagingManage.js
 * Add LiveRecipesManager.js
 
-# DB #
+## DB ##
 * grant: 
         visualizza_pagina_live_index
         visualizza_pagina_live_tecnico
@@ -36,7 +36,13 @@
         visualizza_pagina_live_netrunner
         visualizza_pagina_live_gestione_ricette
 
-# Easter Egg  Index #
+## Easter Egg  Index ##
 * digitare: ZERG - stop: STOP (o aspettare 20 sec)
 * digitare MATRIX - stop: BLUEPILL  (o aspettare 20 sec)
-* digitare BSOD - strop GODBLESSTHEQUEEN   (o aspettare 20 sec)
+* digitare BSOD - stop GODBLESSTHEQUEEN   (o aspettare 20 sec)
+
+### File Easter Egg ####
+* Add folder scripts/eg
+* Add file  cheat.min.js - libreria
+* Add file zerg.js - libreria
+* Add file all-eg.js - inizializza tutti gli easter egg
