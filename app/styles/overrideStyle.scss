@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Titillium+Web:400,400i,600,600i,700,700i,900');
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
+
+
 * {
     background-color: transparent!important;
     font-family: 'Titillium Web', sans-serif;
@@ -720,4 +723,49 @@ select:-webkit-autofill:focus {
   color: #18b3b2;
   font-family: 'Titillium Web', sans-serif;
   -webkit-text-fill-color: #18b3b2;
+}
+
+
+
+.zergling{
+    background-image: url('../images/zerg.png');
+    background-size:cover;
+    background-repeat: no-repeat;
+}
+.matrixC{
+    position: fixed;
+    top:0;
+    left:0;
+    height:100%;
+    width: 100%;
+    background-color:#0F0 !important;
+    z-index:99999;
+}
+.bsod {
+    font-family: 'Press Start 2P', cursive;
+    position: fixed;
+    top:0;
+    left:0;
+    height:100%;
+    width: 100%;
+    background-color:#03038b !important;
+    z-index:99999;
+    color:#fff;
+    text-align: center;
+    padding-top: 15%;
+}
+.bsod  p {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 13px;
+    font-weight: normal;
+}
+.bsod h1{
+    font-family: 'Press Start 2P', cursive;
+    background-color: #aaaaaa!important;
+    color: #03038b;
+    padding: 5px;
+    display: inline;
+    margin: 0;
+    font-size: 14px;
+    margin-bottom: 10px;
 }

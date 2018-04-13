@@ -36,3 +36,7 @@
         visualizza_pagina_live_netrunner
         visualizza_pagina_live_gestione_ricette
 
+# Easter Egg  Index #
+* digitare: ZERG - stop: STOP (o aspettare 20 sec)
+* digitare MATRIX - stop: PILLBLUE  (o aspettare 20 sec)
+* digitare BSOD - strop GODBLESSTHEQUEEN   (o aspettare 20 sec)
