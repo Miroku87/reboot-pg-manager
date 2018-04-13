@@ -1,18 +1,18 @@
-﻿var AdminLTEManager = function ()
+var AdminLTEManager = function ()
 {
     var SECTION_NAME = window.location.href.replace( Constants.SITE_URL+"/", "" ).replace( window.location.search, "" ).replace(/\.\w+$/,""),
-        NO_CONTROLLO = ["index","recupera_password","registrazione"];
+        NO_CONTROLLO = ["index","recupera_password","registrazione","live_index"];
 
     return {
 
         init: function ()
         {
             this.user_info = this.user_info || JSON.parse( window.localStorage.getItem('user') );
-            this.pg_info   = JSON.parse( window.localStorage.getItem('logged_pg') );
+            this.pg_info   = this.pg_info || JSON.parse( window.localStorage.getItem('logged_pg') );
 
             if( this.pg_info && typeof this.user_info.pg_da_loggare !== "undefined" )
                 $(".visualizza_pagina_main").attr( "href", Constants.PG_PAGE );
-
+            console.log(this.pg_info);
             this.setListeners();
             this.controllaPermessi(".sidebar-menu", true);
         },
@@ -23,24 +23,6 @@
                 && NO_CONTROLLO.indexOf( SECTION_NAME ) === -1
                 && SECTION_NAME.indexOf( "test" ) === -1 )
                 Utils.controllaAccessoPagina( SECTION_NAME );
-        },
-
-        mostraNomePersonaggio: function ( nome )
-        {
-            var id_personaggio = "";
-            if( typeof nome === "undefined" && this.pg_info ){
-                nome = this.pg_info.nome_personaggio;
-                id_personaggio = this.pg_info.id_personaggio;
-            }
-                
-
-            if (nome){
-                $("#nome_personaggio").find("p").text(nome);
-                $(".live_nome_personaggio").text( nome );
-                $("#live_matricola").text("# SGC0215AT54RD" + this.pg_info.id_personaggio);
-            }
-            
-                
         },
 
         mostraElementiNascosti: function ( in_selector, animate, permesso )
@@ -79,9 +61,9 @@
             animate     = typeof animate === "undefined" ? false : animate;
 
             this.user_info = this.user_info || JSON.parse( window.localStorage.getItem('user') );
-            this.pg_info   = JSON.parse( window.localStorage.getItem('logged_pg') );
+            this.pg_info   = this.pg_info || JSON.parse( window.localStorage.getItem('logged_pg') );
 
-            $(in_selector).find(".inizialmente-nascosto:not(.no-hide)").hide();
+            $(in_selector).find(".inizialmente-nascosto").hide();
 
             if( this.user_info )
             {
@@ -97,16 +79,16 @@
                 }.bind( this ) );
             }
 
-            if (this.pg_info)
+            if( this.pg_info )
             {
-                for (var p in this.pg_info.permessi)
+                for( var p in this.pg_info.permessi )
                 {
                     var permesso = this.pg_info.permessi[p];
-                    this.mostraElementiNascosti(in_selector, animate, permesso);
+                    this.mostraElementiNascosti( in_selector, animate, permesso );
                 }
-            }
 
-            this.mostraNomePersonaggio();
+                $("#nome_personaggio").find("p").text( this.pg_info.nome_personaggio );
+            }
         },
 
         logout: function ()
@@ -190,7 +172,6 @@
             if( typeof data.result.ig !== "undefined" )
             {
                 $("#num_mex_ig").text( data.result.ig );
-                $("#num_mex_ig").removeClass("inizialmente-nascosto");
                 $("#num_mex_ig").show();
             }
         },
@@ -235,7 +216,7 @@
     }
 }();
 
-AdminLTEManager.controllaAccesso();
+//AdminLTEManager.controllaAccesso();
 
 $( document ).ready( function ( e )
 {

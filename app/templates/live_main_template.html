@@ -1,0 +1,159 @@
+{% extends "./live_template.html" %} 
+{% set body_classes = "hold-transition skin-blue sidebar-mini" %} {% set add_wrapper
+= add_wrapper | default(true) %} {% block content %}
+<video autoplay muted loop id="myVideo">
+    <source src="images/Futuristic.mp4" type="video/mp4">
+</video>
+<div class="bg"></div>
+<div class="bg2"></div>
+<div class="wrapper">
+
+    <!-- Main Header -->
+    <header class="main-header">
+
+        <!-- Logo -->
+        <a href="#" class="logo">
+            <span class="logo-mini">
+                <b>SGC</b>UI</span>
+            <span class="logo-lg">
+                <b>SGC</b> UI</span>
+        </a>
+
+        <!-- Header Navbar -->
+        <nav class="navbar navbar-static-top">
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li class="user user-menu">
+                        <a href="#" class="dropdown-toggle hidden-xs" data-toggle="dropdown"></a>
+                            <span class=" sgc-info">&raquo; AUTHORIZED</span>
+                            <p class="live_nome_personaggio"></p>
+                        </a>
+                        <div class="pull-right">
+                            <a href="#" id="logoutBtn" class="btn btn-default btn-flat"> &raquo; LOGOUT &laquo;</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </nav>
+    </header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img src="images/user2-160x160.jpg" class="user-image" alt="User Image">
+                </div>
+                <div class="pull-left info" id="nome_personaggio">
+                    <p class="hidden-xs"></p>
+                    <a href="#">
+                        <i class="fa fa-circle text-success"></i> Online</a>
+                </div>
+            </div>
+
+            <ul class="sidebar-menu" data-widget="tree">
+                <li class="header">MAIN NAVIGATION</li>
+                <li class="treeview">
+                    <a href="#">
+
+                        <span class="sgc-info">//USEC/SGC/</span>
+                        <i class="fa fa-dashboard"></i>
+                        <span>Simulatore</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li>
+                            <a href="live_netrunner.html">
+                                <span class="sgc-info2">&raquo;</span> Netrunning Software</a>
+                        </li>
+                        <li>
+                            <a href="live_tecnico.html">
+                                <span class="sgc-info2">&raquo;</span> Technical Hardware</a>
+                        </li>
+                        <li>
+                            <a href="live_medico.html">
+                                <span class="sgc-info2">&raquo;</span> Chemical Support</a>
+                        </li>
+                    </ul>
+
+                </li>
+                </li>
+                <li>
+                    <a href="live_gestione_ricette.html">
+                        <span class="sgc-info">//USEC/SGC/</span>
+                        <i class="fa fa-files-o"></i>
+                        <span>RICETTE</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="live_mercato.html">
+                        <span class="sgc-info">//USEC/SGC/</span>
+                        <i class="fa fa-files-o"></i>
+                        <span>MERCATO</span>
+                    </a>
+                </li>
+                <li {% if section === 'messaggi' %}class="active"{% endif %}>
+                    <a href="live_messaggi.html">
+                        <span class="sgc-info">//USEC/SGC/</span>
+                        <i class="fa fa-envelope-o"></i>
+                        <span>Messaggi</span>
+                            <small class="label pull-right bg-blue inizialmente-nascosto" id="num_mex_ig" data-toggle="tooltip" data-title="I.G.">0</small>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        {% if add_wrapper %} {% if titolo_sezione %}
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                {{ titolo_sezione }}
+                <small id="live_matricola"></small>
+            </h1>
+            <!--<ol class="breadcrumb">
+              <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+              <li class="active">Here</li>
+            </ol>-->
+        </section>
+        {% endif %}
+
+        <!-- Main content -->
+        <section class="content">
+            {% endif %} {% block mainContent %} {% endblock %} {% if add_wrapper %}
+        </section>
+        {% endif %}
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <!-- Main Footer -->
+    <footer class="main-footer">
+        <!-- news a scorrimento -->
+        <div class="row">
+            <div class="col-sm-2 col-xs-3 col-xs-12">
+                <span class="sgc-info">ULTIME NOTIZIE &raquo; </span>
+            </div>
+            <div class="col-sm-10 col-xs-9 col-xs-12">
+                <p class="news">
+                    <span>
+                        <b>Siamo Fighi - </b> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ligula nulla, dictum
+                        eu dignissim aliquam, porta vel ipsum. Cras porta lacus id sagittis aliquam.
+                        <b> Siamo Fighi 2 - </b> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ligula nulla,
+                        dictum eu dignissim aliquam, porta vel ipsum. Cras porta lacus id sagittis aliquam.
+                        <b> Siamo Fighi 2 - </b> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ligula nulla,
+                        dictum eu dignissim aliquam, porta vel ipsum. Cras porta lacus id sagittis aliquam.
+                    </span>
+                </p>
+            </div>
+        </div>
+    </footer>
+</div>
+{% endblock %}

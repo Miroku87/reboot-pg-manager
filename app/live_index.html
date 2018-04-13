@@ -1,0 +1,103 @@
+{% extends "./templates/live_main_template.html" %}
+{% from "./templates/components.html" import modal_assegna_punti, modal_assegna_punti_scripts, modal_modifica_credito, modal_modifica_credito_scripts %}
+{% set titolo_sezione = "Benvenuto Agente" %}
+
+{% set section = "live_index" %}
+{% block mainContent %}
+{{ super() }}
+<!--------------------------
+  | Your Page Content Here |
+  -------------------------->
+
+  <div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">
+                    <span class="sgc-info2">SGC</span> Report</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+
+                    <button type="button" class="btn btn-box-tool" data-widget="remove">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                Donec elementum sollicitudin malesuada. Morbi rutrum leo ac purus sodales, eu maximus ipsum consectetur. Donec imperdiet
+                interdum velit, et dapibus eros pretium in. Mauris ac lacus tempus, aliquam dolor at, congue
+                arcu. Nam nibh nisl, vestibulum pulvinar velit non, auctor pellentesque dui. Proin vitae
+                nibh sodales, congue lacus vitae, venenatis eros. Suspendisse sem mi, blandit quis felis
+                tincidunt, viverra malesuada ipsum. Vestibulum vehicula, sem quis placerat sollicitudin,
+                nisl urna mollis eros, sed varius ante neque nec eros. In molestie, mi a sollicitudin aliquam,
+                dui justo luctus dui, at interdum nulla diam ac tellus. Lorem ipsum dolor sit amet, consectetur
+                adipiscing elit. Integer fringilla in dolor ac pretium. Vestibulum sit amet blandit risus,
+                sed consequat elit. Sed molestie neque ipsum, eget dapibus massa posuere at. Vestibulum maximus
+                sapien a urna porttitor molestie. Pellentesque finibus, elit ut euismod semper, nisl ante
+                malesuada massa, ac vestibulum nulla tellus sit amet arcu. Praesent bibendum, justo non dapibus
+                pellentesque, tellus ex laoreet libero, eu ornare magna lectus sit amet metus.
+
+            </div>
+            <!-- ./box-body -->
+            <div class="box-footer">
+                <div class="row">
+                    <div class="col-sm-3 col-xs-6">
+                        <div class="description-block border-right">
+                            <span class="description-percentage text-green">
+                                <i class="fa fa-caret-up"></i> 17%</span>
+                            <h5 class="description-header">3,501</h5>
+                            <span class="description-text">RICHIESTE INTERVENTO</span>
+                        </div>
+                        <!-- /.description-block -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-sm-3 col-xs-6">
+                        <div class="description-block border-right">
+                            <span class="description-percentage text-yellow">
+                                <i class="fa fa-caret-left"></i> 0%</span>
+                            <h5 class="description-header">12</h5>
+                            <span class="description-text">SQUADRE SUL CAMPO</span>
+                        </div>
+                        <!-- /.description-block -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-sm-3 col-xs-6">
+                        <div class="description-block border-right">
+                            <span class="description-percentage text-green">
+                                <i class="fa fa-caret-up"></i> 20%</span>
+                            <h5 class="description-header">24,813</h5>
+                            <span class="description-text">MEMBRI OPERATIVI</span>
+                        </div>
+                        <!-- /.description-block -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-sm-3 col-xs-6">
+                        <div class="description-block">
+                            <span class="description-percentage text-red">
+                                <i class="fa fa-caret-down"></i> 18%</span>
+                            <h5 class="description-header">120</h5>
+                            <span class="description-text">COLLATERALS</span>
+                        </div>
+                        <!-- /.description-block -->
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.box-footer -->
+        </div>
+        <!-- /.box -->
+    </div>
+    <!-- /.col -->
+</div>
+
+{% endblock %}
+
+
+{% block managers %}
+{{ super() }}
+
+{% endblock %}

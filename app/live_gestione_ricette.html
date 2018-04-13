@@ -1,0 +1,28 @@
+{% extends "./templates/live_main_template.html" %}
+{% set body_classes = body_classes + " gestione-ricette-page" %}
+{% set section = "gestionericette" %}
+{% set titolo_sezione = "Gestione Ricette"  %}
+{% set descrizione_sezione = ""  %}
+
+{% block mainContent %}
+{{ super() }}
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title">Lista Ricette</h3>
+    </div>
+    <div class="box-body">
+        <form autocomplete="off" aria-autocomplete="none">
+            <table id="griglia_ricette" class="table" width="100%"></table>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block modals %}
+{{super()}}
+{% endblock %}
+
+{% block managers %}
+{{ super() }}
+<script src="scripts/controllers/LiveRecipesManager.js"></script>
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends "./templates/live_main_template.html" %} {% set section = "messaggi" %} 
+{% set titolo_sezione = "Message Box"
+%} {% set descrizione_sezione = "" %} {% block styles %} {{ super() }}
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.bootstrap.min.css" /> {% endblock %} {% block mainContent %} {{ super() }}
+<!-- Content Wrapper. Contains page content -->
+<div class="messaggi-page">
+    <!-- Main content -->
+    <div class="row">
+        <div class="col-md-3">
+            <button id="vaia_scrivi" class="btn btn-primary btn-block margin-bottom">Scrivi</button>
+
+            <div class="box box-solid">
+               
+                <div class="box-body no-padding">
+                    <!--<ul class="nav nav-pills nav-stacked">-->
+                    <ul class="nav nav-pills nav-stacked">
+
+                        <li class="inizialmente-nascosto">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li class="active">
+                                    <a href="#" id="vaia_inarrivo_ig">
+                                        <span class="sgc-info2">//MBX/</span>In Arrivo
+                                        <span id="num_non_lette_ig" class="label label-primary pull-right"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" id="vaia_inviate_ig">
+                                        <span class="sgc-info2">//MBX/</span> Inviate</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /. box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+            {% set is_inviati = r/inviati/i %} {% macro lista_messaggi(id, titolo, extra_classes='') %}
+            <div class="box box-primary {{extra_classes}}" id="{{id}}">
+                <div class="box-header with-border">
+                    <h3 class="box-title">{{titolo}}</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="table-responsive mailbox-messages">
+                        <table class="table" id="{{id}}_table" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>{% if is_inviati.test(titolo) %}Destinatario{% else %}Mittente{% endif %}</th>
+                                    <th>Oggetto</th>
+                                    <th>Data</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <!-- /.table -->
+                    </div>
+                    <!-- /.mail-box-messages -->
+                </div>
+                <!-- /.box-body -->
+            </div>
+            {% endmacro %} {{ lista_messaggi("lista_inarrivo_ig", "Messaggi In Arrivo") }} 
+            {{ lista_messaggi("lista_inviati_ig","Messaggi Inviati","inizialmente-nascosto") }}
+            <div class="box box-primary inizialmente-nascosto" id="scrivi_messaggio">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Scrivi Un Nuovo Messaggio</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form autocomplete="off" aria-autocomplete="none">
+                        <div class="form-group">
+                            <select class="form-control" id="tipo_messaggio" autocomplete="off">
+                                <option value="ig" selected> In Gioco</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" id="mittente" placeholder="Da:" autocomplete="off" disabled>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" id="destinatario" autocomplete="off" placeholder="A:">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" id="oggetto" autocomplete="off" placeholder="Oggetto:">
+                        </div>
+                        <div class="form-group">
+                            <textarea rows="10" class="form-control" autocomplete="off" id="messaggio"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-primary submit-btn" id="invia_messaggio" disabled>
+                            <i class="fa fa-envelope-o"></i> Invia</button>
+                    </div>
+                    <button type="reset" class="btn btn-default" id="risetta_messaggio">
+                        <i class="fa fa-times"></i> Annulla</button>
+                </div>
+                <!-- /.box-footer -->
+            </div>
+            <!-- /. box -->
+            <div class="box box-primary inizialmente-nascosto" id="leggi_messaggio">
+                <div class="box-header with-border">
+                    <h3 class="box-title">MESSAGE</h3>
+
+                    <!--<div class="box-tools pull-right">
+                        <a href="#" class="btn btn-box-tool" data-toggle="tooltip" title=""
+                           data-original-title="Previous"><i class="fa fa-chevron-left"></i></a>
+                        <a href="#" class="btn btn-box-tool" data-toggle="tooltip" title=""
+                           data-original-title="Next"><i class="fa fa-chevron-right"></i></a>
+                    </div>-->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="mailbox-read-info">
+                        <h3 id="oggetto_messaggio"></h3>
+                        <h5>
+                            Da:
+                            <span id="mittente_messaggio"></span>
+                            <br> A:
+                            <span id="destinatario_messaggio"></span>
+                            <span id="data_messaggio" class="mailbox-read-time pull-right"></span>
+                        </h5>
+
+                    </div>
+                    <!-- /.mailbox-read-info -->
+                    <div id="corpo_messaggio" class="mailbox-read-message">
+                    </div>
+                    <!-- /.mailbox-read-message -->
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-default" id="rispondi_messaggio">
+                            <i class="fa fa-reply"></i> Rispondi
+                        </button>
+                    </div>
+                </div>
+                <!-- /.box-footer -->
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{% endblock %} {% block managers %} {{ super() }}
+<script src="scripts/controllers/LiveMessagingManager.js"></script> {% endblock %}
