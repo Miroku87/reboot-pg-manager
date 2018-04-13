@@ -24,7 +24,7 @@ cheet('s t o p',function(){
 
         z.destroy();
         z = null;
-        alert('che culo!');
+        alert('ci è mancato un soffio!');
         //window.location.reload();
     }
     
