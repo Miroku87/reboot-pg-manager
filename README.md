@@ -38,5 +38,5 @@
 
 # Easter Egg  Index #
 * digitare: ZERG - stop: STOP (o aspettare 20 sec)
-* digitare MATRIX - stop: PILLBLUE  (o aspettare 20 sec)
+* digitare MATRIX - stop: BLUEPILL  (o aspettare 20 sec)
 * digitare BSOD - strop GODBLESSTHEQUEEN   (o aspettare 20 sec)
