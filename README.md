@@ -41,7 +41,7 @@
 * digitare MATRIX - stop: BLUEPILL  (o aspettare 20 sec)
 * digitare BSOD - stop GODBLESSTHEQUEEN   (o aspettare 20 sec)
 
-### File Easter Egg ####
+### File Easter Egg ###
 * Add folder scripts/eg
 * Add file  cheat.min.js - libreria
 * Add file zerg.js - libreria
