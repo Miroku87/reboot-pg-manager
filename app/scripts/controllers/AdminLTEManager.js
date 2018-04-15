@@ -19,7 +19,6 @@
 
         controllaAccesso: function ()
         {
-            console.log(SECTION_NAME);
             if(    SECTION_NAME !== ""
                 && NO_CONTROLLO.indexOf( SECTION_NAME ) === -1
                 && SECTION_NAME.indexOf( "test" ) === -1 )
@@ -33,15 +32,11 @@
                 nome = this.pg_info.nome_personaggio;
                 id_personaggio = this.pg_info.id_personaggio;
             }
-                
-
             if (nome){
                 $("#nome_personaggio").find("p").text(nome);
-                $(".live_nome_personaggio").text( nome );
+                $(".nome_personaggio").text( nome );
                 $("#live_matricola").text("# SGC0215AT54RD" + this.pg_info.id_personaggio);
             }
-            
-                
         },
 
         mostraElementiNascosti: function ( in_selector, animate, permesso )

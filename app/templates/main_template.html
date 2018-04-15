@@ -124,49 +124,13 @@
                          </ul>
                      </li>-->
                     <!-- User Account Menu -->
-                    <li class="dropdown user user-menu">
-                        <!-- Menu Toggle Button -->
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <!-- The user image in the navbar-->
-                            <img src="images/user2-160x160.jpg" class="user-image" alt="User Image">
-                            <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                            <span class="hidden-xs nome_giocatore"></span>
+                    <li class="user user-menu">
+                        <span class=" sgc-info">&raquo; AUTHORIZED</span>
+                        <a id="btn_visualizza_pagina_profilo" class="nome_giocatore"></a>
                         </a>
-                        <ul class="dropdown-menu">
-                            <!-- The user image in the menu -->
-                            <li class="user-header">
-                                <img src="images/user2-160x160.jpg" class="img-circle" alt="User Image">
-
-                                <p>
-                                    <span class="nome_giocatore"></span>
-                                    <!--<small>Member since Nov. 2012</small>-->
-                                </p>
-                            </li>
-                            <!-- Menu Body -->
-                            <!--<li class="user-body">
-                                <div class="row">
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Followers</a>
-                                    </div>
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Sales</a>
-                                    </div>
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Friends</a>
-                                    </div>
-                                </div>
-                                &lt;!&ndash; /.row &ndash;&gt;
-                            </li>-->
-                            <!-- Menu Footer-->
-                            <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="#" id="btn_visualizza_pagina_profilo" class="btn btn-default btn-flat">Profilo</a>
-                                </div>
-                                <div class="pull-right">
-                                    <a href="#" id="logoutBtn" class="btn btn-default btn-flat">Esci</a>
-                                </div>
-                            </li>
-                        </ul>
+                        <div class="pull-right">
+                            <a href="#" id="logoutBtn" class="btn btn-default btn-flat"> &raquo; LOGOUT &laquo;</a>
+                        </div>
                     </li>
                     <!-- Control Sidebar Toggle Button -->
                     <!--li>
@@ -229,8 +193,8 @@
                 <li id="btn_visualizza_pagina_gestione_ricette" class="inizialmente-nascosto {% if section === 'gestionericette' %}active{% endif %}">
                     <a href="gestione_ricette.html"><span class="sgc-info">//USEC/SGC/</span> <span>Gestisci Ricette</span></a></li>
                 <!--<li id="btn_visualizza_pagina_crafting_chimico" class="inizialmente-nascosto {% if section === 'craftingchimico' %}active{% endif %}"><a href="crafting_chimico.html"><span class="sgc-info">//USEC/SGC/</span> <span>Crafting Chimico</span></a></li>-->
-                <li id="btn_visualizza_pagina_crafting_programmazione" class="inizialmente-nascosto {% if section === 'craftingprog' %}active{% endif %}"><a href="crafting_programmazione.html"><span class="sgc-info">//USEC/SGC/</span> <span>Crafting Programmazione</span></a></li>
-                <!--<li id="btn_visualizza_pagina_crafting_ingegneria" class="inizialmente-nascosto {% if section === 'craftinging' %}active{% endif %}"><a href="crafting_ingegneria.html"><span class="sgc-info">//USEC/SGC/</span> <span>Crafting Ingegneria</span></a></li>-->
+                <li id="btn_visualizza_pagina_crafting_programmazione" class="inizialmente-nascosto {% if section === 'craftingprog' %}active{% endif %}"><a href="crafting_programmazione.html"><span class="sgc-info">//USEC/SGC/</span> <span>Crafting Programmi</span></a></li>
+                <li id="btn_visualizza_pagina_crafting_ingegneria" class="inizialmente-nascosto {% if section === 'craftinging' %}active{% endif %}"><a href="crafting_ingegneria.html"><span class="sgc-info">//USEC/SGC/</span> <span>Crafting Tecnico</span></a></li>
                 <!--li class="treeview"><a href="#"><i class="fa fa-flask"></i> <span>Crafting</span>
                     <span class="pull-right-container">
                       <i class="fa fa-angle-left pull-right"></i>

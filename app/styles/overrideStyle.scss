@@ -11,6 +11,15 @@ a {
   color: rgba(255, 255, 255, .7);
 }
 
+.login-box > a.logo {
+  display: block;
+  text-align: center;
+}
+
+.login-box .logo-lg {
+  font-size: 4em;
+}
+
 #myVideo {
   position: fixed;
   right: 0;
@@ -19,6 +28,7 @@ a {
   min-height: 100%;
   box-sizing: border-box;
   overflow: hidden;
+  z-index: -3;
 }
 
 .bg {
@@ -32,6 +42,7 @@ a {
   background-repeat: no-repeat;
   background-size: cover;
   opacity: 0.3;
+  z-index: -2;
 }
 
 .bg2 {
@@ -40,6 +51,7 @@ a {
   bottom: 0;
   min-width: 100%;
   min-height: 100%;
+  z-index: -1;
   /*background-color: #080f11c2;*/
   /*background: rgba(6, 122, 112, 1);
   background: -moz-radial-gradient(center, ellipse cover, rgba(6, 122, 112, .7) 0%, rgba(32, 52, 53, .7) 65%, rgba(32, 52, 53, 1) 100%);
@@ -111,9 +123,22 @@ a {
   color: #18b3b2;
 }
 
-.live_nome_personaggio {
+.live_nome_personaggio,
+.skin-black .main-header .navbar .navbar-custom-menu .navbar-nav > li > a.nome_giocatore {
   display: inline;
   padding: 0 10px;
+  color: white;
+  transition: opacity .5s;
+}
+
+.skin-black .main-header .navbar .navbar-custom-menu .navbar-nav > li > a.nome_giocatore:hover {
+  opacity: .5;
+}
+
+@media all and (max-width: 350px) {
+  .user-menu > .sgc-info {
+    display: none;
+  }
 }
 
 #logoutBtn {
