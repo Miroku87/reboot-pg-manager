@@ -37,6 +37,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="/bower_components/PACE/themes/blackblue/pace-theme-flat-top.css" type="text/html"/>
     <!-- endbuild -->
     <!-- build:css(dist) styles/main.css -->
+    <link rel="stylesheet" href="styles/overrideStyle.css" />
     <link rel="stylesheet" href="styles/main.css"/>
     <!-- endbuild -->
     <!-- Google Font -->
@@ -56,6 +57,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
     {% endblock %}
 </head>
 <body class="{{ body_classes }}">
+
+<video autoplay muted loop id="myVideo">
+    <source src="images/Futuristic.mp4" type="video/mp4">
+</video>
+<div class="bg"></div>
+<div class="bg2"></div>
+
 {% block content %}
 {% endblock %}
 {% block modals %}

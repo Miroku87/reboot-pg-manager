@@ -38,10 +38,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- endbuild -->
     <!-- build:css(dist) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css"/>
+    <link rel="stylesheet" href="styles/overrideStyle.css" />
     <!-- endbuild -->
-    <!-- Google Font -->
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <!-- build:css(dist) styles/{{section}}.css -->
     {% block styles %}
     {% endblock %}
@@ -54,7 +52,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     {% endblock %}
-    <link rel="stylesheet" href="styles/overrideStyle.css" />
 </head>
 <body class="{{ body_classes }}">
 {% block content %}

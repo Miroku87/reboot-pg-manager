@@ -1,6 +1,6 @@
 ﻿var AdminLTEManager = function ()
 {
-    var SECTION_NAME = window.location.href.replace( Constants.SITE_URL+"/", "" ).replace( window.location.search, "" ).replace(/\.\w+$/,""),
+    var SECTION_NAME = window.location.href.replace( Constants.SITE_URL+"/", "" ).replace( window.location.search, "" ).replace(/\.\w+$/,"").replace(/live_/,""),
         NO_CONTROLLO = ["index","recupera_password","registrazione"];
 
     return {
@@ -19,6 +19,7 @@
 
         controllaAccesso: function ()
         {
+            console.log(SECTION_NAME);
             if(    SECTION_NAME !== ""
                 && NO_CONTROLLO.indexOf( SECTION_NAME ) === -1
                 && SECTION_NAME.indexOf( "test" ) === -1 )
