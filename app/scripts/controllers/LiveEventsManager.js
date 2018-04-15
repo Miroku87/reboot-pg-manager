@@ -252,7 +252,7 @@ var LiveEventsManager = function ()
                 permessi_avan = Utils.controllaPermessiUtente( this.user_info, [ "recuperaListaIscrittiAvanzato" ]),
                 url           = permessi_avan ? Constants.API_GET_INFO_ISCRITTI_AVANZATE : Constants.API_GET_INFO_ISCRITTI_BASE;
 
-            if( !permessi_avan && quando === "precedente" )
+            if( !permessi_avan )
                 return false;
 
             columns.push({
@@ -564,8 +564,8 @@ var LiveEventsManager = function ()
                 $("#info_prossimo_evento").removeClass("inizialmente-nascosto");
                 $("#info_prossimo_evento").show();
 
-                $("#partecipanti_evento").removeClass("inizialmente-nascosto");
-                $("#partecipanti_evento").show();
+                //$("#partecipanti_evento").removeClass("inizialmente-nascosto");
+                //$("#partecipanti_evento").show();
             }
             else
             {
