@@ -1,6 +1,6 @@
 ﻿var AdminLTEManager = function ()
 {
-    var SECTION_NAME = window.location.href.replace( Constants.SITE_URL+"/", "" ).replace( window.location.search, "" ).replace(/\.\w+$/,""),
+    var SECTION_NAME = window.location.href.replace( Constants.SITE_URL+"/", "" ).replace( window.location.search, "" ).replace(/\.\w+$/,"").replace(/live_/,""),
         NO_CONTROLLO = ["index","recupera_password","registrazione"];
 
     return {
@@ -27,11 +27,16 @@
 
         mostraNomePersonaggio: function ( nome )
         {
-            if( typeof nome === "undefined" && this.pg_info )
+            var id_personaggio = "";
+            if( typeof nome === "undefined" && this.pg_info ){
                 nome = this.pg_info.nome_personaggio;
-
-            if (nome)
+                id_personaggio = this.pg_info.id_personaggio;
+            }
+            if (nome){
                 $("#nome_personaggio").find("p").text(nome);
+                $(".nome_personaggio").text( nome );
+                $("#live_matricola").text("# SGC0215AT54RD" + this.pg_info.id_personaggio);
+            }
         },
 
         mostraElementiNascosti: function ( in_selector, animate, permesso )

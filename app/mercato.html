@@ -1,0 +1,55 @@
+{% extends "./templates/live_main_template.html" %}
+{% from "./templates/components.html" import modal_assegna_punti, modal_assegna_punti_scripts, modal_modifica_credito, modal_modifica_credito_scripts %}
+{% set titolo_sezione = "Mercato" %}
+{% set section = "live_mercato" %}
+{% block mainContent %}
+{{ super() }}
+<!--------------------------
+  | Your Page Content Here |
+  -------------------------->
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">
+                    <span class="sgc-info2">SGC</span> RISORSE</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table id="mercato" class="table">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Descrizione</th>
+                            <th>Caratteristiche</th>
+                            <th>Costo</th>
+                            <th>Variazioni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block managers %}
+{{ super() }}
+<script src="scripts/controllers/MarketplaceManager.js"></script>
+{% endblock %}
