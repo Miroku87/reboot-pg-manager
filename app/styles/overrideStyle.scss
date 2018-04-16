@@ -11,11 +11,13 @@ a {
   color: rgba(255, 255, 255, .7);
 }
 
+.register-box > a.logo,
 .login-box > a.logo {
   display: block;
   text-align: center;
 }
 
+.register-box .logo-lg,
 .login-box .logo-lg {
   font-size: 4em;
 }
