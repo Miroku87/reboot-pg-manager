@@ -11,7 +11,10 @@
             this.pg_info   = JSON.parse( window.localStorage.getItem('logged_pg') );
 
             if( this.pg_info && typeof this.user_info.pg_da_loggare !== "undefined" )
+            {
                 $(".visualizza_pagina_main").attr( "href", Constants.PG_PAGE );
+                $("#logo_link").attr( "href", Constants.PG_PAGE );
+            }
 
             this.setListeners();
             this.controllaPermessi(".sidebar-menu", true);
@@ -28,12 +31,18 @@
         mostraNomePersonaggio: function ( nome )
         {
             var id_personaggio = "";
-            if( typeof nome === "undefined" && this.pg_info ){
+
+            if( typeof nome === "undefined" && typeof this.pg_info !== "undefined" )
+            {
                 nome = this.pg_info.nome_personaggio;
                 id_personaggio = this.pg_info.id_personaggio;
             }
-            if (nome){
+
+            if (nome)
+            {
                 $("#nome_personaggio").find("p").text(nome);
+                $("#nome_personaggio").find(".fa").removeClass("text-danger").addClass("text-success");
+                $("#pg_status").text(" Online");
                 $(".nome_personaggio").text( nome );
                 $("#live_matricola").text("# SGC0215AT54RD" + this.pg_info.id_personaggio);
             }

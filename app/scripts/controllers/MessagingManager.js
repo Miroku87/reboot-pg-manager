@@ -219,10 +219,16 @@ var MessaggingManager = function ()
             this.pg_info   = window.localStorage.getItem("logged_pg");
             this.pg_info   = this.pg_info ? JSON.parse( this.pg_info ) : null;
 
+            if( this.user_info && !this.user_info.pg_da_loggare )
+                $("#sezioni").find("li:first-child").removeClass("inizialmente-nascosto").show();
+
             if( this.pg_info )
-                $(".messaggi-page").find(".nav > li.inizialmente-nascosto").show();
+                $("#sezioni").find("li:last-child").removeClass("inizialmente-nascosto").show();
             else
                 $("#tipo_messaggio").find("option[value='ig']").remove();
+
+            if( this.user_info && this.user_info.pg_da_loggare )
+                $("#sezioni").find(".nome_sezione").text("Caselle");
 
             this.tab_inarrivo_fg = this.creaDataTable.call( this, 'lista_inarrivo_fg_table', Constants.API_GET_MESSAGGI, {tipo: "fg", casella: "inarrivo", id: this.user_info.email_giocatore});
             this.tab_inviati_fg  = this.creaDataTable.call( this, 'lista_inviati_fg_table', Constants.API_GET_MESSAGGI, {tipo: "fg", casella: "inviati", id: this.user_info.email_giocatore});

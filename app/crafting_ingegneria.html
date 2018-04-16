@@ -1,4 +1,4 @@
-﻿{% extends "./templates/live_main_template.html" %}
+﻿{% extends "./templates/main_template.html" %}
 {% set titolo_sezione = "Technical Hardware" %}
 {% set section = "live_tecnico" %}
 {% block mainContent %}
@@ -45,7 +45,9 @@
                         <p>
                             <span class="sgc-info2">Nome </span> prototipo
                         </p>
-                        <input id="nome_prototipo" type="text" class="form-control">
+                        <form autocomplete="off" aria-autocomplete="none">
+                            <input id="nome_prototipo" type="text" class="form-control">
+                        </form>
                     </div>
                     <div class="col-sm-12 col-md-4">
 
