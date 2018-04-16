@@ -352,7 +352,7 @@ var CraftingSoftwareManager = function ()
             if( this.max_programmi > 1 )
             {
                 this.chiediConferma(
-                    "Combinare insieme pi&ugrave; programmi conosciuti? (s|n)",
+                    "Il chip dell'utente permette la combinazione di pi&ugrave; programmi conosciuti. Eseguire? (s|n)",
                     this.ask_questions.bind(this,0,false),
                     this.ask_questions.bind(this,0)
                 );

@@ -1,10 +1,10 @@
 Codice;Nome;Tipo;Volume;Energia;Costo;Costo_Vecchio;Descrizione
-S001;parti in plastica  -  S;struttura;2;-5;100;50;Cassa di dimensione piccola standard
-S002;parti in plastica -  M;struttura;4;-5;150;100;Cassa di dimensione media standard
-S003;parti in plastica -  L;struttura;6;-5;250;300;Cassa di dimensione grande standard
-S004;parti in metallo  - S ;struttura;2;-5;500;800;Cassa di dimensione piccola robusta
-S005;parti in metallo  - M ;struttura;4;-5;750;500;Cassa di dimensione media robusta
-S006;parti in metallo  - L ;struttura;6;-5;1250;1000;Cassa di dimensione grande robusta
+S001;parti in plastica - S;struttura;2;-5;100;50;Cassa di dimensione piccola standard
+S002;parti in plastica - M;struttura;4;-5;150;100;Cassa di dimensione media standard
+S003;parti in plastica - L;struttura;6;-5;250;300;Cassa di dimensione grande standard
+S004;parti in metallo  - S;struttura;2;-5;500;800;Cassa di dimensione piccola robusta
+S005;parti in metallo  - M;struttura;4;-5;750;500;Cassa di dimensione media robusta
+S006;parti in metallo  - L;struttura;6;-5;1250;1000;Cassa di dimensione grande robusta
 S007;parti in resina - S;struttura;2;0;50;80;Cassa di dimensione piccola fragile
 S008;parti in resina - M;struttura;4;0;75;80;Cassa di dimensione media fragile
 S009;parti in resina - L;struttura;6;0;125;100;Cassa di dimensione grande fragile
@@ -12,7 +12,7 @@ S010;parti di recupero - S;struttura;2;0;10;10;Cassa di dimensione piccola di re
 S011;parti di recupero - M;struttura;4;0;15;15;Cassa di dimensione media di recupero
 S012;parti di recupero - L;struttura;6;0;25;25;Cassa di dimensione grande di recupero
 S013;parti in Elettrolite - S;struttura;2;20;2000;2000;Cassa di dimensione piccola in Elettrolite
-S014;parti in Elettrolite  -M;struttura;4;20;3000;3000;Cassa di dimensione media in Elettrolite
+S014;parti in Elettrolite - M;struttura;4;20;3000;3000;Cassa di dimensione media in Elettrolite
 S015;parti in elettrolite - L;struttura;6;100;5000;5000;Cassa di dimensione grande di Elettrolite
 B001;Batteria NRG  type A - 1;batteria;-1;10;10;50;
 B002;Batteria NRG  type A - 2;batteria;-1;15;15;100;Batteria ricaricabile EMETTITORE INSTABILE PLASMA PER PISTOLA MK1
@@ -28,9 +28,9 @@ B011;Batteria monouso A -2;batteria;-1;8;8;8;Batteria da 1 carica usa e getta
 B012;Batteria monouso A -3;batteria;-2;10;10;10;Batteria da  2 cariche usa e getta
 B013;Batteria monouso A -4;batteria;-3;15;20;50;Batteria da 2 cariche usa e getta
 B014;Batteria monouso A -5;batteria;-3;25;30;40;Batteria da 3 cariche usa e getta
-B015;Batteria Hotshot  B-1;batteria;-1;5;8;70;Batteria da 2 cariche sovralimentata 
+B015;Batteria Hotshot  B-1;batteria;-1;5;8;70;Batteria da 2 cariche sovralimentata
 B016;Batteria Hotshot  B-2;batteria;-1;10;11;90;Batteria da 3 cariche sovralimentata
-B017;Batteria Hotshot  B-3;batteria;-2;15;15;50;Batteria da 2 cariche sovralimentata 
+B017;Batteria Hotshot  B-3;batteria;-2;15;15;50;Batteria da 2 cariche sovralimentata
 B018;Batteria Hotshot  B-4;batteria;-3;25;30;40;Batteria da 3 cariche sovralimentata
 B019;Alimentazione a rete ;batteria;-3;10000;10;70;alimentazione a rete da collegare con cavo
 A001;Emettitore laser mk1;applicativo;-1;0;50;50;Emettitore laser di bassa qualità
@@ -69,18 +69,18 @@ A033;Emettitore plasma per shotgun mk3;applicativo;-1;0;120;50;Emettitore plasma
 A034;Emettitore plasma per fucile di precisione mk1;applicativo;-1;0;80;100;Emettitore plasma di bassa qualità
 A035;Emettitore plasma per fucile di precisione mk2;applicativo;-1;0;120;300;Emettitore plasma standard
 A036;Emettitore plasma per fucile di precisione mk3;applicativo;-1;0;160;800;Emettitore plasma di alta qualità
-A037;Emettitore instabile plasma mk1;applicativo;-2;0;50;500;Emettitore che necessita di raffreddamento 
-A038;Emettitore instabile plasma mk2;applicativo;-1;0;70;1000;Emettitore che necessita di raffreddamento 
-A039;Emettitore instabile fusore mk1;applicativo;-1;0;90;80;Emettitore che necessita di raffreddamento 
-A040;Emettitore instabile fusore mk2;applicativo;-1;0;60;80;Emettitore che necessita di raffreddamento 
-A041;Emettitore instabile plasma per pistola mk1;applicativo;-1;0;90;100;Emettitore che necessita di raffreddamento 
-A042;Emettitore instabile plasma per pistola mk2;applicativo;-1;0;120;10;Emettitore che necessita di raffreddamento 
-A043;Emettitore instabile plasma per fucile d'assalto mk1;applicativo;-1;0;80;15;Emettitore che necessita di raffreddamento 
-A044;Emettitore instabile plasma per fucile d'assalto mk2;applicativo;-1;0;120;25;Emettitore che necessita di raffreddamento 
-A045;Emettitore instabile plasma per shotgun mk1;applicativo;-1;0;160;2000;Emettitore che necessita di raffreddamento 
-A046;Emettitore instabile plasma per shotgun mk2;applicativo;-2;0;50;3000;Emettitore che necessita di raffreddamento 
-A047;Emettitore instabile plasma per fucile di precisione mk1;applicativo;-1;0;70;5000;Emettitore che necessita di raffreddamento 
-A048;Emettitore instabile plasma per fucile di precisione mk2;applicativo;-1;0;90;50;Emettitore che necessita di raffreddamento 
+A037;Emettitore instabile plasma mk1;applicativo;-2;0;50;500;Emettitore che necessita di raffreddamento
+A038;Emettitore instabile plasma mk2;applicativo;-1;0;70;1000;Emettitore che necessita di raffreddamento
+A039;Emettitore instabile fusore mk1;applicativo;-1;0;90;80;Emettitore che necessita di raffreddamento
+A040;Emettitore instabile fusore mk2;applicativo;-1;0;60;80;Emettitore che necessita di raffreddamento
+A041;Emettitore instabile plasma per pistola mk1;applicativo;-1;0;90;100;Emettitore che necessita di raffreddamento
+A042;Emettitore instabile plasma per pistola mk2;applicativo;-1;0;120;10;Emettitore che necessita di raffreddamento
+A043;Emettitore instabile plasma per fucile d'assalto mk1;applicativo;-1;0;80;15;Emettitore che necessita di raffreddamento
+A044;Emettitore instabile plasma per fucile d'assalto mk2;applicativo;-1;0;120;25;Emettitore che necessita di raffreddamento
+A045;Emettitore instabile plasma per shotgun mk1;applicativo;-1;0;160;2000;Emettitore che necessita di raffreddamento
+A046;Emettitore instabile plasma per shotgun mk2;applicativo;-2;0;50;3000;Emettitore che necessita di raffreddamento
+A047;Emettitore instabile plasma per fucile di precisione mk1;applicativo;-1;0;70;5000;Emettitore che necessita di raffreddamento
+A048;Emettitore instabile plasma per fucile di precisione mk2;applicativo;-1;0;90;50;Emettitore che necessita di raffreddamento
 A049;Emettitore sovralimentato adattivo mk1;applicativo;-1;0;60;100;Emettitore estremamente potente
 A050;Emettitore sovralimentato adattivo mk2;applicativo;-1;0;90;300;Emettitore estremamente potente
 A051;Emettitore sovralimentato per pistola mk1;applicativo;-1;0;120;800;Emettitore estremamente potente
@@ -101,7 +101,7 @@ A065;Generatore di campo portatile  migliorato;applicativo;-1;0;70;40;Questo com
 A066;Dissipatore di energia;applicativo;-1;0;90;70;questo componente, se applicato a un'arma, causa colpi molto dolorosi
 A067;Igniter;applicativo;-1;0;60;50;permette alle armi di causare colpi incendiari
 A068;Cooler;applicativo;-1;0;90;40;permette alle armi di causare colpi congelanti
-A069;Stasis;applicativo;-1;0;120;70;permette di bloccare temporaneamente il nemico 
+A069;Stasis;applicativo;-1;0;120;70;permette di bloccare temporaneamente il nemico
 A070;Camera di combustione per proiettili solidi da pistola;applicativo;-1;0;80;90;permette a una pistola di sparare proiettili solidi
 A071;Camera di combustione per proiettili solidi da fucile d'assalto;applicativo;-1;0;120;90;permette a un fucile d'assalto di sparare proiettili solidi
 A072;Camera di combustione per proiettili solidi da fucile di precisione;applicativo;-1;0;160;120;permette a un fucile di precisione di sparare proiettili solidi
@@ -109,17 +109,17 @@ A073;Camera di combustione per proiettili solidi da shotgun;applicativo;-2;0;50;
 A074;Camera di combustione per proiettili solidi da mitragliatore;applicativo;-1;0;70;120;permette a un mitragliatore di sparare proiettili solidi
 A075;Attuatore cinetico di bassa qualità per braccio ;applicativo;-1;0;90;160;arto artificiale di base non migliorabile
 A076;Attuatore cinetico di media qualità per braccio;applicativo;-1;0;60;50;arto artificiale di base non migliorabile
-A077;Attuatore cinetico di alta qualità per braccio;applicativo;-1;0;90;70;arto artificiale di base 
+A077;Attuatore cinetico di alta qualità per braccio;applicativo;-1;0;90;70;arto artificiale di base
 A078;Attuatore cinetico di bassa qualità per gamba;applicativo;-1;0;120;90;arto artificiale di base non migliorabile
 A079;Attuatore cinetico di media qualità per gamba;applicativo;-1;0;80;60;arto artificiale di base non migliorabile
-A080;Attuatore cinetico di alta qualità per gamba;applicativo;-1;0;120;90;arto artificiale di base 
+A080;Attuatore cinetico di alta qualità per gamba;applicativo;-1;0;120;90;arto artificiale di base
 A081;Rifrattore cinetico leggero per scudo ;applicativo;-1;0;160;120;Montabile solo su uno scudo
 A082;Rifrattore cinetico pesante per scudo ;applicativo;-2;0;50;80;Montabile solo su uno scudo
 A083;Moltiplicatore cinetico;applicativo;-1;0;70;120;aumenta la forza fisica
 A084;Moltiplicatore cinetico potenziato;applicativo;-1;0;90;160;aumenta la forza fisica
 A085;Stabilizzatore giroscopico;applicativo;-1;0;60;50;Garantisce maggiore stabilità in movimento
 A086;Stabilizzatore inerziale;applicativo;-1;0;90;70;Garantisce al suo utilizzatore un equilibrio eccezionale
-A087;Filtro per polveri e inquinanti;applicativo;-1;0;120;90;il filtro riduce la potenza delle sostanze tossiche 
+A087;Filtro per polveri e inquinanti;applicativo;-1;0;120;90;il filtro riduce la potenza delle sostanze tossiche
 A088;Filtro elettromagnetico per inquinanti;applicativo;-1;0;80;60;Il filtro protegge da inquinanti
 A089;Memoria di massa da 1 T;applicativo;-1;0;120;90;Memoria di massa per programmi
 A090;Memoria di massa da 2 T;applicativo;-1;0;160;120;Memoria di massa per programmi
@@ -136,7 +136,7 @@ A101;Analizzatore meccanico;applicativo;-2;0;50;160;Analizza le condizioni di un
 A102;Analizzatore biometrico;applicativo;-1;0;70;50;Analizza le condizioni di un corpo organico
 A103;Meccanismo di cucitura organica;applicativo;-1;0;90;70;Permette di curare le persone
 A104;Meccanismo di riparazione;applicativo;-1;0;60;90;Permette di riparare le cose
-A105;Ripetitore di segnale di rete;applicativo;-1;0;90;60;Permette di collegarsi a segnali di connessione 
+A105;Ripetitore di segnale di rete;applicativo;-1;0;90;60;Permette di collegarsi a segnali di connessione
 A106;Placche rinforzate leggere;applicativo;-1;0;120;90;Placche di rinforzo leggere
 A107;Placche rinforzate pesanti;applicativo;-1;0;80;80;Placche di rinforzo pesanti
 A108;Generatore elettromagnetico da detonazione;applicativo;-1;0;120;120;Genera un impulso che fa detonare il contenitore

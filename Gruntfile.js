@@ -404,7 +404,7 @@ module.exports = function (grunt)
                 staging : '.usemin',
                 dest : '<%= config.dist %>',
                 flow: {
-                    steps: { js: ['concat', 'uglify'], css: ['concat', 'cssmin'] },
+                    steps: { js: ['concat', 'uglify'], css: ['concat'/*, 'cssmin'*/] },
                     post: {
                         js: [{
                             name: 'uglify',
@@ -702,7 +702,7 @@ module.exports = function (grunt)
         'postcss',
         'replace:staging_urls',
         'concat',
-        'cssmin',
+        //'cssmin',
         'uglify',
         'copy:dist',
         'copy:ckedit',

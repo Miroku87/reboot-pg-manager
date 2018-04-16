@@ -228,7 +228,10 @@ var MessaggingManager = function ()
                 $("#tipo_messaggio").find("option[value='ig']").remove();
 
             if( this.user_info && this.user_info.pg_da_loggare )
+            {
                 $("#sezioni").find(".nome_sezione").text("Caselle");
+                $("#tipo_messaggio").val("ig").hide();
+            }
 
             this.tab_inarrivo_fg = this.creaDataTable.call( this, 'lista_inarrivo_fg_table', Constants.API_GET_MESSAGGI, {tipo: "fg", casella: "inarrivo", id: this.user_info.email_giocatore});
             this.tab_inviati_fg  = this.creaDataTable.call( this, 'lista_inviati_fg_table', Constants.API_GET_MESSAGGI, {tipo: "fg", casella: "inviati", id: this.user_info.email_giocatore});

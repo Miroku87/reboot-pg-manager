@@ -65,6 +65,7 @@ Constants.API_GET_ARTICOLI_PUBBLICATI    = Constants.API_URL + "/newsmanager/rec
 Constants.API_GET_TUTTI_ARTICOLI         = Constants.API_URL + "/newsmanager/recuperanotizie";
 Constants.API_GET_RICETTE                = Constants.API_URL + "/craftingmanager/recuperaricette";
 Constants.API_GET_RICETTE_CON_ID         = Constants.API_URL + "/craftingmanager/recuperaricetteconid";
+Constants.API_GET_COMPONENTI_BASE        = Constants.API_URL + "/craftingmanager/recuperacomponentibase";
 
 Constants.API_DEL_GIOCATORE              = Constants.API_URL + "/usersmanager/eliminagiocatore";
 Constants.API_DEL_CLASSE_PG              = Constants.API_URL + "/charactersmanager/rimuoviclassepg";

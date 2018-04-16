@@ -27,24 +27,13 @@
                     <i class="icon fa fa-ban"></i>
                     Impossibile completare l'operazione, verificare che la tipologia sia conforme alla destinazione.
                 </div>
-                <p id="text-batteria">
-                    <span class="sgc-info2">Batteria &raquo; </span> Importa il componente</p>
-
-                <div id="box-batteria" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                <p id="text-struttura">
-                    <span class="sgc-info2">Struttura &raquo; </span> Importa il componente</p>
-
-                <div id="box-struttura" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                <p id="text-applicativo">
-                    <span class="sgc-info2">Applicativo &raquo; </span> Importa il componente</p>
-
-                <div id="box-applicativo" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
 
                 <div class="row">
                     <div class="col-sm-12 col-md-4">
                         <p>
                             <span class="sgc-info2">Nome </span> prototipo
                         </p>
+
                         <form autocomplete="off" aria-autocomplete="none">
                             <input id="nome_prototipo" type="text" class="form-control">
                         </form>
@@ -53,6 +42,7 @@
 
                         <p>
                             <span class="sgc-info2">USO </span> volume </p>
+
                         <div class="progress-group" id="uso-volume">
                             <span class="progress-text">Utilizzato</span>
                             <span class="progress-number">
@@ -80,6 +70,19 @@
                     </div>
 
                 </div>
+                <p id="text-batteria">
+                    <span class="sgc-info2">Batteria &raquo; </span> Importa il componente</p>
+
+                <div id="box-batteria" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <p id="text-struttura">
+                    <span class="sgc-info2">Struttura &raquo; </span> Importa il componente</p>
+
+                <div id="box-struttura" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <p id="text-applicativo">
+                    <span class="sgc-info2">Applicativo &raquo; </span> Importa il componente</p>
+
+                <div id="box-applicativo" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+
                 <!-- 1 - calcolo volume
                 2 - calcolo batteria -->
             </div>
@@ -137,81 +140,99 @@
             <div class="box-body">
                 <div class="row">
                     <div class="form-group">
-                        <div class="col-sm-12 col-md-4">
+                        <div class="col-sm-12 col-md-4 inizialmente-nascosto crafta_armi">
                             <!-- armi -->
                             <p class="categoria">
                                 Armi
                             </p>
+
                             <div class="radio">
-                                <input type="radio" name="radiogroup" id="armi1">
+                                <input type="radio" name="radiogroup" id="armi1" value="Arma Mischia">
                                 <label for="armi1">Granate/Armi da mischia</label>
                             </div>
                             <div class="radio">
-                                <input type="radio" name="radiogroup" id="armi2">
+                                <input type="radio" name="radiogroup" id="armi2" value="Pistola">
                                 <label for="armi2">Pistola</label>
                             </div>
                             <div class="radio">
-                                <input type="radio" name="radiogroup" id="armi3">
+                                <input type="radio" name="radiogroup" id="armi3" value="Fucile Assalto">
                                 <label for="armi3">Fucile d'assalto</label>
                             </div>
                             <div class="radio">
-                                <input type="radio" name="radiogroup" id="armi4">
+                                <input type="radio" name="radiogroup" id="armi4" value="Mitragliatore">
                                 <label for="armi4">Mitragliatore</label>
                             </div>
                             <div class="radio">
-                                <input type="radio" name="radiogroup" id="armi5">
+                                <input type="radio" name="radiogroup" id="armi5" value="Shotgun">
                                 <label for="armi5">Shotgun</label>
                             </div>
                             <div class="radio">
-                                <input type="radio" name="radiogroup" id="armi6">
+                                <input type="radio" name="radiogroup" id="armi6" value="Fucile Precisione">
                                 <label for="armi6">Fucile di precisione</label>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-4">
+                        <div class="col-sm-12 col-md-4 inizialmente-nascosto crafta_gadget_shield crafta_protesi">
                             <!-- gadget -->
-                            <p class="categoria">
-                                Gadget
-                            </p>
-                            <div class="radio">
-                                <input type="radio" name="radiogroup" id="gadget1">
-                                <label for="gadget1">Normale</label>
-                            </div>
-                            <div class="radio">
-                                <input type="radio" name="radiogroup" id="gadget2">
-                                <label for="gadget2">Avanzato</label>
-                            </div>
+                            <div class="inizialmente-nascosto crafta_gadget_shield">
+                                <p class="categoria">
+                                    Gadget
+                                </p>
 
+                                <div class="radio">
+                                    <input type="radio" name="radiogroup" id="gadget1" value="Gadget Normale">
+                                    <label for="gadget1">Normale</label>
+                                </div>
+                                <div class="radio">
+                                    <input type="radio" name="radiogroup" id="gadget2" value="Gadget Avanzato">
+                                    <label for="gadget2">Avanzato</label>
+                                </div>
+                            </div>
                             <!-- protesi -->
-                            <p class="categoria">
-                                Protesti
-                            </p>
-                            <div class="radio">
-                                <input type="radio" name="radiogroup" id="protesi1">
-                                <label for="protesi1">Generico</label>
-                            </div>
-                            <div class="radio">
-                                <input type="radio" name="radiogroup" id="protesi2">
-                                <label for="protesi2">Braccio</label>
-                            </div>
-                            <div class="radio">
-                                <input type="radio" name="radiogroup" id="protesi3">
-                                <label for="protesi3">Gemba</label>
+                            <div class="inizialmente-nascosto crafta_protesi">
+                                <p class="categoria">
+                                    Protesti
+                                </p>
+
+                                <div class="radio">
+                                    <input type="radio" name="radiogroup" id="protesi1" value="Protesi Generica">
+                                    <label for="protesi1">Generico</label>
+                                </div>
+                                <div class="radio">
+                                    <input type="radio" name="radiogroup" id="protesi2" value="Protesi Braccio">
+                                    <label for="protesi2">Braccio</label>
+                                </div>
+                                <div class="radio">
+                                    <input type="radio" name="radiogroup" id="protesi3" value="Protesi Gamba">
+                                    <label for="protesi3">Gemba</label>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-4">
+                        <div class="col-sm-12 col-md-4 inizialmente-nascosto crafta_protesi">
                             <!-- shield -->
                             <p class="categoria">
-                                Shield
+                                Scudi ed Esoscheletri
                             </p>
+
                             <div class="radio">
-                                <input type="radio" name="radiogroup" id="shild1">
-                                <label for="shild1">Esoschaletro</label>
+                                <input type="radio" name="radiogroup" id="scudi1" value="Esoscheletro">
+                                <label for="scudi1">Esoschaletro</label>
+                            </div>
+                            <div class="radio">
+                                <input type="radio" name="radiogroup" id="scudi2" value="Scudo">
+                                <label for="scudi1">Scudo</label>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-md-8">
+        <button type="button" class="btn btn-block btn-success" id="btn_inviaCraftingTecnico"><i
+                class="fa fa-wrench"></i><br>Invia Componenti<br>al Sistema
+        </button>
     </div>
 </div>
 
