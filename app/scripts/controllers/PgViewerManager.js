@@ -37,7 +37,7 @@
             $("#annulla_note_master").click(this.impostaBoxNoteMaster.bind(this));
             Utils.setSubmitBtn();
         },
-    
+
         mostraTextAreaNoteCartellino : function ()
         {
             $("#avviso_note_cartellino").hide();
@@ -277,7 +277,7 @@
                 }
             }
         },
-    
+
         impostaNoteCartellino : function (data)
         {
             if ( typeof data.result !== "undefined" )
@@ -579,9 +579,12 @@
 
         renderComps: function ( data, type, row )
         {
-            var ret = data.split("@@").join("<br>");
+            var ret = data;
 
-            return $.fn.dataTable.render.ellipsis( 20, true, false )(ret, type, row);
+            if( row.tipo_ricetta === "Programmazione" )
+                ret = data.replace(/Z\=(\d);\s/g,"Z=$1<br>");
+
+            return ret;
         },
 
         renderNote: function ( data, type, row )

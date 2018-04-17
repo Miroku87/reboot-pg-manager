@@ -417,19 +417,34 @@ span.sgc-info, span.sgc-info2 {
 .collapsed-box {
   min-height: auto !important;
 }
-.tab-content::-webkit-scrollbar, #terminal::-webkit-scrollbar, .table-responsive::-webkit-scrollbar  {
+
+.list-select::-webkit-scrollbar,
+.tab-content::-webkit-scrollbar,
+#terminal::-webkit-scrollbar,
+.table-responsive::-webkit-scrollbar  {
     width: 10px;
 }
 
-.tab-content::-webkit-scrollbar-track, #terminal::-webkit-scrollbar-track,  .table-responsive::-webkit-scrollbar-track {
+.list-select::-webkit-scrollbar-track,
+.tab-content::-webkit-scrollbar-track,
+#terminal::-webkit-scrollbar-track,
+.table-responsive::-webkit-scrollbar-track {
     background: rgba(0,0,0,0.3);
     margin: 2px;
 }
-.tab-content::-webkit-scrollbar-thumb, #terminal::-webkit-scrollbar-thumb, .table-responsive::-webkit-scrollbar-thumb {
+
+.list-select::-webkit-scrollbar-thumb,
+.tab-content::-webkit-scrollbar-thumb,
+#terminal::-webkit-scrollbar-thumb,
+.table-responsive::-webkit-scrollbar-thumb {
     background: rgba(249,186,35,0.1);
     border-radius: 20px;
 }
-.tab-content::-webkit-scrollbar-thumb:hover , #terminal::-webkit-scrollbar-thumb:hover, .table-responsive::-webkit-scrollbar-thumb:hover{
+
+.list-select::-webkit-scrollbar-thumb:hover,
+.tab-content::-webkit-scrollbar-thumb:hover,
+#terminal::-webkit-scrollbar-thumb:hover,
+.table-responsive::-webkit-scrollbar-thumb:hover{
     background: #555;
 }
 
@@ -500,13 +515,16 @@ span.sgc-info, span.sgc-info2 {
 }
 
 #terminal {
-  height: 600px;
   --background: #031e11;
   --size: 1.5;
+  width: 100%;
   font-family: monospace !important;
 }
 
-.terminal-output, .terminal-wrapper, .terminal-output div, .terminal span {
+.terminal-output,
+.terminal-wrapper,
+.terminal-output div,
+.terminal span {
   font-family: monospace !important;
 }
 
@@ -608,8 +626,8 @@ span.sgc-info, span.sgc-info2 {
 https://blog.carbonfive.com/2015/01/07/vintage-terminal-effect-in-css3/
 */
 .scanlines {
-  top: 0;
-  left: 0;
+  top: 51px;
+  right: 0;
   height: 600px;
   width: 100%;
   background: linear-gradient(

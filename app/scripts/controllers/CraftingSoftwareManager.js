@@ -89,7 +89,7 @@ var CraftingSoftwareManager = function ()
 
         progress : function (term, percent)
         {
-            var width = this.terminal.cols() - 8;
+            var width = ( this.terminal.cols() / 1.5 ) - 10;
             var size = Math.round(width * percent / 100);
             var left = '', taken = '', i;
 
@@ -129,7 +129,7 @@ var CraftingSoftwareManager = function ()
                 term.find('.cursor').show();
             }.bind(this), 0);
         },
-    
+
         showFinalMessage : function ()
         {
             this.terminal.echo( this.terminal.get_prompt() );
@@ -229,7 +229,7 @@ var CraftingSoftwareManager = function ()
                         prompt : question.prompt || question.name + ": "
                     }
                 );
-                
+
                 //if (typeof this.answers[ai][question.name] != 'undefined')
                 //    this.terminal.set_command(this.answers[ai][question.name]);
             }
@@ -333,6 +333,9 @@ var CraftingSoftwareManager = function ()
             this.answers = [{}];
             this.default_prompt = utente+'@SGC> ';
             $('#terminal').height( $(".content-wrapper").height() - 51 );
+            //$('#terminal').width( $(".content-wrapper").width() );
+            $('.scanlines').height( $('#terminal').height() );
+            $('.scanlines').width( $('#terminal').width() );
             this.terminal = $('#terminal').terminal(
                 {
                     exit: function ()
@@ -348,7 +351,7 @@ var CraftingSoftwareManager = function ()
             );
 
             this.terminal.history().disable();
-            
+
             if( this.max_programmi > 1 )
             {
                 this.chiediConferma(

@@ -122,15 +122,15 @@
         {
             var t    = $(e.target),
                 dati = this.recipes_grid.row( t.parents('tr') ).data();
-            
+
             Utils.showConfirm("Sicuro di voler rifiutare questa ricetta?", this.rifiutaRicetta.bind(this, dati));
 		},
-    
+
         confermaApprovaRicetta: function ( e )
         {
             var t    = $(e.target),
                 dati = this.recipes_grid.row( t.parents('tr') ).data();
-            
+
             Utils.showConfirm("Sicuro di voler approvare questa ricetta?", this.approvaRicetta.bind(this, dati));
 		},
 
@@ -184,9 +184,12 @@
 
         renderComps: function ( data, type, row )
         {
-            var ret = data.split("@@").join("<br>");
+            var ret = data;
 
-            return $.fn.dataTable.render.ellipsis( 20, true, false )(ret, type, row);
+            if( row.tipo_ricetta === "Programmazione" )
+                ret = data.replace(/Z\=(\d);\s/g,"Z=$1<br>");
+
+            return ret;
         },
 
         renderNote: function ( data, type, row )

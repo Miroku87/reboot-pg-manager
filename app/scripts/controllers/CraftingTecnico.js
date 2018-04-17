@@ -517,7 +517,7 @@ $('.close').click(function ()
 $('#btn_inviaCraftingTecnico').click(function ()
 {
     var data = {
-        pgid : JSON.parse(window.localStorage.getItem("pg_loggato")).id_personaggio,
+        pgid : JSON.parse(window.localStorage.getItem("logged_pg")).id_personaggio,
         nome : $("#nome_prototipo").val() || null,
         tipo : $("input:radio[name='radiogroup']:checked").val() || null,
         batt_ids : $("#box-batteria > div").toArray().map(mappaIds),
