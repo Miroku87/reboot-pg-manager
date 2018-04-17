@@ -1,117 +1,163 @@
+var MarketplaceManager = function ()
+{
+    return {
+        init: function ()
+        {
+            this.setListeners();
+            this.impostaTabella();
+        },
 
-function loadCsv(csv, callback) {
-    var file = '../../csv/componenti.csv';
-    if (csv != undefined && csv != '') {
-        file = csv;
-    }
-    $.get(file, function (res) {
-        var lines = res.split("\r\n");
-        //la linea 0 contiene le testate da mappare sull'oggetto
-        var head = lines[0];
-        head = head.split(';');
-        var data = [];
-        for (var i = 1; i < lines.length; i++) {
-            var linea = lines[i];
-            linea = linea.split(';');
-            var obj = {};
-            for (var x = 0; x < head.length; x++) {
-                obj[head[x]] = linea[x];
+        setGridListeners: function ()
+        {
+            /*AdminLTEManager.controllaPermessi();
+
+            $( "td [data-toggle='popover']" ).popover("destroy");
+            $( "td [data-toggle='popover']" ).popover();
+
+            $( 'input[type="checkbox"]' ).iCheck("destroy");
+            $( 'input[type="checkbox"]' ).iCheck( { checkboxClass : 'icheckbox_square-blue' } );
+            $( 'input[type="checkbox"]' ).on( "ifChanged", this.ricettaSelezionata.bind(this) );
+
+            $( "[data-toggle='tooltip']" ).tooltip();
+
+            $("button.modifica-note").unbind( "click", this.mostraModalRicetta.bind(this) );
+            $("button.modifica-note").click( this.mostraModalRicetta.bind(this) );*/
+        },
+
+        erroreDataTable: function ( e, settings )
+        {
+            if( !settings.jqXHR || !settings.jqXHR.responseText )
+            {
+                console.log("DataTable error:",e, settings);
+                return false;
             }
-            data.push(obj);
+
+            var real_error = settings.jqXHR.responseText.replace(/^([\S\s]*?)\{"[\S\s]*/i,"$1");
+            real_error = real_error.replace("\n","<br>");
+            Utils.showError(real_error);
+        },
+
+        renderCaratteristiche: function ( data, type, row )
+        {
+            var text_color_energia = "yellow",
+                text_color_volume = "yellow",
+                caret_energia = "left",
+                caret_volume = "left";
+
+            if (parseInt(row.energia_componente) > 0)
+            {
+                text_color_energia = "green";
+                caret_energia = "up";
+            }
+            else if (parseInt(row.energia_componente) < 0)
+            {
+                text_color_energia = "red";
+                caret_energia = "down";
+            }
+
+            if (parseInt(row.volume_componente) > 0)
+            {
+                text_color_volume = "green";
+                caret_volume = "up";
+            }
+            else if (parseInt(row.volume_componente) < 0)
+            {
+                text_color_volume = "red";
+                caret_volume = "down";
+            }
+
+            return "<span class='description-percentage text-"+text_color_energia+"'><i class='fa fa-caret-"+caret_energia+"'></i></span> Enerigia ("+row.energia_componente+")</span><br>" +
+                   "<span class='description-percentage text-"+text_color_volume+"'><i class='fa fa-caret-"+caret_volume+"'></i></span> Volume ("+row.volume_componente+")</span>";
+        },
+
+        renderVariazioni: function ( data, type, row )
+        {
+            var variazione = 0,
+                caret      = "left",
+                text_color = "yellow";
+
+            if ( row.costo_vecchio_componente && parseInt(row.costo_vecchio_componente) !== 0 )
+                variazione = ( ( parseInt( row.costo_attuale_componente ) - parseInt( row.costo_vecchio_componente ) ) / parseInt( row.costo_vecchio_componente ) ) * 100;
+            else
+                variazione = 100;
+
+            if ( variazione > 0 )
+            {
+                caret      = "up";
+                text_color = "red";
+            }
+            else if ( variazione < 0 )
+            {
+                caret      = "down";
+                text_color = "green";
+            }
+
+            return "<span class='description-percentage text-"+text_color+"'>" +
+                      "<i class='fa fa-caret-"+caret+"'></i> " + variazione.toFixed(2) + " %</span>";
+        },
+
+        impostaTabella: function()
+        {
+            var columns = [];
+
+            columns.push({
+                title: "ID",
+                data: "id_componente"
+            });
+            columns.push({
+                title: "Tipo",
+                data: "tipo_componente"
+            });
+            columns.push({
+                title: "Descrizione",
+                data : "descrizione_componente"
+            });
+            columns.push({
+                title: "Caratteristiche",
+                render : this.renderCaratteristiche.bind(this)
+            });
+            columns.push({
+                title: "Costo",
+                data : "costo_attuale_componente"
+            });
+            columns.push({
+                title: "Variazioni",
+                render : this.renderVariazioni.bind(this)
+            });
+
+            this.tabella_prodotti = $( '#mercato' )
+                .on("error.dt", this.erroreDataTable.bind(this) )
+                .on("draw.dt", this.setGridListeners.bind(this) )
+                .DataTable( {
+                    processing : true,
+                    serverSide : true,
+                    dom: "<'row'<'col-sm-6'lB><'col-sm-6'f>>" +
+                    "<'row'<'col-sm-12 table-responsive'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                    buttons    : ["reload"],
+                    language   : Constants.DATA_TABLE_LANGUAGE,
+                    ajax       : function (data, callback)
+                    {
+                        Utils.requestData(
+                            Constants.API_GET_COMPONENTI_BASE,
+                            "GET",
+                            $.extend( data, { tipo: "tecnico" } ),
+                            callback
+                        );
+                    },
+                    columns    : columns,
+                    order      : [[0, 'desc']]
+                } );
+        },
+
+        setListeners: function()
+        {
+
         }
-        if (callback)
-            callback(data)
-    });
-}
-var mobile = false;
+    };
+}();
 
-        //popolo componenti
-        $(document).ready(function () {
-            var t = $('#mercato').DataTable({
-                responsive: true 
-            });
-
-            loadCsv('', function (data) {
-                //divido i componenti a seconda del tipo
-                var batteria = [];
-                var struttura = [];
-                var applicativo = [];
-                var scartati = []
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].Tipo == "batteria") {
-                        batteria.push(data[i]);
-                    } else if (data[i].Tipo == "struttura") {
-                        struttura.push(data[i]);
-                    } else if (data[i].Tipo == "applicativo") {
-                        applicativo.push(data[i]);
-                    } else {
-                        scartati.push(data[i]);
-                    }
-                }
-                //loggo quelli scartati
-
-
-                var html = "";
-                data.forEach(el => {
-                    var html = "";
-                    var variazione = 0;
-                    if (parseInt(el.Costo_Vecchio) != 0 && el.Costo_Vecchio != undefined) {
-                        variazione = ((parseInt(el.Costo) - parseInt(el.Costo_Vecchio)) / parseInt(el.Costo_Vecchio)) * 100;
-                    }
-                    else {
-                        variazione = 100;
-                    }
-                    var stringE = "";
-                    if (parseInt(el.Energia) == 0) {
-                        stringE += '                <span class="description-percentage text-yellow">';
-                        stringE += '                <i class="fa fa-caret-left"></i> </span> Enerigia (' + el.Energia + ')';
-                    } else if (parseInt(el.Energia) > 0) {
-                        stringE += '                <span class="description-percentage text-green">';
-                        stringE += '                <i class="fa fa-caret-up"></i></span> Enerigia (' + el.Energia + ')';
-                    } else if (parseInt(el.Energia) < 0) {
-                        stringE += '                <span class="description-percentage text-red">';
-                        stringE += '                <i class="fa fa-caret-down"></i></span> Enerigia (' + el.Energia + ')';
-                    }
-                    stringE += '                <br>';
-                    if (parseInt(el.Volume) == 0) {
-                        stringE += '                <span class="description-percentage text-yellow">';
-                        stringE += '                <i class="fa fa-caret-left"></i></span> Spazio (' + el.Volume + ')';
-                    } else if (parseInt(el.Volume) > 0) {
-                        stringE += '                <span class="description-percentage text-green">';
-                        stringE += '                <i class="fa fa-caret-up"></i></span> Spazio (' + el.Volume + ')';
-                    } else if (parseInt(el.Volume) < 0) {
-                        stringE += '                <span class="description-percentage text-red">';
-                        stringE += '                <i class="fa fa-caret-down"></i></span> Spazio (' + el.Volume + ')';
-                    }
-
-                    var stringV = '';
-                    if (parseInt(variazione) == 0) {
-                        stringV += '                <span class="description-percentage text-yellow">';
-                        stringV += '                <i class="fa fa-caret-left"></i> ' + variazione.toFixed(2) + ' %</span> ';
-                    } else if (variazione > 0) {
-                        stringV += '                <span class="description-percentage text-red">';
-                        stringV += '                <i class="fa fa-caret-up"></i> ' + variazione.toFixed(2) + ' %</span> ';
-                    } else if (variazione < 0) {
-                        stringV += '                <span class="description-percentage text-green">';
-                        stringV += '                <i class="fa fa-caret-down"></i> ' + variazione.toFixed(2) + ' %</span> ';
-                    }
-
-
-
-                    if (el.Tipo != undefined && el.Descrizione != undefined && el.Costo != undefined) {
-                        t.row.add([
-                            '<span class="sgc-info2">' + el.Tipo + '</span>',
-                            '<h4>' + el.Nome + '</h4><span class="desc">' + el.Descrizione + '</span>',
-                            stringE,
-                            el.Costo,
-                            stringV
-                        ]).draw(false);
-
-                        $('#mercato').append(html);
-                    }
-
-                });
-            });
-        });
-
+$(function () {
+    MarketplaceManager.init();
+});
 

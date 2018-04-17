@@ -32,7 +32,15 @@ function loadComponentsFromDB( callback )
     Utils.requestData(
         Constants.API_GET_COMPONENTI_BASE,
         "GET",
-        {tipo:"tecnico"},
+        {
+            draw   : 1,
+            columns: null,
+            order  : null,
+            start  : 0,
+            length : 999999,
+            search : null,
+            tipo   : "tecnico"
+        },
         callback
     );
 }
