@@ -559,6 +559,8 @@ $('#btn_inviaCraftingTecnico').click(function ()
         Constants.API_POST_CRAFTING_TECNICO,
         "POST",
         data,
-        "Ricetta registrata con successo."
+        "Ricetta registrata con successo.",
+        null,
+        Utils.reloadPage
     );
 });

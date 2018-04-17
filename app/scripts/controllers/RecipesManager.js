@@ -60,8 +60,8 @@
                 extra = extra === "null" ? "" : extra,
                 note  = Utils.unStripHMTLTag( decodeURIComponent( dati.note_ricetta )).replace(/<br>/g,"\r"),
                 note  = note === "null" ? "" : note,
-                comps = "<li>"+dati.componenti_ricetta.split("@@").join("</li><li>")+"</li>",
-                resul = "<li>"+dati.risultato_ricetta.split("@@").join("</li><li>")+"</li>";
+                comps = "<li>"+dati.componenti_ricetta.split(";").join("</li><li>")+"</li>",
+                resul = dati.risultato_ricetta ? "<li>"+dati.risultato_ricetta.split("@@").join("</li><li>")+"</li>" : "<li></li>";
 
             $("#modal_modifica_ricetta").find("#nome_ricetta").text(dati.nome_ricetta);
             $("#modal_modifica_ricetta").find("#lista_componenti").html(comps);
@@ -174,12 +174,17 @@
 
         renderRisultati: function ( data, type, row )
         {
-            var ret = data.split("@@").join("<br>");
+            if ( data )
+            {
+                var ret = data.split("@@").join("<br>");
 
-            if( row.id_unico_risultato != "null" )
-                ret = row.tipo_ricetta.substr(0,1).toUpperCase() + Utils.pad( row.id_unico_risultato, Constants.ID_RICETTA_PAG ) + "<br>" + ret;
+                if (row.id_unico_risultato != "null")
+                    ret = row.tipo_ricetta.substr(0, 1).toUpperCase() + Utils.pad(row.id_unico_risultato, Constants.ID_RICETTA_PAG) + "<br>" + ret;
 
-            return $.fn.dataTable.render.ellipsis( 20, true, false )(ret, type, row);
+                return $.fn.dataTable.render.ellipsis(20, true, false)(ret, type, row);
+            }
+            else
+                return "";
         },
 
         renderComps: function ( data, type, row )
@@ -188,6 +193,8 @@
 
             if( row.tipo_ricetta === "Programmazione" )
                 ret = data.replace(/Z\=(\d);\s/g,"Z=$1<br>");
+            else
+                ret = data.replace(/;/g,"<br>");
 
             return ret;
         },
