@@ -539,7 +539,7 @@
                 dati  = this.recipes_grid.row( t.parents('tr') ).data(),
                 note  = Utils.unStripHMTLTag( decodeURIComponent( dati.note_pg_ricetta )).replace(/<br>/g,"\r"),
                 note  = note === "null" ? "" : note,
-                comps = "<li>"+dati.componenti_ricetta.split("@@").join("</li><li>")+"</li>";
+                comps = "<li>"+dati.componenti_ricetta.split(";").join("</li><li>")+"</li>";
 
             if( dati.tipo_ricetta === "Programmazione" )
                 $("#modal_modifica_ricetta").find("#new_nome_ricetta").parents(".form-group").removeClass("inizialmente-nascosto");
@@ -583,6 +583,8 @@
 
             if( row.tipo_ricetta === "Programmazione" )
                 ret = data.replace(/Z\=(\d);\s/g,"Z=$1<br>");
+            else
+                ret = data.replace(/;/g,"<br>");
 
             return ret;
         },

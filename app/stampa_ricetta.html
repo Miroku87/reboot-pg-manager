@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Stampa Cartellini</title>
     <!-- build:css(dist) styles/stamparicette.css -->
-    <link rel="stylesheet" href="fonts/ubuntumono-regular-webfont.css"/>
+    <link rel="stylesheet" href="fonts/ubuntumono-regular-webfont.css" type="text/html"/>
     <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css"/>
     <link rel="stylesheet" href="styles/stampa_ricette.css"/>
     <!-- endbuild -->
@@ -12,7 +12,7 @@
 <body>
 <div class="a4-page" id="page_template">
 </div>
-<div class="cartellino-pg" id="cartellino_template">
+<div class="cartellino-pg" id="cartellino_programma_template">
     <div class="prima-pagina">
         <table colspan="0" cellspacing="0" cellpadding="0" width="100%" height="100%">
             <tr>
@@ -35,10 +35,63 @@
                 <td height="10%" class="unico_ricetta"></td>
             </tr>
             <tr>
-                <td height="10%">Il giocatore può dichiarare:</td>
+                <td height="40%" class="risultato_ricetta">Il giocatore può dichiarare:<br><br></td>
             </tr>
             <tr>
-                <td height="30%" class="risultato_ricetta"></td>
+                <td height="50%" class="extra_cartellino_ricetta">NOTE:</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="cartellino-pg" id="cartellino_sostanza_template">
+    <div class="prima-pagina">
+        <table colspan="0" cellspacing="0" cellpadding="0" width="100%" height="100%">
+            <tr>
+                <td height="5%">&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="nome_ricetta" height="15%"></td>
+            </tr>
+            <tr>
+                <td class="icona" height="60%"></td>
+            </tr>
+            <tr>
+                <td height="10%">Tipologia: <span class="tipo_oggetto"></span></td>
+            </tr>
+        </table>
+    </div>
+    <div class="seconda-pagina">
+        <table colspan="0" cellspacing="0" cellpadding="0" width="100%" height="100%">
+            <tr>
+                <td height="50%" class="risultato_ricetta"></td>
+            </tr>
+            <tr>
+                <td height="50%" class="extra_cartellino_ricetta">NOTE:</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="cartellino-pg" id="cartellino_oggetto_template">
+    <div class="prima-pagina">
+        <table colspan="0" cellspacing="0" cellpadding="0" width="100%" height="100%">
+            <tr>
+                <td height="5%">&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="nome_ricetta" height="15%"></td>
+            </tr>
+            <tr>
+                <td class="icona" height="60%"></td>
+            </tr>
+            <tr>
+                <td height="10%">Tipologia: <span class="tipo_oggetto"></span></td>
+            </tr>
+        </table>
+    </div>
+    <div class="seconda-pagina">
+        <table colspan="0" cellspacing="0" cellpadding="0" width="100%" height="100%">
+            <tr>
+                <td height="50%" class="risultato_ricetta"></td>
             </tr>
             <tr>
                 <td height="50%" class="extra_cartellino_ricetta">NOTE:</td>

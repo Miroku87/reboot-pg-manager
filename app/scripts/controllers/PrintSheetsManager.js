@@ -45,6 +45,7 @@
                         cartellino.find(".lista-abilita-militari").text( pgs[i].abilita_militari || "" );
                         cartellino.attr("id",null);
 
+                        console.log(cartellino.find(".qr-code")[0]);
                         new QRCode( cartellino.find(".qr-code")[0], {
                             text: "PG-"+pgs[i].id_personaggio,
                             width: 75,

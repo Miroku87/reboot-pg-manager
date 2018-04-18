@@ -15,33 +15,57 @@
             this.recuperaInfoIscritti();
 		},
 
-        creaCartellinoChimico: function ( ricetta )
+        creaCartellinoGenerico: function ( ricetta, template )
         {
+            var cartellino = template.clone();
 
-        },
+            cartellino.attr( "id", null );
+            cartellino.find( ".icona" ).html("<i class='fa "+ICONE[ricetta.tipo_ricetta]+"'></i>");
 
-        creaCartellinoTecnico: function ( ricetta )
-        {
+            for( var r in ricetta )
+            {
+                if( ricetta[r] === null )
+                    continue;
 
+                var text = Utils.unStripHMTLTag(decodeURIComponent(ricetta[r])),
+                    text = text === "null" ? "" : text;
+
+                text = text.replace(/;/g,"<br>");
+
+                cartellino
+                    .find("." + r)
+                    .html( cartellino.find("." + r).html() + text );
+            }
+
+            return cartellino;
         },
 
         creaCartellinoProgrammazione: function ( ricetta )
         {
             var cartellino = $("#cartellino_programma_template").clone(),
-            unico_ricetta = ricetta.id_unico_risultato ? ricetta.tipo_ricetta.substr(0,1).toUpperCase() + Utils.pad( ricetta.id_unico_risultato, Constants.ID_RICETTA_PAG ) : "";
+                unico_ricetta = ricetta.id_unico_risultato_ricetta !== null ?
+                                    ricetta.tipo_ricetta.substr(0,1).toUpperCase() + Utils.pad( ricetta.id_unico_risultato_ricetta, Constants.ID_RICETTA_PAG ) :
+                                    "";
 
-            cartellino.attr("id",null);
+            console.log(ricetta.tipo_ricetta.substr(0,1).toUpperCase() + Utils.pad( ricetta.id_unico_risultato_ricetta, Constants.ID_RICETTA_PAG ));
 
-            cartellino.find( ".unico_ricetta" ).text(unico_ricetta);
+            cartellino.attr( "id", null );
             cartellino.find( ".icona" ).html("<i class='fa "+ICONE[ricetta.tipo_ricetta]+"'></i>");
+            cartellino.find( ".unico_ricetta" ).html(unico_ricetta);
 
             for( var r in ricetta )
             {
+                if( ricetta[r] === null )
+                    continue;
+
                 var text = Utils.unStripHMTLTag(decodeURIComponent(ricetta[r])),
                     text = text === "null" ? "" : text;
 
-                cartellino.find("." + r)
-                          .html( cartellino.find("." + r).html() + text );
+                text = text.replace(/;/g,"<br>");
+
+                cartellino
+                    .find("." + r)
+                    .html( cartellino.find("." + r).html() + text );
             }
 
             return cartellino;
@@ -69,9 +93,9 @@
                         if( ricette[i].tipo_ricetta === "Programmazione" )
                             cartellino = this.creaCartellinoProgrammazione( ricette[i] );
                         else if( ricette[i].tipo_ricetta === "Tecnico" )
-                            cartellino = this.creaCartellinoTecnico( ricette[i] );
+                            cartellino = this.creaCartellinoGenerico( ricette[i], $("#cartellino_oggetto_template") );
                         else if( ricette[i].tipo_ricetta === "Chimico" )
-                            cartellino = this.creaCartellinoChimico( ricette[i] );
+                            cartellino = this.creaCartellinoGenerico( ricette[i], $("#cartellino_sostanza_template") );
 
                         pagina.append(cartellino);
                     }
