@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css?family=Titillium+Web:400,400i,600,600i,700,700i,900');
-@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
 
 * {
   background-color: transparent !important;
@@ -65,13 +63,13 @@ a {
   background: -ms-radial-gradient(center, ellipse cover, rgba(6, 122, 112, .7) 0%, rgba(32, 52, 53, .7) 65%, rgba(32, 52, 53, 1) 100%);
   background: radial-gradient(ellipse at center, rgba(6, 122, 112, .7) 0%, rgba(32, 52, 53, .7) 65%, rgba(32, 52, 53, 1) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#067a70', endColorstr='#203435', GradientType=1);*/
-  background: rgba(6, 93, 85, 1);
-  background: -moz-radial-gradient(center, ellipse cover, rgba(6, 93, 85, .7) 0%, rgba(26, 36, 37, .7) 65%, rgba(26, 36, 37, 1) 100%);
-  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(6, 93, 85, .7)), color-stop(65%, rgba(26, 36, 37, .7)), color-stop(100%, rgba(26, 36, 37, 1)));
-  background: -webkit-radial-gradient(center, ellipse cover, rgba(6, 93, 85, .7) 0%, rgba(26, 36, 37, .7) 65%, rgba(26, 36, 37, 1) 100%);
-  background: -o-radial-gradient(center, ellipse cover, rgba(6, 93, 85, .7) 0%, rgba(26, 36, 37, .7) 65%, rgba(26, 36, 37, 1) 100%);
-  background: -ms-radial-gradient(center, ellipse cover, rgba(6, 93, 85, .7) 0%, rgba(26, 36, 37, .7) 65%, rgba(26, 36, 37, 1) 100%);
-  background: radial-gradient(ellipse at center, rgba(6, 93, 85, .7) 0%, rgba(26, 36, 37, .7) 65%, rgba(26, 36, 37, 1) 100%);
+  background: #065d55;
+  background: -moz-radial-gradient(center, ellipse cover, rgba(6, 93, 85, 0.7) 0%, rgba(26, 36, 37, 0.7) 65%, #1a2425 100%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(6, 93, 85, 0.7)), color-stop(65%, rgba(26, 36, 37, 0.7)), color-stop(100%, #1a2425));
+  background: -webkit-radial-gradient(center, ellipse cover, rgba(6, 93, 85, 0.7) 0%, rgba(26, 36, 37, 0.7) 65%, #1a2425 100%);
+  background: -o-radial-gradient(center, ellipse cover, rgba(6, 93, 85, 0.7) 0%, rgba(26, 36, 37, 0.7) 65%, #1a2425 100%);
+  background: -ms-radial-gradient(center, ellipse cover, rgba(6, 93, 85, 0.7) 0%, rgba(26, 36, 37, 0.7) 65%, #1a2425 100%);
+  background: radial-gradient(ellipse at center, rgba(6, 93, 85, 0.7) 0%, rgba(26, 36, 37, 0.7) 65%, #1a2425 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#067a70', endColorstr='#203435', GradientType=1);
 
   background-attachment: fixed;
@@ -156,7 +154,7 @@ a {
 }
 
 .sidebar-menu li.treeview, .user-panel,
-.sidebar-mini:not(.sidebar-mini-expand-feature).sidebar-collapse .sidebar-menu>li:hover>a>span,
+.sidebar-mini:not(.sidebar-mini-expand-feature).sidebar-collapse .sidebar-menu > li:hover > a > span,
 .box, .sidebar-menu > li:not(.header), .login-box-body, .register-box-body {
 
     border: 1px solid #1b5050!important;
@@ -179,7 +177,8 @@ a {
 
 .sidebar-mini.sidebar-collapse .sidebar-menu li.treeview,
 .sidebar-mini:not(.sidebar-mini-expand-feature).sidebar-collapse .sidebar-menu > li:hover > a > span,
-.sidebar-mini.sidebar-collapse .user-panel, .sidebar-menu > li {
+.sidebar-mini.sidebar-collapse .user-panel,
+.sidebar-menu > li {
   margin: 0;
 }
 
@@ -772,8 +771,8 @@ span.desc {
 }
 
 select option {
-  background-color: rgba(18, 34, 35, .54) !important;
-}
+    background-color: rgba(18, 34, 35, 1) !important;
+ }
 
 .pagination > .disabled > a, .pagination > .disabled > a:focus, .pagination > .disabled > a:hover, .pagination > .disabled > span, .pagination > .disabled > span:focus
 .pagination > .disabled > span:hover, .pagination > li > a, .pagination > li > span, .pagination > li > a:focus, .pagination > li > a:hover, .pagination > li > span:focus, .pagination > li > span:hover {
@@ -790,21 +789,21 @@ select option {
 }
 
 .sidebar-mini:not(.sidebar-mini-expand-feature).sidebar-collapse .sidebar-menu > li:hover > .treeview-menu {
-  background-color: rgba(18, 34, 35, 1) !important;
+  background-color: #122223 !important;
 }
 
 .btn-primary, .btn-default, .btn-default.focus, .btn-default:focus, .btn-primary.focus, .btn-primary:focus,
 .btn-info, .btn-info.focus, .btn-info:focus, .btn-info.active.focus, .btn-info.active:focus, .btn-info.active:hover, .btn-info:active.focus, .btn-info:active:focus, .btn-info:active:hover
-, .open>.dropdown-toggle.btn-info.focus, .open>.dropdown-toggle.btn-info:focus, .open>.dropdown-toggle.btn-info:hover,
+, .open > .dropdown-toggle.btn-info.focus, .open > .dropdown-toggle.btn-info:focus, .open > .dropdown-toggle.btn-info:hover,
 .btn-success, .btn-success.focus, .btn-success:focus, .btn-success.active.focus, .btn-success.active:focus, .btn-success.active:hover, .btn-success:active.focus, .btn-success:active:focus, .btn-success:active:hover {
-    background: -webkit-linear-gradient(top, rgba(30, 87, 153, 0) 0%, rgba(0, 236, 251, 0.12) 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(rgba(30, 87, 153, 0)), to(rgba(0, 236, 251, 0.12)));
-    background: -o-linear-gradient(top, rgba(30, 87, 153, 0) 0%, rgba(0, 236, 251, 0.12) 100%);
-    background: linear-gradient(to bottom, rgba(30, 87, 153, 0) 0%, rgba(0, 236, 251, 0.12) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#001e5799', endColorstr='#1f00ecfb',GradientType=0 );
-    border: 1px solid #1b5050;
-    text-align: center;
-    color: #fff;
+  background: -webkit-linear-gradient(top, rgba(30, 87, 153, 0) 0%, rgba(0, 236, 251, 0.12) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(30, 87, 153, 0)), to(rgba(0, 236, 251, 0.12)));
+  background: -o-linear-gradient(top, rgba(30, 87, 153, 0) 0%, rgba(0, 236, 251, 0.12) 100%);
+  background: linear-gradient(to bottom, rgba(30, 87, 153, 0) 0%, rgba(0, 236, 251, 0.12) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#001e5799', endColorstr='#1f00ecfb',GradientType=0 );
+  border: 1px solid #1b5050;
+  text-align: center;
+  color: #fff;
 }
 
 .btn-primary:hover, .btn-default:hover {
@@ -827,7 +826,7 @@ select option {
 }
 
 .nav-pills > li > a > .fa, .nav-pills > li > a > .glyphicon, .nav-pills > li > a > .ion {
-  color: rgba(41, 88, 139, 1);
+  color: #29588b;
 }
 
 .mailbox-read-info {
@@ -931,7 +930,7 @@ select:-webkit-autofill:focus {
     box-shadow: none;
 }
 
-.alert-info, .bg-aqua, .callout.callout-info, .label-info, .modal-info .modal-body {
+.alert-info, .callout.callout-info, .label-info, .modal-info .modal-body {
     background-color: rgba(0,192,239, .54)!important;
 }
 ul.nav.navbar-nav {
@@ -992,11 +991,45 @@ ul.nav.navbar-nav {
     border-top: 1px solid #1b5050!important;
 }
 .popover-content {
-    padding: 9px 14px;
-    border: 1px solid #fff;
-    background-color: rgba(18,34,35,.7)!important;
-    color: #fff;
+  padding: 9px 14px;
+  border: 1px solid #fff;
+  background-color: rgba(18, 34, 35, 0.7) !important;
+  color: #fff; }
+
+#griglia_ricette i.fa.fa-plus-circle, #pg_grid i.fa.fa-plus-circle {
+  color: #fff;
 }
-#griglia_ricette i.fa.fa-plus-circle {
-    color: #fff;
+
+/* MODIFICHE LISA 18/4 */
+.sidebar-expanded-on-hover .main-sidebar {
+  background-color: rgba(18, 34, 35, 1) !important;
+}
+.sidebar-collapse li.header {
+  display: none;
+}
+.sidebar-mini.sidebar-collapse .user-panel {
+  margin-bottom: 15px;
+}
+#pg_grid td .btn {
+  margin-left: 5px;
+}
+.badge {
+  background-color: rgba(7, 59, 119, 0.04) !important;
+  box-shadow: inset 0px 0px 20px 0px rgba(30, 173, 160, 0.7);
+}
+
+ul.list-select {
+  color: #18b3b2!important;
+  font-family: 'Titillium Web', sans-serif;
+}
+ul.list-select li.selected, ul.list-select li.selected:hover {
+  box-shadow: inset 0px 0px 20px 0px rgba(30, 173, 160, 0.7);
+  padding: 5px;
+}
+ul.list-select > li[disabled] {
+  background-color: rgba(119, 117, 117, 0.16)!important;
+  color: #ed3737;
+}
+.crea-pg-page .box-body p {
+  text-transform: none;
 }

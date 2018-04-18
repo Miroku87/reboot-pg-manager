@@ -15,6 +15,38 @@
             this.recuperaInfoIscritti();
 		},
 
+        creaCartellinoChimico: function ( ricetta )
+        {
+
+        },
+
+        creaCartellinoTecnico: function ( ricetta )
+        {
+
+        },
+
+        creaCartellinoProgrammazione: function ( ricetta )
+        {
+            var cartellino = $("#cartellino_programma_template").clone(),
+            unico_ricetta = ricetta.id_unico_risultato ? ricetta.tipo_ricetta.substr(0,1).toUpperCase() + Utils.pad( ricetta.id_unico_risultato, Constants.ID_RICETTA_PAG ) : "";
+
+            cartellino.attr("id",null);
+
+            cartellino.find( ".unico_ricetta" ).text(unico_ricetta);
+            cartellino.find( ".icona" ).html("<i class='fa "+ICONE[ricetta.tipo_ricetta]+"'></i>");
+
+            for( var r in ricetta )
+            {
+                var text = Utils.unStripHMTLTag(decodeURIComponent(ricetta[r])),
+                    text = text === "null" ? "" : text;
+
+                cartellino.find("." + r)
+                          .html( cartellino.find("." + r).html() + text );
+            }
+
+            return cartellino;
+        },
+
         riempiCartellini: function ( data )
 		{
             var ricette = data.result,
@@ -31,21 +63,15 @@
 
                     if( ricette[i] )
                     {
-                        var cartellino = $("#cartellino_template").clone(),
-                            unico_ricetta = ricette[i].id_unico_risultato ? ricette[i].tipo_ricetta.substr(0,1).toUpperCase() + Utils.pad( ricette[i].id_unico_risultato, Constants.ID_RICETTA_PAG ) : "";
+                        var cartellino = {};
 
-                        cartellino.attr("id",null);
-
-                        cartellino.find( ".unico_ricetta" ).text(unico_ricetta);
-                        cartellino.find( ".icona" ).html("<i class='fa "+ICONE[ricette[i].tipo_ricetta]+"'></i>");
-
-                        for( var r in ricette[i] )
-                        {
-                            var text = Utils.unStripHMTLTag(decodeURIComponent(ricette[i][r])),
-                                text = text === "null" ? "" : text;
-                            cartellino.find("." + r)
-                                      .html( cartellino.find("." + r).html() + text );
-                        }
+                        //Programmazione, Tecnico, Chimico
+                        if( ricette[i].tipo_ricetta === "Programmazione" )
+                            cartellino = this.creaCartellinoProgrammazione( ricette[i] );
+                        else if( ricette[i].tipo_ricetta === "Tecnico" )
+                            cartellino = this.creaCartellinoTecnico( ricette[i] );
+                        else if( ricette[i].tipo_ricetta === "Chimico" )
+                            cartellino = this.creaCartellinoChimico( ricette[i] );
 
                         pagina.append(cartellino);
                     }
