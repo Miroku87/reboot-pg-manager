@@ -93,7 +93,10 @@
                         if( ricette[i].tipo_ricetta === "Programmazione" )
                             cartellino = this.creaCartellinoProgrammazione( ricette[i] );
                         else if( ricette[i].tipo_ricetta === "Tecnico" )
-                            cartellino = this.creaCartellinoGenerico( ricette[i], $("#cartellino_oggetto_template") );
+                        {
+                            cartellino = this.creaCartellinoGenerico(ricette[i], $("#cartellino_oggetto_template"));
+                            cartellino.find(".risultato_ricetta").html( cartellino.find(".risultato_ricetta").html() + "<br><br>FCC: " + ricette[i].fcc_componente );
+                        }
                         else if( ricette[i].tipo_ricetta === "Chimico" )
                             cartellino = this.creaCartellinoGenerico( ricette[i], $("#cartellino_sostanza_template") );
 

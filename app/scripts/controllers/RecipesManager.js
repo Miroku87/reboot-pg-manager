@@ -19,10 +19,7 @@
                 ricette = [this.recipes_grid.row( t.parents("tr")).data().id_ricetta];
 
             if( ricette.length === 0 )
-            {
-                Utils.showError("Devi selezionare almeno una ricetta.");
-                return;
-            }
+                ricette = Array.prototype.slice.call( this.recipes_grid.columns().data() )[1];
 
             window.localStorage.setItem("ricette_da_stampare", JSON.stringify(ricette));
             window.open( Constants.STAMPA_RICETTE, "Stampa Oggetti" );
@@ -164,8 +161,11 @@
 
         erroreDataTable: function ( e, settings )
         {
-            if( !settings.jqXHR.responseText )
+            if( !settings.jqXHR || !settings.jqXHR.responseText )
+            {
+                console.log(e, settings);
                 return false;
+            }
 
             var real_error = settings.jqXHR.responseText.replace(/^([\S\s]*?)\{"[\S\s]*/i,"$1");
             real_error = real_error.replace("\n","<br>");

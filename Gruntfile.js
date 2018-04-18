@@ -26,7 +26,7 @@ module.exports = function (grunt)
         app : 'app',
         dist : 'dist',
         tmp : '.tmp',
-        version: '0.9.4',
+        version: '0.12.0',
         local_api_url : "/reboot_api_local/api.php",
         local_site_url : "/reboot_database_local",
         staging_api_url : "http://api-beta.rebootgrv.com/api.php",
@@ -528,7 +528,7 @@ module.exports = function (grunt)
                         dest : '<%= config.dist %>',
                         src : [
                             '*.{ico,png,txt}',
-                            'images/{,*/}*.{webp,jpg,jpeg,png,gif}',
+                            'images/{,*/}*.{webp,jpg,jpeg,png,gif,mp4}',
                             'fonts/{,*/}*.*'
                         ]
                     },
