@@ -66,7 +66,7 @@ $(document).ready(function ()
         var batteria = [];
         var struttura = [];
         var applicativo = [];
-        var scartati = []
+        var scartati = [];
         for (var i = 0; i < data.length; i++)
         {
             data[i].Tipo = data[i].tipo_componente;

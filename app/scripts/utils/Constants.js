@@ -32,7 +32,7 @@ Constants.API_POST_PUBBLICA_ARTICOLO     = Constants.API_URL + "/newsmanager/pub
 Constants.API_POST_RITIRA_ARTICOLO       = Constants.API_URL + "/newsmanager/ritiranotizia";
 Constants.API_POST_CRAFTING_PROGRAMMA    = Constants.API_URL + "/craftingmanager/inserisciricettanetrunner";
 Constants.API_POST_CRAFTING_TECNICO      = Constants.API_URL + "/craftingmanager/inserisciricettatecnico";
-Constants.API_POST_CRAFTING_CHIMICO      = Constants.API_URL + "/craftingmanager/inserisciricettachimico";
+Constants.API_POST_CRAFTING_CHIMICO      = Constants.API_URL + "/craftingmanager/inserisciricettamedico";
 Constants.API_EDIT_RICETTA               = Constants.API_URL + "/craftingmanager/modificaricetta";
 
 Constants.API_GET_LOGOUT                 = Constants.API_URL + "/usersmanager/logout";

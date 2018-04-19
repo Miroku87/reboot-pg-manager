@@ -1,8 +1,10 @@
-﻿{% extends "./templates/main_template.html" %}
-{% set body_classes = body_classes + " crafting-chicmico-page" %}
-{% set section = "craftingchimico" %}
-{% set titolo_sezione = "Crafting Chimico"  %}
-{% set descrizione_sezione = ""  %}
+{% extends "./templates/main_template.html" %}
+{% set section = "live_chimico" %}
+
+{% block styles %}
+<link href="styles/crafting_chimico.css" rel="stylesheet">
+{% endblock %}
+
 {% block mainContent %}
 {{ super() }}
 <!--------------------------
@@ -10,8 +12,142 @@
   -------------------------->
 
 
+<div class="row">
+    <div class="col-sm-12 col-md-8">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">
+                    <span class="sgc-info2">SGC</span> SIMULATOR
+                </h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+
+                    <button type="button" class="btn btn-box-tool" data-widget="remove">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close">&times;</button>
+                    <i class="icon fa fa-ban"></i>
+                    Impossibile completare l'operazione, verificare che la tipologia sia conforme alla destinazione e che questa sia libera.
+                </div>
+                <div class="nome-composto-container">
+                    <p>
+                        <span class="sgc-info2">Nome </span> composto
+                    </p>
+
+                    <form autocomplete="off" aria-autocomplete="none">
+                        <input id="nome_composto" type="text" class="form-control">
+                    </form>
+                </div>
+                <ul id="hexGrid">
+                    <li class="hex">
+                        <div class="hexIn">
+                            <div class="hexLink allow-sostanza" href="#" id="sostanza1" ondrop="drop(event)" ondragover="allowDrop(event)">
+                                <button type="button" class="btn btn-info btn-xs pull-right delete-el" onclick="resetBox('sostanza1')">&times;</button>
+                                <h1 id="h1-sostanza1" ondrop="drop(event)" ondragover="allowDrop(event)">Sostanza #01</h1>
+
+                            </div>
+                        </div>
+                    </li>
+                    <div class="clear" style="clear: both"></div>
+                    <li class="hex">
+                        <div class="hexIn">
+                            <div class="hexLink principio allow-sostanza" href="#" id="principio" ondrop="drop(event)" ondragover="allowDrop(event)">
+                                <button type="button" class="btn btn-info btn-xs pull-right delete-el" onclick="resetBox('principio')">&times;</button>
+                                <h1 id="h1-principio" ondrop="drop(event)" ondragover="allowDrop(event)">Principio Attivo</h1>
+
+                            </div>
+                        </div>
+                    </li>
+                    <li class="hex">
+                        <div class="hexIn">
+                            <div class="hexLink allow-sostanza" href="#" id="sostanza2" ondrop="drop(event)" ondragover="allowDrop(event)">
+                                    <button type="button" class="btn btn-info btn-xs pull-right delete-el" onclick="resetBox('sostanza2')">&times;</button>
+                                <h1 id="h1-sostanza2" ondrop="drop(event)" ondragover="allowDrop(event)">Sostanza #02</h1>
+
+                            </div>
+                        </div>
+                    </li>
+                    <li class="hex">
+                        <div class="hexIn">
+                            <div class="hexLink allow-sostanza" href="#" id="sostanza3" ondrop="drop(event)" ondragover="allowDrop(event)">
+                                    <button type="button" class="btn btn-info btn-xs pull-right delete-el" onclick="resetBox('sostanza3')">&times;</button>
+                                <h1 id="h1-sostanza3" ondrop="drop(event)" ondragover="allowDrop(event)">Sostanza #03</h1>
+
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+                <p>
+                    <span class="sgc-info2">Struttura &raquo; </span> Componenti abilitati: Cerotto, fiala, solido</p>
+
+                <div id="biostruttura" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <button type="button" class="btn btn-info btn-xs pull-right delete-el"  onclick="resetBox('biostruttura')">&times;</button>
+                </div>
+
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <div class="col-sm-12 col-md-4">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li>
+                    <a href="#sostanza" data-toggle="tab">Sostanza</a>
+                </li>
+                <li>
+                    <a href="#struttura" data-toggle="tab">Biostruttura</a>
+                </li>
+                <!--<li>
+                    <a href="#cerotto" data-toggle="tab">Cerotto</a>
+                </li>
+                <li>
+                    <a href="#fiala" data-toggle="tab">Fiala</a>
+                </li>
+                <li>
+                    <a href="#solido" data-toggle="tab">Solido</a>
+                </li>-->
+
+
+
+            </ul>
+            <div class="tab-content">
+
+                <div class="tab-pane active" id="sostanza">
+                </div>
+                <div class="tab-pane active" id="struttura">
+                </div>
+                <!--<div class="tab-pane" id="cerotto">
+                </div>
+                <div class="tab-pane" id="fiala">
+                </div>
+                <div class="tab-pane" id="solido">
+                </div>-->
+
+            </div>
+            <!-- /.tab-content -->
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-md-8">
+        <button type="button" class="btn btn-block btn-success" id="btn_inviaCraftingChimico"><i class="fa fa-flask"></i><br>Invia Sostanze<br>al Sistema
+        </button>
+    </div>
+</div>
+
 {% endblock %}
+
 {% block managers %}
 {{ super() }}
-<script src="scripts/controllers/CraftingManager.js"></script>
+<script src="scripts/controllers/CraftingChimicoManager.js"></script>
 {% endblock %}
