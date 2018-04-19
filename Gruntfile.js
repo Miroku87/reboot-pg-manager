@@ -295,7 +295,11 @@ module.exports = function (grunt)
                     '<%= config.dist %>/scripts/*.js',
                     '<%= config.dist %>/styles/{,*/}*.css',
                     '<%= config.dist %>/images/{,*/}*.*',
-                    '<%= config.dist %>/*.{ico,png}'
+                    '<%= config.dist %>/*.{ico,png}',
+                    '!<%= config.dist %>/images/molecule.png',
+                    '!<%= config.dist %>/images/salt.png',
+                    '!<%= config.dist %>/images/plaster.png',
+                    '!<%= config.dist %>/images/vial.png'
                 ]
             }
         },
