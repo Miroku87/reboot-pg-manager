@@ -15,7 +15,7 @@ Una volta terminato il trasferimento installare tutti i pacchetti di NodeJS:
 ```
 npm install
 ```
-Dopo che il processo precedente ha terminato installare i pacchetti Bower.
+Dopo che il processo precedente è terminato, installare i pacchetti Bower.
 Durante questa fase verranno chieste delle informazioni. Rispondere nel modo seguente
 
 * Versione AdminLTE: 2
@@ -56,7 +56,7 @@ Per creare nuove pagine di contenuti creare un file HTML all'interno della carte
 {% endblock %}
 
 {% block mainContent %}
-{{ super() }
+{{ super() }}
 
 <!--------------------------
   | Your Page Content Here |
