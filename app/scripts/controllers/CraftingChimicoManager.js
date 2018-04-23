@@ -44,6 +44,7 @@ $(document).ready(function ()
             data[i].Tipo = data[i].tipo_componente;
             data[i].Codice = data[i].id_componente;
             data[i].Nome = data[i].nome_componente;
+            data[i].Descrizione = data[i].descrizione_componente;
             if (data[i].Tipo.toLowerCase() == "sostanza")
             {
                 sostanza.push(data[i]);
@@ -122,6 +123,7 @@ function popoloComponenti(array, id, div)
         html += '        <div class="info-box-content">';
         html += '            <span class="info-box-text sgc-info2">' + el.Tipo + ' - ' + el.Codice + '</span>';
         html += '            <span class="info-box-number">' + el.Nome + '</span>';
+        html += '            <p>' + el.Descrizione + '</p>';
         html += '        </div>';
         html += '    </div>  ';
     });

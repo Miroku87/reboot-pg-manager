@@ -74,6 +74,7 @@ $(document).ready(function ()
             data[i].Volume = data[i].volume_componente;
             data[i].Energia = data[i].energia_componente;
             data[i].Nome = data[i].nome_componente;
+            data[i].Descrizione = data[i].descrizione_componente;
 
             if (data[i].Tipo.toLowerCase() == "batteria")
             {
@@ -139,6 +140,7 @@ function popoloComponenti(array, id, div)
         html += '        <div class="info-box-content">';
         html += '            <span class="info-box-text sgc-info2">' + el.Tipo + ' - ' + el.Codice + '</span>';
         html += '            <span class="info-box-number">' + el.Nome + '</span>';
+        html += '            <p>'+el.Descrizione+'</p>';
         html += '            <p>';
         if (parseInt(el.Energia) == 0)
         {

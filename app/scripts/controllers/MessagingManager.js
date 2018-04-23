@@ -95,7 +95,8 @@ var MessaggingManager = function ()
 
         recuperaDestinatariAutofill: function ( tipo, req, res )
         {
-            var url = tipo === "ig" ? Constants.API_GET_DESTINATARI_IG : Constants.API_GET_DESTINATARI_FG;
+            // var url = tipo === "ig" ? Constants.API_GET_DESTINATARI_IG : Constants.API_GET_DESTINATARI_FG;
+            var url = Constants.API_GET_DESTINATARI_IG;
 
             Utils.requestData(
                 url,
@@ -110,6 +111,9 @@ var MessaggingManager = function ()
 
         impostaInterfacciaScrittura: function ( )
         {
+			if( this.user_info && this.user_info.pg_da_loggare )
+				$("#tipo_messaggio").val("ig");
+			
             if( typeof $("#destinatario").data('ui-autocomplete') === "undefined" )
             {
                 $("#destinatario").autocomplete({
@@ -231,6 +235,7 @@ var MessaggingManager = function ()
             {
                 $("#sezioni").find(".nome_sezione").text("Caselle");
                 $("#tipo_messaggio").val("ig").hide();
+				// this.recuperaDestinatariAutofill.bind(this,"ig");
             }
 
             this.tab_inarrivo_fg = this.creaDataTable.call( this, 'lista_inarrivo_fg_table', Constants.API_GET_MESSAGGI, {tipo: "fg", casella: "inarrivo", id: this.user_info.email_giocatore});
