@@ -95,8 +95,8 @@ var MessaggingManager = function ()
 
         recuperaDestinatariAutofill: function ( tipo, req, res )
         {
-            // var url = tipo === "ig" ? Constants.API_GET_DESTINATARI_IG : Constants.API_GET_DESTINATARI_FG;
-            var url = Constants.API_GET_DESTINATARI_IG;
+            var url = tipo === "ig" ? Constants.API_GET_DESTINATARI_IG : Constants.API_GET_DESTINATARI_FG;
+            //var url = Constants.API_GET_DESTINATARI_IG;
 
             Utils.requestData(
                 url,
