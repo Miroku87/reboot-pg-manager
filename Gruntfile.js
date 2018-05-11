@@ -26,7 +26,7 @@ module.exports = function (grunt)
         app : 'app',
         dist : 'dist',
         tmp : '.tmp',
-        version: '0.12.0',
+        version: '1.0.0',
         local_api_url : "/reboot_api_local/api.php",
         local_site_url : "/reboot_database_local",
         staging_api_url : "http://api-beta.rebootgrv.com/api.php",
@@ -293,8 +293,8 @@ module.exports = function (grunt)
             dist : {
                 src : [
                     '<%= config.dist %>/scripts/*.js',
-                    '<%= config.dist %>/styles/{,*/}*.css',
-                    '<%= config.dist %>/images/{,*/}*.*',
+                    '<%= config.dist %>/styles/*.css',
+                    '<%= config.dist %>/images/*.*',
                     '<%= config.dist %>/*.{ico,png}',
                     '!<%= config.dist %>/images/molecule.png',
                     '!<%= config.dist %>/images/salt.png',
@@ -706,7 +706,7 @@ module.exports = function (grunt)
         'postcss',
         'replace:staging_urls',
         'concat',
-        //'cssmin',
+        'cssmin',
         'uglify',
         'copy:dist',
         'copy:ckedit',

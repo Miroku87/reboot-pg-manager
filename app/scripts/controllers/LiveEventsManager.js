@@ -171,6 +171,27 @@ var LiveEventsManager = function ()
             );
         },
 
+        modificaPartecipazione: function ( e )
+        {
+            var t = $( e.target );
+
+            t.attr("disabled",true);
+            Utils.requestData(
+                Constants.API_POST_EDIT_ISCRIZIONE,
+                "POST",
+                {
+                    evid   : t.attr("data-evid"),
+                    pgid   : t.attr("data-id"),
+                    mods   : { ha_partecipato_iscrizione: t.is(":checked") ? 1 : 0 }
+                },
+                function ()
+                {
+                    t.attr("disabled",false);
+                    this["pg_"+ t.attr("data-quando")].ajax.reload(null,false);
+                }.bind(this)
+            );
+        },
+
         creaCheckBoxPagato: function (data, type, row)
         {
             var checked = data === "1" ? "checked" : "",
@@ -184,6 +205,23 @@ var LiveEventsManager = function ()
                     "</div>",
                 pagato = data === "1" ? "S&igrave;" : "No",
                 output = Utils.controllaPermessiUtente( this.user_info, ["modificaIscrizionePG_pagato_iscrizione_proprio","modificaIscrizionePG_pagato_iscrizione_altri"]) ? checkbox : pagato;
+
+            return output;
+        },
+
+        creaCheckBoxPartecipazione: function (data, type, row)
+        {
+            var checked = data === "1" ? "checked" : "",
+                checkbox = "<div class='checkbox icheck'>" +
+                    "<input type='checkbox' " +
+                        "class='inizialmente-nascosto modificaIscrizionePG_ha_partecipato_iscrizione_altri' " +
+                        "data-id='"+row.personaggi_id_personaggio+"' " +
+                        "data-evid='"+row.id_evento+"' " +
+                        "data-quando='"+row.quando+"' " +
+                        ""+checked+">" +
+                    "</div>",
+                pagato = data === "1" ? "S&igrave;" : "No",
+                output = Utils.controllaPermessiUtente( this.user_info, ["modificaIscrizionePG_ha_partecipato_iscrizione_altri"]) ? checkbox : pagato;
 
             return output;
         },
@@ -244,6 +282,12 @@ var LiveEventsManager = function ()
 
             $( '#pg_'+quando ).find("td button.disiscriviPG_altri").unbind( "click", this.confermaDisiscriviPg.bind(this) );
             $( '#pg_'+quando ).find("td button.disiscriviPG_altri").click( this.confermaDisiscriviPg.bind(this) );
+
+            if( quando === "precedente" )
+            {
+                $( '#pg_'+quando ).find("td input.modificaIscrizionePG_ha_partecipato_iscrizione_altri").unbind( "ifChanged", this.modificaPartecipazione.bind(this) );
+                $( '#pg_'+quando ).find("td input.modificaIscrizionePG_ha_partecipato_iscrizione_altri").on( "ifChanged", this.modificaPartecipazione.bind(this) );
+            }
         },
 
         impostaTabellaPgIscritti: function( quando )
@@ -267,16 +311,20 @@ var LiveEventsManager = function ()
                 title: "Nome Giocatore",
                 data   : "nome_completo"
             });
-            columns.push({
-                title: "Classi Civili",
-                data: "classi_civili",
-                render : $.fn.dataTable.render.ellipsis( 20, true, false )
-            });
-            columns.push({
-                title: "Classi Militari",
-                data: "classi_militari",
-                render : $.fn.dataTable.render.ellipsis( 20, true, false )
-            });
+
+            if( quando === "prossimo" )
+            {
+                columns.push({
+                    title : "Classi Civili",
+                    data : "classi_civili",
+                    render : $.fn.dataTable.render.ellipsis(20, true, false)
+                });
+                columns.push({
+                    title : "Classi Militari",
+                    data : "classi_militari",
+                    render : $.fn.dataTable.render.ellipsis(20, true, false)
+                });
+            }
 
             if ( permessi_avan )
                 columns.push({
@@ -289,6 +337,13 @@ var LiveEventsManager = function ()
                 columns.push({
                     title : "Tipo Pagamento",
                     data : "tipo_pagamento_iscrizione"
+                });
+
+            if( quando === "precedente" && Utils.controllaPermessiUtente( this.user_info, ["modificaIscrizionePG_ha_partecipato_iscrizione_altri"] ) )
+                columns.push({
+                    title : "Ha Partecipato",
+                    data : "ha_partecipato_iscrizione",
+                    render : this.creaCheckBoxPartecipazione.bind(this)
                 });
 
             if ( permessi_avan )
@@ -660,17 +715,31 @@ var LiveEventsManager = function ()
 
         },
 
-        modificaPuntiAiFiltrati: function ( e )
+        mostraModalPunteggio: function ( data )
         {
-            var t = $(e.target),
-                records = Array.prototype.slice.call( this.pg_precedente.columns().data() ),
-                col_nome = 1;
+            var data = data.data,
+                ids  = data.map(function(el){ return el.personaggi_id_personaggio; }),
+                nomi = data.map(function(el){ return el.nome_personaggio; });
+
+            console.log(ids);
 
             PointsManager.impostaModal({
-                pg_ids          : records[0],
-                nome_personaggi : records[col_nome],
-                onSuccess       : this.puntiInviati.bind(this, t.attr("data-evid"))
+                pg_ids          : ids,
+                nome_personaggi : nomi,
+                onSuccess       : this.puntiInviati.bind(this, data.id_evento)
             });
+        },
+
+        modificaPuntiAiPartecipanti: function ( e )
+        {
+            var t = $(e.target);
+
+            Utils.requestData(
+                Constants.API_GET_PARTECIPANTI_EVENTO,
+                "POST",
+                { idev: t.attr("data-evid") },
+                this.mostraModalPunteggio.bind(this)
+            );
         },
 
         vaiAPaginaStampaCartellini: function ( data )
@@ -712,7 +781,7 @@ var LiveEventsManager = function ()
             $("#btn_modifica").click( this.vaiAModificaEvento.bind(this) );
             $("#btn_ritira").click( this.confermaRitiraEvento.bind(this) );
             $("#iscrivi_pg").click( this.mostraModalIscrizione.bind(this) );
-            $("#btn_modificaPG_px_personaggio").click( this.modificaPuntiAiFiltrati.bind(this) );
+            $("#btn_modificaPG_px_personaggio").click( this.modificaPuntiAiPartecipanti.bind(this) );
             $("#btn_stampaCartelliniPG").click( this.stampaCartellini.bind(this) );
             $("#btn_stampaIscrizioniPg").click( this.vaiAPaginaStampaIscrizioni.bind(this) );
         }

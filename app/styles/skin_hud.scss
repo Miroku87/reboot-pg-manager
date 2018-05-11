@@ -419,31 +419,34 @@ span.sgc-info, span.sgc-info2 {
 
 .list-select::-webkit-scrollbar,
 .tab-content::-webkit-scrollbar,
-#terminal::-webkit-scrollbar,
-.table-responsive::-webkit-scrollbar  {
+.table-responsive::-webkit-scrollbar,
+#box_carrello::-webkit-scrollbar,
+#terminal::-webkit-scrollbar  {
     width: 10px;
 }
 
 .list-select::-webkit-scrollbar-track,
 .tab-content::-webkit-scrollbar-track,
-#terminal::-webkit-scrollbar-track,
-.table-responsive::-webkit-scrollbar-track {
+.table-responsive::-webkit-scrollbar-track,
+#terminal::-webkit-scrollbar-track{
     background: rgba(0,0,0,0.3);
     margin: 2px;
 }
 
 .list-select::-webkit-scrollbar-thumb,
 .tab-content::-webkit-scrollbar-thumb,
-#terminal::-webkit-scrollbar-thumb,
-.table-responsive::-webkit-scrollbar-thumb {
+.table-responsive::-webkit-scrollbar-thumb,
+#box_carrello::-webkit-scrollbar-thumb,
+#terminal::-webkit-scrollbar-thumb {
     background: rgba(249,186,35,0.1);
     border-radius: 20px;
 }
 
 .list-select::-webkit-scrollbar-thumb:hover,
 .tab-content::-webkit-scrollbar-thumb:hover,
-#terminal::-webkit-scrollbar-thumb:hover,
-.table-responsive::-webkit-scrollbar-thumb:hover{
+.table-responsive::-webkit-scrollbar-thumb:hover,
+#box_carrello::-webkit-scrollbar-thumb:hover,
+#terminal::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
 

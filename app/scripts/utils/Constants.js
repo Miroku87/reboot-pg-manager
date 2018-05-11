@@ -57,6 +57,7 @@ Constants.API_GET_EVENTO                 = Constants.API_URL + "/eventsmanager/r
 Constants.API_GET_LISTA_EVENTI           = Constants.API_URL + "/eventsmanager/recuperalistaeventi";
 Constants.API_GET_INFO_ISCRITTI_AVANZATE = Constants.API_URL + "/eventsmanager/recuperalistaiscrittiavanzato";
 Constants.API_GET_INFO_ISCRITTI_BASE     = Constants.API_URL + "/eventsmanager/recuperalistaiscrittibase";
+Constants.API_GET_PARTECIPANTI_EVENTO    = Constants.API_URL + "/eventsmanager/recuperalistapartecipanti";
 Constants.API_GET_NOTE_ISCRITTO          = Constants.API_URL + "/eventsmanager/recuperanotepgiscritto";
 Constants.API_GET_RUOLI                  = Constants.API_URL + "/grantsmanager/recuperaruoli";
 Constants.API_GET_PERMESSI               = Constants.API_URL + "/grantsmanager/recuperalistapermessi";
@@ -80,7 +81,7 @@ Constants.STAMPA_CARTELLINI_PAGE         = Constants.SITE_URL + "/stampa_cartell
 Constants.STAMPA_ISCRITTI_PAGE           = Constants.SITE_URL + "/stampa_tabella_iscritti.html";
 Constants.STAMPA_RICETTE                 = Constants.SITE_URL + "/stampa_ricetta.html";
 Constants.CREAPG_PAGE                    = Constants.SITE_URL + "/crea_pg.html";
-Constants.EVENTI_PAGE                    = Constants.SITE_URL + "/gestione_eventi.html";
+Constants.EVENTI_PAGE                    = Constants.SITE_URL + "/eventi.html";
 Constants.CREA_EVENTO_PAGE               = Constants.SITE_URL + "/crea_evento.html";
 Constants.MESSAGGI_PAGE                  = Constants.SITE_URL + "/messaggi.html";
 Constants.PROFILO_PAGE                   = Constants.SITE_URL + "/profilo.html";
@@ -90,6 +91,8 @@ Constants.PC_TOT                         = 4;
 Constants.ANNO_PRIMO_LIVE                = 271;
 Constants.ANNO_INIZIO_OLOCAUSTO          = 239;
 Constants.ANNO_FINE_OLOCAUSTO            = 244;
+Constants.SCONTO_MERCATO                 = 10;
+Constants.QTA_PER_SCONTO_MERCATO         = 4;
 
 Constants.COSTI_PROFESSIONI              = [0,20,40,60,80,100,120];
 
