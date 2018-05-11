@@ -91,6 +91,8 @@ Constants.PC_TOT                         = 4;
 Constants.ANNO_PRIMO_LIVE                = 271;
 Constants.ANNO_INIZIO_OLOCAUSTO          = 239;
 Constants.ANNO_FINE_OLOCAUSTO            = 244;
+Constants.SCONTO_MERCATO                 = 10;
+Constants.QTA_PER_SCONTO_MERCATO         = 4;
 
 Constants.COSTI_PROFESSIONI              = [0,20,40,60,80,100,120];
 

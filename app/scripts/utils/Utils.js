@@ -458,6 +458,17 @@
         trasformaInArray: function ( obj )
         {
             return Array.prototype.slice.call( obj );
+        },
+
+        indexOfArrayOfObjects: function ( arr, key, value )
+        {
+            for( var a in arr )
+            {
+                if( arr[a][key] === value )
+                    return parseInt( a, 10);
+            }
+
+            return -1;
         }
     };
 

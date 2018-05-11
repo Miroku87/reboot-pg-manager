@@ -39,15 +39,23 @@
                         <th>Prodotto</th>
                         <th>Qta</th>
                         <th>Costo</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
+                    <tr id="riga_sconto">
+                        <td align="right" colspan="2"><strong>Sconto*:</strong> </td>
+                        <td>0%</td>
+                        <td></td>
+                    </tr>
                     <tr id="riga_totale">
                         <td align="right" colspan="2"><strong>Totale:</strong></td>
                         <td>0</td>
+                        <td></td>
                     </tr>
                     </tbody>
                 </table>
+                <p>*Se compri un numero di componenti multiplo di X avrai uno sconto del Y%.</p>
             </div>
             <div class="box-footer">
                 <button class="btn btn-success submit-btn" id="paga">Paga e Stampa</button>
@@ -55,7 +63,7 @@
         </div>
     </div>
 </div>
-
+<iframe id="pagina_stampa" width="1" height="1" scrolling="no"></iframe>
 
 {% endblock %}
 

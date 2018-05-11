@@ -6,8 +6,98 @@ var MarketplaceManager = function ()
             $("#box_carrello").width($("#box_carrello").parent().width());
             $("#box_carrello").css("max-height",$(".content-wrapper").height() - 41 - 51 - 20);
 
+            this.carrello_componenti = [];
+
             this.setListeners();
             this.impostaTabella();
+        },
+
+        pagaStampa: function ( e )
+        {
+            //TODO;
+            window.localStorage.setItem( "componenti_da_stampare", JSON.stringify(this.carrello_componenti) );
+            $("#pagina_stampa").attr("src",Constants.STAMPA_RICETTE);
+            $("#pagina_stampa")[0].contentWindow.print();
+        },
+
+        controllaQtaPerSconto: function ()
+        {
+            var qta_tot      = $("#carrello tr > td:nth-child(2)")
+                                .toArray()
+                                .map(function(el){return parseInt( el.innerText, 10 ) || 0;})
+                                .reduce(function(acc, val) { return acc + val; }),
+                sconto       = qta_tot % Constants.QTA_PER_SCONTO_MERCATO === 0 ? Constants.SCONTO_MERCATO : 0;
+
+            $("#riga_sconto > td:nth-child(2)").text( sconto + "%" );
+        },
+
+        calcolaTotaleCarrello: function ()
+        {
+            var sconto       = parseInt( $("#riga_sconto > td:nth-child(2)").text(), 10 ) / 100 || 0,
+                tot          = $("#carrello tr > td:nth-child(3)")
+                                .toArray()
+                                .map(function(el){return parseInt( el.innerText, 10 ) || 0;})
+                                .reduce(function(acc, val) { return acc + val; }),
+                tot_scontato = tot - ( tot * sconto );
+
+            $("#riga_totale > td:nth-child(2)").text( tot_scontato );
+        },
+
+        aumentaQtaProdotto: function ( e )
+        {
+            var t           = $(e.target),
+                riga        = t.parents("tr"),
+                id_prodotto = riga.find("td:nth-child(1)").text(),
+                qta         = parseInt( riga.find("td:nth-child(2)").text(), 10) || 0,
+                vecchio_tot = parseInt( riga.find("td:nth-child(3)").text(), 10) || 0,
+                costo       = vecchio_tot / qta,
+                indice      = Utils.indexOfArrayOfObjects( this.carrello_componenti, "id", id_prodotto );
+
+            riga.hide();
+            riga.find("td:nth-child(2)").text( qta + 1);
+            riga.find("td:nth-child(3)").text( vecchio_tot + costo );
+            riga.show(500);
+
+            this.carrello_componenti[indice].qta++;
+            this.controllaQtaPerSconto();
+            this.calcolaTotaleCarrello();
+        },
+
+        diminuisciQtaProdotto: function ( e )
+        {
+            var t           = $(e.target),
+                riga        = t.parents("tr"),
+                id_prodotto = riga.find("td:nth-child(1)").text(),
+                qta         = parseInt( riga.find("td:nth-child(2)").text(), 10) || 0,
+                vecchio_tot = parseInt( riga.find("td:nth-child(3)").text(), 10) || 0,
+                costo       = vecchio_tot / qta,
+                indice      = Utils.indexOfArrayOfObjects( this.carrello_componenti, "id", id_prodotto );
+
+            if( qta - 1 <= 0 )
+            {
+                riga.remove();
+                this.carrello_componenti.splice(indice,1);
+            }
+            else
+            {
+                riga.hide();
+                riga.find("td:nth-child(2)").text( qta - 1);
+                riga.find("td:nth-child(3)").text( vecchio_tot - costo );
+                riga.show(500);
+                this.carrello_componenti[indice].qta--;
+            }
+
+            this.controllaQtaPerSconto();
+            this.calcolaTotaleCarrello();
+        },
+
+        impostaPulsantiCarrello: function ()
+        {
+            $("td > button.add-item").unbind( "click" );
+            $("td > button.add-item").click( this.aumentaQtaProdotto.bind(this) );
+
+            $("td > button.remove-item").unbind( "click" );
+            $("td > button.remove-item").click( this.diminuisciQtaProdotto.bind(this) );
         },
 
         oggettoInCarrello: function ( e )
@@ -16,32 +106,34 @@ var MarketplaceManager = function ()
                 dati        = this.tabella_prodotti.row( t.parents("tr") ).data(),
                 id_prodotto = dati.id_componente,
                 costo       = parseInt( dati.costo_attuale_componente, 10 ),
-                vecchio_tot = parseInt( $("#riga_totale > td:last-child").text(), 10 ) || 0,
-                riga_car    = $("#carrello").find("#"+id_prodotto);
+                col_car     = $("#carrello").find("#"+id_prodotto+" td:first-child");
 
-            if( riga_car.length === 0 )
+            if( col_car.length === 0 )
             {
                 var riga = $("<tr></tr>");
-                riga.attr("id",id_prodotto)
+                riga.attr("id",id_prodotto);
                 riga.append("<td>"+id_prodotto+"</td>");
                 riga.append("<td>1</td>");
                 riga.append("<td>"+costo+"</td>");
+                riga.append(
+                    $("<td></td>")
+                        .append("<button class='btn btn-xs btn-default remove-item'><i class='fa fa-minus'></i></button>")
+                        .append("&nbsp;")
+                        .append("<button class='btn btn-xs btn-default add-item'><i class='fa fa-plus'></i></button>")
+                );
                 riga.hide();
 
-                $("#riga_totale").before(riga);
+                $("#riga_sconto").before(riga);
                 riga.show(500);
+
+                this.carrello_componenti.push({ id: id_prodotto, qta: 1 });
             }
             else
-            {
-                var qta = parseInt( riga_car.find("td:nth-child(2)").text(), 10 ) + 1;
-                riga_car.hide();
-                riga_car.find("td:nth-child(2)").text( qta );
-                riga_car.find("td:nth-child(3)").text( costo * qta );
-                $("#riga_totale").before(riga_car);
-                riga_car.show(500);
-            }
+                this.aumentaQtaProdotto({target: col_car});
 
-            $("#riga_totale > td:last-child").text( vecchio_tot + costo );
+            this.controllaQtaPerSconto();
+            this.calcolaTotaleCarrello();
+            this.impostaPulsantiCarrello();
         },
 
         setGridListeners: function ()
@@ -218,7 +310,8 @@ var MarketplaceManager = function ()
 
         setListeners: function()
         {
-            $(window).resize(this.pageResize.bind(this))
+            $(window).resize(this.pageResize.bind(this));
+            $("#paga").click(this.pagaStampa.bind(this));
         }
     };
 }();
