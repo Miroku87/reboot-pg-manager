@@ -181,7 +181,7 @@
                 $("#container").append("<div class='page-break'></div>");
             }
 
-            if( window.stampa_subito )
+            if( window.top.stampa_subito )
                 window.print();
 		},
 

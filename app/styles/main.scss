@@ -343,3 +343,7 @@ body.register-page {
 #pagina_stampa {
   border: none;
 }
+
+#riga_credito > td:nth-child(2) {
+  cursor: pointer;
+}

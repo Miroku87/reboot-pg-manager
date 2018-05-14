@@ -7,11 +7,30 @@ var MarketplaceManager = function ()
             $("#box_carrello").css("max-height",$(".content-wrapper").height() - 41 - 51 - 20);
             $("#sconto_msg").text( $("#sconto_msg").text().replace( /\{X}/g, Constants.CARTELLINI_PER_PAG ).replace( /\{Y}/g, Constants.SCONTO_MERCATO ) );
 
+            this.pg_info             = JSON.parse( window.localStorage.getItem("logged_pg") );
+            this.placeholder_credito = $("#riga_credito").find("td:nth-child(2)").html();
             this.carrello_componenti = [];
+
+            if( !this.pg_info )
+            {
+                $("#paga").wrap("<div data-toggle='tooltip' data-title='Devi essere loggato con un personaggio.'></div>");
+                $("#paga").attr("disabled",true);
+            }
 
             this.setListeners();
             this.impostaTabellaTecnico();
             this.impostaTabellaChimico();
+        },
+
+        mostraCreditoResiduo: function ( e )
+        {
+            if( this.pg_info )
+                $("#riga_credito").find("td:nth-child(2)").html( this.pg_info.credito_personaggio );
+        },
+
+        nascondiCreditoResiduo: function ( e )
+        {
+            $("#riga_credito").find("td:nth-child(2)").html( this.placeholder_credito );
         },
 
         faiPartireStampa: function ( e )
@@ -23,8 +42,24 @@ var MarketplaceManager = function ()
         {
             window.localStorage.setItem( "componenti_da_stampare", JSON.stringify(this.carrello_componenti) );
             $("#pagina_stampa").attr("src",Constants.STAMPA_RICETTE);
-            $("#pagina_stampa")[0].contentWindow.stampa_subito = true;
+            window.stampa_subito = true;
             //setTimeout( this.faiPartireStampa.bind(this), 1000 );
+        },
+
+        scalaSoldi: function ( data )
+        {
+            Utils.requestData(
+                Constants.API_POST_EDIT_PG,
+                "POST",
+                {
+                    pgid      : this.pg_info.id_personaggio,
+                    modifiche : { credito_personaggio : parseInt( data.result, 10 ) * -1 },
+                    offset    : true
+                },
+                "Pagamento avvenuto con successo.",
+                null,
+                this.stampa.bind(this)
+            );
         },
 
         paga: function ( e )
@@ -33,9 +68,7 @@ var MarketplaceManager = function ()
                 Constants.API_COMPRA_COMPONENTI,
                 "POST",
                 { ids: this.carrello_componenti },
-                "Pagamento avvenuto con successo.",
-                null,
-                this.stampa.bind(this)
+                this.scalaSoldi.bind(this)
             );
         },
 
@@ -415,6 +448,8 @@ var MarketplaceManager = function ()
         {
             $(window).resize(this.pageResize.bind(this));
             $("#paga").click(this.paga.bind(this));
+            $("#riga_credito").find("td:nth-child(2)").mousedown(this.mostraCreditoResiduo.bind(this));
+            $("#riga_credito").find("td:nth-child(2)").mouseup(this.nascondiCreditoResiduo.bind(this));
         }
     };
 }();
