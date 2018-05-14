@@ -93,6 +93,10 @@ button.pull-right {
   cursor: pointer;
 }
 
+thead th {
+  white-space: nowrap;
+}
+
 /* MODAL PUNTI */
 #modal_assegna_punti .nomi_pg {
   font-weight: bold;
