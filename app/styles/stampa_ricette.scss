@@ -142,6 +142,17 @@ td {
   vertical-align: middle;
 }
 
+.id_componente,
+.nome_componente,
+.tipo_componente {
+  text-transform: uppercase;
+}
+
+.descrizione_componente:first-letter,
+.nome_ricetta:first-letter {
+  text-transform: uppercase;
+}
+
 @media print {
   a {
     display: none;

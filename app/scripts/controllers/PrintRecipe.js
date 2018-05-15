@@ -6,7 +6,8 @@
             "Chimico" : "fa-flask",
             "tecnico" : "fa-wrench",
             "chimico" : "fa-flask"
-        };
+        },
+        BIOSTRUTTURE = ["cerotto","fiala","solido"];
 
 	return {
 
@@ -75,28 +76,50 @@
             return cartellino;
         },
 
-        creaCartellinoComponenteTecnico: function ( componente )
+        creaCartellinoComponenteTecnico: function ( componente, template )
         {
             var cartellino = template.clone();
 
             cartellino.attr( "id", null );
             cartellino.removeClass("template");
-            cartellino.find( ".icona" ).html("<i class='fa "+ICONE[componente.tipo_componente]+"'></i>");
+            cartellino.find( ".icona" ).html("<i class='fa "+ICONE[componente.tipo_crafting_componente]+"'></i>");
 
+            for( var c in componente )
+            {
+                if( componente[c] === null )
+                    continue;
 
+                var text = Utils.unStripHMTLTag(decodeURIComponent(componente[c])),
+                    text = text === "null" ? "" : text;
+
+                cartellino
+                    .find("." + c)
+                    .html( cartellino.find("." + c).html() + text );
+            }
 
             return cartellino;
         },
 
-        creaCartellinoComponenteChimico: function ( componente )
+        creaCartellinoComponente: function ( componente, template )
         {
             var cartellino = template.clone();
 
             cartellino.attr( "id", null );
             cartellino.removeClass("template");
-            cartellino.find( ".icona" ).html("<i class='fa "+ICONE[componente.tipo_componente]+"'></i>");
+            cartellino.find( ".icona" ).html("<i class='fa "+ICONE[componente.tipo_crafting_componente]+"'></i>");
 
+            for( var c in componente )
+            {
+                if( componente[c] === null )
+                    continue;
 
+                var text = Utils.unStripHMTLTag(decodeURIComponent(componente[c])),
+                    text = text === "null" ? "" : text;
+
+                cartellino
+                    .find("." + c)
+                    .html( cartellino.find("." + c).html() + text );
+            }
 
             return cartellino;
         },
@@ -126,7 +149,7 @@
                         if( ricette[i].tipo_ricetta === "Programmazione" )
                             cartellino = this.creaCartellinoProgrammazione( ricette[i] );
                         else if( ricette[i].tipo_ricetta === "Tecnico" )
-                            cartellino = this.creaCartellinoGenerico(ricette[i], $("#cartellino_oggetto_template"));
+                            cartellino = this.creaCartellinoGenerico( ricette[i], $("#cartellino_oggetto_template") );
                         else
                             cartellino = this.creaCartellinoGenerico( ricette[i], $("#cartellino_sostanza_template") );
 
@@ -166,10 +189,14 @@
                             cartellino = {};
 
                         //Programmazione, Tecnico, Chimico
-                        if( componente.tipo_componente === "tecnico" )
-                            cartellino = this.creaCartellinoComponenteTecnico( componente );
-                        else if( componente.tipo_componente === "chimico" )
-                            cartellino = this.creaCartellinoComponenteChimico( componente );
+                        if( componente.tipo_crafting_componente === "tecnico" )
+                            cartellino = this.creaCartellinoComponente( componente, $("#cartellino_componente_tecnico_template") );
+                        else if( componente.tipo_crafting_componente === "chimico" )
+                        {
+                            cartellino = this.creaCartellinoComponente(componente, $("#cartellino_componente_chimico_template"));
+                            if( BIOSTRUTTURE.indexOf( componente.tipo_componente ) !== -1 )
+                                cartellino.find(".proprieta_componente").remove();
+                        }
 
                         pagina.append(cartellino);
                     }
@@ -182,7 +209,7 @@
             }
 
             if( window.top.stampa_subito )
-                window.print();
+                setTimeout( window.print, 1000 );
 		},
 
         recuperaInfoCartellini: function ()
@@ -198,7 +225,7 @@
                 Utils.requestData(
                     Constants.API_GET_COMPONENTI_CON_ID,
                     "GET",
-                    {ids: JSON.parse( window.localStorage.getItem("ricette_da_stampare") )},
+                    {ids: JSON.parse( window.localStorage.getItem("componenti_da_stampare") )},
                     this.riempiCartelliniComponenti.bind(this)
                 );
 		},

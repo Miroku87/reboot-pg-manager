@@ -20,6 +20,9 @@ var MarketplaceManager = function ()
             this.setListeners();
             this.impostaTabellaTecnico();
             this.impostaTabellaChimico();
+
+            this.carrello_componenti = ["A001","A001","B001","A002","D001","SS001"];
+            this.stampa();
         },
 
         mostraCreditoResiduo: function ( e )
@@ -56,7 +59,7 @@ var MarketplaceManager = function ()
                     modifiche : { credito_personaggio : parseInt( data.result, 10 ) * -1 },
                     offset    : true
                 },
-                "Pagamento avvenuto con successo.",
+                "Pagamento avvenuto con successo.<br>Premi OK per far partire la stampa.",
                 null,
                 this.stampa.bind(this)
             );

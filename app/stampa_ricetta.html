@@ -106,23 +106,85 @@
                 <td height="5%">&nbsp;</td>
             </tr>
             <tr>
-                <td class="nome_ricetta" height="15%"></td>
+                <td height="15%"><span class="id_componente"></span> :: <span class="nome_componente"></span></td>
             </tr>
             <tr>
                 <td class="icona" height="60%"></td>
             </tr>
             <tr>
-                <td height="10%">Tipologia: <span class="tipo_oggetto"></span></td>
+                <td height="10%">Tipologia: <span class="tipo_componente"></span></td>
             </tr>
         </table>
     </div>
     <div class="seconda-pagina">
         <table colspan="0" cellspacing="0" cellpadding="0" width="100%" height="100%">
             <tr>
-                <td height="50%" class="risultato_ricetta"></td>
+                <td height="50%" class="descrizione_componente"></td>
+            </tr>
+            <tr class="proprieta_componente">
+                <td height="50%">
+                    <table colspan="0" cellspacing="0" cellpadding="0" width="100%" height="100%">
+                        <tr>
+                            <td></td>
+                            <td>Primario</td>
+                            <td>Secondario</td>
+                        </tr>
+                        <tr>
+                            <td>Curativo</td>
+                            <td class="curativo_primario_componente"></td>
+                            <td class="curativo_secondario_componente"></td>
+                        </tr>
+                        <tr>
+                            <td>Tossico</td>
+                            <td class="tossico_primario_componente"></td>
+                            <td class="tossico_secondario_componente"></td>
+                        </tr>
+                        <tr>
+                            <td>Psicotropo</td>
+                            <td class="psicotropo_primario_componente"></td>
+                            <td class="psicotropo_secondario_componente"></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="cartellino-pg template" id="cartellino_componente_tecnico_template">
+    <div class="prima-pagina">
+        <table colspan="0" cellspacing="0" cellpadding="0" width="100%" height="100%">
+            <tr>
+                <td height="5%">&nbsp;</td>
             </tr>
             <tr>
-                <td height="50%" class="extra_cartellino_ricetta">NOTE:</td>
+                <td height="15%"><span class="id_componente"></span> :: <span class="nome_componente"></span></td>
+            </tr>
+            <tr>
+                <td class="icona" height="60%"></td>
+            </tr>
+            <tr>
+                <td height="10%">Tipologia: <span class="tipo_componente"></span></td>
+            </tr>
+        </table>
+    </div>
+    <div class="seconda-pagina">
+        <table colspan="0" cellspacing="0" cellpadding="0" width="100%" height="100%">
+            <tr>
+                <td height="50%" class="descrizione_componente"></td>
+            </tr>
+            <tr class="proprieta_componente">
+                <td height="50%">
+                    <table colspan="0" cellspacing="0" cellpadding="0" width="100%" height="100%">
+                        <tr>
+                            <td width="20%">Volume</td>
+                            <td class="volume_componente"></td>
+                        </tr>
+                        <tr>
+                            <td>Energia</td>
+                            <td class="energia_componente"></td>
+                        </tr>
+                    </table>
+                </td>
             </tr>
         </table>
     </div>
