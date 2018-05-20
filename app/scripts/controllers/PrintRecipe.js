@@ -17,6 +17,19 @@
             this.recuperaInfoCartellini();
 		},
 
+        stampaPagina: function ()
+		{
+			if( this.costa_si_stampa === "ricette" )
+            {
+                Utils.requestData(
+                    Constants.API_POST_RICETTE_STAMPATE,
+                    "POST",
+                    { ids: this.id_ricette },
+                    window.print
+                );
+            }
+		},
+
         creaCartellinoGenerico: function ( ricetta, template )
         {
             var cartellino = template.clone();
@@ -215,24 +228,31 @@
         recuperaInfoCartellini: function ()
 		{
             if( window.localStorage.getItem("ricette_da_stampare") )
+            {
+                this.costa_si_stampa = "ricette";
+                this.id_ricette = JSON.parse(window.localStorage.getItem("ricette_da_stampare"));
                 Utils.requestData(
                     Constants.API_GET_RICETTE_CON_ID,
                     "GET",
-                    {ids: JSON.parse(window.localStorage.getItem("ricette_da_stampare"))},
+                    {ids : this.id_ricette},
                     this.riempiCartelliniRicette.bind(this)
                 );
+            }
             else if( window.localStorage.getItem("componenti_da_stampare") )
+            {
+                this.costa_si_stampa = "componenti";
                 Utils.requestData(
                     Constants.API_GET_COMPONENTI_CON_ID,
                     "GET",
-                    {ids: JSON.parse( window.localStorage.getItem("componenti_da_stampare") )},
+                    {ids : JSON.parse(window.localStorage.getItem("componenti_da_stampare"))},
                     this.riempiCartelliniComponenti.bind(this)
                 );
+            }
 		},
 
 		setListeners: function ()
 		{
-
+            $("#stampa").click(this.stampaPagina.bind(this));
 		}
 	}
 }();

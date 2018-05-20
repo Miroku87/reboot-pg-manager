@@ -220,6 +220,14 @@
             return ret;
         },
 
+        renderGiaStampata: function ( data, type, row )
+        {
+            var stampata = parseInt( row.gia_stampata, 10 ) === 1,
+                checked  = stampata ? "checked" : "";
+
+            return stampata ? "S&Igrave;" : "NO";
+        },
+
         renderCheckStampa: function ( data, type, row )
         {
             return  "<div class='checkbox icheck'>" +
@@ -265,6 +273,11 @@
             columns.push({
                 title: "Stampa",
                 render : this.renderCheckStampa.bind(this)
+            });
+
+            columns.push({
+                title: "Gi&agrave; Stampata",
+                render : this.renderGiaStampata.bind(this)
             });
             columns.push({
                 title: "ID",
@@ -342,7 +355,7 @@
                     },
                     columns    : columns,
                     //lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
-                    order      : [[1, 'desc']]
+                    order      : [[2, 'desc']]
                 } );
 
             this.ricette_selezionate = [];

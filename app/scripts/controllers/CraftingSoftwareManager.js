@@ -355,9 +355,12 @@ var CraftingSoftwareManager = function ()
             if( this.max_programmi > 1 )
             {
                 this.chiediConferma(
-                    "Il chip dell'utente permette la combinazione di pi&ugrave; programmi conosciuti. Eseguire? (s|n)",
-                    this.ask_questions.bind(this,0,false),
-                    this.ask_questions.bind(this,0)
+                    "Il chip dell'utente permette la combinazione di pi&ugrave; programmi conosciuti. Cosa vuoi fare?"+
+                    "\na) Unire nuove stringhe di codice (Programmazione)"+
+                    "\nb) Unire pi&ugrave; programmi conosciuti (Programmazione Avanzata/Totale)"+
+                    "\n(a|b)",
+                    this.ask_questions.bind(this,0),
+                    this.ask_questions.bind(this,0,false)
                 );
             }
             else

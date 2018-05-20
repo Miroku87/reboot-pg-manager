@@ -20,6 +20,16 @@ var LoginManager = function () {
 			} );
 
 			$( "#login" ).click( this.doLogin.bind( this ) );
+
+            $(document).keypress(function(e)
+            {
+                if( e.which == 13 && ( $("input[name='password']").is(":focus") || $("input[name='usermail']").is(":focus") ) )
+                {
+                    this.doLogin();
+                    $("#login").append("<i class='fa fa-spinner fa-pulse' style='margin-left:5px'></i>");
+                    $("#login").attr("disabled",true);
+                }
+            }.bind(this));
 		},
 
 		inputIsValid: function ()

@@ -1,32 +1,21 @@
-function loadCsv(csv, callback)
+
+
+var mobile = false;
+var type = "";
+var id_target = "";
+var batteria = 0;
+var volume = 0;
+var totaleBatteria = 0;
+var totaleVolume = 0;
+var usoBatteria = 0;
+var usoVolume = 0;
+var dragged_id = "";
+
+function pageResize()
 {
-    var file = '../../csv/componenti.csv';
-    if (csv != undefined && csv != '')
-    {
-        file = csv;
-    }
-    $.get(file, function (res)
-    {
-        var lines = res.split("\r\n");
-        //la linea 0 contiene le testate da mappare sull'oggetto
-        var head = lines[0];
-        head = head.split(';');
-        var data = [];
-        for (var i = 1; i < lines.length; i++)
-        {
-            var linea = lines[i];
-            linea = linea.split(';');
-            var obj = {};
-            for (var x = 0; x < head.length; x++)
-            {
-                obj[head[x]] = linea[x];
-            }
-            data.push(obj);
-        }
-        if (callback)
-            callback(data)
-    });
+    $("#liste_componenti").width($("#liste_componenti").parent().width());
 }
+
 function loadComponentsFromDB( callback )
 {
     Utils.requestData(
@@ -44,21 +33,51 @@ function loadComponentsFromDB( callback )
         callback
     );
 }
-var mobile = false;
-var type = "";
-var id_target = "";
-var batteria = 0;
-var volume = 0;
-var totaleBatteria = 0;
-var totaleVolume = 0;
-var usoBatteria = 0;
-var usoVolume = 0;
+
+function impostaRicercaComponenti( search_box )
+{
+    search_box.on( 'keyup', function ()
+    {
+        var term = search_box.val().trim();
+        if ( term.length === 0 )
+        {
+            search_box.parents(".tab-pane").find("div[draggable='true']").each( function ()
+            {
+                $( this ).show( 0 );
+            } );
+            return;
+        }
+        else
+            term = term.toLowerCase();
+
+        search_box.parents(".tab-pane").find("div[draggable='true']").each( function ()
+        {
+            var id_comp = $(this).find(".id_comp").text().toLowerCase(),
+                nome_comp = $(this).find(".nome_comp").text().toLowerCase(),
+                desc_comp = $(this).find(".descrizione_comp").text().toLowerCase(),
+                vol_comp = $(this).attr("data-volume"),
+                ener_comp = $(this).attr("data-batteria");
+            
+            if (
+                id_comp.indexOf( term ) === -1 &&
+                nome_comp.indexOf( term ) === -1 &&
+                desc_comp.indexOf( term ) === -1 &&
+                vol_comp.indexOf( term ) === -1 &&
+                ener_comp.indexOf( term ) === -1
+            )
+                $( this ).hide( 0 );
+            else
+                $( this ).show( 0 );
+        } );
+    } );
+}
 
 //popolo componenti
 $(document).ready(function ()
 {
     //loadCsv('', function (data)
     //{
+    jQuery.event.props.push('dataTransfer');
     loadComponentsFromDB(function (data)
     {
         //divido i componenti a seconda del tipo
@@ -93,91 +112,115 @@ $(document).ready(function ()
                 scartati.push(data[i]);
             }
         }
-        //loggo quelli scartati
-        console.log("elementi scartati", scartati);
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
-        {
-            mobile = true;
-        }
-        console.log("mobile", mobile);
+
+        mobile = Utils.isDeviceMobile();
 
         //popolo i div
         popoloComponenti(batteria, "bat", "batteria");
         popoloComponenti(struttura, "str", "struttura");
         popoloComponenti(applicativo, "app", "applicativo");
-
+        impostaRicercaComponenti( $("#cerca_batteria") );
+        impostaRicercaComponenti( $("#cerca_struttura") );
+        impostaRicercaComponenti( $("#cerca_app") );
     });
+
+    $("#liste_componenti").width($("#liste_componenti").parent().width());
+    $("#liste_componenti").css("max-height",$(".content-wrapper").height() - 41 - 51 - 20);
+
+    $(window).resize(pageResize);
 });
 
 function popoloComponenti(array, id, div)
 {
-    var html = "";
     array.forEach(function (el)
     {
+        var html    = $("<div></div>"),
+            content = $("<div></div>"),
+            energia = $("<span class='description-percentage'></span>"),
+            volume  = $("<span class='description-percentage'></span>"),
+            icon    = "",
+            vol_text_class = "",
+            nrg_text_class = "",
+            vol_caret_class = "",
+            nrg_caret_class = "",
+            volume_text = "",
+            energia_text = "";
+
+        if (el.Tipo == "batteria")
+            icon = 'fa-battery-full';
+        else if (el.Tipo == "struttura")
+            icon = 'fa-server';
+        else if (el.Tipo == "applicativo")
+            icon = 'fa-qrcode';
+
+        html.attr('id',id + '-' + el.Codice);
+        html.attr('data-batteria',el.Energia);
+        html.attr('data-volume',el.Volume);
+        html.addClass('info-box bg-aqua');
+        html.addClass('drag-' + el.Tipo);
+
+        if( el.Tipo === "applicativo" && el.tipo_applicativo_componente !== null )
+            html.attr('data-tipo-app',el.tipo_applicativo_componente);
+
         if (mobile == false)
         {
-            html += '   <div id="' + id + '-' + el.Codice + '" class="info-box bg-aqua drag-' + el.Tipo + '" draggable="true" ondragstart="drag(event)" data-batteria="' + el.Energia + '" data-volume="' + el.Volume + '">';
+            html.attr('draggable',true);
+            html.on("drag",drag);
         }
         else
         {
-            html += '   <div id="' + id + '-' + el.Codice + '" class="info-box bg-aqua drag-' + el.Tipo + '" onclick="addComponente(' + el.Tipo + ',' + el.Codice + ')" data-selezionabile="1" data-batteria="' + el.Energia + '" data-volume="' + el.Volume + '">';
+            html.attr('data-selezionabile',1);
+            html.click( addComponente.bind(this, el.Tipo, el.Codice) );
         }
-        html += '        <button type="button" class="btn btn-info btn-xs pull-right delete-el">&times;</button> ';
-        html += '        <span class="info-box-icon">';
-        if (el.Tipo == "batteria")
-        {
-            html += '<i class="fa fa-fw fa-battery-full"></i>';
-        }
-        else if (el.Tipo == "struttura")
-        {
-            html += '<i class="fa fa-fw fa-server"></i>';
-        }
-        else if (el.Tipo == "applicativo")
-        {
-            html += '<i class="fa fa-fw fa-qrcode"></i>';
-        }
-        html += '        </span>';
-        html += '        <div class="info-box-content">';
-        html += '            <span class="info-box-text sgc-info2">' + el.Tipo + ' - ' + el.Codice + '</span>';
-        html += '            <span class="info-box-number">' + el.Nome + '</span>';
-        html += '            <p>'+el.Descrizione+'</p>';
-        html += '            <p>';
+        html.append('<button type="button" class="btn btn-info btn-xs pull-right delete-el">&times;</button> ');
+        html.append('<span class="info-box-icon"><i class="fa fa-fw '+icon+'"></i></span>');
+
+        content.addClass('info-box-content');
+        content.append('<span class="info-box-text sgc-info2">' + el.Tipo + ' - <span class="id_comp">' + el.Codice + '</span></span>');
+        content.append('<span class="info-box-number nome_comp">' + el.Nome + '</span>');
+        content.append('<p class="descrizione_comp">'+el.Descrizione+'</p>');
+
         if (parseInt(el.Energia) == 0)
         {
-            html += '                <span class="description-percentage text-yellow">';
-            html += '                <i class="fa fa-caret-left"></i> Energia (' + el.Energia + ')</span>';
+            nrg_text_class = "text-yellow";
+            nrg_caret_class = "fa-caret-left";
         }
         else if (parseInt(el.Energia) > 0)
         {
-            html += '                <span class="description-percentage text-green">';
-            html += '                <i class="fa fa-caret-up"></i> Energia (' + el.Energia + ')</span>';
+            nrg_text_class = "text-green";
+            nrg_caret_class = "fa-caret-up";
         }
         else if (parseInt(el.Energia) < 0)
         {
-            html += '                <span class="description-percentage text-red">';
-            html += '                <i class="fa fa-caret-down"></i> Energia (' + el.Energia + ')</span>';
+            nrg_text_class = "text-red";
+            nrg_caret_class = "fa-caret-down";
         }
-        html += '                <br>';
+
         if (parseInt(el.Volume) == 0)
         {
-            html += '                <span class="description-percentage text-yellow">';
-            html += '                <i class="fa fa-caret-left"></i> Spazio (' + el.Volume + ')</span>';
+            vol_text_class = "text-yellow";
+            vol_caret_class = "fa-caret-left";
         }
         else if (parseInt(el.Volume) > 0)
         {
-            html += '                <span class="description-percentage text-green">';
-            html += '                <i class="fa fa-caret-up"></i> Spazio (' + el.Volume + ')</span>';
+            vol_text_class = "text-green";
+            vol_caret_class = "fa-caret-up";
         }
         else if (parseInt(el.Volume) < 0)
         {
-            html += '                <span class="description-percentage text-red">';
-            html += '                <i class="fa fa-caret-down"></i> Spazio (' + el.Volume + ')</span>';
+            vol_text_class = "text-red";
+            vol_caret_class = "fa-caret-down";
         }
-        html += '            </p>';
-        html += '        </div>';
-        html += '    </div>  ';
+
+        energia_text = 'Energia (' + el.Energia + ')';
+        volume_text  = 'Spazio (' + el.Volume + ')';
+        energia.addClass( nrg_text_class ).append( '<i class="fa ' + nrg_caret_class + '"></i> '+energia_text );
+        volume.addClass( vol_text_class ).append( '<i class="fa ' + vol_caret_class + '"></i> '+volume_text );
+        content.append( $("<p></p>").append(energia).append("<br>").append(volume) );
+        html.append(content);
+
+        $('#' + div).append(html);
     }.bind(this));
-    $('#' + div).append(html);
 }
 
 
@@ -242,6 +285,26 @@ function addComponente(tipo, codice)
 
 }
 
+function selezionaTipo( tipo )
+{
+    var mappa_tipi = {
+        "pistola"              : "Pistola",
+        "fucile d'assalto"     : "Fucile Assalto",
+        "shotgun"              : "Shotgun",
+        "mitragliatore"        : "Mitragliatore",
+        "fucile di precisione" : "Fucile Precisione"
+    };
+
+    $("input[type='radio'][value='"+mappa_tipi[tipo]+"']").prop("checked",true);
+    $("input[type='radio']").prop("disabled",true);
+}
+
+function deselezionaTipo( )
+{
+    $("input[type='radio']:checked").prop("checked",false);
+    $("input[type='radio']").prop("disabled",false);
+}
+
 
 function allowDrop(ev)
 {
@@ -250,25 +313,28 @@ function allowDrop(ev)
 
 function drag(ev)
 {
-    type = "";
+    type      = "";
     id_target = "";
-    batteria = 0;
-    volume = 0;
+    batteria  = 0;
+    volume    = 0;
 
-    id_target = ev.target.id;
-    ev.dataTransfer.setData("text", id_target);
-    type = id_target.substring(0, 3);
+    id_target  = ev.target.id;
+    dragged_id = id_target;
+    type       = id_target.substring(0, 3);
 
     batteria = parseInt($('#' + id_target).data("batteria"));
-    volume = parseInt($('#' + id_target).data("volume"));
+    volume   = parseInt($('#' + id_target).data("volume"));
 }
 
-function drop(ev)
+function drop( ev )
 {
     ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    var tipo = "";
+    var data   = dragged_id;
+    var elem   = $("#" + data);
+    var target = $(ev.target);
+    var tipo   = "";
 
+    dragged_id = "";
 
     var corretto = false;
     if (type == "bat" && ev.target.id == "box-batteria")
@@ -291,7 +357,7 @@ function drop(ev)
         $('.alert-danger').hide();
         var count = $('#box-' + tipo + ' .drag-' + tipo).length;
 
-        ev.target.appendChild(document.getElementById(data).cloneNode(true));
+        target.append( elem.clone() );
 
         var newId = id_target + '_' + count;
         $('#box-' + tipo + ' #' + id_target).attr("id", newId);
@@ -317,7 +383,11 @@ function drop(ev)
         }
 
         fixProgress();
-        /*fixStyle();*/
+
+        if( tipo === "applicativo" && elem.attr('data-tipo-app') !== null && target.children().length === 1 )
+            selezionaTipo( elem.attr('data-tipo-app') );
+        else if ( tipo === "applicativo" && target.children().length > 1 )
+            deselezionaTipo();
     }
     else
     {
@@ -497,7 +567,13 @@ function boxReset(tipo, id_padre)
             usoVolume -= (volume * -1);
         }
         fixProgress();
+
         $('#box-applicativo #' + id_padre).remove();
+
+        if( $('#box-applicativo').children().length === 1 && $('#box-applicativo').children().first().attr('data-tipo-app') !== null )
+            selezionaTipo( $('#box-applicativo').children().first().attr('data-tipo-app') );
+        else if ( $('#box-applicativo').children().length > 1 || $('#box-applicativo').children().length === 0 )
+            deselezionaTipo();
         /*$('.drag-applicativo').attr('draggable', 'true');
          $('#applicativo .drag-applicativo').removeClass('drag-disabled');
          $('#text-applicativo').show();

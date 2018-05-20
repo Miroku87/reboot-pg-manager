@@ -347,3 +347,18 @@ body.register-page {
 #riga_credito > td:nth-child(2) {
   cursor: pointer;
 }
+
+#paga[disabled] {
+  pointer-events: none;
+}
+
+#paga {
+  width: 100%;
+}
+
+/* CRAFTING TECNICO */
+@media (min-width: 992px) {
+  #liste_componenti {
+    position: fixed;
+  }
+}

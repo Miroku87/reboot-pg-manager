@@ -34,6 +34,7 @@ Constants.API_POST_CRAFTING_PROGRAMMA    = Constants.API_URL + "/craftingmanager
 Constants.API_POST_CRAFTING_TECNICO      = Constants.API_URL + "/craftingmanager/inserisciricettatecnico";
 Constants.API_POST_CRAFTING_CHIMICO      = Constants.API_URL + "/craftingmanager/inserisciricettamedico";
 Constants.API_EDIT_RICETTA               = Constants.API_URL + "/craftingmanager/modificaricetta";
+Constants.API_POST_RICETTE_STAMPATE      = Constants.API_URL + "/craftingmanager/segnaricettecomestampate";
 Constants.API_COMPRA_COMPONENTI          = Constants.API_URL + "/transactionmanager/compracomponenti";
 
 Constants.API_GET_LOGOUT                 = Constants.API_URL + "/usersmanager/logout";

@@ -20,9 +20,6 @@ var MarketplaceManager = function ()
             this.setListeners();
             this.impostaTabellaTecnico();
             this.impostaTabellaChimico();
-
-            this.carrello_componenti = ["A001","A001","B001","A002","D001","SS001"];
-            this.stampa();
         },
 
         mostraCreditoResiduo: function ( e )
@@ -404,6 +401,11 @@ var MarketplaceManager = function ()
             columns.push({
                 title: "Val Psicotropo &#8545;",
                 data : "psicotropo_secondario_componente",
+                type : "num"
+            });
+            columns.push({
+                title: "Fattore Dipendeza",
+                data : "possibilita_dipendeza_componente",
                 type : "num"
             });
             columns.push({
