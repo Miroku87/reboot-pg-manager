@@ -403,26 +403,27 @@ module.exports = function (grunt)
         // concat, minify and revision files. Creates configurations in memory so
         // additional tasks can operate on them
         useminPrepare : {
-            options : {
-                root : './',
-                staging : '.usemin',
-                dest : '<%= config.dist %>',
-                flow: {
-                    steps: { js: ['concat', 'uglify'], css: ['concat', 'cssmin'] },
-                    post: {
-                        js: [{
-                            name: 'uglify',
-                            createConfig: function (context, block) {
-                                var generated = context.options.generated;
-                                generated.options = {
-                                    sourceMap: true
-                                };
-                            }
-                        }]
+                html : '<%= config.tmp %>/*.html',
+                options : {
+                    root    : './',
+                    staging : '.usemin',
+                    dest    : '<%= config.dist %>',
+                    flow    : {
+                        steps : {js : ['concat', 'uglify'], css : ['concat'/*,'cssmin'*/]},
+                        post  : {
+                            js : [{
+                                name         : 'uglify',
+                                createConfig : function (context, block)
+                                {
+                                    var generated     = context.options.generated;
+                                    generated.options = {
+                                        sourceMap : true
+                                    };
+                                }
+                            }]
+                        }
                     }
                 }
-            },
-            html : '<%= config.tmp %>/*.html'
         },
 
         // Performs rewrites based on rev and the useminPrepare configuration
@@ -679,7 +680,7 @@ module.exports = function (grunt)
         'replace:ckedit',
         'eol',
         //'wiredep',
-        'useminPrepare',
+        'useminPrepare:def',
         'concurrent:dist',
         'postcss',
         'get-local-ip',
@@ -706,7 +707,7 @@ module.exports = function (grunt)
         'postcss',
         'replace:staging_urls',
         'concat',
-        'cssmin',
+        //'cssmin',
         'uglify',
         'copy:dist',
         'copy:ckedit',
@@ -722,7 +723,7 @@ module.exports = function (grunt)
         'replace:ckedit',
         'eol',
         //'wiredep',
-        'useminPrepare',
+        'useminPrepare:def',
         'concurrent:dist',
         'postcss',
         'replace:prod_urls',
