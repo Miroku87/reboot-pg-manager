@@ -103,7 +103,7 @@ var CraftingSoftwareManager = function ()
             " /        \\    \\_\\  \\     \\____ \\  \\___|  |_|  |\n"+
             "/_______  /\\______  /\\______  /  \\___  >____/__|\n"+
             "        \\/        \\/        \\/       \\/         \n"+
-            "Benvenuto nel framework di sviluppo applicativi dell'SGC.\n" +
+            "Benvenuto nel framework di sviluppo software dell'SGC.\n" +
             "Prego, inserire i parametri in vostro possesso:\n",
         SPINNERS = {
             "line": {
@@ -136,17 +136,17 @@ var CraftingSoftwareManager = function ()
 
         progress : function (term, percent)
         {
-            var width = ( this.terminal.cols() / 1.5 ) - 10;
+            var width = ( term.cols() / 1.5 ) - 10;
             var size = Math.round(width * percent / 100);
             var left = '', taken = '', i;
 
-            for (i = size; i--;)
+            for (i = size; i >= 0; i--)
                 taken += '=';
 
             if (taken.length > 0)
                 taken = taken.replace(/=$/, '>');
 
-            for (i = width - size; i--;)
+            for (i = width - size; i >= 0; i--)
                 left += ' ';
 
             term.set_prompt( '[' + taken + left + '] ' + percent + '%' );
@@ -168,13 +168,10 @@ var CraftingSoftwareManager = function ()
 
         stop : function (term, spinner)
         {
-            setTimeout(function ()
-            {
-                clearInterval(this.terminal_timer);
-                var frame = spinner.frames[0];
-                term.set_prompt(this.terminal_prompt).echo(frame);
-                term.find('.cursor').show();
-            }.bind(this), 0);
+            clearInterval(this.terminal_timer);
+            var frame = spinner.frames[0];
+            term.echo(frame);
+            term.find('.cursor').show();
         },
 
         showFinalMessage : function ()
@@ -220,9 +217,6 @@ var CraftingSoftwareManager = function ()
         {
             this.start(this.terminal,SPINNERS.line);
             this.terminal.freeze(true);
-
-            //this.craftinInviato();
-            //return;
 
             Utils.requestData(
                 Constants.API_POST_CRAFTING_PROGRAMMA,

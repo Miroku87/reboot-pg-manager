@@ -324,9 +324,9 @@
             });
             columns.push({data : "px_personaggio"});
             columns.push({data : "pc_personaggio"});
-            columns.push({data : "pf_personaggio", orderable : false});
-            columns.push({data : "mente_personaggio", orderable : false});
-            columns.push({data : "shield_personaggio", orderable : false});
+            columns.push({data : "pf_personaggio", /*orderable : false*/});
+            columns.push({data : "mente_personaggio", /*orderable : false*/});
+            columns.push({data : "shield_personaggio", /*orderable : false*/});
             columns.push({data : "credito_personaggio"});
             columns.push({
                 data           : "contattabile_personaggio",
