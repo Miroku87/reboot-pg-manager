@@ -425,11 +425,10 @@ body.register-page {
   color:#18b3b2;
   border-radius: 4px;
   text-align: center;
-  background: no-repeat 50% 50%;
+  background: url(../images/box.png) no-repeat 50% 50%;
   background-size: cover;
   margin: 0 0 30px;
   padding: 30px;
-  background-image: url(../img/box.png);
   display: block;
   border: 1px solid #1b5050;
   text-transform: uppercase;
@@ -437,8 +436,8 @@ body.register-page {
   width: 100%;
 }
 .box-saldo.box-rosso{
-  background-image: url(../img/box-red.png);
+  background-image: url(../images/box-red.png);
 }
 .box-saldo.box-verde{
-  background-image: url(../img/box-verde.png);
+  background-image: url(../images/box-verde.png);
 }
