@@ -219,7 +219,7 @@ function popoloComponenti(array, id, div)
         content.append( $("<p></p>").append(energia).append("<br>").append(volume) );
         html.append(content);
 
-        $('#' + div).append(html);
+        $('#' + div + " > .container-componenti").append(html);
     }.bind(this));
 }
 

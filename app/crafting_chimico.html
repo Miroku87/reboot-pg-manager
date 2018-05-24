@@ -43,15 +43,18 @@
                     </p>
 
                     <form autocomplete="off" aria-autocomplete="none">
-                        <input id="nome_composto" type="text" class="form-control">
+                        <input id="nome_composto" type="text" class="form-control" placeholder="Nome del composto">
                     </form>
+                    <p>
+                        Trascina una sostanza in ognuno degli spazi sottostanti.
+                    </p>
                 </div>
                 <ul id="hexGrid">
                     <li class="hex">
                         <div class="hexIn">
                             <div class="hexLink allow-sostanza" href="#" id="sostanza1" ondrop="drop(event)" ondragover="allowDrop(event)">
                                 <button type="button" class="btn btn-info btn-xs pull-right delete-el" onclick="resetBox('sostanza1')">&times;</button>
-                                <h1 id="h1-sostanza1" ondrop="drop(event)" ondragover="allowDrop(event)">Sostanza #01</h1>
+                                <h1 id="h1-sostanza1" ondrop="drop(event)" ondragover="allowDrop(event)">Sostanza Satellite #01</h1>
 
                             </div>
                         </div>
@@ -61,7 +64,7 @@
                         <div class="hexIn">
                             <div class="hexLink principio allow-sostanza" href="#" id="principio" ondrop="drop(event)" ondragover="allowDrop(event)">
                                 <button type="button" class="btn btn-info btn-xs pull-right delete-el" onclick="resetBox('principio')">&times;</button>
-                                <h1 id="h1-principio" ondrop="drop(event)" ondragover="allowDrop(event)">Principio Attivo</h1>
+                                <h1 id="h1-principio" ondrop="drop(event)" ondragover="allowDrop(event)">Sostanza Principio Attivo</h1>
 
                             </div>
                         </div>
@@ -70,7 +73,7 @@
                         <div class="hexIn">
                             <div class="hexLink allow-sostanza" href="#" id="sostanza2" ondrop="drop(event)" ondragover="allowDrop(event)">
                                     <button type="button" class="btn btn-info btn-xs pull-right delete-el" onclick="resetBox('sostanza2')">&times;</button>
-                                <h1 id="h1-sostanza2" ondrop="drop(event)" ondragover="allowDrop(event)">Sostanza #02</h1>
+                                <h1 id="h1-sostanza2" ondrop="drop(event)" ondragover="allowDrop(event)">Sostanza Satellite #02</h1>
 
                             </div>
                         </div>
@@ -79,7 +82,7 @@
                         <div class="hexIn">
                             <div class="hexLink allow-sostanza" href="#" id="sostanza3" ondrop="drop(event)" ondragover="allowDrop(event)">
                                     <button type="button" class="btn btn-info btn-xs pull-right delete-el" onclick="resetBox('sostanza3')">&times;</button>
-                                <h1 id="h1-sostanza3" ondrop="drop(event)" ondragover="allowDrop(event)">Sostanza #03</h1>
+                                <h1 id="h1-sostanza3" ondrop="drop(event)" ondragover="allowDrop(event)">Sostanza Satellite #03</h1>
 
                             </div>
                         </div>
@@ -87,7 +90,7 @@
 
                 </ul>
                 <p>
-                    <span class="sgc-info2">Struttura &raquo; </span> Componenti abilitati: Cerotto, fiala, solido</p>
+                    <span class="sgc-info2">Struttura &raquo; </span> Trascina qui sotto una Biostruttura:</p>
 
                 <div id="biostruttura" ondrop="drop(event)" ondragover="allowDrop(event)">
                     <button type="button" class="btn btn-info btn-xs pull-right delete-el"  onclick="resetBox('biostruttura')">&times;</button>
@@ -99,7 +102,7 @@
         <!-- /.col -->
     </div>
     <div class="col-sm-12 col-md-4">
-        <div class="nav-tabs-custom">
+        <div class="nav-tabs-custom" id="liste_componenti">
             <ul class="nav nav-tabs">
                 <li>
                     <a href="#sostanza" data-toggle="tab">Sostanza</a>
@@ -116,15 +119,26 @@
                 <li>
                     <a href="#solido" data-toggle="tab">Solido</a>
                 </li>-->
-
-
-
             </ul>
             <div class="tab-content">
 
                 <div class="tab-pane active" id="sostanza">
+                    <form autocomplete="off">
+                        <div class="form-group has-feedback cerca-componente">
+                            <input type="text" id="cerca_sostanza" class="form-control" placeholder="Cerca Sostanza">
+                            <span class="fa fa-search form-control-feedback"></span>
+                        </div>
+                    </form>
+                    <div class="container-componenti"></div>
                 </div>
-                <div class="tab-pane active" id="struttura">
+                <div class="tab-pane" id="struttura">
+                    <form autocomplete="off">
+                        <div class="form-group has-feedback cerca-componente">
+                            <input type="text" id="cerca_struttura" class="form-control" placeholder="Cerca Struttura">
+                            <span class="fa fa-search form-control-feedback"></span>
+                        </div>
+                    </form>
+                    <div class="container-componenti"></div>
                 </div>
                 <!--<div class="tab-pane" id="cerotto">
                 </div>

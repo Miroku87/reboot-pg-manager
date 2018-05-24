@@ -70,6 +70,8 @@ Constants.API_GET_RICETTE                = Constants.API_URL + "/craftingmanager
 Constants.API_GET_RICETTE_CON_ID         = Constants.API_URL + "/craftingmanager/recuperaricetteconid";
 Constants.API_GET_COMPONENTI_BASE        = Constants.API_URL + "/craftingmanager/recuperacomponentibase";
 Constants.API_GET_COMPONENTI_CON_ID      = Constants.API_URL + "/craftingmanager/recuperacomponenticonid";
+Constants.API_GET_INFO_BANCA             = Constants.API_URL + "/transactionmanager/recuperainfobanca";
+Constants.API_GET_MOVIMENTI              = Constants.API_URL + "/transactionmanager/recuperamovimenti";
 
 Constants.API_DEL_GIOCATORE              = Constants.API_URL + "/usersmanager/eliminagiocatore";
 Constants.API_DEL_CLASSE_PG              = Constants.API_URL + "/charactersmanager/rimuoviclassepg";

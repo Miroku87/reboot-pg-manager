@@ -9,21 +9,21 @@
             <div class="col-sm-12">
                 <div class="row">
                     <div class="col-sm-3">
-                        <div class="box-saldo">
+                        <div class="box-saldo" id="totale">
                             <h5>Saldo Totale</h5>
-                            <h3 class="saldo">200 Bit</h3>
+                            <h3 class="saldo">XXXX <i class="fa fa-eye"></i></h3>
                         </div>
                     </div>
                     <div class="col-sm-3">
-                        <div class="box-saldo box-verde">
+                        <div class="box-saldo box-verde" id="entrate_corrente">
                             <h5>Entrate Anno Corrente</h5>
-                            <h3 class="saldo">200 Bit</h3>
+                            <h3 class="saldo">XXXX <i class="fa fa-eye"></i></h3>
                         </div>
                     </div>
                     <div class="col-sm-3">
-                        <div class="box-saldo box-rosso">
+                        <div class="box-saldo box-rosso" id="uscite_corrente">
                             <h5>Uscite Anno Corrente</h5>
-                            <h3 class="saldo">200 Bit</h3>
+                            <h3 class="saldo">XXXX <i class="fa fa-eye"></i></h3>
                         </div>
                     </div>
                     <div class="col-sm-3">
@@ -39,61 +39,26 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-6">
-        <div class="box-saldo">
-            <table id="movimenti" class="table">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Data</th>
-                    <th>Descrizione</th>
-                    <th>Importo</th>
-                    <th>Autore</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td><span class="label bg-green">Entrata</span></td>
-                    <td>25 Apr. 271</td>
-                    <td>Accredito lavorazione conto terzi</td>
-                    <td><span class="text-green">200</span></td>
-                    <td>Ciccio</td>
-                </tr>
-                <tr>
-                    <td><span class="label bg-red">Uscita</span></td>
-                    <td>25 Apr. 271</td>
-                    <td>Accredito lavorazione conto terzi</td>
-                    <td><span class="text-red">- 200</span></td>
-                    <td>Ciccio</td>
-                </tr>
-                <tr>
-                    <td><span class="label bg-green">Entrata</span></td>
-                    <td>25 Apr. 271</td>
-                    <td>Accredito lavorazione conto terzi</td>
-                    <td><span class="text-green">200</span></td>
-                    <td>Ciccio</td>
-                </tr>
-                <tr>
-                    <td><span class="label bg-green">Entrata</span></td>
-                    <td>25 Apr. 271</td>
-                    <td>Accredito lavorazione conto terzi</td>
-                    <td><span class="text-green">200</span></td>
-                    <td>Ciccio</td>
-                </tr>
-                <tr>
-                    <td><span class="label bg-green">Entrata</span></td>
-                    <td>25 Apr. 271</td>
-                    <td>Accredito lavorazione conto terzi</td>
-                    <td><span class="text-green">200</span></td>
-                    <td>Ciccio</td>
-                </tr>
-                </tbody>
-            </table>
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">
+                    <span class="sgc-info2">SGC</span> LISTA MOVIMENTI</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <table id="movimenti" class="table" width="100%"></table>
+            </div>
         </div>
     </div>
-    <div class="col-md-6">
-        <!-- # qui metterei il grefico -->
-    </div>
+    <!--<div class="col-md-6">
+        &lt;!&ndash; # qui metterei il grefico &ndash;&gt;
+    </div>-->
 </div>
 
 {% endblock %}
