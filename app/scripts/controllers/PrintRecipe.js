@@ -7,7 +7,12 @@
             "tecnico" : "fa-wrench",
             "chimico" : "fa-flask"
         },
-        BIOSTRUTTURE = ["cerotto","fiala","solido"];
+        BIOSTRUTTURE = ["cerotto","fiala","solido"],
+        BIOSTRUTTURE_TEXT = {
+            cerotto : "in cerotto",
+            fiala   : "in fiala",
+            solido  : "solida"
+        };
 
 	return {
 
@@ -53,8 +58,15 @@
                     .html( cartellino.find("." + r).html() + text );
             }
 
+            if( ricetta.tipo_oggetto && ricetta.tipo_oggetto.toLowerCase().indexOf("sostanza") !== -1 && ricetta.biostruttura_sostanza )
+            {
+                cartellino
+                    .find(".tipo_oggetto")
+                    .html("Sostanta " + BIOSTRUTTURE_TEXT[ricetta.biostruttura_sostanza]);
+            }
+
             if( ricetta.tipo_oggetto && ricetta.tipo_oggetto.toLowerCase().indexOf("protesi") !== -1 )
-                cartellino.text( cartellino.text() + "<br><br>FCC: " + ricette[i].fcc_componente );
+                cartellino.html( cartellino.html() + "<br><br>FCC: " + ricette[i].fcc_componente );
 
             return cartellino;
         },

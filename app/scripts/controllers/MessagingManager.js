@@ -111,8 +111,12 @@ var MessaggingManager = function ()
 
         impostaInterfacciaScrittura: function ( )
         {
+            var default_type = "fg";
+
 			if( this.user_info && this.user_info.pg_da_loggare )
-				$("#tipo_messaggio").val("ig");
+                default_type = "ig";
+
+            $("#tipo_messaggio").val(default_type);
 			
             if( typeof $("#destinatario").data('ui-autocomplete') === "undefined" )
             {
@@ -121,7 +125,7 @@ var MessaggingManager = function ()
                     select : this.destinatarioSelezionato.bind(this),
                     search : this.scrittoSuDestinatario.bind(this),
                     change : this.selezionatoDestinatario.bind(this),
-                    source : this.recuperaDestinatariAutofill.bind(this,"fg")
+                    source : this.recuperaDestinatariAutofill.bind(this,default_type)
                 });
 
                 $("#tipo_messaggio").change( this.cambiaListaDestinatari.bind(this) );

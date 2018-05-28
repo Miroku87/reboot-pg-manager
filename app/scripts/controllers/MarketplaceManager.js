@@ -25,7 +25,7 @@ var MarketplaceManager = function ()
         mostraCreditoResiduo: function ( e )
         {
             if( this.pg_info )
-                $("#riga_credito").find("td:nth-child(2)").html( this.pg_info.credito_personaggio );
+                $("#riga_credito").find("td:nth-child(2)").html( this.pg_info.credito_personaggio + "  <i class='fa fa-btc'></i>" );
         },
 
         nascondiCreditoResiduo: function ( e )
@@ -64,6 +64,12 @@ var MarketplaceManager = function ()
 
         paga: function ( e )
         {
+            if( this.carrello_componenti.length === 0 )
+            {
+                Utils.showError("Non ci sono articoli nel carrello.");
+                return false;
+            }
+
             Utils.requestData(
                 Constants.API_COMPRA_COMPONENTI,
                 "POST",
@@ -74,11 +80,13 @@ var MarketplaceManager = function ()
 
         controllaQtaPerSconto: function ()
         {
-            var qta_tot      = $("#carrello tr > td:nth-child(2)")
+            var qta_tot      = $("#carrello tr:not(tr[id*='riga']) > td:nth-child(2)")
                                 .toArray()
                                 .map(function(el){return parseInt( el.innerText, 10 ) || 0;})
                                 .reduce(function(acc, val) { return acc + val; }),
                 sconto       = qta_tot % Constants.QTA_PER_SCONTO_MERCATO === 0 ? Constants.SCONTO_MERCATO : 0;
+
+            console.log(qta_tot, Constants.QTA_PER_SCONTO_MERCATO, qta_tot % Constants.QTA_PER_SCONTO_MERCATO);
 
             $("#riga_sconto > td:nth-child(2)").text( sconto + "%" );
         },
@@ -454,7 +462,7 @@ var MarketplaceManager = function ()
             $(window).resize(this.pageResize.bind(this));
             $("#paga").click(this.paga.bind(this));
             $("#riga_credito").find("td:nth-child(2)").mousedown(this.mostraCreditoResiduo.bind(this));
-            $("#riga_credito").find("td:nth-child(2)").mouseup(this.nascondiCreditoResiduo.bind(this));
+            $(document).mouseup(this.nascondiCreditoResiduo.bind(this));
         }
     };
 }();

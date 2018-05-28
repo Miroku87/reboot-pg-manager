@@ -97,6 +97,12 @@ thead th {
   white-space: nowrap;
 }
 
+.main-sidebar .sidebar {
+  height: calc(100vh - 52px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 /* MODAL PUNTI */
 #modal_assegna_punti .nomi_pg {
   font-weight: bold;
@@ -379,6 +385,11 @@ body.register-page {
   font-size: 36px;
   cursor: pointer;
 }
+
+.saldo > * {
+  pointer-events: none;
+}
+
 .saldo2 {
   margin-top: -10px;
   color: #fff;
