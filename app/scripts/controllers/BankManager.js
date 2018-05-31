@@ -4,13 +4,17 @@
 
 		init: function ()
 		{
-            this.pg_info = JSON.parse( window.localStorage.getItem("logged_pg") );
+            this.pg_info             = JSON.parse(window.localStorage.getItem("logged_pg"));
             this.placeholder_credito = 'XXXX <i class="fa fa-eye"></i>';
-            this.movimenti = 0;
+            this.movimenti_bonifico  = 0;
 
 			this.setListeners();
 			this.recuperaInfoBanca();
+			this.impostaColonne();
 			this.impostaGrigliaMovimenti();
+
+            if( Utils.controllaPermessiUtente(["recuperaMovimenti_altri"]) )
+                this.impostaGrigliaMovimentiDiTutti();
 		},
 
         bonificoOk: function ()
@@ -21,11 +25,11 @@
 
         controllaMovimenti: function ()
 		{
-            this.movimenti++;
+            this.movimenti_bonifico++;
 
-            if( this.movimenti === 2 )
+            if( this.movimenti_bonifico === 2 )
             {
-                this.movimenti = 0;
+                this.movimenti_bonifico = 0;
                 Utils.showMessage("Bonifico eseguito con successo.",this.bonificoOk.bind(this));
             }
 		},
@@ -141,34 +145,23 @@
 
         renderTipoMovimento: function ( data, type, row )
 		{
-            return data;
+            //<span class="label bg-green">Entrata</span>
+            var bg_class = "bg-green",
+                label    = $('<span class="label"></span>');
+
+            if( data === "entrata" )
+                bg_class = "bg-red";
+
+            label.addClass(bg_class);
+            label.text( Utils.firstLetterUpper( data ) );
+
+            return label[0].outerHTML;
 		},
 
         impostaGrigliaMovimenti: function ()
 		{
-            var columns = [];
-
-            columns.push({
-                title: "Tipo",
-                data: "tipo_transazione",
-                render: this.renderTipoMovimento.bind(this)
-            });
-            columns.push({
-                title: "Data",
-                data: "datait_transazione"
-            });
-            columns.push({
-                title: "Beneficiario",
-                data : "nome_creditore"
-            });
-            columns.push({
-                title: "Importo",
-                data : "importo_transazione"
-            });
-            columns.push({
-                title: "Descrizione",
-                data : "note_transazione"
-            });
+            if( !this.pg_info )
+                $( '#movimenti').parent().html("Logga con un personaggio per poter vedere i suoi movimenti bancari.");
 
             this.griglia_movimenti = $( '#movimenti' )
                 //.on("error.dt", this.erroreDataTable.bind(this) )
@@ -190,9 +183,65 @@
                             callback
                         );
                     },
-                    columns    : columns,
+                    columns    : this.columns,
                     order      : [[1, 'desc']]
                 } );
+		},
+
+        impostaGrigliaMovimentiDiTutti: function ()
+		{
+            this.griglia_movimenti = $( '#mov_tutti' )
+                //.on("error.dt", this.erroreDataTable.bind(this) )
+                //.on("draw.dt", this.setGridListeners.bind(this) )
+                .DataTable( {
+                    processing : true,
+                    serverSide : true,
+                    dom: "<'row'<'col-sm-6'lB><'col-sm-6'f>>" +
+                    "<'row'<'col-sm-12 table-responsive'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                    buttons    : ["reload"],
+                    language   : Constants.DATA_TABLE_LANGUAGE,
+                    ajax       : function (data, callback)
+                    {
+                        Utils.requestData(
+                            Constants.API_GET_MOVIMENTI,
+                            "GET",
+                            $.extend(data,{tutti:true}),
+                            callback
+                        );
+                    },
+                    columns    : this.columns,
+                    order      : [[1, 'desc']]
+                } );
+
+            $( '#mov_tutti').removeClass("inizialmente-nascosto");
+		},
+
+		impostaColonne: function ()
+		{
+            this.columns = [];
+
+            this.columns.push({
+                title: "Tipo",
+                data: "tipo_transazione",
+                render: this.renderTipoMovimento.bind(this)
+            });
+            this.columns.push({
+                title: "Data",
+                data: "datait_transazione"
+            });
+            this.columns.push({
+                title: "Beneficiario",
+                data : "nome_creditore"
+            });
+            this.columns.push({
+                title: "Importo",
+                data : "importo_transazione"
+            });
+            this.columns.push({
+                title: "Descrizione",
+                data : "note_transazione"
+            });
 		},
 
 		setListeners: function ()

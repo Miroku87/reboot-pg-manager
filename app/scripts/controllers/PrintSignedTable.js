@@ -34,6 +34,7 @@
                 {
                     var tr = $("<tr></tr>");
 
+                    tr.append( $("<td></td>").html( "&#9744;" ) );
                     tr.append( $("<td></td>").text( pgs[i].nome_completo ) );
                     tr.append( $("<td></td>").text( pgs[i].personaggi_id_personaggio ) );
                     tr.append( $("<td></td>").text( pgs[i].nome_personaggio ) );
@@ -50,6 +51,7 @@
             {
                 var tr = $("<tr></tr>");
 
+                tr.append( $("<td></td>").html( "&#9744;" ) );
                 tr.append( $("<td></td>").html("&nbsp;") );
                 tr.append( $("<td></td>").html("&nbsp;") );
                 tr.append( $("<td></td>").html("&nbsp;") );

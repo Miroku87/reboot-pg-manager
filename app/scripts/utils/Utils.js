@@ -33,6 +33,11 @@
             parent.append( items );
         },
 
+        firstLetterUpper: function ( data )
+        {
+            return data.substr(0,1).toUpperCase() + data.substr(1);
+        },
+
         globalSettings: function (  )
         {
             if( typeof $.fn.dataTable !== "undefined" )
