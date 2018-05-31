@@ -9,7 +9,9 @@ var MessaggingManager = function ()
         init: function ()
         {
             this.user_info = JSON.parse( window.localStorage.getItem("user") );
-            this.visibile_ora = $("#lista_inarrivo_fg");
+            this.visibile_ora = typeof this.user_info.pg_da_loggare !== "undefined" ? $("#lista_inarrivo_ig") : $("#lista_inarrivo_fg");
+
+            this.vaiA(this.visibile_ora,true);
 
             this.setListeners( );
             this.controllaStorage( );
@@ -190,7 +192,7 @@ var MessaggingManager = function ()
         {
             var target = $(e.target);
             this.recuperaMessaggio( target.attr("data-id"), target.attr("data-tipo"), target.attr("data-casella") );
-            this.vaiA( $("#leggi_messaggio"), e );
+            this.vaiA( $("#leggi_messaggio"), false, e );
         },
 
         formattaNonLetti: function ( data, type, row )
@@ -371,8 +373,11 @@ var MessaggingManager = function ()
             this.nuovoBoxAppare( cosa, e );
         },
 
-        vaiA: function ( dove, e )
+        vaiA: function ( dove, force, e )
         {
+            if( this.visibile_ora.is( dove ) && !force )
+                return false;
+
             var target = e ? $(e.target) : null;
 
             $(".active").removeClass("active");
@@ -417,18 +422,18 @@ var MessaggingManager = function ()
                     mittente    : dati.nome
                 };
 
-                this.vaiA( $("#scrivi_messaggio"), null );
+                this.vaiA( $("#scrivi_messaggio"), false, null );
             }
         },
 
         setListeners: function ()
         {
-            $("#vaia_inarrivo_fg").click( this.vaiA.bind( this, $("#lista_inarrivo_fg") ) );
-            $("#vaia_inarrivo_ig").click( this.vaiA.bind( this, $("#lista_inarrivo_ig") ) );
-            $("#vaia_inviate_fg").click( this.vaiA.bind( this, $("#lista_inviati_fg") ) );
-            $("#vaia_inviate_ig").click( this.vaiA.bind( this, $("#lista_inviati_ig") ) );
-            $("#vaia_scrivi").click( this.vaiA.bind(this, $("#scrivi_messaggio") ) );
-            $("#rispondi_messaggio").click( this.vaiA.bind(this, $("#scrivi_messaggio") ) );
+            $("#vaia_inarrivo_fg").click( this.vaiA.bind( this, $("#lista_inarrivo_fg"), false ) );
+            $("#vaia_inarrivo_ig").click( this.vaiA.bind( this, $("#lista_inarrivo_ig"), false ) );
+            $("#vaia_inviate_fg").click( this.vaiA.bind( this, $("#lista_inviati_fg"), false ) );
+            $("#vaia_inviate_ig").click( this.vaiA.bind( this, $("#lista_inviati_ig"), false ) );
+            $("#vaia_scrivi").click( this.vaiA.bind(this, $("#scrivi_messaggio"), false ) );
+            $("#rispondi_messaggio").click( this.vaiA.bind(this, $("#scrivi_messaggio"), false ) );
         }
     }
 }();

@@ -30,7 +30,7 @@ a {
   min-height: 100%;
   box-sizing: border-box;
   overflow: hidden;
-  z-index: -3;
+  z-index: 1;
 }
 
 .bg {
@@ -44,7 +44,7 @@ a {
   background-repeat: no-repeat;
   background-size: cover;
   opacity: 0.3;
-  z-index: -2;
+  z-index: 2;
 }
 
 .bg2 {
@@ -53,7 +53,7 @@ a {
   bottom: 0;
   min-width: 100%;
   min-height: 100%;
-  z-index: -1;
+  z-index: 3;
   /*background-color: #080f11c2;*/
   /*background: rgba(6, 122, 112, 1);
   background: -moz-radial-gradient(center, ellipse cover, rgba(6, 122, 112, .7) 0%, rgba(32, 52, 53, .7) 65%, rgba(32, 52, 53, 1) 100%);
@@ -73,6 +73,16 @@ a {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#067a70', endColorstr='#203435', GradientType=1);
 
   background-attachment: fixed;
+}
+
+.wrapper {
+  z-index: 4;
+}
+
+.login-box,
+.register-box {
+  position: relative;
+  z-index: 4;
 }
 
 .main-sidebar {
@@ -1056,4 +1066,15 @@ ul.list-select > li[disabled] {
 }
 .crea-pg-page .box-body p {
   text-transform: none;
+}
+
+.bootstrap-timepicker-widget.dropdown-menu,
+.datepicker.datepicker-dropdown.dropdown-menu {
+  background-color: #122223 !important;
+  color: white !important;
+}
+
+.bootstrap-timepicker-widget.dropdown-menu .glyphicon,
+.datepicker.datepicker-dropdown.dropdown-menu .glyphicon {
+  color: white !important;
 }

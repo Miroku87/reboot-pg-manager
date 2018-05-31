@@ -5,6 +5,7 @@
 		init: function ()
 		{
             this.pg_info             = JSON.parse(window.localStorage.getItem("logged_pg"));
+            this.user_info           = JSON.parse(window.localStorage.getItem("user"));
             this.placeholder_credito = 'XXXX <i class="fa fa-eye"></i>';
             this.movimenti_bonifico  = 0;
 
@@ -13,7 +14,7 @@
 			this.impostaColonne();
 			this.impostaGrigliaMovimenti();
 
-            if( Utils.controllaPermessiUtente(["recuperaMovimenti_altri"]) )
+            if( Utils.controllaPermessiUtente( this.user_info, ["recuperaMovimenti_altri"]) )
                 this.impostaGrigliaMovimentiDiTutti();
 		},
 
@@ -135,6 +136,17 @@
 
         recuperaInfoBanca: function ()
 		{
+            if( !this.pg_info )
+            {
+                this.infoBancaRecuperate({
+                    result : {
+                        credito_personaggio      : "----",
+                        entrate_anno_personaggio : "----",
+                        uscite_anno_personaggio  : "----"
+                    }});
+                return;
+            }
+
             Utils.requestData(
                 Constants.API_GET_INFO_BANCA,
                 "GET",
@@ -149,7 +161,7 @@
             var bg_class = "bg-green",
                 label    = $('<span class="label"></span>');
 
-            if( data === "entrata" )
+            if( data === "uscita" )
                 bg_class = "bg-red";
 
             label.addClass(bg_class);
@@ -161,7 +173,18 @@
         impostaGrigliaMovimenti: function ()
 		{
             if( !this.pg_info )
-                $( '#movimenti').parent().html("Logga con un personaggio per poter vedere i suoi movimenti bancari.");
+            {
+                $('#movimenti').parent().html("Logga con un personaggio per poter vedere i suoi movimenti bancari.");
+                return;
+            }
+
+            var colonne_pg = this.columns.concat();
+
+            colonne_pg.unshift({
+                title: "Tipo",
+                data: "tipo_transazione",
+                render: this.renderTipoMovimento.bind(this)
+            });
 
             this.griglia_movimenti = $( '#movimenti' )
                 //.on("error.dt", this.erroreDataTable.bind(this) )
@@ -183,13 +206,20 @@
                             callback
                         );
                     },
-                    columns    : this.columns,
+                    columns    : colonne_pg,
                     order      : [[1, 'desc']]
                 } );
 		},
 
         impostaGrigliaMovimentiDiTutti: function ()
 		{
+            var colonne_tutti = this.columns.concat();
+
+            colonne_tutti.splice(1,0,{
+                title: "Debitore",
+                data: "nome_debitore",
+            });
+
             this.griglia_movimenti = $( '#mov_tutti' )
                 //.on("error.dt", this.erroreDataTable.bind(this) )
                 //.on("draw.dt", this.setGridListeners.bind(this) )
@@ -210,22 +240,17 @@
                             callback
                         );
                     },
-                    columns    : this.columns,
-                    order      : [[1, 'desc']]
+                    columns    : colonne_tutti,
+                    order      : [[0, 'desc']]
                 } );
 
-            $( '#mov_tutti').removeClass("inizialmente-nascosto");
+            $( '#mov_tutti').parents(".row").removeClass("inizialmente-nascosto").show();
 		},
 
 		impostaColonne: function ()
 		{
             this.columns = [];
 
-            this.columns.push({
-                title: "Tipo",
-                data: "tipo_transazione",
-                render: this.renderTipoMovimento.bind(this)
-            });
             this.columns.push({
                 title: "Data",
                 data: "datait_transazione"

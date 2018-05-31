@@ -1,6 +1,6 @@
 ﻿var AdminLTEManager = function ()
 {
-    var SECTION_NAME = window.location.href.replace( Constants.SITE_URL+"/", "" ).replace( window.location.search, "" ).replace(/\.\w+$/,"").replace(/live_/,""),
+    var SECTION_NAME = window.location.href.replace( Constants.SITE_URL+"/", "" ).replace( window.location.search, "" ).replace(/\.\w+#?$/,"").replace(/live_/,""),
         NO_CONTROLLO = ["index","recupera_password","registrazione"];
 
     return {
@@ -10,12 +10,7 @@
             this.user_info = this.user_info || JSON.parse( window.localStorage.getItem('user') );
             this.pg_info   = JSON.parse( window.localStorage.getItem('logged_pg') );
 
-            if( this.pg_info && typeof this.user_info.pg_da_loggare !== "undefined" )
-            {
-                $(".visualizza_pagina_main").attr( "href", Constants.PG_PAGE );
-                $("#logo_link").attr( "href", Constants.PG_PAGE );
-            }
-
+            this.controllaModalitaEvento();
             this.setListeners();
             this.controllaPermessi(".sidebar-menu", true);
         },
@@ -26,6 +21,21 @@
                 && NO_CONTROLLO.indexOf( SECTION_NAME ) === -1
                 && SECTION_NAME.indexOf( "test" ) === -1 )
                 Utils.controllaAccessoPagina( SECTION_NAME );
+        },
+
+        controllaModalitaEvento: function ()
+        {
+            if( this.pg_info && typeof this.user_info.pg_da_loggare !== "undefined" )
+            {
+                $(".visualizza_pagina_main").remove();
+                $("#btn_visualizza_pagina_gestione_eventi").remove();
+                $("#logo_link").attr( "href", Constants.PG_PAGE );
+            }
+            else
+            {
+                $(".visualizza_pagina_main").removeClass("inizialmente-nascosto").show();
+                $("#btn_visualizza_pagina_gestione_eventi").removeClass("inizialmente-nascosto").show();
+            }
         },
 
         mostraNomePersonaggio: function ( nome )
@@ -114,6 +124,7 @@
             }
 
             this.mostraNomePersonaggio();
+            this.controllaModalitaEvento();
         },
 
         logout: function ()
@@ -192,7 +203,10 @@
 
         aggiornaBadgeMessaggi: function ( data )
         {
-            $("#num_mex_fg").text( data.result.fg );
+            if( this.pg_info && typeof this.user_info.pg_da_loggare !== "undefined" )
+                $("#num_mex_fg").remove();
+            else
+                $("#num_mex_fg").text( data.result.fg );
 
             if( typeof data.result.ig !== "undefined" )
             {

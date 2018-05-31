@@ -174,7 +174,7 @@
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">Operazioni</li>
                 <!-- Optionally, you can add icons to the links -->
-                <li class="visualizza_pagina_main {% if section === 'listapg' %}active{% endif %}">
+                <li class="visualizza_pagina_main inizialmente-nascosto {% if section === 'listapg' %}active{% endif %}">
                     <a href="main.html"><i class="fa fa-user-secret"></i> <span class="sgc-info">//USEC/SGC/</span> <span>Personaggi</span></a></li>
                 <li {% if section === 'messaggi' %}class="active"{% endif %}>
                     <a href="messaggi.html"><i class="fa fa-envelope-o" ></i> <span class="sgc-info">//USEC/SGC/</span> <span>Messaggi</span>
@@ -184,7 +184,7 @@
                         </span>
                     </a>
                 </li>
-                <li id="btn_visualizza_pagina_gestione_eventi" class="{% if section === 'gestioneventi' %}active{% endif %}">
+                <li id="btn_visualizza_pagina_gestione_eventi" class="inizialmente-nascosto {% if section === 'gestioneventi' %}active{% endif %}">
                     <a href="eventi.html"><i class="fa fa-rocket"></i> <span class="sgc-info">//USEC/SGC/</span> <span>Eventi Live</span></a></li>
                 <li id="btn_visualizza_pagina_notizie" class="inizialmente-nascosto {% if section === 'news' %}active{% endif %}">
                     <a href="notizie.html"><i class="fa fa-newspaper-o"></i> <span class="sgc-info">//USEC/SGC/</span> <span>Canali RAVNet</span></a></li>

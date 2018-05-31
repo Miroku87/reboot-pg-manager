@@ -409,7 +409,7 @@ module.exports = function (grunt)
                     staging : '.usemin',
                     dest    : '<%= config.dist %>',
                     flow    : {
-                        steps : {js : ['concat', 'uglify'], css : ['concat'/*,'cssmin'*/]},
+                        steps : {js : ['concat', 'uglify'], css : ['concat','cssmin']},
                         post  : {
                             js : [{
                                 name         : 'uglify',
@@ -723,7 +723,7 @@ module.exports = function (grunt)
         'replace:ckedit',
         'eol',
         //'wiredep',
-        'useminPrepare:def',
+        'useminPrepare',
         'concurrent:dist',
         'postcss',
         'replace:prod_urls',

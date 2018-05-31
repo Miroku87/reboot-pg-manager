@@ -96,10 +96,7 @@
             CKEDITOR.instances.nuova_notizia.setData( dati.testo_notizia );
 
             if( pub_manuale )
-            {
-                $("#modal_nuovo_articolo").find("#data_pubblicazione").hide();
-                $("#modal_nuovo_articolo").find("#ora_pubblicazione").hide();
-            }
+                this.nascondiCampiDataOraPubblicazione();
 
             Utils.resetSubmitBtn();
             $("#modal_nuovo_articolo").find("#btn_invia_articolo").attr("data-id",dati.id_notizia);
