@@ -1,3 +1,14 @@
+
+var mobile = false;
+var type = "";
+var id_target = "";
+var batteria = 0;
+var volume = 0;
+var totaleBatteria = 0;
+var totaleVolume = 0;
+var usoBatteria = 0;
+var usoVolume = 0;
+
 function loadComponentsFromDB(callback)
 {
     Utils.requestData(
@@ -15,16 +26,47 @@ function loadComponentsFromDB(callback)
         callback
     );
 }
-var mobile = false;
-var type = "";
-var id_target = "";
-var batteria = 0;
-var volume = 0;
-var totaleBatteria = 0;
-var totaleVolume = 0;
-var usoBatteria = 0;
-var usoVolume = 0;
 
+function pageResize()
+{
+    $("#liste_componenti").width($("#liste_componenti").parent().width());
+}
+
+function impostaRicercaComponenti( search_box )
+{
+    search_box.on( 'keyup', function ()
+    {
+        var term = search_box.val().trim();
+        if ( term.length === 0 )
+        {
+            search_box.parents(".tab-pane").find("div[draggable='true']").each( function ()
+            {
+                $( this ).show( 0 );
+            } );
+            return;
+        }
+        else
+            term = term.toLowerCase();
+
+        search_box.parents(".tab-pane").find("div[draggable='true']").each( function ()
+        {
+            var id_comp = $(this).find(".id_comp").text().toLowerCase(),
+                nome_comp = $(this).find(".nome_comp").text().toLowerCase(),
+                desc_comp = $(this).find(".descrizione_comp").text().toLowerCase(),
+                tipo_comp = $(this).find(".tipo_comp").text().toLowerCase();
+
+            if (
+                id_comp.indexOf( term ) === -1 &&
+                nome_comp.indexOf( term ) === -1 &&
+                desc_comp.indexOf( term ) === -1 &&
+                tipo_comp.indexOf( term ) === -1
+            )
+                $( this ).hide( 0 );
+            else
+                $( this ).show( 0 );
+        } );
+    } );
+}
 //popolo componenti
 $(document).ready(function ()
 {
@@ -86,8 +128,15 @@ $(document).ready(function ()
         //popoloComponenti(cerotto, "cer", "cerotto");
         //popoloComponenti(fiala, "fia", "fiala");
         //popoloComponenti(solido, "sod", "solido");
+        impostaRicercaComponenti( $("#cerca_sostanza") );
+        impostaRicercaComponenti( $("#cerca_struttura") );
 
     });
+
+    $("#liste_componenti").width($("#liste_componenti").parent().width());
+    $("#liste_componenti").css("max-height",$(".content-wrapper").height() - 41 - 51 - 20);
+
+    $(window).resize(pageResize);
 });
 function popoloComponenti(array, id, div)
 {
@@ -121,13 +170,13 @@ function popoloComponenti(array, id, div)
         }
         html += '        </div>';
         html += '        <div class="info-box-content">';
-        html += '            <span class="info-box-text sgc-info2">' + el.Tipo + ' - ' + el.Codice + '</span>';
-        html += '            <span class="info-box-number">' + el.Nome + '</span>';
-        html += '            <p>' + el.Descrizione + '</p>';
+        html += '            <span class="info-box-text sgc-info2"><span class="tipo_comp">' + el.Tipo + '</span> - <span class="id_comp">' + el.Codice + '</span></span>';
+        html += '            <span class="info-box-number nome_comp">' + el.Nome + '</span>';
+        html += '            <p class="descrizione_comp">' + el.Descrizione + '</p>';
         html += '        </div>';
         html += '    </div>  ';
     });
-    $('#' + div).append(html);
+    $('#' + div + ' > .container-componenti').append(html);
 }
 
 //drag&copy

@@ -11,7 +11,7 @@
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">
-                    <span class="sgc-info2">SGC</span> RISORSE</h3>
+                    <span class="sgc-info2">SGC</span> RISORSE TECNICHE</h3>
 
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse">
@@ -19,13 +19,25 @@
                     </button>
                 </div>
             </div>
-            <!-- /.box-header -->
             <div class="box-body">
-                <table id="mercato" class="table" width="100%"></table>
+                <table id="tabella_tecnico" class="table" width="100%"></table>
             </div>
-            <!-- /.box -->
         </div>
-        <!-- /.col -->
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">
+                    <span class="sgc-info2">SGC</span> RISORSE CHIMICHE</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <table id="tabella_chimico" class="table" width="100%"></table>
+            </div>
+        </div>
     </div>
     <div class="col-md-3">
         <div class="box" id="box_carrello">
@@ -53,9 +65,14 @@
                         <td>0</td>
                         <td></td>
                     </tr>
+                    <tr id="riga_credito">
+                        <td align="right" colspan="2"><strong>Credito Residuo:</strong></td>
+                        <td>XXXX <i class="fa fa-eye"></i></td>
+                        <td></td>
+                    </tr>
                     </tbody>
                 </table>
-                <p>*Se compri un numero di componenti multiplo di X avrai uno sconto del Y%.</p>
+                <p id="sconto_msg">*Se compri un numero di componenti multiplo di {X} avrai uno sconto del {Y}%.</p>
             </div>
             <div class="box-footer">
                 <button class="btn btn-success submit-btn" id="paga">Paga e Stampa</button>

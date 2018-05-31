@@ -1,0 +1,119 @@
+{% extends "./templates/main_template.html" %}
+{% set titolo_sezione = "Banca" %}
+{% set section = "banca" %}
+{% block mainContent %}
+{{ super() }}
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="box-saldo" id="totale">
+                            <h5>Saldo Totale</h5>
+                            <h3 class="saldo">XXXX <i class="fa fa-eye"></i></h3>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="box-saldo box-verde" id="entrate_corrente">
+                            <h5>Entrate Anno Corrente</h5>
+                            <h3 class="saldo">XXXX <i class="fa fa-eye"></i></h3>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="box-saldo box-rosso" id="uscite_corrente">
+                            <h5>Uscite Anno Corrente</h5>
+                            <h3 class="saldo">XXXX <i class="fa fa-eye"></i></h3>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <button id="btn_bonifico" type="button" class="btn btn-primary out-of-box">
+                            <i class="fa fa-money"></i>
+                            <br>Effettua Bonifico
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">
+                    <span class="sgc-info2">SGC</span> LISTA MOVIMENTI</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <form autocomplete="off" aria-autocomplete="none">
+                    <table id="movimenti" class="table" width="100%"></table>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--<div class="col-md-6">
+        &lt;!&ndash; # qui metterei il grefico &ndash;&gt;
+    </div>-->
+</div>
+
+{% endblock %}
+
+{% block modals %}
+{{ super() }}
+<div id="modal_bonifico" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header dialog-header-primary">
+                <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Chiudi</span></button>
+                <h4 class="modal-title text-primary">Esegui Bonifico</h4>
+            </div>
+            <div class="modal-body">
+                <p>Per inserire l'ID di un personaggio digitare prima "#".</p>
+                <form autocomplete="off" aria-autocomplete="none" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Nome / ID Personaggio</label>
+                        <div class="col-sm-9 scelta-pg">
+                            <input type="text" class="form-control" id="personaggio" name="personaggio" placeholder="Nome / ID Personaggio">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Causale</label>
+                        <div class="col-sm-9">
+                            <textarea type="text" class="form-control resize-vertical" rows="5" id="causale" name="causale" placeholder="Scrivi qui il motivo del bonifico..."></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Importo</label>
+                        <div class="col-sm-9">
+                            <input type="number" step="1" min="0" id="offset_crediti" name="offset_crediti" class="form-control" value="0">
+                            <div class="btn-group pull-center under-element out-of-box pulsantiera-mobile inizialmente-nascosto" id="pulsanti_credito">
+                                <button type="button" class="btn btn-info meno10">-10</button>
+                                <button type="button" class="btn btn-info meno1">-1</button>
+                                <button type="button" class="btn btn-info piu1">+1</button>
+                                <button type="button" class="btn btn-info piu10">+10</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success submit-btn" data-dismiss="modal" id="btn_invia">Invia Bonifico</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block managers %}
+{{ super() }}
+<script src="scripts/models/PulsantieraNumerica.js"></script>
+<script src="scripts/controllers/BankManager.js"></script>
+{% endblock %}

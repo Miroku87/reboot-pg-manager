@@ -27,10 +27,7 @@ td {
   display: none;
 }
 
-#cartellino_generico_template,
-#cartellino_programma_template,
-#cartellino_oggetto_template,
-#cartellino_sostanza_template {
+.template {
   display: none;
 }
 
@@ -143,6 +140,17 @@ td {
   font-size: 8em;
   text-align: center;
   vertical-align: middle;
+}
+
+.id_componente,
+.nome_componente,
+.tipo_componente {
+  text-transform: uppercase;
+}
+
+.descrizione_componente:first-letter,
+.nome_ricetta:first-letter {
+  text-transform: uppercase;
 }
 
 @media print {

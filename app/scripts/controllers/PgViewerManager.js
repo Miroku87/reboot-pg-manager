@@ -239,13 +239,17 @@
 
                 if ( Utils.controllaPermessiUtente( this.user_info, ["modificaPG_background_personaggio_altri"] )
                     || ( this.pg_nato_in_olocausto && !this.pg_info.motivazioni ) )
+                {
                     $("#aggiungi_bg").show();
+                    $("#aggiungi_bg").removeClass("inizialmente-nascosto");
+                }
                 else
                     $("#aggiungi_bg").hide();
             }
             else
             {
                 $("#aggiungi_bg").show();
+                $("#aggiungi_bg").removeClass("inizialmente-nascosto");
                 $("#avviso_bg").show();
                 $("#background").remove();
             }

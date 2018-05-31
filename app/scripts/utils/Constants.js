@@ -34,6 +34,9 @@ Constants.API_POST_CRAFTING_PROGRAMMA    = Constants.API_URL + "/craftingmanager
 Constants.API_POST_CRAFTING_TECNICO      = Constants.API_URL + "/craftingmanager/inserisciricettatecnico";
 Constants.API_POST_CRAFTING_CHIMICO      = Constants.API_URL + "/craftingmanager/inserisciricettamedico";
 Constants.API_EDIT_RICETTA               = Constants.API_URL + "/craftingmanager/modificaricetta";
+Constants.API_POST_RICETTE_STAMPATE      = Constants.API_URL + "/craftingmanager/segnaricettecomestampate";
+Constants.API_POST_TRANSAZIONE           = Constants.API_URL + "/transactionmanager/inseriscitransazione";
+Constants.API_COMPRA_COMPONENTI          = Constants.API_URL + "/transactionmanager/compracomponenti";
 
 Constants.API_GET_LOGOUT                 = Constants.API_URL + "/usersmanager/logout";
 Constants.API_GET_ACESS                  = Constants.API_URL + "/usersmanager/controllaaccesso";
@@ -67,6 +70,9 @@ Constants.API_GET_TUTTI_ARTICOLI         = Constants.API_URL + "/newsmanager/rec
 Constants.API_GET_RICETTE                = Constants.API_URL + "/craftingmanager/recuperaricette";
 Constants.API_GET_RICETTE_CON_ID         = Constants.API_URL + "/craftingmanager/recuperaricetteconid";
 Constants.API_GET_COMPONENTI_BASE        = Constants.API_URL + "/craftingmanager/recuperacomponentibase";
+Constants.API_GET_COMPONENTI_CON_ID      = Constants.API_URL + "/craftingmanager/recuperacomponenticonid";
+Constants.API_GET_INFO_BANCA             = Constants.API_URL + "/transactionmanager/recuperainfobanca";
+Constants.API_GET_MOVIMENTI              = Constants.API_URL + "/transactionmanager/recuperamovimenti";
 
 Constants.API_DEL_GIOCATORE              = Constants.API_URL + "/usersmanager/eliminagiocatore";
 Constants.API_DEL_CLASSE_PG              = Constants.API_URL + "/charactersmanager/rimuoviclassepg";
@@ -91,8 +97,9 @@ Constants.PC_TOT                         = 4;
 Constants.ANNO_PRIMO_LIVE                = 271;
 Constants.ANNO_INIZIO_OLOCAUSTO          = 239;
 Constants.ANNO_FINE_OLOCAUSTO            = 244;
-Constants.SCONTO_MERCATO                 = 10;
-Constants.QTA_PER_SCONTO_MERCATO         = 4;
+Constants.SCONTO_MERCATO                 = 5;
+Constants.QTA_PER_SCONTO_MERCATO         = 6;
+Constants.CARTELLINI_PER_PAG             = 6;
 
 Constants.COSTI_PROFESSIONI              = [0,20,40,60,80,100,120];
 
