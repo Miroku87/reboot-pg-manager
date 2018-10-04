@@ -680,7 +680,7 @@ module.exports = function (grunt)
         'replace:ckedit',
         'eol',
         //'wiredep',
-        'useminPrepare:def',
+        'useminPrepare',
         'concurrent:dist',
         'postcss',
         'get-local-ip',

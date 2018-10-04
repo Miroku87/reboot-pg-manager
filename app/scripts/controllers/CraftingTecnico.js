@@ -287,6 +287,9 @@ function addComponente(tipo, codice)
 
 function selezionaTipo( tipo )
 {
+    if( !tipo )
+        return false;
+
     var mappa_tipi = {
         "pistola"              : "Pistola",
         "fucile d'assalto"     : "Fucile Assalto",
