@@ -27,9 +27,12 @@
         {
             if( this.pg_info && typeof this.user_info.pg_da_loggare !== "undefined" )
             {
+                $("body").addClass("event_ongoing");
                 $(".visualizza_pagina_main").remove();
                 $("#btn_visualizza_pagina_gestione_eventi").remove();
                 $("#logo_link").attr( "href", Constants.PG_PAGE );
+                $("#background_video").attr("autoplay",null);
+                $("#background_video")[0].pause();
             }
             else
             {

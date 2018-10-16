@@ -30,7 +30,7 @@ var MessaggingManager = function ()
 
         risettaMessaggio: function ( )
         {
-            this.id_destinatario = null;
+            this.id_destinatari = [];
             this.messaggio_in_lettura = null;
             $("#destinatario").val("");
             $("#destinatario").attr("disabled",false);
@@ -42,21 +42,44 @@ var MessaggingManager = function ()
             $("#tipo_messaggio").attr("disabled", false);
             $("#invia_messaggio").attr("disabled", true);
         },
+    
+        getStringaListaDestinatari: function()
+        {
+            var destinatari = this.id_destinatari.reduce( function( prev, curr ){ return prev + curr.label + ", "; }, "" );
+        
+            if( !Utils.controllaPermessiUtente( this.user_info, ["inviaMessaggioPiuDestinatari"], true ) )
+                destinatari = destinatari.substr(0, destinatari.length-2);
+            
+            return destinatari;
+        },
 
         destinatarioSelezionato: function ( event, ui )
         {
-            this.id_destinatario = ui.item.real_value;
+            if( !Utils.controllaPermessiUtente( this.user_info, ["inviaMessaggioPiuDestinatari"], true ) && this.id_destinatari.length === 1 )
+                return false;
+        
+            this.id_destinatari.push( { label: ui.item.value, value: ui.item.real_value });
             $("#invia_messaggio").attr("disabled",false);
+            
+            $("#destinatario").val( this.getStringaListaDestinatari() );
+            
+            return false;
         },
 
         scrittoSuDestinatario: function ( e, ui )
         {
-            if( $("#tipo_messaggio").val() === "ig" && $(e.target).val().substr(0,1) === "#" )
+            if( !Utils.controllaPermessiUtente( this.user_info, ["inviaMessaggioPiuDestinatari"], true ) && this.id_destinatari.length === 1 )
+                return false;
+            
+            var destinatari_str = this.getStringaListaDestinatari(),
+                term = $.trim( $("#destinatario").val().replace( destinatari_str, "" ) );
+            
+            if( $("#tipo_messaggio").val() === "ig" && term.substr(0,1) === "#" && term.charAt(term.length-1) === "," )
             {
-                this.id_destinatario = $(e.target).val().substr(1);
+                this.id_destinatari.push( { label: term.substr(0,term.length-1), value: term } );
                 $("#invia_messaggio").attr("disabled", false);
             }
-            else if ( $("#tipo_messaggio").val() === "ig" && $(e.target).val().substr(0,1) !== "#" )
+            else if ( $("#tipo_messaggio").val() === "ig" && term.substr(0,1) !== "#" )
                 $("#invia_messaggio").attr("disabled",true);
         },
 
@@ -68,7 +91,6 @@ var MessaggingManager = function ()
 
         inserisciDestinatario: function ( )
         {
-
             if( $("#tipo_messaggio").val() === "ig" ) $("#mittente").val( "Da: " + this.pg_info.nome_personaggio );
             else if( $("#tipo_messaggio").val() === "fg" ) $("#mittente").val( "Da: " + this.user_info.nome_giocatore );
         },
@@ -77,7 +99,7 @@ var MessaggingManager = function ()
         {
             if( typeof $("#destinatario").data('ui-autocomplete') !== "undefined" )
             {
-                this.id_destinatario = null;
+                this.id_destinatari = [];
                 $("#destinatario").val("");
                 $("#invia_messaggio").attr("disabled",true);
                 $("#destinatario").autocomplete( "option", "source", this.recuperaDestinatariAutofill.bind(this,$("#tipo_messaggio").val()) );
@@ -94,20 +116,27 @@ var MessaggingManager = function ()
 
             this.inserisciDestinatario();
         },
-
+        
         recuperaDestinatariAutofill: function ( tipo, req, res )
         {
-            var url = tipo === "ig" ? Constants.API_GET_DESTINATARI_IG : Constants.API_GET_DESTINATARI_FG;
-            //var url = Constants.API_GET_DESTINATARI_IG;
-
+            var url = tipo === "ig" ? Constants.API_GET_DESTINATARI_IG : Constants.API_GET_DESTINATARI_FG,
+                destinatari = this.getStringaListaDestinatari(),
+                term = req.term.replace( destinatari, "" ).replace(",",""),
+                term = $.trim(term);
+            
+            if( term === '' )
+                return false;
+            
             Utils.requestData(
                 url,
                 "GET",
-                { term : req.term },
+                { term : $.trim(term) },
                 function( data )
                 {
-                    res( data.results );
-                }
+                    var values = (this.id_destinatari || []).map( function( el ){ return el.label } ),
+                        items = (data.results || []).filter( function( el ){ return values.indexOf( el.label ) === -1; }.bind(this) );
+                    res( items );
+                }.bind(this)
             );
         },
 
@@ -137,7 +166,7 @@ var MessaggingManager = function ()
 
             if( this.messaggio_in_lettura )
             {
-                this.id_destinatario = this.messaggio_in_lettura.id_mittente;
+                this.id_destinatari = [this.messaggio_in_lettura.id_mittente];
 
                 $("#tipo_messaggio").val( this.messaggio_in_lettura.tipo );
                 $("#tipo_messaggio").attr("disabled", true);
@@ -301,7 +330,7 @@ var MessaggingManager = function ()
 
         inviaMessaggio: function ()
         {
-            var destinatario = this.id_destinatario,
+            var destinatario = this.id_destinatari.map(function(el){ return el.value }),
                 oggetto      = $("#oggetto").val(),
                 testo        = $("#messaggio").val(),
                 data         = {};
@@ -314,7 +343,7 @@ var MessaggingManager = function ()
 
             data.tipo         = $("#tipo_messaggio").val();
             data.mittente     = data.tipo === "ig" && this.pg_info ? this.pg_info.id_personaggio : this.user_info.email_giocatore;
-            data.destinatario = destinatario;
+            data.destinatario = destinatario.join(",");
             data.oggetto      = encodeURIComponent( oggetto );
             data.testo        = encodeURIComponent( testo );
 
