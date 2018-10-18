@@ -18,7 +18,7 @@
                 this.impostaGrigliaMovimentiDiTutti();
 		},
 
-        bonificoOk: function ()
+        /*bonificoOk: function ()
 		{
             this.griglia_movimenti.ajax.reload(null,true);
             this.recuperaInfoBanca();
@@ -58,7 +58,7 @@
                 },
                 this.controllaMovimenti.bind(this)
             );
-		},
+		},*/
 
         inviaBonifico: function ( e )
 		{
@@ -72,7 +72,9 @@
                     id_creditore : this.id_creditore,
                     note         : $("#causale").val()
                 },
-                this.modificaCrediti.bind(this)
+                "Bonifico eseguito con successo.",
+                null,
+                Utils.reloadPage
             );
 		},
 

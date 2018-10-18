@@ -46,7 +46,7 @@ var MarketplaceManager = function ()
             //setTimeout( this.faiPartireStampa.bind(this), 1000 );
         },
 
-        scalaSoldi: function ( data )
+        /*scalaSoldi: function ( data )
         {
             Utils.requestData(
                 Constants.API_POST_EDIT_PG,
@@ -60,7 +60,7 @@ var MarketplaceManager = function ()
                 null,
                 this.stampa.bind(this)
             );
-        },
+        },*/
 
         paga: function ( e )
         {
@@ -74,7 +74,9 @@ var MarketplaceManager = function ()
                 Constants.API_COMPRA_COMPONENTI,
                 "POST",
                 { ids: this.carrello_componenti },
-                this.scalaSoldi.bind(this)
+                "Pagamento avvenuto con successo.<br>Premi 'CHIUDI' per far partire la stampa.",
+                null,
+                this.stampa.bind(this)
             );
         },
 
