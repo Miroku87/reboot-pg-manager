@@ -18,15 +18,19 @@
 
         inviaRichiestaAssegna: function ()
 		{
+            if( parseInt($(this.modal_selector).find("#offset_crediti").val(), 10) < 0 )
+            {
+                Utils.showError("Per rimuovere dei Bit far fare un bonifico al pg.");
+                return false;
+            }
+
             Utils.requestData(
-                Constants.API_POST_EDIT_MOLTI_PG,
+                Constants.API_POST_TRANSAZIONE_MOLTI,
                 "POST",
                 {
-                    pg_ids: this.settings.pg_ids,
-                    modifiche: {
-                        credito_personaggio: $(this.modal_selector).find("#offset_crediti").val()
-                    },
-                    is_offset : true
+                    importo      : $(this.modal_selector).find("#offset_crediti").val(),
+                    note         : "-",
+                    creditori    : this.settings.pg_ids
                 },
                 "Credito modificato con successo.",
                 null,

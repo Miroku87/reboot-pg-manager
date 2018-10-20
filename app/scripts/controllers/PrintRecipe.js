@@ -66,7 +66,7 @@
             }
 
             if( ricetta.tipo_oggetto && ricetta.tipo_oggetto.toLowerCase().indexOf("protesi") !== -1 )
-                cartellino.html( cartellino.html() + "<br><br>FCC: " + ricette[i].fcc_componente );
+                cartellino.html( cartellino.html() + "<br><br>FCC: " + ricetta.fcc_componente );
 
             return cartellino;
         },

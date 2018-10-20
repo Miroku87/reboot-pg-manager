@@ -166,7 +166,7 @@ var MessaggingManager = function ()
 
             if( this.messaggio_in_lettura )
             {
-                this.id_destinatari = [this.messaggio_in_lettura.id_mittente];
+                this.id_destinatari = [{label: this.messaggio_in_lettura.id_mittente, value:this.messaggio_in_lettura.id_mittente }];
 
                 $("#tipo_messaggio").val( this.messaggio_in_lettura.tipo );
                 $("#tipo_messaggio").attr("disabled", true);
@@ -330,7 +330,16 @@ var MessaggingManager = function ()
 
         inviaMessaggio: function ()
         {
-            var destinatario = this.id_destinatari.map(function(el){ return el.value }),
+            var destinatari_str = this.getStringaListaDestinatari(),
+             term = $.trim( $("#destinatario").val().replace( destinatari_str, "" ) );
+
+            if( $("#tipo_messaggio").val() === "ig" && term.substr(0,1) === "#" && term.charAt(term.length-1) === "," )
+            {
+                this.id_destinatari.push( { label: term.substr(0,term.length-1), value: term } );
+            }
+
+            var destinatario = this.id_destinatari.map(function(el){ return el.value.substr(1,el.value.length-1) }),
+                destinatario = destinatario.filter(function(el){ return el !== ""; }),
                 oggetto      = $("#oggetto").val(),
                 testo        = $("#messaggio").val(),
                 data         = {};

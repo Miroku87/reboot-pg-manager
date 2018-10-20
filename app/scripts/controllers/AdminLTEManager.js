@@ -31,8 +31,12 @@
                 $(".visualizza_pagina_main").remove();
                 $("#btn_visualizza_pagina_gestione_eventi").remove();
                 $("#logo_link").attr( "href", Constants.PG_PAGE );
-                $("#background_video").attr("autoplay",null);
-                $("#background_video")[0].pause();
+
+                if($("#background_video")[0])
+                {
+                    $("#background_video").attr("autoplay", null);
+                    $("#background_video")[0].pause();
+                }
             }
             else
             {
