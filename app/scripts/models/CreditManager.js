@@ -29,7 +29,7 @@
                 "POST",
                 {
                     importo      : $(this.modal_selector).find("#offset_crediti").val(),
-                    note         : "-",
+                    note         : "Accredito a vostro favore.",
                     creditori    : this.settings.pg_ids
                 },
                 "Credito modificato con successo.",
