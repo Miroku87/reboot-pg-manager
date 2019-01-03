@@ -30,7 +30,7 @@ var MessaggingManager = function ()
 
         risettaMessaggio: function ( )
         {
-            this.id_destinatari = [];
+            this.id_destinatario = null;
             this.messaggio_in_lettura = null;
             $("#destinatario").val("");
             $("#destinatario").attr("disabled",false);
@@ -66,33 +66,26 @@ var MessaggingManager = function ()
                 $("#invia_messaggio").attr("disabled",true);
         },
 
-        inserisciDestinatario: function ( )
+        inserisciMittente: function ( )
         {
-
             if( $("#tipo_messaggio").val() === "ig" ) $("#mittente").val( "Da: " + this.pg_info.nome_personaggio );
             else if( $("#tipo_messaggio").val() === "fg" ) $("#mittente").val( "Da: " + this.user_info.nome_giocatore );
         },
 
+        resettaInputDestinatari: function()
+        {
+            $(".form-destinatario:not(:first)").remove();
+            $(".form-destinatario").first().find(".nome-destinatario").val("");
+            this.impostaControlliDestinatari();
+        },
+
         cambiaListaDestinatari: function ( e )
         {
-            if( typeof $("#destinatario").data('ui-autocomplete') !== "undefined" )
-            {
-                this.id_destinatario = null;
-                $("#destinatario").val("");
-                $("#invia_messaggio").attr("disabled",true);
-                $("#destinatario").autocomplete( "option", "source", this.recuperaDestinatariAutofill.bind(this,$("#tipo_messaggio").val()) );
+            this.id_destinatari = [];
+            this.resettaInputDestinatari();
+            $("#invia_messaggio").attr("disabled",true);
 
-                $("#destinatario").popover("destroy");
-
-                if( $("#tipo_messaggio").val() === "ig" )
-                    $("#destinatario").popover({
-                        content: "In caso di ID inserire sempre # prima del numero.",
-                        trigger: Utils.isDeviceMobile() ? "click" : "hover",
-                        placement: "top"
-                    });
-            }
-
-            this.inserisciDestinatario();
+            this.inserisciMittente();
         },
 
         recuperaDestinatariAutofill: function ( tipo, req, res )
@@ -111,6 +104,27 @@ var MessaggingManager = function ()
             );
         },
 
+        rimuoviAutocompleteDestinatario: function ( )
+        {
+            if ( $(".form-destinatario").find(".nome-destinatario").data('autocomplete') )
+            {
+                $(".form-destinatario").find(".nome-destinatario").autocomplete("destroy");
+                $(".form-destinatario").find(".nome-destinatario").removeData('autocomplete');
+            }
+        },
+
+        impostaAutocompleteDestinatario: function ( )
+        {
+            this.rimuoviAutocompleteDestinatario();
+            $(".form-destinatario").find(".nome-destinatario").autocomplete({
+                autoFocus : true,
+                select : this.destinatarioSelezionato.bind(this),
+                search : this.scrittoSuDestinatario.bind(this),
+                change : this.selezionatoDestinatario.bind(this),
+                source : this.recuperaDestinatariAutofill.bind(this,$("#tipo_messaggio").val())
+            });
+        },
+
         impostaInterfacciaScrittura: function ( )
         {
             var default_type = "fg";
@@ -119,21 +133,11 @@ var MessaggingManager = function ()
                 default_type = "ig";
 
             $("#tipo_messaggio").val(default_type);
-			
-            if( typeof $("#destinatario").data('ui-autocomplete') === "undefined" )
-            {
-                $("#destinatario").autocomplete({
-                    autoFocus : true,
-                    select : this.destinatarioSelezionato.bind(this),
-                    search : this.scrittoSuDestinatario.bind(this),
-                    change : this.selezionatoDestinatario.bind(this),
-                    source : this.recuperaDestinatariAutofill.bind(this,default_type)
-                });
+            this.impostaControlliDestinatari();
 
-                $("#tipo_messaggio").change( this.cambiaListaDestinatari.bind(this) );
-                $("#invia_messaggio").click( this.inviaMessaggio.bind(this) );
-                $("#risetta_messaggio").click( this.risettaMessaggio.bind(this) );
-            }
+            $("#tipo_messaggio").change( this.cambiaListaDestinatari.bind(this) );
+            $("#invia_messaggio").click( this.inviaMessaggio.bind(this) );
+            $("#risetta_messaggio").click( this.risettaMessaggio.bind(this) );
 
             if( this.messaggio_in_lettura )
             {
@@ -154,7 +158,7 @@ var MessaggingManager = function ()
                 $("#invia_messaggio").attr("disabled",false);
             }
 
-            this.inserisciDestinatario();
+            this.inserisciMittente();
         },
 
         liberaSpazioMessaggio: function ( )
@@ -299,6 +303,42 @@ var MessaggingManager = function ()
                 } );
         },
 
+        impostaControlliDestinatari: function ()
+        {
+            $(".form-destinatario").find(".aggiungi-destinatario").unbind("click");
+            $(".form-destinatario").find(".rimuovi-destinatario").unbind("click");
+
+            $(".form-destinatario").find(".aggiungi-destinatario").click( this.aggiungiDestinatario.bind( this ) );
+            $(".form-destinatario").find(".rimuovi-destinatario:not(.disabled)").click( this.rimuoviDestinatario.bind( this ) );
+
+            this.impostaAutocompleteDestinatario();
+
+            $(".form-destinatario").find(".nome-destinatario").popover("destroy");
+
+            if( $("#tipo_messaggio").val() === "ig" )
+                $(".form-destinatario").find(".nome-destinatario").popover({
+                    content: "In caso di ID inserire sempre # prima del numero.",
+                    trigger: Utils.isDeviceMobile() ? "click" : "hover",
+                    placement: "top"
+                });
+        },
+
+        aggiungiDestinatario: function ( e )
+        {
+            var nodo = $(".form-destinatario").first().clone();
+
+            nodo.find(".nome-destinatario").val("");
+            nodo.find(".rimuovi-destinatario").removeClass("disabled");
+            nodo.insertAfter( $(e.currentTarget).parents(".form-destinatario") );
+
+            this.impostaControlliDestinatari();
+        },
+
+        rimuoviDestinatario: function ( e )
+        {
+            $(e.currentTarget).parents(".form-destinatario").remove();
+        },
+
         inviaMessaggio: function ()
         {
             var destinatario = this.id_destinatario,
@@ -377,6 +417,8 @@ var MessaggingManager = function ()
         {
             if( this.visibile_ora.is( dove ) && !force )
                 return false;
+            else if ( this.visibile_ora.is( $("#scrivi_messaggio") ) )
+                this.resettaInputDestinatari();
 
             var target = e ? $(e.target) : null;
 

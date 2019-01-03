@@ -24,13 +24,13 @@
                 <div class="box-body no-padding">
                     <!--<ul class="nav nav-pills nav-stacked">-->
                     <ul class="nav nav-pills nav-stacked" id="sezioni">
-                        <li class="inizialmente-nascosto"><a><i class="fa fa-sign-out"></i> Fuori Gioco </a>
+                        <li class="inizialmente-nascosto menu-fg"><a><i class="fa fa-sign-out"></i> Fuori Gioco </a>
                             <ul class="nav nav-pills nav-stacked">
                                 <li class="active"><a id="vaia_inarrivo_fg"><i class="fa fa-inbox"></i> In Arrivo<span id="num_non_lette_fg" class="label label-primary pull-right"></span></a></li>
                                 <li><a id="vaia_inviate_fg"><i class="fa fa-envelope-o"></i> Inviate</a></li>
                             </ul>
                         </li>
-                        <li class="inizialmente-nascosto"><a id=""><i class="fa fa-sign-in"></i><span class="nome_sezione"> In Gioco </span></a>
+                        <li class="inizialmente-nascosto menu-ig"><a id=""><i class="fa fa-sign-in"></i><span class="nome_sezione"> In Gioco </span></a>
                             <ul class="nav nav-pills nav-stacked">
                                 <li><a id="vaia_inarrivo_ig"><i class="fa fa-inbox"></i> In Arrivo<span id="num_non_lette_ig" class="label label-primary pull-right"></span></a></li>
                                 <li><a id="vaia_inviate_ig"><i class="fa fa-envelope-o"></i> Inviate</a></li>
@@ -88,8 +88,12 @@
                         <div class="form-group">
                             <input class="form-control" id="mittente" placeholder="Da:" autocomplete="off" disabled>
                         </div>
-                        <div class="form-group">
-                            <input class="form-control " id="destinatario" autocomplete="off" placeholder="A:">
+                        <div class="form-group form-destinatario">
+                            <input class="form-control nome-destinatario" autocomplete="off" placeholder="A:">
+                            <div class="controlli-destinatario">
+                                <button type="button" class="btn aggiungi-destinatario"><i class="fa fa-plus"></i></button>
+                                <button type="button" class="btn disabled rimuovi-destinatario"><i class="fa fa-minus"></i></button>
+                            </div>
                         </div>
                         <div class="form-group">
                             <input class="form-control" id="oggetto" autocomplete="off" placeholder="Oggetto:">
