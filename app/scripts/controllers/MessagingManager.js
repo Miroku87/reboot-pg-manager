@@ -32,8 +32,10 @@ var MessaggingManager = function ()
         {
             this.id_destinatario = null;
             this.messaggio_in_lettura = null;
-            $("#destinatario").val("");
-            $("#destinatario").attr("disabled",false);
+
+            $(".form-destinatario").first().find(".nome-destinatario").val("");
+            $(".form-destinatario").first().find(".nome-destinatario").attr("disabled", false);
+            $(".form-destinatario").first().find(".controlli-destinatario").show();
             $("#messaggio").val("");
             $("#messaggio").attr("disabled",false);
             $("#oggetto").val("");
@@ -43,27 +45,57 @@ var MessaggingManager = function ()
             $("#invia_messaggio").attr("disabled", true);
         },
 
+        aggiungiDestinatarioInArray: function( input_elem, id )
+        {
+            var index = $(".form-destinatario").index( $(input_elem).parents(".form-destinatario") );
+
+            if( !( this.id_destinatari instanceof Array ) )
+                this.id_destinatari = [];
+
+            if( this.id_destinatari.indexOf( id ) === -1 && !/^\s*$/.test( id ) )
+                this.id_destinatari[index] = id;
+
+            console.log("adding", this.id_destinatari);
+        },
+
+        rimuoviDestinatarioInArray: function( input_elem )
+        {
+            var index = $(".form-destinatario").index( $(input_elem).parents(".form-destinatario") );
+
+            if( this.id_destinatari instanceof Array && this.id_destinatari[index] )
+                this.id_destinatari.splice(index,1);
+
+            console.log("removing", this.id_destinatari);
+        },
+
         destinatarioSelezionato: function ( event, ui )
         {
-            this.id_destinatario = ui.item.real_value;
+            this.aggiungiDestinatarioInArray( event.target, ui.item.real_value );
+
             $("#invia_messaggio").attr("disabled",false);
         },
 
         scrittoSuDestinatario: function ( e, ui )
         {
-            if( $("#tipo_messaggio").val() === "ig" && $(e.target).val().substr(0,1) === "#" )
+            var scritta = $(e.target).val().substr(1),
+                index_dest = $(".form-destinatario").index( $(e.target).parents(".form-destinatario") );
+
+            if( this.id_destinatari && this.id_destinatari[index_dest] )
+                this.id_destinatari[index_dest] = null;
+
+            if( $("#tipo_messaggio").val() === "ig" && $(e.target).val().substr(0,1) === "#" && /^\d+$/.test(scritta) && scritta !== "" )
             {
-                this.id_destinatario = $(e.target).val().substr(1);
+                this.aggiungiDestinatarioInArray( e.target, scritta );
                 $("#invia_messaggio").attr("disabled", false);
             }
-            else if ( $("#tipo_messaggio").val() === "ig" && $(e.target).val().substr(0,1) !== "#" )
-                $("#invia_messaggio").attr("disabled",true);
+            //else if ( $("#tipo_messaggio").val() === "ig" && $(e.target).val().substr(0,1) !== "#" )
+            //    $("#invia_messaggio").attr("disabled",true);
         },
 
         selezionatoDestinatario: function ( e, ui )
         {
-            if( !ui.item && $("#tipo_messaggio").val() !== "ig" && $(e.target).val().substr(0,1) !== "#" )
-                $("#invia_messaggio").attr("disabled",true);
+            //if( !ui.item && $("#tipo_messaggio").val() !== "ig" && $(e.target).val().substr(0,1) !== "#" )
+            //    $("#invia_messaggio").attr("disabled",true);
         },
 
         inserisciMittente: function ( )
@@ -141,17 +173,19 @@ var MessaggingManager = function ()
 
             if( this.messaggio_in_lettura )
             {
-                this.id_destinatario = this.messaggio_in_lettura.id_mittente;
+                this.id_destinatari = [ this.messaggio_in_lettura.id_mittente ];
 
                 $("#tipo_messaggio").val( this.messaggio_in_lettura.tipo );
                 $("#tipo_messaggio").attr("disabled", true);
 
-                $("#destinatario").val( this.messaggio_in_lettura.mittente );
-                $("#destinatario").attr("disabled", true);
+                $(".form-destinatario").first().find(".nome-destinatario").val( this.messaggio_in_lettura.mittente );
+                $(".form-destinatario").first().find(".nome-destinatario").attr("disabled", true);
+                $(".form-destinatario").first().find(".controlli-destinatario").hide();
 
                 if (this.messaggio_in_lettura.oggetto)
                 {
-                    $("#oggetto").val("Re: " + this.messaggio_in_lettura.oggetto.replace(/^\s*?re:\s?/i, ""));
+                    var oggetto_decodificato = decodeURIComponent(this.messaggio_in_lettura.oggetto);
+                    $("#oggetto").val("Re: " + oggetto_decodificato.replace(/^\s*?re:\s?/i, ""));
                     $("#oggetto").attr("disabled", true);
                 }
 
@@ -173,18 +207,21 @@ var MessaggingManager = function ()
         mostraMessaggioSingolo: function ( dati )
         {
             this.messaggio_in_lettura = {
-                id: dati.id_messaggio,
-                tipo: dati.tipo_messaggio,
-                mittente: dati.nome_mittente,
-                id_mittente: dati.id_mittente,
-                oggetto: dati.oggetto_messaggio
+                id          : dati.id_messaggio,
+                tipo        : dati.tipo_messaggio,
+                mittente    : dati.nome_mittente,
+                id_mittente : dati.id_mittente,
+                oggetto     : dati.oggetto_messaggio
             };
+
+            var testo_mex = decodeURIComponent( dati.testo_messaggio );
+            testo_mex = testo_mex.replace(/\n/g,"<br>");
 
             $("#oggetto_messaggio").text( decodeURIComponent( dati.oggetto_messaggio ) );
             $("#mittente_messaggio").text( dati.nome_mittente );
             $("#destinatario_messaggio").text( dati.nome_destinatario );
             $("#data_messaggio").text( dati.data_messaggio );
-            $("#corpo_messaggio").text( decodeURIComponent( dati.testo_messaggio ) );
+            $("#corpo_messaggio").html( testo_mex );
 
             if( dati.casella_messaggio === "inviati" )
                 $("#rispondi_messaggio").attr("disabled",true);
@@ -313,8 +350,6 @@ var MessaggingManager = function ()
 
             this.impostaAutocompleteDestinatario();
 
-            $(".form-destinatario").find(".nome-destinatario").popover("destroy");
-
             if( $("#tipo_messaggio").val() === "ig" )
                 $(".form-destinatario").find(".nome-destinatario").popover({
                     content: "In caso di ID inserire sempre # prima del numero.",
@@ -336,17 +371,23 @@ var MessaggingManager = function ()
 
         rimuoviDestinatario: function ( e )
         {
+            this.rimuoviDestinatarioInArray( $(e.currentTarget).parents(".form-destinatario").find(".nome-destinatario")[0] );
             $(e.currentTarget).parents(".form-destinatario").remove();
+        },
+
+        messaggioInviatoOk: function ( data )
+        {
+            Utils.showMessage(data.message,Utils.reloadPage);
         },
 
         inviaMessaggio: function ()
         {
-            var destinatario = this.id_destinatario,
+            var destinatari  = this.id_destinatari,
                 oggetto      = $("#oggetto").val(),
                 testo        = $("#messaggio").val(),
                 data         = {};
 
-            if( !destinatario || !oggetto || !testo )
+            if( !destinatari || ( destinatari && destinatari.length === 0 ) || !oggetto || !testo )
             {
                 Utils.showError("Per favore compilare tutti i campi.");
                 return false;
@@ -354,7 +395,7 @@ var MessaggingManager = function ()
 
             data.tipo         = $("#tipo_messaggio").val();
             data.mittente     = data.tipo === "ig" && this.pg_info ? this.pg_info.id_personaggio : this.user_info.email_giocatore;
-            data.destinatario = destinatario;
+            data.destinatari  = destinatari;
             data.oggetto      = encodeURIComponent( oggetto );
             data.testo        = encodeURIComponent( testo );
 
@@ -365,9 +406,9 @@ var MessaggingManager = function ()
                 Constants.API_POST_MESSAGGIO,
                 "POST",
                 data,
-                "Messaggio inviato con successo",
+                this.messaggioInviatoOk.bind(this),
                 null,
-                Utils.reloadPage
+                null
             );
         },
 
