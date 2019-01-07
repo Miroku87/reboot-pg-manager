@@ -45,44 +45,6 @@
 <script src="scripts/models/PulsantieraNumerica.js"></script>
 <script src="scripts/models/PointsManager.js"></script>
 {% endmacro %}
-{% macro modal_modifica_credito(extra_classes='') %}
-<div id="modal_modifica_credito" class="modal fade {{extra_classes}}" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header dialog-header-primary">
-                <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Chiudi</span></button>
-                <h4 class="modal-title text-primary">Assegna Crediti</h4>
-            </div>
-            <div class="modal-body">
-                <p>Assegna o rimuovi crediti ai seguenti personaggi:<br><span class="nomi_pg" id="nome_personaggi"></span></p>
-                <form autocomplete="off" aria-autocomplete="none">
-                    <div class="row">
-                        <div class="col-md-4"></div>
-                        <div class="col-md-4">
-                            <input type="number" step="1" id="offset_crediti" name="offset_crediti" class="form-control" value="0">
-                            <div class="btn-group pull-center under-element out-of-box pulsantiera-mobile inizialmente-nascosto" id="pulsanti_credito">
-                                <button type="button" class="btn btn-info meno10">-10</button>
-                                <button type="button" class="btn btn-info meno1">-1</button>
-                                <button type="button" class="btn btn-info piu1">+1</button>
-                                <button type="button" class="btn btn-info piu10">+10</button>
-                            </div>
-                        </div>
-                        <div class="col-md-4"></div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-success submit-btn" data-dismiss="modal" id="btn_modifica">Assegna</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
-            </div>
-        </div>
-    </div>
-</div>
-{% endmacro %}
-{% macro modal_modifica_credito_scripts() %}
-<script src="scripts/models/PulsantieraNumerica.js"></script>
-<script src="scripts/models/CreditManager.js"></script>
-{% endmacro %}
 
 {% macro layout_evento(suffisso_id='',extra_classes='') %}
 {% if suffisso_id != '' %}

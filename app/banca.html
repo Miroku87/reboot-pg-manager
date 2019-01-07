@@ -3,34 +3,33 @@
 {% set section = "banca" %}
 {% block mainContent %}
 {{ super() }}
+
+<button id="btn_bonifico" type="button" class="btn fab btn-primary">
+    <i class="fa fa-money"></i>
+    <br>Bonifico
+</button>
 <div class="row">
     <div class="col-md-12">
         <div class="row">
             <div class="col-sm-12">
                 <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <div class="box-saldo" id="totale">
                             <h5>Saldo Totale</h5>
                             <h3 class="saldo">XXXX <i class="fa fa-eye"></i></h3>
                         </div>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <div class="box-saldo box-verde" id="entrate_corrente">
                             <h5>Entrate Anno Corrente</h5>
                             <h3 class="saldo">XXXX <i class="fa fa-eye"></i></h3>
                         </div>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <div class="box-saldo box-rosso" id="uscite_corrente">
                             <h5>Uscite Anno Corrente</h5>
                             <h3 class="saldo">XXXX <i class="fa fa-eye"></i></h3>
                         </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <button id="btn_bonifico" type="button" class="btn btn-primary out-of-box">
-                            <i class="fa fa-money"></i>
-                            <br>Effettua Bonifico
-                        </button>
                     </div>
                 </div>
             </div>

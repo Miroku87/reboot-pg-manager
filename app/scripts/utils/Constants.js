@@ -131,6 +131,9 @@ Constants.RUOLO_ADMIN                    = "admin";
 Constants.INTERVALLO_CONTROLLO_MEX       = 60000;
 Constants.ID_RICETTA_PAG                 = 4;
 
+Constants.DEFAULT_ACCREDITO_BIT          = "Accredito a vostro favore da parte di {1}.";
+Constants.DEFAULT_ADDEBITO_BIT           = "Addebito a favore di {1}.";
+
 Constants.DATA_TABLE_LANGUAGE            = {
                                             "decimal":        "",
                                             "emptyTable":     "Nessun dato disponibile",
