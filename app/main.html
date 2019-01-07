@@ -1,5 +1,5 @@
 ﻿{% extends "./templates/main_template.html" %}
-{% from "./templates/components.html" import modal_assegna_punti, modal_assegna_punti_scripts, modal_modifica_credito, modal_modifica_credito_scripts %}
+{% from "./templates/components.html" import modal_assegna_punti, modal_assegna_punti_scripts %}
 {% set body_classes = "hold-transition skin-black fixed sidebar-mini pg-list-page" %}
 {% set section = "listapg" %}
 {% block mainContent %}
@@ -25,13 +25,6 @@
                     data-placement="bottom"
                     data-container="body"
                     title="Assegna punti ai pg filtrati nella tabella sotto"><i class="fa fa-edit"></i><br>Assegna Punti</button>
-            <button type="button"
-                    class="btn btn-info inizialmente-nascosto modificaPG_credito_personaggio"
-                    id="btn_modificaPG_credito_personaggio"
-                    data-toggle="tooltip"
-                    data-placement="bottom"
-                    data-container="body"
-                    title="Modifica i crediti dei pg filtrati nella tabella sotto"><i class="fa fa-money"></i><br>Modifica Crediti</button>
             <button type="button"
                     class="btn btn-info inizialmente-nascosto stampaCartelliniPG"
                     id="btn_stampaCartelliniPG"
@@ -75,7 +68,6 @@
 
 {% block modals %}
 {{ modal_assegna_punti() }}
-{{ modal_modifica_credito() }}
 
 <div id="modal_aggiungi_eta" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
     <div class="modal-dialog modal-lg">
@@ -105,6 +97,5 @@
 {% block managers %}
 {{ super() }}
 {{ modal_assegna_punti_scripts() }}
-{{ modal_modifica_credito_scripts() }}
 <script src="scripts/controllers/PgListManager.js"></script>
 {% endblock %}

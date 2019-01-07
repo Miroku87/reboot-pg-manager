@@ -8,6 +8,8 @@
 // If you want to recursively match all subfolders, use:
 // 'test/spec/**/*.js'
 
+var node_sass = require("node-sass");
+
 module.exports = function (grunt)
 {
 
@@ -215,6 +217,7 @@ module.exports = function (grunt)
         // Compiles Sass to CSS and generates necessary files if requested
         sass : {
             options : {
+                implementation: node_sass,
                 sourceMap : true,
                 sourceMapEmbed : true,
                 sourceMapContents : true,
@@ -707,7 +710,7 @@ module.exports = function (grunt)
         'postcss',
         'replace:staging_urls',
         'concat',
-        //'cssmin',
+        'cssmin',
         'uglify',
         'copy:dist',
         'copy:ckedit',

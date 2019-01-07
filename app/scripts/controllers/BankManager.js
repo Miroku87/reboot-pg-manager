@@ -20,48 +20,26 @@
 
         bonificoOk: function ()
 		{
+		    Utils.resetSubmitBtn();
             this.griglia_movimenti.ajax.reload(null,true);
+            
+            if( this.griglia_movimenti_tutti )
+                this.griglia_movimenti_tutti.ajax.reload(null,true);
+            
             this.recuperaInfoBanca();
-		},
-
-        controllaMovimenti: function ()
-		{
-            this.movimenti_bonifico++;
-
-            if( this.movimenti_bonifico === 2 )
-            {
-                this.movimenti_bonifico = 0;
-                Utils.showMessage("Bonifico eseguito con successo.",this.bonificoOk.bind(this));
-            }
-		},
-
-        modificaCrediti: function ()
-		{
-            Utils.requestData(
-                Constants.API_POST_EDIT_PG,
-                "POST",
-                {
-                    pgid: this.pg_info.id_personaggio,
-                    modifiche: { credito_personaggio: Math.abs(parseInt($("#offset_crediti").val(),10)) * -1 },
-                    offset: true
-                },
-                this.controllaMovimenti.bind(this)
-            );
-
-            Utils.requestData(
-                Constants.API_POST_EDIT_PG,
-                "POST",
-                {
-                    pgid: this.id_creditore,
-                    modifiche: { credito_personaggio: Math.abs(parseInt($("#offset_crediti").val(),10)) },
-                    offset: true
-                },
-                this.controllaMovimenti.bind(this)
-            );
 		},
 
         inviaBonifico: function ( e )
 		{
+            if( !this.id_creditore &&  $("#personaggio").val().substr(0,1) === "#" )
+                this.id_creditore = $("#personaggio").val().substr(1);
+            
+            if( !this.id_creditore )
+            {
+                Utils.showError("C'&egrave; un problema con il beneficiario del bonifico.<br>Per favore aggiorna la pagina e riprova.");
+                return;
+            }
+            
             //$id_debitore, $importo, $id_creditore = NULL, $note = NULL, $id_acq_comp = NULL
             Utils.requestData(
                 Constants.API_POST_TRANSAZIONE,
@@ -72,13 +50,18 @@
                     id_creditore : this.id_creditore,
                     note         : $("#causale").val()
                 },
-                this.modificaCrediti.bind(this)
+                "Bonifico eseguito con successo.",
+                null,
+                this.bonificoOk.bind(this)
             );
 		},
 
         confermaInvioBonifico: function ( e )
 		{
-            Utils.showConfirm( "Conferma il bonifico", this.inviaBonifico.bind(this), true );
+		    var beneficiario = $("#modal_bonifico").find("#personaggio").val(),
+                crediti      = $("#modal_bonifico").find("#offset_crediti").val();
+		    
+            Utils.showConfirm( "Conferma il bonifico di <strong>"+crediti+"</strong> Bit a beneficio di <strong>"+beneficiario+"</strong>.", this.inviaBonifico.bind(this), true );
 		},
 
         mostraModalBonifico: function ( e )
@@ -186,7 +169,7 @@
                 render: this.renderTipoMovimento.bind(this)
             });
 
-            this.griglia_movimenti = $( '#movimenti' )
+            this.griglia_movimenti_tutti = $( '#movimenti' )
                 //.on("error.dt", this.erroreDataTable.bind(this) )
                 //.on("draw.dt", this.setGridListeners.bind(this) )
                 .DataTable( {

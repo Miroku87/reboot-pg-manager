@@ -461,3 +461,13 @@ body.register-page {
 .box-saldo.box-verde{
   background-image: url(../images/box-verde.png);
 }
+
+.fab {
+    border-radius: 50% 50%;
+    width: 75px;
+    height: 75px;
+    position: fixed;
+    bottom: 1vmin;
+    right: 1vmin;
+    z-index: 900;
+}
