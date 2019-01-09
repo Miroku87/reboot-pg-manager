@@ -471,3 +471,7 @@ body.register-page {
     right: 1vmin;
     z-index: 900;
 }
+
+.box.disabled {
+    cursor: not-allowed;
+}
