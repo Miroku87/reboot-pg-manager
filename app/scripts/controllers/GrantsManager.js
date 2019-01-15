@@ -9,9 +9,15 @@ var GrantsManager = function ()
             this.user_info = JSON.parse( window.localStorage.getItem("user") );
 
             this.setListeners();
-            this.recuperaRuoli();
-            this.recuperaListaPermessi();
-            this.recuperaListaPermessiDeiRuoli();
+
+            if( Utils.controllaPermessiUtente( this.user_info, ["creaRuolo","eliminaRuolo","associaPermessi"], true ) )
+            {
+                this.recuperaListaPermessi();
+                this.recuperaListaPermessiDeiRuoli();
+            }
+
+            if( Utils.controllaPermessiUtente( this.user_info, ["recuperaRuoli"], true ) )
+                this.recuperaRuoli();
         },
 
         inserisciNuovoRuolo: function( )

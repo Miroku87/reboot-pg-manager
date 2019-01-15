@@ -31,9 +31,9 @@
             return errors;
         },
 
-        onDatiGiocatoreInviati: function ( id_gioc )
+        onDatiGiocatoreInviati: function ( mail_utente_cambiata )
         {
-            if( id_gioc !== this.user_info.email_giocatore )
+            if( mail_utente_cambiata )
             {
                 Utils.showMessage("Dal momento che la tua mail è cambiata verrai disconnesso.",AdminLTEManager.logout);
                 return;
@@ -74,7 +74,7 @@
                 dati,
                 "Modifiche apportate con successo",
                 null,
-                this.onDatiGiocatoreInviati.bind(this, id_gioc)
+                this.onDatiGiocatoreInviati.bind(this, id_gioc === this.user_info.email_giocatore && mail !== this.user_info.email_giocatore )
             );
 		},
 
@@ -190,7 +190,7 @@
                 "data-placement='top' " +
                 "title='Scrivi Messaggio'><i class='fa fa-envelope-o'></i></button>";
 
-            if( Utils.controllaPermessiUtente( this.user_info, permessi_modifica, true ) )
+            if( Utils.controllaPermessiUtente( this.user_info, permessi_modifica, false ) )
                 pulsanti += "<button type='button' " +
                     "class='btn btn-xs btn-default modificaGiocatore' " +
                     "data-id='"+row.email_giocatore+"' " +
