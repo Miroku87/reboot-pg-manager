@@ -75,6 +75,16 @@ Constants.API_GET_COMPONENTI_CON_ID      = Constants.API_URL + "/craftingmanager
 Constants.API_GET_INFO_BANCA             = Constants.API_URL + "/transactionmanager/recuperainfobanca";
 Constants.API_GET_MOVIMENTI              = Constants.API_URL + "/transactionmanager/recuperamovimenti";
 
+Constants.API_GET_STATS_CLASSI                  = Constants.API_URL + "/statistics/recuperastatisticheclassi";
+Constants.API_GET_STATS_ABILITA                 = Constants.API_URL + "/statistics/recuperastatisticheabilita";
+Constants.API_GET_STATS_ABILITA_PER_PROFESSIONE = Constants.API_URL + "/statistics/recuperastatisticheabilitaperprofessione";
+Constants.API_GET_STATS_CREDITI                 = Constants.API_URL + "/statistics/recuperastatistichecrediti";
+Constants.API_GET_STATS_PG                      = Constants.API_URL + "/statistics/recuperastatistichepg";
+Constants.API_GET_STATS_PUNTEGGI                = Constants.API_URL + "/statistics/recuperastatistichepunteggi";
+Constants.API_GET_STATS_RAVSHOP                 = Constants.API_URL + "/statistics/recuperastatisticheqtaravshop";
+Constants.API_GET_STATS_ACQUISTI_RAVSHOP        = Constants.API_URL + "/statistics/recuperastatisticheacquistiravshop";
+Constants.API_GET_STATS_ARMI                    = Constants.API_URL + "/statistics/recuperastatistichearmistampate";
+
 Constants.API_DEL_GIOCATORE              = Constants.API_URL + "/usersmanager/eliminagiocatore";
 Constants.API_DEL_CLASSE_PG              = Constants.API_URL + "/charactersmanager/rimuoviclassepg";
 Constants.API_DEL_ABILITA_PG             = Constants.API_URL + "/charactersmanager/rimuoviabilitapg";
