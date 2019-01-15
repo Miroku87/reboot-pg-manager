@@ -1,4 +1,4 @@
-﻿let Utils =
+﻿var Utils =
     {
         isDeviceMobile: function ()
         {
@@ -14,7 +14,7 @@
         {
             if (!url) url = window.location.href;
             name = name.replace(/[\[\]]/g, "\\$&");
-            let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
                 results = regex.exec(url);
             if (!results) return null;
             if (!results[2]) return '';
@@ -23,17 +23,17 @@
 
         sortChildrenByAttribute: function ( parent, childSelector, attribute )
         {
-            let items = parent.children( childSelector ).sort( function ( a, b )
+            var items = parent.children( childSelector ).sort( function ( a, b )
             {
-                let vA = $( a ).attr( attribute );
-                let vB = $( b ).attr( attribute );
+                var vA = $( a ).attr( attribute );
+                var vB = $( b ).attr( attribute );
                 return ( vA < vB ) ? -1 : ( vA > vB ) ? 1 : 0;
             } );
 
             parent.append( items );
         },
 
-        firstLetterUpper: function ( data )
+        firstvarterUpper: function ( data )
         {
             return data.substr(0,1).toUpperCase() + data.substr(1);
         },
@@ -84,7 +84,7 @@
 
         onSubmitBtnClicked: function ( e )
         {
-            let target = $(e.currentTarget);
+            var target = $(e.currentTarget);
             target.append("<i class='fa fa-spinner fa-pulse' style='margin-left:5px'></i>");
             target.attr("disabled",true);
         },
@@ -183,7 +183,7 @@
 
                     if (askPwd)
                     {
-                        let dati = {confirmpassword : $("#confirmWithPassword").find("input#confirm_password").val()};
+                        var dati = {confirmpassword : $("#confirmWithPassword").find("input#confirm_password").val()};
 
                         Utils.requestData(
                             Constants.API_CHECK_PWD,
@@ -247,7 +247,7 @@
                 }.bind(this),
                 error: function ( jqXHR, textStatus, errorThrown )
                 {
-                    let real_error = textStatus+"<br>"+errorThrown;
+                    var real_error = textStatus+"<br>"+errorThrown;
 
                     if( textStatus === "parsererror")
                         real_error = jqXHR.responseText.replace(/^([\S\s]*?)\{"[\S\s]*/i,"$1");
@@ -268,7 +268,7 @@
         {
             tutti = typeof tutti === "undefined" ? true : tutti;
 
-            for( let p in permessi )
+            for( var p in permessi )
             {
                 if( tutti && user_info.permessi.indexOf( permessi[p] ) === -1 )
                     return false;
@@ -286,7 +286,7 @@
         {
             tutti = typeof tutti === "undefined" ? true : tutti;
 
-            for( let p in permessi )
+            for( var p in permessi )
             {
                 if( tutti && pg_info.permessi.indexOf( permessi[p] ) === -1 )
                     return false;
@@ -302,11 +302,11 @@
 
         rimuoviPermessi: function( info, permessi )
         {
-            let rimuovi_da = info.permessi;
+            var rimuovi_da = info.permessi;
 
-            for( let p in permessi )
+            for( var p in permessi )
             {
-                let i = rimuovi_da.indexOf( permessi[p] );
+                var i = rimuovi_da.indexOf( permessi[p] );
                 if( i !== -1 )
                     rimuovi_da.splice(i,1);
             }
@@ -314,7 +314,7 @@
 
         pad: function (num, size)
         {
-                let n     = parseInt( num, 10 ),
+                var n     = parseInt( num, 10 ),
                     minus = n < 0 ? "-" : "",
                     s     = "000" + Math.abs( n );
             return minus + s.substr(s.length-size);
@@ -337,24 +337,24 @@
 
         setCookie: function (cname, cvalue, exdays)
         {
-            let d = new Date();
+            var d = new Date();
             d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-            let expires = "expires=" + d.toUTCString();
+            var expires = "expires=" + d.toUTCString();
             document.cookie = cname + "=" + cvalue + "; " + expires;
         },
 
-        deleteCookie: function (cname)
+        devareCookie: function (cname)
         {
             document.cookie = cname + "=" + "; expires=Thu, 01 Jan 1970 00:00:00 UTC";
         },
 
         getCookie: function (cname)
         {
-            let name = cname + "=";
-            let ca = document.cookie.split(';');
-            for (let i = 0; i < ca.length; i++)
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++)
             {
-                let c = ca[i];
+                var c = ca[i];
                 while (c.charAt(0) == ' ') c = c.substring(1);
                 if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
             }
@@ -363,7 +363,7 @@
 
         rimuoviElemDaArrayMultidimensione: function( arr, chiave, valore )
         {
-            for( let a in arr )
+            for( var a in arr )
             {
                 if( arr[a][chiave] === valore )
                 {
@@ -375,7 +375,7 @@
 
         isLink: function (str)
         {
-            let urlPatt = new RegExp(
+            var urlPatt = new RegExp(
                 "^" +
                     // protocol identifier
                 "(?:(?:https?|ftp)://)" +
@@ -427,28 +427,28 @@
 
         controllaCF: function( cf )
         {
-            let pattern = /^[a-zA-Z]{6}[0-9]{2}[a-zA-Z][0-9]{2}[a-zA-Z][0-9]{3}[a-zA-Z]$/;
+            var pattern = /^[a-zA-Z]{6}[0-9]{2}[a-zA-Z][0-9]{2}[a-zA-Z][0-9]{3}[a-zA-Z]$/;
 
             return pattern.test( cf );
         },
 
         controllaMail: function( mail )
         {
-            let pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            var pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
             return pattern.test( mail );
         },
 
         soloSpazi: function( stringa )
         {
-            let pattern = /^\s+$/;
+            var pattern = /^\s+$/;
 
             return pattern.test( stringa );
         },
 
         getJQueryObj: function( obj )
         {
-            let jobj = {};
+            var jobj = {};
 
             if( typeof obj === "string" )
                 jobj = $( "#" + obj );
@@ -467,7 +467,7 @@
 
         indexOfArrayOfObjects: function ( arr, key, value )
         {
-            for( let a in arr )
+            for( var a in arr )
             {
                 if( arr[a][key] === value )
                     return parseInt( a, 10);
@@ -478,9 +478,9 @@
     
         dynamicColor: function ()
         {
-            let r = Math.floor( Math.random() * 255 );
-            let g = Math.floor( Math.random() * 255 );
-            let b = Math.floor( Math.random() * 255 );
+            var r = Math.floor( Math.random() * 255 );
+            var g = Math.floor( Math.random() * 255 );
+            var b = Math.floor( Math.random() * 255 );
             return "rgb(" + r + "," + g + "," + b + ")";
         },
     
@@ -495,12 +495,12 @@
         msToHMS: function ( ms )
         {
             // 1- Convert to seconds:
-            let seconds = ms / 1000;
+            var seconds = ms / 1000;
             // 2- Extract hours:
-            let hours   = parseInt( seconds / 3600 ); // 3,600 seconds in 1 hour
+            var hours   = parseInt( seconds / 3600 ); // 3,600 seconds in 1 hour
             seconds     = seconds % 3600; // seconds remaining after extracting hours
             // 3- Extract minutes:
-            let minutes = parseInt( seconds / 60 ); // 60 seconds in 1 minute
+            var minutes = parseInt( seconds / 60 ); // 60 seconds in 1 minute
             // 4- Keep only seconds not extracted to minutes:
             seconds = parseInt( seconds % 60, 10 );
             return Utils.pad( hours, 2 ) + " ore, " + Utils.pad( minutes, 2 ) + " minuti, " + Utils.pad( seconds, 2 ) + " secondi";

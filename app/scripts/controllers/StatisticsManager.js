@@ -168,7 +168,7 @@ var StatisticsManager = StatisticsManager || function ()
         
         disegnaStatisticheAbilitaProfessionaliPerPg: function disegnaStatisticheAbilitaProfessionaliPerPg( d )
         {
-            let data = d.data,
+            var data = d.data,
                 ability_data = data.map( function ( el )
                 {
                     return {x: el.QTY+" da "+el.nome_classe, y: el.num_pgs};
