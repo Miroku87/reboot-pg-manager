@@ -1,0 +1,171 @@
+﻿{% extends "./templates/main_template.html" %}
+{% set body_classes = body_classes + " statistics-page" %}
+{% set section = "statistichegioco" %}
+{% set titolo_sezione = "Statistiche di Gioco"  %}
+{% set descrizione_sezione = "Qui potrai controllare varie statistiche di gioco."  %}
+{% block mainContent %}
+{{ super() }}
+
+<div class="row">
+    <div class="col-md-6 col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Quantit&agrave; di PG che hanno comprato una data Classe Militare</h3>
+            </div>
+            <div class="box-body">
+                <canvas id="military_classes_pie" width="800" height="400" class="pie-chart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Quantit&agrave; di PG che hanno comprato una data Professione</h3>
+            </div>
+            <div class="box-body">
+                <canvas id="civilian_classes_pie" width="800" height="400" class="pie-chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Quantit&agrave; di Personaggi con Punti Ferita X</h3>
+            </div>
+            <div class="box-body">
+                <canvas id="pf_pie" width="800" height="400" class="pie-chart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Quantit&agrave; di Personaggi con Punti Shield X</h3>
+            </div>
+            <div class="box-body">
+                <canvas id="ps_pie" width="800" height="400" class="pie-chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Quantit&agrave; di Personaggi con Difesa Mentale X</h3>
+            </div>
+            <div class="box-body">
+                <canvas id="mente_pie" width="800" height="400" class="pie-chart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Quantit&agrave; di armi craftate e stampate in possesso dei PG</h3>
+            </div>
+            <div class="box-body">
+                <canvas id="crafted_bar" width="800" height="400" class="bar-chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Quantit&agrave; di PG che hanno comprato una data Abilit&agrave;
+                    Professionale</h3>
+            </div>
+            <div class="box-body">
+                <p>Con schermi piccoli i nomi delle abilit&agrave; si sovrappongono. <br> Per poterle vedere comunque
+                    andare con il mouse sopra alle barre.</p>
+                <canvas id="civilian_abilities_bars" width="1000" height="400" class="pie-chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Quantit&agrave; di PG che hanno comprato una data Abilit&agrave; Militare</h3>
+            </div>
+            <div class="box-body">
+                <p>Con schermi piccoli i nomi delle abilit&agrave; si sovrappongono. <br> Per poterle vedere comunque
+                    andare
+                    con il mouse sopra alle barre.</p>
+                <canvas id="military_abilities_bars" width="1000" height="400" class="bar-chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Quantit&agrave; di PG che hanno comprato Abilit&agrave; di una specifica Professione</h3>
+            </div>
+            <div class="box-body">
+                <canvas id="civilian_abilities_qty_pg_bars" width="1000" height="400" class="bar-chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Evoluzione nel tempo dei Bit che girano in gioco</h3>
+            </div>
+            <div class="box-body">
+                <canvas id="credits_line" width="800" height="400" class="line-chart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Quantit&agrave; di Acquisti RavShop nel Tempo</h3>
+            </div>
+            <div class="box-body">
+                <canvas id="ravshop_qty_bar" width="800" height="400" class="bar-chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Popolarit&agrave; Componenti Acquistati</h3>
+            </div>
+            <div class="box-body">
+                <p>Con schermi piccoli i nomi dei componenti si sovrappongono. <br> Per poterle vedere comunque andare
+                    con
+                    il mouse sopra alle barre.</p>
+                <canvas id="ravshop_popularity_bar" width="1000" height="400" class="bar-chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block externalScripts %}
+<script src="/node_modules/chart.js/dist/Chart.min.js"></script>
+{% endblock %}
+
+{% block managers %}
+{{ super() }}
+<script src="scripts/controllers/StatisticsManager.js"></script>
+{% endblock %}
