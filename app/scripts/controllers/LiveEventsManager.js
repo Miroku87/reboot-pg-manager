@@ -431,7 +431,7 @@ var LiveEventsManager = function ()
                 this.mostraAnteprima.bind(this)
             );
 
-            if( parseInt( $(e.target).attr("data-pubblico"), 10 ) === 1 )
+            if( parseInt( $(e.target).attr("data-pubblico"), 10 ) === 1 && Utils.controllaPermessiUtente( this.user_info, ["ritiraEvento"], true ) )
             {
                 $("#modal_anteprima_evento").find("#btn_pubblica").hide();
                 $("#modal_anteprima_evento").find("#btn_ritira").show();
