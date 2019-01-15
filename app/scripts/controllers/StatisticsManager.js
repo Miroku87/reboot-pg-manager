@@ -48,7 +48,7 @@ var StatisticsManager = StatisticsManager || function ()
                     datasets: [ { data: military_data, backgroundColor: military_colors, borderWidth: 0 } ],
                     labels  : military_labels
                 },
-                options: { responsive: false }
+                options: { responsive: true }
             } );
             
             this.civilian_classes_pie = new Chart( this.civilian_classes_pie_ctx, {
@@ -57,7 +57,7 @@ var StatisticsManager = StatisticsManager || function ()
                     datasets: [ { data: civilian_data, backgroundColor: civilian_colors, borderWidth: 0 } ],
                     labels  : civilian_labels
                 },
-                options: { responsive: false }
+                options: { responsive: true }
             } );
         },
         
@@ -259,7 +259,7 @@ var StatisticsManager = StatisticsManager || function ()
                     labels  : labels
                 },
                 options: {
-                    responsive     : false,
+                    responsive     : true,
                     scaleShowValues: true,
                     scales         : {
                         xAxes: [ {
@@ -316,7 +316,7 @@ var StatisticsManager = StatisticsManager || function ()
                     labels  : labels.pf
                 },
                 options: {
-                    responsive: false,
+                    responsive: true,
                     scales    : {
                         yAxes: [ {
                             display   : true,
@@ -348,7 +348,7 @@ var StatisticsManager = StatisticsManager || function ()
                     labels  : labels.ps
                 },
                 options: {
-                    responsive: false,
+                    responsive: true,
                     scales    : {
                         yAxes: [ {
                             display   : true,
@@ -380,7 +380,7 @@ var StatisticsManager = StatisticsManager || function ()
                     labels  : labels.mente
                 },
                 options: {
-                    responsive: false,
+                    responsive: true,
                     scales    : {
                         yAxes: [ {
                             display   : true,
@@ -451,7 +451,7 @@ var StatisticsManager = StatisticsManager || function ()
                     datasets: [ { data: bar_data, backgroundColor: Utils.dynamicColor(), label: "Numero Acquisti" } ],
                     labels  : bar_labels
                 },
-                options: { responsive: false }
+                options: { responsive: true }
             } );
         },
         
@@ -528,7 +528,7 @@ var StatisticsManager = StatisticsManager || function ()
                     labels  : bar_labels
                 },
                 options: {
-                    responsive     : false,
+                    responsive     : true,
                     scaleShowValues: true,
                     scales         : {
                         xAxes: [ {
