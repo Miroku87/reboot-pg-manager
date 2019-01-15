@@ -75,25 +75,25 @@
             if( typeof permesso === "string" && $("#btn_" + permesso).length > 0 )
             {
                 $(in_selector).find("#btn_" + permesso).show(animation);
-                //$("#btn_" + permesso).removeClass("inizialmente-nascosto");
+                $("#btn_" + permesso).removeClass("inizialmente-nascosto");
             }
 
             if ( typeof permesso === "string" && $("."+permesso).length > 0 )
             {
                 $(in_selector).find("." + permesso).show(animation);
-                //$("." + permesso).removeClass("inizialmente-nascosto");
+                $("." + permesso).removeClass("inizialmente-nascosto");
             }
 
             if ( typeof permesso === "string" && $("#btn_"+permesso_generico).length > 0 )
             {
                 $(in_selector).find("#btn_" + permesso_generico).show(animation);
-                //$("#btn_" + permesso_generico).removeClass("inizialmente-nascosto");
+                $("#btn_" + permesso_generico).removeClass("inizialmente-nascosto");
             }
 
             if ( typeof permesso === "string" && $("."+permesso_generico).length > 0 )
             {
                 $(in_selector).find("." + permesso_generico).show(animation);
-                //$("." + permesso_generico).removeClass("inizialmente-nascosto");
+                $("." + permesso_generico).removeClass("inizialmente-nascosto");
             }
         },
 
@@ -132,6 +132,7 @@
 
             this.mostraNomePersonaggio();
             this.controllaModalitaEvento();
+            this.setupMenuSearch();
         },
 
         logout: function ()
@@ -150,6 +151,7 @@
 
         setupMenuSearch: function ()
         {
+            $( '#search-input' ).unbind( 'keyup' );
             $( '#search-input' ).on( 'keyup', function ()
             {
                 var term = $( '#search-input' ).val().trim();
@@ -157,47 +159,55 @@
                 {
                     $( '.sidebar-menu li' ).each( function ()
                     {
-                        $( this ).show( 0 );
-                        $( this ).removeClass( 'active' );
-                        if ( $( this ).data( 'lte.pushmenu.active' ) )
-                        {
-                            $( this ).addClass( 'active' );
-                        }
+                        var elem = $(this);
+                        
+                        if( !elem.hasClass("inizialmente-nascosto") )
+                            elem.show( 0 );
+
+                        elem.removeClass( 'active' );
+                        if ( elem.data( 'lte.pushmenu.active' ) )
+                            elem.addClass( 'active' );
                     } );
                     return;
                 }
 
                 $( '.sidebar-menu li' ).each( function ()
                 {
-                    if ( $( this ).text().toLowerCase().indexOf( term.toLowerCase() ) === -1 )
+                    var elem = $(this);
+
+                    if( !elem.hasClass("inizialmente-nascosto") )
                     {
-                        $( this ).hide( 0 );
-                        $( this ).removeClass( 'pushmenu-search-found', false );
-
-                        if ( $( this ).is( '.treeview' ) )
+                        if (elem.text().toLowerCase().indexOf(term.toLowerCase()) === -1)
                         {
-                            $( this ).removeClass( 'active' );
-                        }
-                    } else
-                    {
-                        $( this ).show( 0 );
-                        $( this ).addClass( 'pushmenu-search-found' );
+                            elem.hide(0);
+                            elem.removeClass('pushmenu-search-found', false);
 
-                        if ( $( this ).is( '.treeview' ) )
+                            if (elem.is('.treeview'))
+                            {
+                                elem.removeClass('active');
+                            }
+                        }
+                        else
                         {
-                            $( this ).addClass( 'active' );
+                            elem.show(0);
+                            elem.addClass('pushmenu-search-found');
+
+                            if (elem.is('.treeview'))
+                            {
+                                elem.addClass('active');
+                            }
+
+                            var parent = elem.parents('li').first();
+                            if (parent.is('.treeview'))
+                            {
+                                parent.show(0);
+                            }
                         }
 
-                        var parent = $( this ).parents( 'li' ).first();
-                        if ( parent.is( '.treeview' ) )
+                        if (elem.is('.header'))
                         {
-                            parent.show( 0 );
+                            elem.show();
                         }
-                    }
-
-                    if ( $( this ).is( '.header' ) )
-                    {
-                        $( this ).show();
                     }
                 } );
 

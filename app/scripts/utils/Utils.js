@@ -33,7 +33,7 @@
             parent.append( items );
         },
 
-        firstvarterUpper: function ( data )
+        firstletterUpper: function ( data )
         {
             return data.substr(0,1).toUpperCase() + data.substr(1);
         },
@@ -343,7 +343,7 @@
             document.cookie = cname + "=" + cvalue + "; " + expires;
         },
 
-        devareCookie: function (cname)
+        deleteCookie: function (cname)
         {
             document.cookie = cname + "=" + "; expires=Thu, 01 Jan 1970 00:00:00 UTC";
         },
