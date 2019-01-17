@@ -165,3 +165,5 @@ Constants.DATA_TABLE_LANGUAGE            = {
                                                 "sortDescending": ": clicca per ordinare la colonna in ordine decrescente"
                                             }
                                         };
+
+Constants.CHART_COLORS = [ "#fcb3bc", "#ff61a1", "#e026c9", "#a726e3", "#735e7f", "#a42946", "#df7623", "#f8ae29", "#ffd658", "#cde02f", "#70f03b", "#70e026", "#11c26a", "#3affb5", "#3a80ff", "#114a67", "#b8656f", "#711d96", "#431d96", "#204b99", "#1e9194", "#1b9a17", "#8f9a18", "#c2d517", "#e6ff00", "#ffb403", "#fe7903", "#e0611a", "#dc3717", "#f11310", "#821613", "#8e1f40" ];

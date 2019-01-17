@@ -4,48 +4,80 @@
 
 var StatisticsManager = StatisticsManager || function ()
 {
+    var color_index = 0;
+    
     return {
+        getColor: function ()
+        {
+            var i = color_index++;
+            
+            if ( i < Constants.CHART_COLORS.length )
+                return Constants.CHART_COLORS[ i ];
+            else
+                return Utils.dynamicColor();
+        },
         
         disegnaStatisticheClassi: function disegnaStatisticheClassi( data )
         {
-            var data            = data.data,
-                military_data   = data.filter( function ( el )
+            var data                 = data.data,
+                military_data        = data.filter( function ( el )
                 {
                     return el.tipo_classe === "militare";
                 } ),
-                military_labels = military_data.map( function ( el )
+                military_labels      = military_data.map( function ( el )
                 {
                     return el.nome_classe;
                 } ),
-                military_colors = military_data.map( function ( el )
+                military_colors      = military_data.map( function ( el )
                 {
-                    return Utils.dynamicColor();
-                } ),
-                military_data   = military_data.map( function ( el )
+                    return this.getColor();
+                }.bind( this ) ),
+                military_data        = military_data.map( function ( el )
                 {
                     return parseInt( el.QTY, 10 );
                 } ),
-                civilian_data   = data.filter( function ( el )
+                civilian_data        = data.filter( function ( el )
                 {
                     return el.tipo_classe === "civile";
                 } ),
-                civilian_labels = civilian_data.map( function ( el )
+                civilian_labels      = civilian_data.map( function ( el )
                 {
                     return el.nome_classe;
                 } ),
-                civilian_colors = civilian_data.map( function ( el )
+                civilian_colors      = civilian_data.map( function ( el )
                 {
-                    return Utils.dynamicColor();
-                } ),
-                civilian_data   = civilian_data.map( function ( el )
+                    return this.getColor();
+                }.bind( this ) ),
+                civilian_data        = civilian_data.map( function ( el )
                 {
                     return parseInt( el.QTY, 10 );
+                } ),
+                military_bg_rgba     = military_colors.map( function ( c )
+                {
+                    return Utils.hexToRGBa( c, 0.5 )
+                } ),
+                military_border_rgba = military_colors.map( function ( c )
+                {
+                    return Utils.hexToRGBa( c, 1 )
+                } ),
+                civilian_bg_rgba     = civilian_colors.map( function ( c )
+                {
+                    return Utils.hexToRGBa( c, 0.5 )
+                } ),
+                civilian_border_rgba = civilian_colors.map( function ( c )
+                {
+                    return Utils.hexToRGBa( c, 1 )
                 } );
             
             this.military_classes_pie = new Chart( this.military_classes_pie_ctx, {
                 type   : 'pie',
                 data   : {
-                    datasets: [ { data: military_data, backgroundColor: military_colors, borderWidth: 0 } ],
+                    datasets: [ {
+                        data           : military_data,
+                        backgroundColor: military_bg_rgba,
+                        borderColor    : military_border_rgba,
+                        borderWidth    : 1
+                    } ],
                     labels  : military_labels
                 },
                 options: { responsive: true }
@@ -54,7 +86,12 @@ var StatisticsManager = StatisticsManager || function ()
             this.civilian_classes_pie = new Chart( this.civilian_classes_pie_ctx, {
                 type   : 'pie',
                 data   : {
-                    datasets: [ { data: civilian_data, backgroundColor: civilian_colors, borderWidth: 0 } ],
+                    datasets: [ {
+                        data           : civilian_data,
+                        backgroundColor: civilian_bg_rgba,
+                        borderColor    : civilian_border_rgba,
+                        borderWidth    : 1
+                    } ],
                     labels  : civilian_labels
                 },
                 options: { responsive: true }
@@ -83,10 +120,6 @@ var StatisticsManager = StatisticsManager || function ()
                 {
                     return el.nome_abilita;
                 } ),
-                military_colors = military_data.map( function ( el )
-                {
-                    return Utils.dynamicColor();
-                } ),
                 military_data   = military_data.map( function ( el )
                 {
                     return { y: parseInt( el.QTY, 10 ), x: el.nome_abilita };
@@ -99,14 +132,12 @@ var StatisticsManager = StatisticsManager || function ()
                 {
                     return el.nome_abilita;
                 } ),
-                civilian_colors = civilian_data.map( function ( el )
-                {
-                    return Utils.dynamicColor();
-                } ),
                 civilian_data   = civilian_data.map( function ( el )
                 {
                     return { y: parseInt( el.QTY, 10 ), x: el.nome_abilita };
-                } );
+                } ),
+                military_color  = this.getColor(),
+                civilian_color  = this.getColor();
             
             this.military_abilities_bars = new Chart( this.military_abilities_bars_ctx, {
                 type   : 'bar',
@@ -114,7 +145,9 @@ var StatisticsManager = StatisticsManager || function ()
                     datasets: [ {
                         data           : military_data,
                         label          : "Quantità di PG con l'abilità",
-                        backgroundColor: Utils.dynamicColor()
+                        backgroundColor: Utils.hexToRGBa( military_color, 0.5 ),
+                        borderColor    : Utils.hexToRGBa( military_color, 1 ),
+                        borderWidth    : 1
                     } ],
                     labels  : military_labels
                 },
@@ -137,7 +170,9 @@ var StatisticsManager = StatisticsManager || function ()
                     datasets: [ {
                         data           : civilian_data,
                         label          : "Quantità di PG con l'abilità",
-                        backgroundColor: Utils.dynamicColor()
+                        backgroundColor: Utils.hexToRGBa( civilian_color, 0.5 ),
+                        borderColor    : Utils.hexToRGBa( civilian_color, 1 ),
+                        borderWidth    : 1
                     } ],
                     labels  : civilian_labels
                 },
@@ -168,15 +203,16 @@ var StatisticsManager = StatisticsManager || function ()
         
         disegnaStatisticheAbilitaProfessionaliPerPg: function disegnaStatisticheAbilitaProfessionaliPerPg( d )
         {
-            var data = d.data,
-                ability_data = data.map( function ( el )
+            var data           = d.data,
+                ability_data   = data.map( function ( el )
                 {
-                    return {x: el.QTY+" da "+el.nome_classe, y: el.num_pgs};
-                }),
+                    return { x: el.QTY + " da " + el.nome_classe, y: el.num_pgs };
+                } ),
                 ability_labels = data.map( function ( el )
                 {
-                    return el.QTY+" da "+el.nome_classe;
-                });
+                    return el.QTY + " da " + el.nome_classe;
+                } ),
+                color          = this.getColor();
             
             this.civilian_abilities_qty_bars = new Chart( this.civilian_abilities_qty_pg_bars_ctx, {
                 type   : 'bar',
@@ -184,7 +220,9 @@ var StatisticsManager = StatisticsManager || function ()
                     datasets: [ {
                         data           : ability_data,
                         label          : "Quantità di PG con questo num di abilità",
-                        backgroundColor: Utils.dynamicColor()
+                        backgroundColor: Utils.hexToRGBa( color, 0.5 ),
+                        borderColor    : Utils.hexToRGBa( color, 1 ),
+                        borderWidth    : 1
                     } ],
                     labels  : ability_labels
                 },
@@ -241,15 +279,16 @@ var StatisticsManager = StatisticsManager || function ()
                 {
                     return { x: el.data_transazione_str, y: el.credito_personaggio };
                 } ),
-                color     = Utils.dynamicColor();
+                color     = this.getColor();
             
             this.credits_line = new Chart( this.credits_line_ctx, {
                 type   : 'line',
                 data   : {
                     datasets: [ {
                         data           : line_data,
-                        backgroundColor: color,
-                        borderColor    : color,
+                        backgroundColor: Utils.hexToRGBa( color, 0.5 ),
+                        borderColor    : Utils.hexToRGBa( color, 1 ),
+                        borderWidth    : 1,
                         label          : "Bit in gioco",
                         type           : 'line',
                         pointRadius    : 5,
@@ -285,17 +324,20 @@ var StatisticsManager = StatisticsManager || function ()
         
         disegnaStatistichePG: function disegnaStatistichePG( data )
         {
-            var data   = data.data,
-                pies   = {
+            var data     = data.data,
+                pies     = {
                     pf   : [],
                     ps   : [],
                     mente: []
                 },
-                labels = {
+                labels   = {
                     pf   : [],
                     ps   : [],
                     mente: []
-                };
+                },
+                color_pf = this.getColor(),
+                color_ps = this.getColor(),
+                color_pm = this.getColor();
             
             for ( var d in data )
                 for ( var e in data[ d ] )
@@ -304,13 +346,14 @@ var StatisticsManager = StatisticsManager || function ()
                     labels[ d ].push( parseInt( e, 10 ) );
                 }
             
-            this.pf_pie = new Chart( this.pf_pie_ctx, {
+            this.pf_bars = new Chart( this.pf_pie_ctx, {
                 type   : 'bar',
                 data   : {
                     datasets: [ {
                         data           : pies.pf,
-                        backgroundColor: Utils.dynamicColor(),
-                        borderWidth    : 0,
+                        backgroundColor: Utils.hexToRGBa( color_pf, 0.5 ),
+                        borderColor    : Utils.hexToRGBa( color_pf, 1 ),
+                        borderWidth    : 1,
                         label          : "Numero Personaggi"
                     } ],
                     labels  : labels.pf
@@ -336,13 +379,14 @@ var StatisticsManager = StatisticsManager || function ()
                 }
             } );
             
-            this.ps_pie = new Chart( this.ps_pie_ctx, {
+            this.ps_bars = new Chart( this.ps_pie_ctx, {
                 type   : 'bar',
                 data   : {
                     datasets: [ {
                         data           : pies.ps,
-                        backgroundColor: Utils.dynamicColor(),
-                        borderWidth    : 0,
+                        backgroundColor: Utils.hexToRGBa( color_ps, 0.5 ),
+                        borderColor    : Utils.hexToRGBa( color_ps, 1 ),
+                        borderWidth    : 1,
                         label          : "Numero Personaggi"
                     } ],
                     labels  : labels.ps
@@ -368,14 +412,15 @@ var StatisticsManager = StatisticsManager || function ()
                 }
             } );
             
-            this.mente_pie = new Chart( this.mente_pie_ctx, {
+            this.mente_bars = new Chart( this.mente_pie_ctx, {
                 type   : 'bar',
                 data   : {
                     datasets: [ {
                         data           : pies.mente,
-                        backgroundColor: Utils.dynamicColor(),
+                        backgroundColor: Utils.hexToRGBa( color_pm, 0.5 ),
+                        borderColor    : Utils.hexToRGBa( color_pm, 1 ),
                         label          : "Numero Personaggi",
-                        borderWidth    : 0
+                        borderWidth    : 1
                     } ],
                     labels  : labels.mente
                 },
@@ -443,12 +488,19 @@ var StatisticsManager = StatisticsManager || function ()
                 bar_data   = data.map( function ( el )
                 {
                     return el.num_transazioni;
-                } );
+                } ),
+                color      = this.getColor();
             
             this.ravshop_transaction_bar = new Chart( this.ravshop_qty_bar_ctx, {
                 type   : 'bar',
                 data   : {
-                    datasets: [ { data: bar_data, backgroundColor: Utils.dynamicColor(), label: "Numero Acquisti" } ],
+                    datasets: [ {
+                        data           : bar_data,
+                        backgroundColor: Utils.hexToRGBa( color, 0.5 ),
+                        borderColor    : Utils.hexToRGBa( color, 1 ),
+                        borderWidth    : 1,
+                        label          : "Numero Acquisti"
+                    } ],
                     labels  : bar_labels
                 },
                 options: { responsive: true }
@@ -476,12 +528,19 @@ var StatisticsManager = StatisticsManager || function ()
                 bar_data   = data.map( function ( el )
                 {
                     return el.num_acquisti;
-                } );
+                } ),
+                color      = this.getColor();
             
             this.ravshop_transaction_bar = new Chart( this.ravshop_popularity_bar_ctx, {
                 type   : 'bar',
                 data   : {
-                    datasets: [ { data: bar_data, backgroundColor: Utils.dynamicColor(), label: "Numero Acquisti" } ],
+                    datasets: [ {
+                        data           : bar_data,
+                        backgroundColor: Utils.hexToRGBa( color, 0.5 ),
+                        borderColor    : Utils.hexToRGBa( color, 1 ),
+                        borderWidth    : 1,
+                        label          : "Numero Acquisti"
+                    } ],
                     labels  : bar_labels
                 },
                 options: {
@@ -519,12 +578,19 @@ var StatisticsManager = StatisticsManager || function ()
                 bar_data   = data.map( function ( el )
                 {
                     return el.QTA;
-                } );
+                } ),
+                color      = this.getColor();
             
             this.crafted_bar = new Chart( this.crafted_bar_ctx, {
                 type   : 'bar',
                 data   : {
-                    datasets: [ { data: bar_data, backgroundColor: Utils.dynamicColor(), label: "Quantità Craftate" } ],
+                    datasets: [ {
+                        data           : bar_data,
+                        backgroundColor: Utils.hexToRGBa( color, 0.5 ),
+                        borderColor    : Utils.hexToRGBa( color, 1 ),
+                        borderWidth    : 1,
+                        label          : "Quantità Craftate"
+                    } ],
                     labels  : bar_labels
                 },
                 options: {
@@ -593,15 +659,9 @@ var StatisticsManager = StatisticsManager || function ()
             this.pf_pie_ctx                         = $( "#pf_pie" )[ 0 ].getContext( "2d" );
             this.ps_pie_ctx                         = $( "#ps_pie" )[ 0 ].getContext( "2d" );
             this.mente_pie_ctx                      = $( "#mente_pie" )[ 0 ].getContext( "2d" );
-            // this.pc_tot_pie_ctx              = $( "#pc_tot_pie" )[ 0 ].getContext( "2d" );
-            // this.px_tot_pie_ctx              = $( "#px_tot_pie" )[ 0 ].getContext( "2d" );
-            // this.pc_spent_pie_ctx            = $( "#pc_spent_pie" )[ 0 ].getContext( "2d" );
-            // this.px_spent_pie_ctx            = $( "#px_spent_pie" )[ 0 ].getContext( "2d" );
-            // this.pc_free_pie_ctx             = $( "#pc_free_pie" )[ 0 ].getContext( "2d" );
-            // this.px_free_pie_ctx             = $( "#px_free_pie" )[ 0 ].getContext( "2d" );
-            this.ravshop_qty_bar_ctx        = $( "#ravshop_qty_bar" )[ 0 ].getContext( "2d" );
-            this.ravshop_popularity_bar_ctx = $( "#ravshop_popularity_bar" )[ 0 ].getContext( "2d" );
-            this.crafted_bar_ctx            = $( "#crafted_bar" )[ 0 ].getContext( "2d" );
+            this.ravshop_qty_bar_ctx                = $( "#ravshop_qty_bar" )[ 0 ].getContext( "2d" );
+            this.ravshop_popularity_bar_ctx         = $( "#ravshop_popularity_bar" )[ 0 ].getContext( "2d" );
+            this.crafted_bar_ctx                    = $( "#crafted_bar" )[ 0 ].getContext( "2d" );
         },
         
         init: function init()

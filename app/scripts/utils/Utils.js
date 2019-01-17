@@ -504,6 +504,32 @@
             // 4- Keep only seconds not extracted to minutes:
             seconds = parseInt( seconds % 60, 10 );
             return Utils.pad( hours, 2 ) + " ore, " + Utils.pad( minutes, 2 ) + " minuti, " + Utils.pad( seconds, 2 ) + " secondi";
+        },
+        
+        hexToRGBa: function ( hex, opacity )
+        {
+            hex = hex.replace(/^#?([0-9A-F]{3,6})/i,"$1");
+            
+            var ha = hex.split(""),
+                r = g = b = 0,
+                ret = typeof opacity === 'number' ? 'rgba({0},'+opacity+')' : 'rgb({0})';
+            
+            if( ha.length === 3 )
+            {
+                r = parseInt( ha[0]+ha[0], 16 );
+                g = parseInt( ha[1]+ha[1], 16 );
+                b = parseInt( ha[2]+ha[2], 16 );
+            }
+            else if ( ha.length === 6 )
+            {
+                r = parseInt( ha[0]+ha[1], 16 );
+                g = parseInt( ha[2]+ha[3], 16 );
+                b = parseInt( ha[4]+ha[5], 16 );
+            }
+            else
+                throw new Error("You must enter either a 3 or 6 ciphers hexadecimal number.");
+            
+            return ret.replace(/\{0}/g, r + "," + g + "," + b );
         }
     };
 
