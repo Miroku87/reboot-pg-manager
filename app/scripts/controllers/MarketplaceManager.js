@@ -38,8 +38,15 @@ var MarketplaceManager = function ()
             $("#pagina_stampa")[0].contentWindow.print();
         },
 
+        prendiDatiPGAggiornati: function ( dati_pg )
+        {
+            this.pg_info = dati_pg;
+        },
+
         stampa: function ( e )
         {
+            AdminLTEManager.aggiornaDatiPG( this.prendiDatiPGAggiornati.bind(this) );
+            Utils.resetSubmitBtn();
             window.localStorage.setItem( "componenti_da_stampare", JSON.stringify(this.carrello_componenti) );
             $("#pagina_stampa").attr("src",Constants.STAMPA_RICETTE);
             window.stampa_subito = true;
@@ -133,7 +140,9 @@ var MarketplaceManager = function ()
                 qta         = parseInt( riga.find("td:nth-child(2)").text(), 10) || 0,
                 vecchio_tot = parseInt( riga.find("td:nth-child(3)").text(), 10) || 0,
                 costo       = vecchio_tot / qta,
-                indice      = this.carrello_componenti.indexOf(id_prodotto);//Utils.indexOfArrayOfObjects( this.carrello_componenti, "id", id_prodotto );
+                indice      = this.carrello_componenti.indexOf(id_prodotto);//Utils.indexOfArrayOfObjects(
+                                                                            // this.carrello_componenti, "id",
+                                                                            // id_prodotto );
 
             if( qta - 1 <= 0 )
                 riga.remove();

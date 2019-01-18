@@ -24,7 +24,7 @@
 
         stampaPagina: function ()
 		{
-			if( this.costa_si_stampa === "ricette" )
+			if( this.cosa_si_stampa === "ricette" )
             {
                 Utils.requestData(
                     Constants.API_POST_RICETTE_STAMPATE,
@@ -241,7 +241,7 @@
 		{
             if( window.localStorage.getItem("ricette_da_stampare") )
             {
-                this.costa_si_stampa = "ricette";
+                this.cosa_si_stampa = "ricette";
                 this.id_ricette = JSON.parse(window.localStorage.getItem("ricette_da_stampare"));
                 Utils.requestData(
                     Constants.API_GET_RICETTE_CON_ID,
@@ -252,7 +252,7 @@
             }
             else if( window.localStorage.getItem("componenti_da_stampare") )
             {
-                this.costa_si_stampa = "componenti";
+                this.cosa_si_stampa = "componenti";
                 Utils.requestData(
                     Constants.API_GET_COMPONENTI_CON_ID,
                     "GET",

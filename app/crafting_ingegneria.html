@@ -1,5 +1,5 @@
 ﻿{% extends "./templates/main_template.html" %}
-{% set titolo_sezione = "Technical Hardware" %}
+{% set titolo_sezione = "SGC SIMULATOR" %}
 {% set section = "live_tecnico" %}
 {% block mainContent %}
 {{ super() }}
@@ -7,144 +7,6 @@
   | Your Page Content Here |
   -------------------------->
 
-<div class="row">
-    <div class="col-sm-12 col-md-8">
-        <div class="box" id="simulatore">
-            <div class="box-header">
-                <h3 class="box-title">
-                    <span class="sgc-info2">SGC</span> SIMULATOR</h3>
-
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                        <i class="fa fa-minus"></i>
-                    </button>
-                </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-                <div class="alert alert-danger alert-dismissible">
-                    <button type="button" class="close">&times;</button>
-                    <i class="icon fa fa-ban"></i>
-                    Impossibile completare l'operazione, verificare che la tipologia sia conforme alla destinazione.
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-12 col-md-4">
-                        <p>
-                            <span class="sgc-info2">Nome </span> prototipo
-                        </p>
-
-                        <form autocomplete="off" aria-autocomplete="none">
-                            <input id="nome_prototipo" type="text" class="form-control">
-                        </form>
-                    </div>
-                    <div class="col-sm-12 col-md-4">
-
-                        <p>
-                            <span class="sgc-info2">USO </span> volume </p>
-
-                        <div class="progress-group" id="uso-volume">
-                            <span class="progress-text">Utilizzato</span>
-                            <span class="progress-number">
-                                <b>0</b>/0</span>
-
-                            <div class="progress sm">
-                                <div class="progress-bar" style="width: 0%"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-4">
-                        <p>
-                            <span class="sgc-info2">USO </span> batteria </p>
-                        <!-- aggiungere classe sgc-over se > 100 -->
-                        <div class="progress-group" id="uso-batteria">
-                            <span class="progress-text">Utilizzato</span>
-                            <span class="progress-number">
-                                <b> 0</b>/0</span>
-
-                            <div class="progress sm">
-                                <div class="progress-bar" style="width: 0%"></div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-                <p id="text-batteria">
-                    <span class="sgc-info2">Batteria &raquo; </span> Trascina qui sotto i componenti dalla lista</p>
-
-                <div id="box-batteria" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                <p id="text-struttura">
-                    <span class="sgc-info2">Struttura &raquo; </span> Trascina qui sotto i componenti dalla lista</p>
-
-                <div id="box-struttura" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                <p id="text-applicativo">
-                    <span class="sgc-info2">Applicativo &raquo; </span> Trascina qui sotto i componenti dalla lista</p>
-
-                <div id="box-applicativo" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-
-                <!-- 1 - calcolo volume
-                2 - calcolo batteria -->
-            </div>
-            <!-- /.box -->
-        </div>
-        <!-- /.col -->
-    </div>
-    <div class="col-sm-12 col-md-4">
-        <div class="nav-tabs-custom" id="liste_componenti">
-            <ul class="nav nav-tabs">
-                <li class="active">
-                    <a href="#batteria" data-toggle="tab">Batteria</a>
-                </li>
-                <li>
-                    <a href="#struttura" data-toggle="tab">Struttura</a>
-                </li>
-                <li>
-                    <a href="#applicativo" data-toggle="tab">Applicativo</a>
-                </li>
-
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane active" id="batteria">
-                    <form autocomplete="off">
-                    <div class="form-group has-feedback cerca-componente">
-                        <input type="text" id="cerca_batteria" class="form-control" placeholder="Cerca Batteria">
-                        <span class="fa fa-search form-control-feedback"></span>
-                    </div>
-                    </form>
-                    <div class="container-componenti"></div>
-                    <!-- vanno sempre dati id "bat" + n, popolati via JS -->
-
-                </div>
-                <!-- /.tab-pane -->
-                <div class="tab-pane" id="struttura">
-                    <form autocomplete="off">
-                        <div class="form-group has-feedback cerca-componente">
-                            <input type="text" id="cerca_struttura" class="form-control" placeholder="Cerca Struttura">
-                            <span class="fa fa-search form-control-feedback"></span>
-                        </div>
-                    </form>
-                    <div class="container-componenti"></div>
-                    <!-- vanno sempre dati id "str" + n , popolati via JS -->
-
-                </div>
-                <!-- /.tab-pane -->
-                <div class="tab-pane" id="applicativo">
-                    <form autocomplete="off">
-                        <div class="form-group has-feedback cerca-componente">
-                            <input type="text" id="cerca_app" class="form-control" placeholder="Cerca Applicativo">
-                            <span class="fa fa-search form-control-feedback"></span>
-                        </div>
-                    </form>
-                    <div class="container-componenti"></div>
-                    <!-- vanno sempre dati id "app" + n , popolati via JS -->
-
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="row">
     <div class="col-sm-12 col-md-8">
         <div class="box">
@@ -224,7 +86,7 @@
                                 </div>
                                 <div class="radio">
                                     <input type="radio" name="radiogroup" id="protesi3" value="Protesi Gamba">
-                                    <label for="protesi3">Gemba</label>
+                                    <label for="protesi3">Gamba</label>
                                 </div>
                             </div>
                         </div>
@@ -240,7 +102,7 @@
                             </div>
                             <div class="radio">
                                 <input type="radio" name="radiogroup" id="scudi2" value="Scudo">
-                                <label for="scudi1">Scudo</label>
+                                <label for="scudi2">Scudo</label>
                             </div>
                         </div>
                     </div>
@@ -248,10 +110,140 @@
             </div>
         </div>
     </div>
+    <div class="col-sm-12 col-md-4">
+        <div class="nav-tabs-custom" id="liste_componenti">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#batteria" data-toggle="tab">Batteria</a>
+                </li>
+                <li>
+                    <a href="#struttura" data-toggle="tab">Struttura</a>
+                </li>
+                <li>
+                    <a href="#applicativo" data-toggle="tab">Applicativo</a>
+                </li>
+
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="batteria">
+                    <form autocomplete="off">
+                    <div class="form-group has-feedback cerca-componente">
+                        <input type="text" id="cerca_batteria" class="form-control" placeholder="Cerca Batteria">
+                        <span class="fa fa-search form-control-feedback"></span>
+                    </div>
+                    </form>
+                    <div class="container-componenti"></div>
+                    <!-- vanno sempre dati id "bat" + n, popolati via JS -->
+
+                </div>
+                <!-- /.tab-pane -->
+                <div class="tab-pane" id="struttura">
+                    <form autocomplete="off">
+                        <div class="form-group has-feedback cerca-componente">
+                            <input type="text" id="cerca_struttura" class="form-control" placeholder="Cerca Struttura">
+                            <span class="fa fa-search form-control-feedback"></span>
+                        </div>
+                    </form>
+                    <div class="container-componenti"></div>
+                    <!-- vanno sempre dati id "str" + n , popolati via JS -->
+
+                </div>
+                <!-- /.tab-pane -->
+                <div class="tab-pane" id="applicativo">
+                    <form autocomplete="off">
+                        <div class="form-group has-feedback cerca-componente">
+                            <input type="text" id="cerca_app" class="form-control" placeholder="Cerca Applicativo">
+                            <span class="fa fa-search form-control-feedback"></span>
+                        </div>
+                    </form>
+                    <div class="container-componenti"></div>
+                    <!-- vanno sempre dati id "app" + n , popolati via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="row">
     <div class="col-sm-12 col-md-8">
-        <button type="button" class="btn btn-block btn-success submit-btn" id="btn_inviaCraftingTecnico"><i
+        <div class="box collapsed-box" id="simulatore">
+            <div class="box-header">
+                <h3 class="box-title">
+                    <span class="sgc-info2">COMPONENTI</span> PROTOTIPO <span id="componenti_message">[Selezionare Prima la Tipologia]</span></h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse" disabled>
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-sm-12 col-md-4">
+                        <p>
+                            <span class="sgc-info2">Nome </span> prototipo
+                        </p>
+
+                        <form autocomplete="off" aria-autocomplete="none">
+                            <input id="nome_prototipo" type="text" class="form-control">
+                        </form>
+                    </div>
+                    <div class="col-sm-12 col-md-4">
+
+                        <p>
+                            <span class="sgc-info2">USO </span> volume </p>
+
+                        <div class="progress-group" id="uso-volume">
+                            <span class="progress-text">Utilizzato</span>
+                            <span class="progress-number">
+                                <b>0</b>/0</span>
+
+                            <div class="progress sm">
+                                <div class="progress-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4">
+                        <p>
+                            <span class="sgc-info2">USO </span> batteria </p>
+                        <!-- aggiungere classe sgc-over se > 100 -->
+                        <div class="progress-group" id="uso-batteria">
+                            <span class="progress-text">Utilizzato</span>
+                            <span class="progress-number">
+                                <b> 0</b>/0</span>
+
+                            <div class="progress sm">
+                                <div class="progress-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <p id="text-batteria">
+                    <span class="sgc-info2">Batteria &raquo; </span> Trascina qui sotto i componenti dalla lista</p>
+
+                <div id="box-batteria" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <p id="text-struttura">
+                    <span class="sgc-info2">Struttura &raquo; </span> Trascina qui sotto i componenti dalla lista</p>
+
+                <div id="box-struttura" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <p id="text-applicativo">
+                    <span class="sgc-info2">Applicativo &raquo; </span> Trascina qui sotto i componenti dalla lista</p>
+
+                <div id="box-applicativo" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+
+                <!-- 1 - calcolo volume
+                2 - calcolo batteria -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-md-8">
+        <button type="button" class="btn btn-block btn-success submit-btn" id="btn_inviaCraftingTecnico" disabled><i
                 class="fa fa-wrench"></i><br>Invia Componenti<br>al Sistema
         </button>
     </div>

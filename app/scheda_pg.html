@@ -1,5 +1,5 @@
 {% extends "./templates/main_template.html" %}
-{% from "./templates/components.html" import modal_assegna_punti, modal_assegna_punti_scripts, modal_modifica_credito, modal_modifica_credito_scripts %}
+{% from "./templates/components.html" import modal_assegna_punti, modal_assegna_punti_scripts %}
 {% set body_classes = body_classes + " scheda-pg-page" %}
 {% set section = "schedapg" %}
 {% set titolo_sezione = "Riepilogo Dati Personaggio"  %}
@@ -105,7 +105,6 @@
         <div class="action-group">
             <button type="button" class="btn btn-block btn-info aggiungiAbilitaAlPG aggiungiClassiAlPG" id="btn_aggiungiAbilitaAlPG"><i class="fa fa-cart-plus"></i><br>Acquista<br>Abilit&agrave;</button>
             <button type="button" class="btn btn-block btn-info inizialmente-nascosto modificaPG_pc_personaggio" id="btn_modificaPG_px_personaggio"><i class="fa fa-plus-square"></i><br>Assegna<br>PC/PX</button>
-            <button type="button" class="btn btn-block btn-info inizialmente-nascosto modificaPG_credito_personaggio" id="btn_modificaPG_credito_personaggio"><i class="fa fa-money"></i><br>Gestisci<br>Crediti</button>
             <!--<button type="button" class="btn btn-block btn-info inizialmente-nascosto" id="btn_stampaCartellini"><i class="fa fa-print"></i><br>Stampa<br>Cartellino</button>-->
         </div>
     </div>
@@ -334,7 +333,6 @@
 
 {% block modals %}
 {{ modal_assegna_punti() }}
-{{ modal_modifica_credito() }}
 
 <div id="modal_modifica_ricetta" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
     <div class="modal-dialog modal-lg">
@@ -375,6 +373,5 @@
 {% block managers %}
 {{ super() }}
 {{ modal_assegna_punti_scripts() }}
-{{ modal_modifica_credito_scripts() }}
 <script src="scripts/controllers/PgViewerManager.js"></script>
 {% endblock %}

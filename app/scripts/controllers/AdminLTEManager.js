@@ -243,6 +243,30 @@
             );
         },
 
+        aggiornaDatiPG : function ( datiAggiornati )
+        {
+            var dati = { pgid : JSON.parse( window.localStorage.getItem("logged_pg") ).id_personaggio };
+
+            Utils.requestData(
+                Constants.API_GET_PG_LOGIN,
+                "GET",
+                dati,
+                function (data)
+                {
+                    this.pg_info = data.result;
+
+                    var pg_no_bg = JSON.parse( JSON.stringify(this.pg_info) );
+                    delete pg_no_bg.background_personaggio;
+                    delete pg_no_bg.note_master_personaggio;
+
+                    window.localStorage.removeItem('logged_pg');
+                    window.localStorage.setItem('logged_pg', JSON.stringify(pg_no_bg));
+
+                    if( typeof datiAggiornati === "function" ) datiAggiornati( pg_no_bg );
+                }.bind(this)
+            );
+        },
+
         setListeners: function ()
         {
             this.setupMenuSearch();
