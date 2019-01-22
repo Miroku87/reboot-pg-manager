@@ -92,10 +92,10 @@ Constants.API_GET_STATS_RAVSHOP                 = Constants.API_URL + "/statisti
 Constants.API_GET_STATS_ACQUISTI_RAVSHOP        = Constants.API_URL + "/statistics/recuperastatisticheacquistiravshop";
 Constants.API_GET_STATS_ARMI                    = Constants.API_URL + "/statistics/recuperastatistichearmistampate";
 
-Constants.API_DEL_GIOCATORE              = Constants.API_URL + "/usersmanager/eliminagiocatore";
-Constants.API_DEL_CLASSE_PG              = Constants.API_URL + "/charactersmanager/rimuoviclassepg";
-Constants.API_DEL_ABILITA_PG             = Constants.API_URL + "/charactersmanager/rimuoviabilitapg";
-Constants.API_DEL_PERSONAGGIO            = Constants.API_URL + "/charactersmanager/eliminapg";
+Constants.API_DEL_GIOCATORE   = Constants.API_URL + "/usersmanager/eliminagiocatore";
+Constants.API_DEL_CLASSE_PG   = Constants.API_URL + "/charactersmanager/rimuoviclassepg";
+Constants.API_DEL_ABILITA_PG  = Constants.API_URL + "/charactersmanager/rimuoviabilitapg";
+Constants.API_DEL_PERSONAGGIO = Constants.API_URL + "/charactersmanager/eliminapg";
 
 Constants.LOGIN_PAGE             = Constants.SITE_URL + "/";
 Constants.MAIN_PAGE              = Constants.SITE_URL + "/main.html";
@@ -119,7 +119,7 @@ Constants.SCONTO_MERCATO         = 5;
 Constants.QTA_PER_SCONTO_MERCATO = 6;
 Constants.CARTELLINI_PER_PAG     = 6;
 
-Constants.COSTI_PROFESSIONI = [ 0, 20, 40, 60, 80, 100, 120 ];
+Constants.COSTI_PROFESSIONI = [0, 20, 40, 60, 80, 100, 120];
 
 Constants.PREREQUISITO_TUTTE_ABILITA    = -1;
 Constants.PREREQUISITO_F_TERRA_T_SCELTO = -2;
@@ -151,29 +151,32 @@ Constants.ID_RICETTA_PAG           = 4;
 Constants.DEFAULT_ACCREDITO_BIT = "Accredito a vostro favore da parte di {1}.";
 Constants.DEFAULT_ADDEBITO_BIT  = "Addebito a favore di {1}.";
 
+Constants.DEFAULT_ERROR = "Impossibile completare l'operazione, verificare che la tipologia sia conforme alla destinazione.";
+Constants.DEVE_ERROR    = "Impossibile completare l'operazione. Non &egrave; possibile combinare pi&ugrave; applicazioni che DEVONO dichiarare qualcosa.";
+
 Constants.DATA_TABLE_LANGUAGE = {
-    "decimal"       : "",
-    "emptyTable"    : "Nessun dato disponibile",
-    "info"          : "Da _START_ a _END_ di _TOTAL_ risultati visualizzati",
-    "infoEmpty"     : "Da 0 a 0 di 0 visualizzati",
-    "infoFiltered"  : "(filtrati da un massimo di _MAX_ risultati)",
-    "infoPostFix"   : "",
-    "thousands"     : ".",
-    "lengthMenu"    : "_MENU_",
-    "loadingRecords": "Carico...",
-    "processing"    : "Elaboro...",
-    "search"        : "Cerca:",
-    "zeroRecords"   : "Nessuna corrispondenza trovata",
-    "paginate"      : {
-        "first"   : "Primo",
-        "last"    : "Ultimo",
-        "next"    : "Prossimo",
-        "previous": "Precedente"
+    "decimal"        : "",
+    "emptyTable"     : "Nessun dato disponibile",
+    "info"           : "Da _START_ a _END_ di _TOTAL_ risultati visualizzati",
+    "infoEmpty"      : "Da 0 a 0 di 0 visualizzati",
+    "infoFiltered"   : "(filtrati da un massimo di _MAX_ risultati)",
+    "infoPostFix"    : "",
+    "thousands"      : ".",
+    "lengthMenu"     : "_MENU_",
+    "loadingRecords" : "Carico...",
+    "processing"     : "Elaboro...",
+    "search"         : "Cerca:",
+    "zeroRecords"    : "Nessuna corrispondenza trovata",
+    "paginate"       : {
+        "first"    : "Primo",
+        "last"     : "Ultimo",
+        "next"     : "Prossimo",
+        "previous" : "Precedente"
     },
-    "aria"          : {
-        "sortAscending" : ": clicca per ordinare la colonna in ordine crescente",
-        "sortDescending": ": clicca per ordinare la colonna in ordine decrescente"
+    "aria"           : {
+        "sortAscending"  : ": clicca per ordinare la colonna in ordine crescente",
+        "sortDescending" : ": clicca per ordinare la colonna in ordine decrescente"
     }
 };
 
-Constants.CHART_COLORS = [ "#fcb3bc", "#ff61a1", "#e026c9", "#a726e3", "#735e7f", "#a42946", "#df7623", "#f8ae29", "#ffd658", "#cde02f", "#70f03b", "#70e026", "#11c26a", "#3affb5", "#3a80ff", "#114a67", "#b8656f", "#711d96", "#431d96", "#204b99", "#1e9194", "#1b9a17", "#8f9a18", "#c2d517", "#e6ff00", "#ffb403", "#fe7903", "#e0611a", "#dc3717", "#f11310", "#821613", "#8e1f40" ];
+Constants.CHART_COLORS = ["#fcb3bc", "#ff61a1", "#e026c9", "#a726e3", "#735e7f", "#a42946", "#df7623", "#f8ae29", "#ffd658", "#cde02f", "#70f03b", "#70e026", "#11c26a", "#3affb5", "#3a80ff", "#114a67", "#b8656f", "#711d96", "#431d96", "#204b99", "#1e9194", "#1b9a17", "#8f9a18", "#c2d517", "#e6ff00", "#ffb403", "#fe7903", "#e0611a", "#dc3717", "#f11310", "#821613", "#8e1f40"];

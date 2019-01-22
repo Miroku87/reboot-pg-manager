@@ -1,20 +1,17 @@
-let mobile               = false;
-let type                 = "";
-let id_target            = "";
-let batteria             = 0;
-let volume               = 0;
-let totaleBatteria       = 0;
-let totaleVolume         = 0;
-let usoBatteria          = 0;
-let usoVolume            = 0;
-let dragged_id           = "";
-let tipo_selezionato     = null;
-let tipo_gia_selezionato = false;
+var mobile               = false;
+var type                 = "";
+var id_target            = "";
+var batteria             = 0;
+var volume               = 0;
+var totaleBatteria       = 0;
+var totaleVolume         = 0;
+var usoBatteria          = 0;
+var usoVolume            = 0;
+var dragged_id           = "";
+var tipo_selezionato     = null;
+var tipo_gia_selezionato = false;
 
-let DEFAULT_ERROR = "Impossibile completare l'operazione, verificare che la tipologia sia conforme alla destinazione.";
-let DEVE_ERROR = "Impossibile completare l'operazione. Non &egrave; possibile combinare pi&ugrave; applicazioni che DEVONO dichiarare qualcosa.";
-
-let mappa_tipi_db_radio = {
+var mappa_tipi_db_radio = {
     "pistola"             : "Pistola",
     "fucile d'assalto"    : "Fucile Assalto",
     "shotgun"             : "Shotgun",
@@ -22,7 +19,7 @@ let mappa_tipi_db_radio = {
     "fucile di precisione": "Fucile Precisione"
 };
 
-let mappa_tipi_radio_db = {
+var mappa_tipi_radio_db = {
     "Pistola"          : "pistola",
     "Fucile Assalto"   : "fucile d'assalto",
     "Shotgun"          : "shotgun",
@@ -55,7 +52,7 @@ function loadComponentsFromDB( callback )
 
 function searchBoxKeyUp( ev )
 {
-    let search_box = ev ? $( ev.currentTarget ) : $( "#cerca_app" ),
+    var search_box = ev ? $( ev.currentTarget ) : $( "#cerca_app" ),
         term       = search_box.val().trim();
     
     if ( term.length === 0 )
@@ -70,7 +67,7 @@ function searchBoxKeyUp( ev )
     
     search_box.parents( ".tab-pane" ).find( "div[draggable='true']" ).each( function ()
     {
-        let id_comp   = $( this ).find( ".id_comp" ).text().toLowerCase(),
+        var id_comp   = $( this ).find( ".id_comp" ).text().toLowerCase(),
             nome_comp = $( this ).find( ".nome_comp" ).text().toLowerCase(),
             desc_comp = $( this ).find( ".descrizione_comp" ).text().toLowerCase(),
             vol_comp  = $( this ).attr( "data-volume" ),
@@ -118,11 +115,11 @@ $( document ).ready( function ()
     {
         //divido i componenti a seconda del tipo
         data            = data.data;
-        let batteria    = [];
-        let struttura   = [];
-        let applicativo = [];
-        let scartati    = [];
-        for ( let i = 0; i < data.length; i++ )
+        var batteria    = [];
+        var struttura   = [];
+        var applicativo = [];
+        var scartati    = [];
+        for ( var i = 0; i < data.length; i++ )
         {
             data[ i ].Tipo        = data[ i ].tipo_componente;
             data[ i ].Codice      = data[ i ].id_componente;
@@ -173,7 +170,7 @@ function popoloComponenti( array, id, div )
 {
     array.forEach( function ( el )
     {
-        let html            = $( "<div></div>" ),
+        var html            = $( "<div></div>" ),
             content         = $( "<div></div>" ),
             energia         = $( "<span class='description-percentage'></span>" ),
             volume          = $( "<span class='description-percentage'></span>" ),
@@ -269,36 +266,36 @@ function popoloComponenti( array, id, div )
 function addComponente( tipo, codice )
 {
     type      = tipo.substring( 0, 3 );
-    let id    = tipo.substring( 0, 3 );
+    var id    = tipo.substring( 0, 3 );
     id_target = id + '-' + codice;
     batteria  = parseInt( $( '#' + id_target ).data( "batteria" ) );
     volume    = parseInt( $( '#' + id_target ).data( "volume" ) );
     
-    let selezionabile = false;
+    var selezionabile = false;
     if ( type == "bat" )
     {
-        let count = $( '#box-batteria .drag-batteria' ).length;
-        let newId = id_target + '_' + count;
+        var count = $( '#box-batteria .drag-batteria' ).length;
+        var newId = id_target + '_' + count;
         $( '#box-batteria' ).append( $( '#' + id_target ).clone().removeAttr( "onclick" ).attr( "id", newId ) );
         //onclick="boxReset('' + id + '','' + el.Codice + '')"
         
     }
     if ( type == "str" )
     {
-        let count = $( '#box-struttura .drag-struttura' ).length;
-        let newId = id_target + '_' + count;
+        var count = $( '#box-struttura .drag-struttura' ).length;
+        var newId = id_target + '_' + count;
         $( '#box-struttura' ).append( $( '#' + id_target ).clone().removeAttr( "onclick" ).attr( "id", newId ) );
         
     }
     if ( type == "app" )
     {
-        let count = $( '#box-applicativo .drag-applicativo' ).length;
-        let newId = id_target + '_' + count;
+        var count = $( '#box-applicativo .drag-applicativo' ).length;
+        var newId = id_target + '_' + count;
         $( '#box-applicativo' ).append( $( '#' + id_target ).clone().removeAttr( "onclick" ).attr( "id", newId ) );
         
     }
     
-    let f = "boxReset('" + id + "','" + newId + "')";
+    var f = "boxReset('" + id + "','" + newId + "')";
     $( '#' + newId + ' .delete-el' ).attr( "onclick", f );
     
     if ( batteria > 0 )
@@ -384,33 +381,33 @@ function drag( ev )
 function drop( ev )
 {
     ev.preventDefault();
-    let data   = dragged_id;
-    let elem   = $( "#" + data );
-    let target = $( ev.target );
-    let tipo   = "";
+    var data   = dragged_id;
+    var elem   = $( "#" + data );
+    var target = $( ev.target );
+    var tipo   = "";
     
     dragged_id = "";
     
-    let errore = null;
+    var errore = null;
     if ( type === "bat" && ev.target.id === "box-batteria" )
         tipo     = "batteria";
     else if ( type === "bat" && ev.target.id !== "box-batteria" )
-        errore = DEFAULT_ERROR;
+        errore = Constants.DEFAULT_ERROR;
     
     if ( type === "str" && ev.target.id === "box-struttura" )
         tipo     = "struttura";
     else if ( type === "str" && ev.target.id !== "box-struttura" )
-        errore = DEFAULT_ERROR;
+        errore = Constants.DEFAULT_ERROR;
     
     if ( type === "app" && ev.target.id === "box-applicativo" )
     {
         tipo     = "applicativo";
     
         if( $("#box-applicativo").find("div[draggable='true'][data-deve='true']").size() > 0 )
-            errore = DEVE_ERROR;
+            errore = Constants.DEVE_ERROR;
     }
     else if ( type === "app" && ev.target.id !== "box-applicativo" )
-        errore = DEFAULT_ERROR;
+        errore = Constants.DEFAULT_ERROR;
     
     if ( errore )
     {
@@ -419,14 +416,14 @@ function drop( ev )
     }
     else
     {
-        let count = $( '#box-' + tipo + ' .drag-' + tipo ).length;
+        var count = $( '#box-' + tipo + ' .drag-' + tipo ).length;
         
         target.append( elem.clone() );
         
-        let newId = id_target + '_' + count;
+        var newId = id_target + '_' + count;
         $( '#box-' + tipo + ' #' + id_target ).attr( "id", newId );
         
-        let f = "boxReset('" + type + "','" + newId + "')";
+        var f = "boxReset('" + type + "','" + newId + "')";
         $( '#' + newId + ' .delete-el' ).attr( "onclick", f );
         
         if ( batteria > 0 )
@@ -452,9 +449,9 @@ function drop( ev )
 
 function fixProgress()
 {
-    let htmlBatteria = "<b>" + usoBatteria + "</b>/" + totaleBatteria;
+    var htmlBatteria = "<b>" + usoBatteria + "</b>/" + totaleBatteria;
     $( '#uso-batteria .progress-number' ).html( htmlBatteria );
-    let percBatteria = 0;
+    var percBatteria = 0;
     if ( usoBatteria > totaleBatteria )
     {
         percBatteria = 1;
@@ -470,13 +467,13 @@ function fixProgress()
         $( '#uso-batteria' ).removeClass( "sgc-over" );
         percBatteria = ( usoBatteria / totaleBatteria );
     }
-    let widthBatteria    = $( '#uso-batteria .progress' ).width();
-    let newWidthBatteria = widthBatteria * percBatteria;
+    var widthBatteria    = $( '#uso-batteria .progress' ).width();
+    var newWidthBatteria = widthBatteria * percBatteria;
     $( '#uso-batteria .progress-bar' ).width( newWidthBatteria );
     
-    let htmlVolume = "<b>" + usoVolume + "</b>/" + totaleVolume;
+    var htmlVolume = "<b>" + usoVolume + "</b>/" + totaleVolume;
     $( '#uso-volume .progress-number' ).html( htmlVolume );
-    let percVolume = 0;
+    var percVolume = 0;
     if ( usoVolume > totaleVolume )
     {
         percVolume = 1;
@@ -492,8 +489,8 @@ function fixProgress()
         $( '#uso-volume' ).removeClass( "sgc-over" );
         percVolume = ( usoVolume / totaleVolume );
     }
-    let widthVolume    = $( '#uso-volume .progress' ).width();
-    let newWidthVolume = widthVolume * percVolume;
+    var widthVolume    = $( '#uso-volume .progress' ).width();
+    var newWidthVolume = widthVolume * percVolume;
     $( '#uso-volume .progress-bar' ).width( newWidthVolume );
 }
 
@@ -501,8 +498,8 @@ function boxReset( tipo, id_padre )
 {
     if ( !tipo || tipo == "bat" )
     {
-        let batteria = 0;
-        let volume   = 0;
+        var batteria = 0;
+        var volume   = 0;
         if ( mobile == false )
         {
             $( '#batteria #' + id_padre ).attr( 'draggable', 'true' );
@@ -532,8 +529,8 @@ function boxReset( tipo, id_padre )
     
     if ( !tipo || tipo == "str" )
     {
-        let batteria = 0;
-        let volume   = 0;
+        var batteria = 0;
+        var volume   = 0;
         if ( mobile == false )
         {
             $( '.drag-struttura' ).attr( 'draggable', 'true' );
@@ -562,8 +559,8 @@ function boxReset( tipo, id_padre )
     }
     if ( !tipo || tipo == "app" )
     {
-        let batteria = 0;
-        let volume   = 0;
+        var batteria = 0;
+        var volume   = 0;
         if ( mobile == false )
         {
             $( '#applicativo #' + id_padre ).attr( 'draggable', 'true' );
@@ -600,7 +597,7 @@ function mappaIds( el )
 
 $( '#btn_inviaCraftingTecnico' ).click( function ()
 {
-    let data = {
+    var data = {
         pgid    : JSON.parse( window.localStorage.getItem( "logged_pg" ) ).id_personaggio,
         nome    : $( "#nome_prototipo" ).val() || null,
         tipo    : $( "input:radio[name='radiogroup']:checked" ).val() || null,
