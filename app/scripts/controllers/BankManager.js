@@ -148,7 +148,7 @@
                 bg_class = "bg-red";
 
             label.addClass(bg_class);
-            label.text( Utils.firstLetterUpper( data ) );
+            label.text( Utils.firstletterUpper( data ) );
 
             return label[0].outerHTML;
 		},
