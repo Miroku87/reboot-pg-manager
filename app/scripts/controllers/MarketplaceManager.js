@@ -329,6 +329,10 @@ var MarketplaceManager = function ()
                 data : "descrizione_componente"
             });
             columns.push({
+                title: "Effetti",
+                data : "effetto_sicuro_componente"
+            });
+            columns.push({
                 title: "Caratteristiche",
                 render : this.renderCaratteristiche.bind(this),
                 orderable: false
