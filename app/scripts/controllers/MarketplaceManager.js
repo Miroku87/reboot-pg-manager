@@ -324,10 +324,10 @@ var MarketplaceManager = function ()
                 title: "Nome",
                 data : "nome_componente"
             });
-            columns.push({
-                title: "Descrizione",
-                data : "descrizione_componente"
-            });
+            //columns.push({
+            //    title: "Descrizione",
+            //    data : "descrizione_componente"
+            //});
             columns.push({
                 title: "Effetti",
                 data : "effetto_sicuro_componente"
