@@ -16,11 +16,17 @@
             if( t.is("#btn_stampaRicette") )
                 ricette = this.ricette_selezionate;
             else if ( t.is("td > button.btn-xs") )
-                ricette = [this.recipes_grid.row( t.parents("tr")).data().id_ricetta];
+            {
+                var id_ricetta = this.recipes_grid.row(t.parents("tr")).data().id_ricetta,
+                    num_stampa = t.parents("tr").find("input[type='number']").val();
+                ricette = {};
+                ricette[id_ricetta] = parseInt( num_stampa, 10 );
+            }
 
-            if( ricette.length === 0 )
-                ricette = Array.prototype.slice.call( this.recipes_grid.columns().data() )[1];
+            //if( ricette.length === 0 )
+            //    ricette = Array.prototype.slice.call( this.recipes_grid.columns().data() )[1];
 
+            window.localStorage.removeItem("ricette_da_stampare");
             window.localStorage.setItem("ricette_da_stampare", JSON.stringify(ricette));
             window.open( Constants.STAMPA_RICETTE, "Stampa Oggetti" );
         },
@@ -75,20 +81,21 @@
         ricettaSelezionata: function ( e )
         {
             var t    = $(e.target),
+                num  = parseInt( t.val(), 10 ),
                 dati = this.recipes_grid.row(t.parents("tr")).data();
 
-            if( t.is(":checked") )
-                this.ricette_selezionate.push( dati.id_ricetta );
-            else if ( !t.is(":checked") && this.ricette_selezionate.indexOf( dati.id_ricetta ) !== -1 )
-                this.ricette_selezionate.splice( this.ricette_selezionate.indexOf( dati.id_ricetta ), 1 );
+            if( num > 0 )
+                this.ricette_selezionate[ dati.id_ricetta ] = num;
+            else
+                delete this.ricette_selezionate[ dati.id_ricetta ];
 		},
 
         selezionaRicette: function ( e )
         {
-            $("input[type='checkbox']").iCheck("Uncheck");
+            $("input[type='text']").val(0);
 
             for( var r in this.ricette_selezionate )
-                $("#ck_"+this.ricette_selezionate[r]).iCheck("Check");
+                $("#ck_"+r).val( this.ricette_selezionate[r] );
 		},
 
         rifiutaRicetta: function ( dati )
@@ -138,9 +145,7 @@
             $( "td [data-toggle='popover']" ).popover("destroy");
             $( "td [data-toggle='popover']" ).popover();
 
-            $( 'input[type="checkbox"]' ).iCheck("destroy");
-            $( 'input[type="checkbox"]' ).iCheck( { checkboxClass : 'icheckbox_square-blue' } );
-            $( 'input[type="checkbox"]' ).on( "ifChanged", this.ricettaSelezionata.bind(this) );
+            $( 'input[type="number"]' ).on( "change", this.ricettaSelezionata.bind(this) );
 
             $( "[data-toggle='tooltip']" ).tooltip();
 
@@ -230,8 +235,8 @@
 
         renderCheckStampa: function ( data, type, row )
         {
-            return  "<div class='checkbox icheck'>" +
-                        "<input type='checkbox' id='ck_"+row.id_ricetta+"'>" +
+            return  "<div class=\"input-group\">" +
+                        "<input type='number' min='0' step='1' value='0' class='form-control' id='ck_"+row.id_ricetta+"'>" +
                     "</div>";
         },
 
@@ -358,7 +363,7 @@
                     order      : [[2, 'desc']]
                 } );
 
-            this.ricette_selezionate = [];
+            this.ricette_selezionate = {};
         },
 
         recuperaDatiLocali: function()

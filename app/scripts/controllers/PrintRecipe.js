@@ -151,8 +151,17 @@
 
         riempiCartelliniRicette: function ( data )
 		{
-            var ricette = data.result,
-                num_pagine = ricette.length / Constants.CARTELLINI_PER_PAG;
+            var ricette_uniche = data.result.reduce( function( prev, current ){ prev[ current.id_ricetta ] = current; return prev }, {} ),
+                ricette_stampa = [],
+                num_pagine = 0;
+
+            for( var r in this.ricette )
+            {
+                for( var i = 0; i < this.ricette[r]; i++ )
+                    ricette_stampa.push( ricette_uniche[r] );
+            }
+            console.log(ricette_uniche,ricette_stampa);
+            num_pagine = ricette_stampa.length / Constants.CARTELLINI_PER_PAG;
 
             window.localStorage.removeItem("ricette_da_stampare");
 
@@ -166,17 +175,17 @@
                 {
                     var i = ( Constants.CARTELLINI_PER_PAG * p ) + c;
 
-                    if( ricette[i] )
+                    if( ricette_stampa[i] )
                     {
                         var cartellino = {};
 
                         //Programmazione, Tecnico, Chimico
-                        if( ricette[i].tipo_ricetta === "Programmazione" )
-                            cartellino = this.creaCartellinoProgrammazione( ricette[i] );
-                        else if( ricette[i].tipo_ricetta === "Tecnico" )
-                            cartellino = this.creaCartellinoGenerico( ricette[i], $("#cartellino_oggetto_template") );
+                        if( ricette_stampa[i].tipo_ricetta === "Programmazione" )
+                            cartellino = this.creaCartellinoProgrammazione( ricette_stampa[i] );
+                        else if( ricette_stampa[i].tipo_ricetta === "Tecnico" )
+                            cartellino = this.creaCartellinoGenerico( ricette_stampa[i], $("#cartellino_oggetto_template") );
                         else
-                            cartellino = this.creaCartellinoGenerico( ricette[i], $("#cartellino_sostanza_template") );
+                            cartellino = this.creaCartellinoGenerico( ricette_stampa[i], $("#cartellino_sostanza_template") );
 
                         pagina.append(cartellino);
                     }
@@ -242,11 +251,11 @@
             if( window.localStorage.getItem("ricette_da_stampare") )
             {
                 this.cosa_si_stampa = "ricette";
-                this.id_ricette = JSON.parse(window.localStorage.getItem("ricette_da_stampare"));
+                this.ricette = JSON.parse(window.localStorage.getItem("ricette_da_stampare"));
                 Utils.requestData(
                     Constants.API_GET_RICETTE_CON_ID,
                     "GET",
-                    {ids : this.id_ricette},
+                    {ids : Object.keys(this.ricette)},
                     this.riempiCartelliniRicette.bind(this)
                 );
             }
