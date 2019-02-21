@@ -160,7 +160,7 @@
                 for( var i = 0; i < this.ricette[r]; i++ )
                     ricette_stampa.push( ricette_uniche[r] );
             }
-            console.log(ricette_uniche,ricette_stampa);
+
             num_pagine = ricette_stampa.length / Constants.CARTELLINI_PER_PAG;
 
             window.localStorage.removeItem("ricette_da_stampare");
