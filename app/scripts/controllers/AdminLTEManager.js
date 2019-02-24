@@ -25,7 +25,7 @@
 
         controllaModalitaEvento: function ()
         {
-            if( this.pg_info && typeof this.user_info.pg_da_loggare !== "undefined" )
+            if( this.pg_info && typeof this.user_info.pg_da_loggare !== "undefined" && typeof this.user_info.event_id !== "undefined" )
             {
                 $("body").addClass("event_ongoing");
                 $(".visualizza_pagina_main").remove();
@@ -220,7 +220,7 @@
 
         aggiornaBadgeMessaggi: function ( data )
         {
-            if( this.pg_info && typeof this.user_info.pg_da_loggare !== "undefined" )
+            if( this.pg_info && typeof this.user_info.pg_da_loggare !== "undefined" && typeof this.user_info.event_id !== "undefined" )
                 $("#num_mex_fg").remove();
             else
                 $("#num_mex_fg").text( data.result.fg );
@@ -263,6 +263,27 @@
                     window.localStorage.setItem('logged_pg', JSON.stringify(pg_no_bg));
 
                     if( typeof datiAggiornati === "function" ) datiAggiornati( pg_no_bg );
+                }.bind(this)
+            );
+        },
+
+        aggiornaDatiUtente : function ( password, datiAggiornati )
+        {
+            var dati = { usermail : JSON.parse( window.localStorage.getItem("user") ).email_giocatore, password: password };
+
+            Utils.requestData(
+                Constants.API_POST_LOGIN,
+                "POST",
+                dati,
+                function( data )
+                {
+                    this.pg_info = data;
+                    delete this.pg_info.status;
+
+                    window.localStorage.removeItem("user");
+                    window.localStorage.setItem( 'user', JSON.stringify( this.pg_info ) );
+
+                    if( typeof datiAggiornati === "function" ) datiAggiornati( this.pg_info );
                 }.bind(this)
             );
         },

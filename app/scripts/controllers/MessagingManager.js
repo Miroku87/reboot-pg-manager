@@ -270,7 +270,7 @@ var MessaggingManager = function ()
             this.pg_info   = window.localStorage.getItem("logged_pg");
             this.pg_info   = this.pg_info ? JSON.parse( this.pg_info ) : null;
 
-            if( this.user_info && !this.user_info.pg_da_loggare )
+            if( this.user_info && !( this.user_info.pg_da_loggare && typeof this.user_info.event_id !== "undefined" ) )
                 $("#sezioni").find("li:first-child").removeClass("inizialmente-nascosto").show();
 
             if( this.pg_info )
@@ -278,7 +278,7 @@ var MessaggingManager = function ()
             else
                 $("#tipo_messaggio").find("option[value='ig']").remove();
 
-            if( this.user_info && this.user_info.pg_da_loggare )
+            if( this.user_info && this.user_info.pg_da_loggare && typeof this.user_info.event_id !== "undefined" )
             {
                 $("#sezioni").find(".nome_sezione").text("Caselle");
                 $("#tipo_messaggio").val("ig").hide();

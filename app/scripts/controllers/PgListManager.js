@@ -89,16 +89,6 @@
             });
         },
 
-        modificaCreditoPG: function ( e )
-        {
-            var target = $(e.target);
-            CreditManager.impostaModal({
-                pg_ids          : [ target.attr("data-id") ],
-                nome_personaggi : [ target.attr("data-nome") ],
-                onSuccess       : this.pg_grid.ajax.reload.bind(this,null,false)
-            });
-        },
-
         modificaContattabilePG: function ( e )
         {
             var target = $(e.target);
@@ -145,9 +135,6 @@
 
             $("td > button.modificaPG_pc_personaggio").unbind( "click", this.modificaPuntiPG.bind(this) );
             $("td > button.modificaPG_pc_personaggio").click( this.modificaPuntiPG.bind(this) );
-
-            $("td > button.modificaPG_credito_personaggio").unbind( "click", this.modificaCreditoPG.bind(this) );
-            $("td > button.modificaPG_credito_personaggio").click( this.modificaCreditoPG.bind(this) );
 
             $("td input.modificaPG_contattabile_personaggio").unbind( "ifChanged", this.modificaContattabilePG.bind(this) );
             $("td input.modificaPG_contattabile_personaggio").on( "ifChanged", this.modificaContattabilePG.bind(this) );
@@ -381,7 +368,7 @@
         {
             this.user_info = JSON.parse( window.localStorage.getItem("user") );
 
-            if( typeof this.user_info.pg_da_loggare !== "undefined" )
+            if( typeof this.user_info.pg_da_loggare !== "undefined" && typeof this.user_info.event_id !== "undefined")
             {
                 window.localStorage.setItem("pg_da_loggare",this.user_info.pg_da_loggare);
                 Utils.redirectTo( Constants.PG_PAGE );
