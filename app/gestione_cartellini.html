@@ -1,0 +1,198 @@
+﻿{% extends "./templates/main_template.html" %}
+{% set body_classes = body_classes + " gestione-cartellini-page" %}
+{% set section = "gestionecartellini" %}
+{% set titolo_sezione = "Gestore dei Cartellini"  %}
+{% set descrizione_sezione = "Qui potrai inserire, modificare e stampare i cartellini."  %}
+
+{% block styles %}
+<link rel="stylesheet" href="styles/gestione_cartellini.css"/>
+<link rel="stylesheet" href="styles/fontawesome-iconpicker.css"/>
+<link rel="stylesheet" href="styles/bootstrap-tagsinput.css"/>
+{% endblock %}
+
+{% block mainContent %}
+{{ super() }}
+<!--------------------------
+  | Your Page Content Here |
+  -------------------------->
+<form autocomplete="off" aria-autocomplete="none">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">
+                <span class="sgc-info2">SGC</span> CARTELLINI</h3>
+
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="btn-group pull-center out-of-box">
+                <button type="button"
+                        class="btn btn-info stampaRicette"
+                        id="btn_creaNuovoCartellino"
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        data-container="body"
+                        title="Crea un nuovo cartellino"><i class="fa fa-address-card-o"></i><br>Nuovo<br>Cartellino
+                </button>
+                <button type="button"
+                        class="btn btn-info stampaRicette"
+                        id="btn_stampaRicetteTecnico"
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        data-container="body"
+                        title="Stampa i cartellini dei componenti filtrati nella tabella sotto"><i
+                        class="fa fa-print"></i><br>Stampa Cartellini<br>Selezionati
+                </button>
+                <button type="button"
+                        class="btn btn-info stampaRicette"
+                        id="btn_resettaContatoriTecnico"
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        data-container="body"
+                        title="Resetta i numeri di stampe nella tabella sottostante"><i class="fa fa-ban"></i><br>Resetta
+                    Numero<br>di Stampe
+                </button>
+            </div>
+            <table id="tabella_tecnico" class="table" width="100%"></table>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block modals %}
+
+<div id="modal_form_cartellino" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header dialog-header-primary">
+                <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Chiudi</span></button>
+                <h4 class="modal-title text-primary">Inserisci Informazioni Cartellino</h4>
+            </div>
+            <div class="modal-body">
+                <p>Inserisci qui sotto i testi del cartellino.<br>
+                    Nel caso non servano una testata e/o un pie' pagina sar&agrave; possibile lasciarli invariati per
+                    non far apparire nulla sul cartellino finale.<br>
+                    Titolo e Descrizione sono obbligatori.<br>
+                    L'icona &egrave; facoltativa. Per modificarne il contenuto baster&agrave cliccarci sopra e
+                    sceglierne uno nuovo dal menu.<br><br>
+                    Puoi inoltre decidere di partire da un modello precedentemente creato.</p>
+
+                <form autocomplete="off" aria-autocomplete="none" class="form-horizontal">
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Parti da un Modello</label>
+
+                        <div class="col-sm-9">
+                            <select class="form-control resize-vertical" name="modello_cartellino"
+                                    placeholder="Modello Cartellino">
+                                <option value="NULL">Nessun Modello</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Cartellino</label>
+
+                        <div class="col-sm-9">
+                            <div class="cartellino template" id="cartellino_template">
+                                <div class="prima-pagina">
+                                    <div class="testata"><input type="text" placeholder="Testata"/></div>
+                                    <div class="titolo">
+                                        <textarea placeholder="Titolo"></textarea>
+                                    </div>
+                                    <div class="icona">
+                                        <button type="button" class="icon-button"><i class="fa fa-hand-pointer-o"
+                                                                                     aria-hidden="true"></i></button>
+                                    </div>
+                                    <div class="piepagina"><input type="text" placeholder="Pie pagina"/></div>
+                                </div>
+                                <div class="seconda-pagina">
+                                    <div class="descrizione"><textarea placeholder="Descrizione"></textarea></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Mostra Icona</label>
+
+                        <div class="col-sm-9">
+                            <div class='checkbox icheck'>
+                                <input type='checkbox' name="visibilita_icona" id="visibilita_icona" checked></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Tipo di Cartellino</label>
+
+                        <div class="col-sm-9">
+                            <select class="form-control resize-vertical" name="tipo_cartellino"
+                                    placeholder="Template Cartellino">
+                                <option value="componente_consumabile">Componente e/o Consumabile</option>
+                                <option value="abilita_sp_malattia">Abilit&agrave; Speciale / Malattia</option>
+                                <option value="armatura_protesi_potenziamento">Armatura / Protesi / Potenziamento
+                                </option>
+                                <option value="arma_equip">Arma / Equipaggiamento Speciale</option>
+                                <option value="interazione_area">Interazione / Area Speciale</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Pubblica nel RavShop</label>
+
+                        <div class="col-sm-9">
+                            <div class='checkbox icheck'>
+                                <input type='checkbox' name="pubblico_ravshop_cartellino" id="ravshop"></div>
+                        </div>
+                    </div>
+                    <div class="form-group costo_attuale_ravshop_cartellino">
+                        <label class="col-sm-3 control-label">Costo nel RavShop</label>
+
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control resize-vertical"
+                                   name="costo_attuale_ravshop_cartellino">
+                            <input type="hidden" name="costo_attuale_ravshop_cartellino_old">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Etichette per future categorizzazioni</label>
+
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control resize-vertical" name="etichette_cartellino"
+                                   aria-describedby="helpBlock" data-role="tagsinput"/>
+                            <span id="helpBlock" class="help-block">Inserisci delle parole separate da virgole. Per le parole composte utilizzare il trattino "-". Esempio: evento-04</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Salva Come Modello</label>
+
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <input type="text" class="form-control resize-vertical" name="nome_modello"/>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-success submit-btn" id="btn_salva_modello">Salva</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success submit-btn" id="btn_invia">Invia</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ super() }}
+{% endblock %}
+
+{% block managers %}
+{{ super() }}
+<script src="scripts/utils/fontawesome-iconpicker.js"></script>
+<script src="scripts/utils/typeahead.js"></script>
+<script src="scripts/utils/bootstrap-tagsinput.js"></script>
+<script src="scripts/controllers/CartelliniCreator.js"></script>
+<script src="scripts/controllers/CartelliniManager.js"></script>
+{% endblock %}

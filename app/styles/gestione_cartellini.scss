@@ -1,0 +1,148 @@
+@font-face {
+    font-family: 'ubuntu_monoregular';
+    src: url('../fonts/ubuntumono-regular-webfont.woff2') format('woff2'),
+    url('../fonts/ubuntumono-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+.gestione-cartellini-page {
+
+    td {
+        vertical-align: middle;
+    }
+    td.descrizione {
+        vertical-align: top;
+    }
+
+    .modal .btn-group {
+        margin-top: 20px;
+    }
+
+    .cartellino {
+        /* 16cm x 5cm */
+        /*width: 54vh;*/
+        /*height: 17vh;*/
+        width: 160mm;
+        height: 50mm;
+        transform-origin: left top;
+        border: 1px solid rgba(0, 0, 0, .1);
+        box-sizing: border-box;
+        color: black;
+    }
+
+    .cartellino > .prima-pagina,
+    .cartellino > .seconda-pagina {
+        width: 50%;
+        height: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        padding: 5mm;
+        box-sizing: border-box;
+        float: left;
+    }
+
+    .cartellino > .prima-pagina {
+        background-image: url("../images/sfondo_cartellino_fronte.jpg");
+    }
+
+    .cartellino > .seconda-pagina {
+        background-image: url("../images/sfondo_cartellino_retro.jpg");
+    }
+
+    .cartellino table {
+        table-layout:fixed;
+    }
+
+    .cartellino input[type='text'],
+    .cartellino textarea {
+        width: 100%;
+        height: 100%;
+        border: none;
+        font-family: ubuntu_monoregular, monospace;
+    }
+
+    .cartellino textarea {
+        resize: none;
+        outline: none;
+        overflow: hidden;
+        padding: 0;
+    }
+
+    .cartellino > .prima-pagina > div,
+    .cartellino > .seconda-pagina > div {
+        overflow: hidden;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .cartellino .testata {
+        height: 10%;
+    }
+
+    .cartellino .titolo {
+        height: 20%;
+    }
+    .cartellino .titolo > textarea {
+        text-align: center;
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+
+    .cartellino .icona {
+        height: 60%;
+        font-size: 6.5em;
+        text-align: center;
+        line-height: 2px;
+    }
+    .cartellino .icona > .icon-button {
+        background: transparent;
+        border: none;
+        outline: none;
+    }
+
+    .cartellino .piepagina {
+        height: 10%;
+    }
+
+    .cartellino .descrizione {
+        height: 100%;
+    }
+
+    .cartellino.senza-icona .titolo {
+        height: 80%;
+    }
+    .cartellino.senza-icona .titolo > textarea {
+        font-size: 3em;
+        height: auto;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .cartellino.senza-icona .icona {
+        display: none;
+    }
+
+    .iconpicker * {
+        box-sizing: content-box!important;
+    }
+
+    .iconpicker-popover.popover {
+        width: 226px;
+    }
+
+    .costo_attuale_ravshop_cartellino {
+        display: none;
+    }
+
+    .bootstrap-tagsinput {
+        width: 100%;
+        border: 1px solid #1b5050;
+        background-color: rgba(18, 34, 35, 0.54) !important;
+        color: #18b3b2;
+        font-family: 'Titillium Web', sans-serif;
+        text-decoration: none;
+    }
+}
