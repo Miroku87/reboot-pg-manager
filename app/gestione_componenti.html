@@ -1,0 +1,253 @@
+{% extends "./templates/main_template.html" %}
+{% set titolo_sezione = "Gestione Componenti" %}
+{% set section = "gestionecomponenti" %}
+{% block mainContent %}
+{{ super() }}
+<!--------------------------
+  | Your Page Content Here |
+  -------------------------->
+<form autocomplete="off" aria-autocomplete="none">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">
+                <span class="sgc-info2">SGC</span> COMPONENTI TECNICI</h3>
+
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="btn-group pull-center out-of-box">
+                <button type="button"
+                        class="btn btn-info stampaRicette"
+                        id="btn_stampaRicetteTecnico"
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        data-container="body"
+                        title="Stampa i cartellini dei componenti filtrati nella tabella sotto"><i class="fa fa-print"></i><br>Stampa Cartellini<br>Tecnici</button>
+                <button type="button"
+                        class="btn btn-info stampaRicette"
+                        id="btn_resettaContatoriTecnico"
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        data-container="body"
+                        title="Stampa i cartellini dei componenti filtrati nella tabella sotto"><i class="fa fa-print"></i><br>Resetta Numero di Stampe<br>Tecnica</button>
+            </div>
+            <table id="tabella_tecnico" class="table" width="100%"></table>
+        </div>
+    </div>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">
+                <span class="sgc-info2">SGC</span> COMPONENTI CHIMICI</h3>
+
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="btn-group pull-center out-of-box">
+                <button type="button"
+                        class="btn btn-info stampaRicette"
+                        id="btn_stampaRicetteChimico"
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        data-container="body"
+                        title="Stampa i cartellini dei componenti filtrati nella tabella sotto"><i class="fa fa-print"></i><br>Stampa Cartellini<br>Chimici</button>
+                <button type="button"
+                        class="btn btn-info stampaRicette"
+                        id="btn_resettaContatoriChimico"
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        data-container="body"
+                        title="Stampa i cartellini dei componenti filtrati nella tabella sotto"><i class="fa fa-print"></i><br>Resetta Numero di Stampe<br>Chimica</button>
+            </div>
+            <table id="tabella_chimico" class="table" width="100%"></table>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block modals %}
+
+<div id="modal_modifica_componente_tabella_tecnico" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header dialog-header-primary">
+                <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Chiudi</span></button>
+                <h4 class="modal-title text-primary">Modifica Componente</h4>
+            </div>
+            <div class="modal-body">
+                <form autocomplete="off" aria-autocomplete="none" class="form-horizontal">
+                    <div class="form-group inizialmente-nascosto">
+                        <label class="col-sm-3 control-label">ID Componente</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control resize-vertical" name="id_componente" placeholder="ID Componente">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Nome Componente</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control resize-vertical" name="id_componente" placeholder="Nome Componente">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Descrizione Componente</label>
+                        <div class="col-sm-9">
+                            <textarea type="text" class="form-control resize-vertical" rows="5" name="descrizione_componente"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Tipo Componente</label>
+                        <div class="col-sm-9">
+                            <select class="form-control resize-vertical" name="tipo_componente" placeholder="Tipo Componente">
+                                <option value="applicativo">Applicativo</option>
+                                <option value="struttura">Struttura</option>
+                                <option value="batteria">Batteria</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Energia Componente</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control resize-vertical" name="energia_componente">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Volume Componente</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control resize-vertical" name="volume_componente">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Effetti Componente</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control resize-vertical" name="effetto_sicuro_componente" placeholder="Effetti Componente">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Costo Componente</label>
+                        <div class="col-sm-9">
+                            <input type="number" min="0" class="form-control resize-vertical" name="costo_attuale_componente">
+                            <input type="hidden" name="costo_attuale_componente_old">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success submit-btn" id="btn_invia_modifiche_tabella_tecnico">Invia Modifiche</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal_modifica_componente_tabella_chimico" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header dialog-header-primary">
+                <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Chiudi</span></button>
+                <h4 class="modal-title text-primary">Modifica Componente</h4>
+            </div>
+            <div class="modal-body">
+                <p>Modifica qui i dati del componente <strong><span id="info_componente"></span></strong></p>
+                <form autocomplete="off" aria-autocomplete="none" class="form-horizontal">
+                    <div class="form-group inizialmente-nascosto">
+                        <label class="col-sm-3 control-label">ID Componente</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control resize-vertical" name="id_componente" placeholder="ID Componente">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Nome Componente</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control resize-vertical" name="nome_componente" placeholder="Nome Componente">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Descrizione Componente</label>
+                        <div class="col-sm-9">
+                            <textarea type="text" class="form-control resize-vertical" rows="5" name="descrizione_componente"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Tipo Componente</label>
+                        <div class="col-sm-9">
+                            <select class="form-control resize-vertical" name="tipo_componente" placeholder="Tipo Componente">
+                                <option value="fiala">Fiala</option>
+                                <option value="solido">Solido</option>
+                                <option value="cerotto">Cerotto</option>
+                                <option value="sostanza">Sostanza</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Valore Curativo Primario</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control resize-vertical" name="curativo_primario_componente">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Valore Tossico Primario</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control resize-vertical" name="tossico_primario_componente">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Valore Psicotropo Primario</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control resize-vertical" name="psicotropo_primario_componente">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Valore Curativo Secondario</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control resize-vertical" min="0" step=".1" name="curativo_secondario_componente">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Valore Tossico Secondario</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control resize-vertical" min="0" step=".1" name="tossico_secondario_componente">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Valore Psicotropo Secondario</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control resize-vertical" min="0" step=".1" name="psicotropo_secondario_componente">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Fattore di Dipendenza</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control resize-vertical" min="0" step=".1" name="possibilita_dipendeza_componente">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Costo Componente</label>
+                        <div class="col-sm-9">
+                            <input type="number" min="0" class="form-control resize-vertical" name="costo_attuale_componente">
+                            <input type="hidden" name="costo_attuale_componente_old">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success submit-btn" id="btn_invia_modifiche_tabella_chimico">Invia Modifiche</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ super() }}
+{% endblock %}
+
+{% block managers %}
+{{ super() }}
+<script src="scripts/controllers/ComponentsManager.js"></script>
+{% endblock %}

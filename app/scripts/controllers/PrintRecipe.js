@@ -200,11 +200,19 @@
 
         riempiCartelliniComponenti: function ( data )
 		{
-            var info_componenti = JSON.parse( window.localStorage.getItem("componenti_da_stampare") ),
-                dati_componenti = data.result,
-                num_pagine = info_componenti.length / Constants.CARTELLINI_PER_PAG;
+            var componenti_unici = data.result.reduce( function( prev, current ){ prev[ current.id_componente ] = current; return prev }, {} ),
+                dati_componenti = [],
+                num_pagine = 0;
 
-            window.localStorage.removeItem("componenti_da_stampare");
+            for( var r in this.componenti )
+            {
+                for( var i = 0; i < this.componenti[r]; i++ )
+                    dati_componenti.push( componenti_unici[r] );
+            }
+
+            num_pagine = dati_componenti.length / Constants.CARTELLINI_PER_PAG;
+
+            //window.localStorage.removeItem("componenti_da_stampare");
 
             for( var p = 0; p < num_pagine; p++ )
             {
@@ -216,12 +224,11 @@
                 {
                     var i = ( Constants.CARTELLINI_PER_PAG * p ) + c;
 
-                    if( info_componenti[i] )
+                    if( dati_componenti[i] )
                     {
-                        var indice     = Utils.indexOfArrayOfObjects(dati_componenti,"id_componente",info_componenti[i]),
-                            componente = dati_componenti[ indice ],
+                        var componente = dati_componenti[ i ],
                             cartellino = {};
-
+                        console.log(componente);
                         //Programmazione, Tecnico, Chimico
                         if( componente.tipo_crafting_componente === "tecnico" )
                             cartellino = this.creaCartellinoComponente( componente, $("#cartellino_componente_tecnico_template") );
@@ -262,10 +269,11 @@
             else if( window.localStorage.getItem("componenti_da_stampare") )
             {
                 this.cosa_si_stampa = "componenti";
+                this.componenti = JSON.parse(window.localStorage.getItem("componenti_da_stampare"));
                 Utils.requestData(
                     Constants.API_GET_COMPONENTI_CON_ID,
                     "GET",
-                    {ids : JSON.parse(window.localStorage.getItem("componenti_da_stampare"))},
+                    {ids : Object.keys( this.componenti )},
                     this.riempiCartelliniComponenti.bind(this)
                 );
             }

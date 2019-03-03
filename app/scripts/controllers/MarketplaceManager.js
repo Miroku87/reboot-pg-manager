@@ -9,7 +9,7 @@ var MarketplaceManager = function ()
 
             this.pg_info             = JSON.parse( window.localStorage.getItem("logged_pg") );
             this.placeholder_credito = $("#riga_credito").find("td:nth-child(2)").html();
-            this.carrello_componenti = [];
+            this.carrello_componenti = {};
 
             if( !this.pg_info )
             {
@@ -48,30 +48,14 @@ var MarketplaceManager = function ()
             AdminLTEManager.aggiornaDatiPG( this.prendiDatiPGAggiornati.bind(this) );
             Utils.resetSubmitBtn();
             window.localStorage.setItem( "componenti_da_stampare", JSON.stringify(this.carrello_componenti) );
+
             $("#pagina_stampa").attr("src",Constants.STAMPA_RICETTE);
             window.stampa_subito = true;
-            //setTimeout( this.faiPartireStampa.bind(this), 1000 );
         },
-
-        /*scalaSoldi: function ( data )
-        {
-            Utils.requestData(
-                Constants.API_POST_EDIT_PG,
-                "POST",
-                {
-                    pgid      : this.pg_info.id_personaggio,
-                    modifiche : { credito_personaggio : parseInt( data.result, 10 ) * -1 },
-                    offset    : true
-                },
-                "Pagamento avvenuto con successo.<br>Premi OK per far partire la stampa.",
-                null,
-                this.stampa.bind(this)
-            );
-        },*/
 
         paga: function ( e )
         {
-            if( this.carrello_componenti.length === 0 )
+            if( Object.keys(this.carrello_componenti).length === 0 )
             {
                 Utils.showError("Non ci sono articoli nel carrello.");
                 return false;
@@ -80,7 +64,7 @@ var MarketplaceManager = function ()
             Utils.requestData(
                 Constants.API_COMPRA_COMPONENTI,
                 "POST",
-                { ids: this.carrello_componenti },
+                { ids: Object.keys(this.carrello_componenti) },
                 "Pagamento avvenuto con successo.<br>Premi 'CHIUDI' per far partire la stampa.",
                 null,
                 this.stampa.bind(this)
@@ -94,8 +78,6 @@ var MarketplaceManager = function ()
                                 .map(function(el){return parseInt( el.innerText, 10 ) || 0;})
                                 .reduce(function(acc, val) { return acc + val; }),
                 sconto       = qta_tot % Constants.QTA_PER_SCONTO_MERCATO === 0 ? Constants.SCONTO_MERCATO : 0;
-
-            console.log(qta_tot, Constants.QTA_PER_SCONTO_MERCATO, qta_tot % Constants.QTA_PER_SCONTO_MERCATO);
 
             $("#riga_sconto > td:nth-child(2)").text( sconto + "%" );
         },
@@ -127,7 +109,11 @@ var MarketplaceManager = function ()
             riga.find("td:nth-child(3)").text( vecchio_tot + costo );
             riga.show(500);
 
-            this.carrello_componenti.push(id_prodotto);
+            if( this.carrello_componenti[id_prodotto] )
+                this.carrello_componenti[id_prodotto]++;
+            else
+                this.carrello_componenti[id_prodotto] = 1;
+
             this.controllaQtaPerSconto();
             this.calcolaTotaleCarrello();
         },
@@ -154,7 +140,11 @@ var MarketplaceManager = function ()
                 riga.show(500);
             }
 
-            this.carrello_componenti.splice(indice,1);
+            if( this.carrello_componenti[id_prodotto] && this.carrello_componenti[id_prodotto] > 1 )
+                this.carrello_componenti[id_prodotto]--;
+            else if ( this.carrello_componenti[id_prodotto] && this.carrello_componenti[id_prodotto] === 1 )
+                delete this.carrello_componenti[id_prodotto];
+
             this.controllaQtaPerSconto();
             this.calcolaTotaleCarrello();
         },
@@ -186,16 +176,16 @@ var MarketplaceManager = function ()
                 riga.append("<td>"+costo+"</td>");
                 riga.append(
                     $("<td></td>")
-                        .append("<button class='btn btn-xs btn-default remove-item'><i class='fa fa-minus'></i></button>")
+                        .append("<button type='button' class='btn btn-xs btn-default remove-item'><i class='fa fa-minus'></i></button>")
                         .append("&nbsp;")
-                        .append("<button class='btn btn-xs btn-default add-item'><i class='fa fa-plus'></i></button>")
+                        .append("<button type='button' class='btn btn-xs btn-default add-item'><i class='fa fa-plus'></i></button>")
                 );
                 riga.hide();
 
                 $("#riga_sconto").before(riga);
                 riga.show(500);
 
-                this.carrello_componenti.push( id_prodotto );
+                this.carrello_componenti[id_prodotto] = 1;
             }
             else
                 this.aumentaQtaProdotto({target: col_car});

@@ -145,6 +145,7 @@
             $( "td [data-toggle='popover']" ).popover("destroy");
             $( "td [data-toggle='popover']" ).popover();
 
+            $( 'input[type="number"]' ).unbind( "change" );
             $( 'input[type="number"]' ).on( "change", this.ricettaSelezionata.bind(this) );
 
             $( "[data-toggle='tooltip']" ).tooltip();
