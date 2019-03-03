@@ -93,6 +93,27 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-sm-3 control-label">Tipo di Cartellino</label>
+                        <div class="col-sm-9">
+                            <select class="form-control resize-vertical" name="tipo_cartellino"
+                                    placeholder="Template Cartellino">
+                                <option value="componente_consumabile">Componente e/o Consumabile</option>
+                                <option value="abilita_sp_malattia">Abilit&agrave; Speciale / Malattia</option>
+                                <option value="armatura_protesi_potenziamento">Armatura / Protesi / Potenziamento </option>
+                                <option value="arma_equip">Arma / Equipaggiamento Speciale</option>
+                                <option value="interazione_area">Interazione / Area Speciale</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Mostra Icona</label>
+
+                        <div class="col-sm-9">
+                            <div class='checkbox icheck'>
+                                <input type='checkbox' name="visibilita_icona" id="visibilita_icona" checked></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-3 control-label">Cartellino</label>
 
                         <div class="col-sm-9">
@@ -115,29 +136,6 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">Mostra Icona</label>
-
-                        <div class="col-sm-9">
-                            <div class='checkbox icheck'>
-                                <input type='checkbox' name="visibilita_icona" id="visibilita_icona" checked></div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Tipo di Cartellino</label>
-
-                        <div class="col-sm-9">
-                            <select class="form-control resize-vertical" name="tipo_cartellino"
-                                    placeholder="Template Cartellino">
-                                <option value="componente_consumabile">Componente e/o Consumabile</option>
-                                <option value="abilita_sp_malattia">Abilit&agrave; Speciale / Malattia</option>
-                                <option value="armatura_protesi_potenziamento">Armatura / Protesi / Potenziamento
-                                </option>
-                                <option value="arma_equip">Arma / Equipaggiamento Speciale</option>
-                                <option value="interazione_area">Interazione / Area Speciale</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label class="col-sm-3 control-label">Pubblica nel RavShop</label>
 
                         <div class="col-sm-9">
@@ -156,10 +154,9 @@
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Etichette per future categorizzazioni</label>
-
                         <div class="col-sm-9">
                             <input type="text" class="form-control resize-vertical" name="etichette_cartellino"
-                                   aria-describedby="helpBlock" data-role="tagsinput"/>
+                                   aria-describedby="helpBlock" />
                             <span id="helpBlock" class="help-block">Inserisci delle parole separate da virgole. Per le parole composte utilizzare il trattino "-". Esempio: evento-04</span>
                         </div>
                     </div>
@@ -191,8 +188,8 @@
 {% block managers %}
 {{ super() }}
 <script src="scripts/utils/fontawesome-iconpicker.js"></script>
-<script src="scripts/utils/typeahead.js"></script>
 <script src="scripts/utils/bootstrap-tagsinput.js"></script>
+<script src="scripts/utils/bootstrap3-typeahead.js"></script>
 <script src="scripts/controllers/CartelliniCreator.js"></script>
 <script src="scripts/controllers/CartelliniManager.js"></script>
 {% endblock %}

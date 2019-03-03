@@ -1098,13 +1098,13 @@ ul.list-select > li[disabled] {
     text-transform: none;
 }
 
-.bootstrap-timepicker-widget.dropdown-menu,
-.datepicker.datepicker-dropdown.dropdown-menu {
+.dropdown-menu,
+.dropdown-menu {
     background-color: #122223 !important;
     color: white !important;
 }
 
-.bootstrap-timepicker-widget.dropdown-menu .glyphicon,
-.datepicker.datepicker-dropdown.dropdown-menu .glyphicon {
+.dropdown-menu .glyphicon,
+.dropdown-menu .glyphicon {
     color: white !important;
 }

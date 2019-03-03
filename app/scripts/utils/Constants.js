@@ -93,6 +93,8 @@ Constants.API_GET_STATS_RAVSHOP                 = Constants.API_URL + "/statisti
 Constants.API_GET_STATS_ACQUISTI_RAVSHOP        = Constants.API_URL + "/statistics/recuperastatisticheacquistiravshop";
 Constants.API_GET_STATS_ARMI                    = Constants.API_URL + "/statistics/recuperastatistichearmistampate";
 
+Constants.API_GET_TAGS = Constants.API_URL + "/cartellinimanager/recuperatagsunici";
+
 Constants.API_DEL_GIOCATORE   = Constants.API_URL + "/usersmanager/eliminagiocatore";
 Constants.API_DEL_CLASSE_PG   = Constants.API_URL + "/charactersmanager/rimuoviclassepg";
 Constants.API_DEL_ABILITA_PG  = Constants.API_URL + "/charactersmanager/rimuoviabilitapg";
